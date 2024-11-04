@@ -6,4 +6,4 @@ server: publish
 	darkhttpd ./public --port 50011
 deploy: publish
 	rm -rf /srv/http/jointhefreeworld.org
-	cp -rf public /srv/jointhefreeworld.org
+	cp -rf public /srv/http/jointhefreeworld.org
