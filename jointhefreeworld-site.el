@@ -135,23 +135,34 @@
                       (div (@ (class "container"))
                            (nav (@ (class "nav"))
                                 (a (@ (class "nav-link") (href "/")) "Home") " "
-                                (a (@ (class "nav-link") (href "/guides/")) "Guides") " "
-                                (a (@ (class "nav-link") (href "/news/")) "News") " "
-                                (a (@ (class "nav-link") (href "/community/")) "Community") " "
-                                (a (@ (class "nav-link") (href "/how-to-help/")) "How to Help")))))))
+                                (a (@ (class "nav-link") (href "/blog/")) "Blog") " "
+                                (a (@ (class "nav-link") (href "/cv/")) "CV/Resume") " "
+                                (a (@ (class "nav-link") (href "https://github.com/jjba23")) "GitHub") " "
+                                (a (@ (class "nav-link") (href "https://www.linkedin.com/in/josepjba/")) "LinkedIn") " "
+                                (a (@ (class "nav-link") (href "https://wikimusic.jointhefreeworld.org")) "WikiMusic") " "
+                                (a (@ (class "nav-link") (href "https://casadelcata.es")) "Casa del Cata") " "
+                                ))))))
+
+;; Home
+;; Blog
+;; CV/Resume
+;; GitHub
+;; LinkedIn
+;; WikiMusic
+;; Holiday in the Canary Islands ?
 
 (defun jfw/site-footer ()
   (list `(footer (@ (class "site-footer"))
                  (div (@ (class "container"))
                       (div (@ (class "row"))
                            (div (@ (class "column"))
-                                (p (a (@ (href ,(concat jfw/site-url "/privacy-policy/"))) "Privacy Policy")
-                                   " · "
-                                   (a (@ (href ,(concat jfw/site-url "/credits/"))) "Credits")
-                                   " · "
-                                   (a (@ (href ,(concat jfw/site-url "/rss/"))) "RSS Feeds")
-                                   " · "
-                                   )
+                                ;; (p (a (@ (href ,(concat jfw/site-url "/privacy-policy/"))) "Privacy Policy")
+                                ;;    " · "
+                                ;;    (a (@ (href ,(concat jfw/site-url "/credits/"))) "Credits")
+                                ;;    " · "
+                                ;;    (a (@ (href ,(concat jfw/site-url "/rss/"))) "RSS Feeds")
+                                ;;    " · "
+                                ;;    )
                                 (p "© 2024 jointhefreeworld"))
                            (div (@ (class "column align-right"))
                                 (p (a (@ (href "https://github.com/jjba23/jointhefreeworld"))
@@ -448,7 +459,8 @@ holding contextual information."
               :base-extension "org"
               :publishing-directory "./public"
               :publishing-function org-html-publish-to-html
-              :with-title nil
+              :with-title t
+              :recursive t
               :with-timestamps t)
             '("jointhefreeworld:blog"
               :base-directory "./docs/blog/"
@@ -456,6 +468,7 @@ holding contextual information."
               :publishing-directory "./public/blog"
               :publishing-function org-html-publish-to-html
               :with-title t
+              :recursive t
               :with-timestamps t)  
             ))
 
