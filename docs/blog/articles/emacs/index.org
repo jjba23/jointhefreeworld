@@ -1,0 +1,10 @@
+#+title: Emacs
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+
+<2024-08-13 Tue> - [[file:emacs-registers.html][Emacs registers - a god-send for your day job]] - Ever had to work very long files, in projects that you are not familiar with, and felt very lost, without an anchor point? Enter Emacs and its registry system, which allows you to "bookmark" locations of a file (buffer) and return to them, and much much more!
+
+<2023-04-28 Fri> - [[file:emacs-for-absolute-begginners.html][Emacs for absolute beginners]] - In this article, I'm going to give you exactly what you need to get started using Emacs and understand the basic concepts and key bindings of the editor.
+
+<2023-04-26 Wed> - [[file:emacs-and-scala-setup-with-eglot.html][Emacs and Scala setup with Eglot]]
+Learn how to setup your favourite text editor, Emacs, as a super powerful and capable Scala IDE (integrated development environment) with the latest and most performant approach.

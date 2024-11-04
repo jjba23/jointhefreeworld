@@ -1,0 +1,59 @@
+#+title: Open VPN 3 on Void Linux
+#+options: num:nil toc:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2023-08-18 Fri>
+
+
+* OpenVPN 3 on Void Linux
+
+Recently at work we migrated from a simple OpenVPN profile with AWS credentials to a profile that authenticates based on SAML via your browser. This means that we need OpenVPN 3 now running. At the time of writing there was no package in the Void Linux repos for v3 so I decided to build from source, since otherwise this would mean I cannot do my work, from Void Linux.
+
+In this post I explain how you should go about installing OpenVPN 3 from source on Void Linux.
+
+First remove your existing OpenVPN installation. Bear in mind that this means also removing the NetworkManager extension.
+
+#+begin_src bash
+  sudo xbps-remove openvpn NetworkManager-openvpn
+#+end_src
+
+You should then ensure that your system is up to date and install at least the following packages (maybe more are required that I missed).
+
+#+begin_src bash  
+  sudo xbps-install -Syu
+  sudo xbps-install -Sy automake autoconf autoconf-archive pkg-config liblz4-devel lz4 jsoncpp jsoncpp-devel libcap-ng-devel tinyxml2 tinyxml2-devel
+#+end_src
+
+Before installing it's useful to configure the groups and users required for this:
+
+#+begin_src bash
+  sudo groupadd -r openvpn
+  sudo useradd -r -s /sbin/nologin -g openvpn openvpn
+#+end_src
+
+Then navigate to a directory of your choice (for me ~~/Ontwikkeling/Build~) and clone the source code of the OpenVPN 3 client there.
+
+#+begin_src bash
+  cd ~/Ontwikkeling/Build
+  git clone https://github.com/OpenVPN/openvpn3-linux.git
+  cd openvpn3-linux
+#+end_src
+
+After having navigated to that folder you can proceed to the building and installation.
+
+#+begin_src bash    
+  ./bootstrap.sh
+  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+  make
+  sudo make install
+  sudo openvpn3-admin init-config --write-configs
+#+end_src
+
+Then make sure to reboot your system, and you can now enjoy using OpenVPN 3. See below how I use it:
+
+#+begin_src bash    
+sudo openvpn3 session-start --config my-file.ovpn && sudo openvpn3 session-auth
+#+end_src
+
+That's all folks!

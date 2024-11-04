@@ -1,0 +1,19 @@
+#+title: Go
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+
+<2021-09-29 Wed> - [[file:how-i-write-http-services.html][How I wrote HTTP services]]
+
+<2021-09-27 Mon> - [[file:project-structure.html][Project structure in Go]]
+
+<2021-09-16 Thu> - [[file:sql-transactions.html][SQL transactions]]
+
+<2021-01-26 Tue> - [[file:opinionated-style-guide.html][Opinionated style guide for Go]]
+
+<2020-11-13 Fri> - [[file:file-descriptors-and-go.html][File descriptors and Go]]
+
+<2020-10-04 Sun> - [[file:zen-of-go.html][Zen of Go]]
+
+<2020-10-02 Fri> - [[file:tips-for-clean-code-with-go.html][Tips for clean code with Go]]
+
+<2020-09-18 Fri> - [[file:make-or-new.html][make or new ?]]

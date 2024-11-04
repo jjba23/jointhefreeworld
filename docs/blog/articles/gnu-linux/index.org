@@ -1,0 +1,12 @@
+#+title: GNU/Linux
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+
+<2023-11-02 do> - [[file:openvpn3-on-nixos-with-web-based-saml.html][Open VPN 3 on NixOS with Web-based SAML]]
+
+<2023-08-25 Fri> - [[file:windows-11-bootable-usb-from-gnu-linux.html][Bootable Windows 11 USB from GNU Linux]]
+
+<2023-08-18 Fri> - [[file:openvpn3-on-voidlinux.html][OpenVPN3 on Void Linux]] 
+
+<2021-12-21 Tue> - [[file:arch-linux-uefi-encryption.html][Arch Linux UEFI + Encryption guide]]
+

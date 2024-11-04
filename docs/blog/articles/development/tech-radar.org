@@ -1,0 +1,28 @@
+#+title: My Tech Radar
+#+options: num:nil toc:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+date: <2024-06-18 di>
+#+language: en
+
+Tech changes fast. But it’s becoming an ever-more critical component of success.
+Quadrant names: Techniques, Platforms, Tools, Languages & Frameworks
+Ring names: Adopt, Trial, Assess, Hold
+
+Note that unless otherwise mentioned, list items are in the ~adopt~ phase.
+
+* Languages & Frameworks
+** Haskell
+** Scala
+** Flutter
+** Svelte
+** Typescript
+** Nix
+* Platforms
+** Amazon AWS
+* Tools
+** PostgreSQL
+* Techniques
+** Nix Flakes
+** Nix dev shells
+** GitHub CI/CD

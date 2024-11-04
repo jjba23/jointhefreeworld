@@ -1,0 +1,114 @@
+#+title: Emacs and Scala setup with Eglot
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2023-04-26 Wed>
+
+In this post I want to show you how to setup your favourite text editor, Emacs, as a super powerful and capable Scala IDE (integrated development environment) with the latest and most performant approach.
+
+You might think I am crazy and I make my life more difficult than it needs to be. Let me tell you this  already, my development experience in Emacs with Scala is 5 star ⭐. I use this setup at work extensively and cannot think of a better way to be productive.
+
+I see VSCode and IntelliJ colleagues (peasants), prisoners of proprietary tech, stuck to mouse usage, having to click around and hide the countless panes and useless tooltips their IDEs throw at them, and they are unable to customize things to what they need, nor do they have an understanding of the inner workings of their IDE, which IMHO puts them at a disadvantage.
+
+Just learn Emacs already!
+
+* Metals
+Needless to say, the best way to get Scala working with "language-server" compatible integrations is to use Metals LSP. You can read more about it [[https://scalameta.org/metals/][on their website]]  and how it integrates with several editors.
+I usually install it with [[https://get-coursier.io/][coursier]] doing something along the lines of:
+#+begin_src bash
+  coursier bootstrap --java-opt -XX:+UseG1GC --java-opt -XX:+UseStringDeduplication --java-opt -Xss4m --java-opt -Xms100m --java-opt -Dmetals.client=emacs org.scalameta:metals_2.13:0.11.12 -o $HOME/.local/bin/metals-emacs -f
+#+end_src
+
+Note: ensure that ~$HOME/.local/bin~ is in your path and Emacs will automagically pick it up.
+
+* Emacs package manager - Elpaca
+I am enjoying using Elpaca everyday. It's the most advanced, reliable and performant package manager ever made for Emacs. It integrates also seamlessly with ~use-package~ and pushes you into doing things in a maintainable way.
+Read [[https://github.com/progfolio/elpaca][more about it here]].
+You can still learn from my config even if you don't use it, but I do whole-heartedly recommend it.
+
+* Eglot
+I whole-heartedly recommend ~eglot~. Eglot, a.k.a. Emacs Polyglot is the Emacs LSP client that stays out of your way.
+You can read more about it [[https://github.com/joaotavora/eglot][here]].
+
+Eglot is to be integrated into Emacs core, and is more performant and minimalistic than lsp-mode. I like to immediately start eglot when opening a Scala file.
+#+begin_src emacs-lisp
+  (use-package eglot
+    :hook (
+           (scala-mode . eglot-ensure)
+           ;; other modes go here
+           ;; e.g.
+           ;; (haskell-mode . eglot-ensure)
+           ))
+#+end_src
+
+Once you install it (or load it, since in new Emacs versions it should be built-in), you will need to configure certain things to ensure it can work together with Scala Metals, the Scala language server.
+
+Here we add a wonderful functionality of optimizing imports and formatting code on save.
+#+begin_src emacs-lisp
+  (defun my-eglot-organize-imports () (interactive)
+          (eglot-code-actions nil nil "source.organizeImports" t))
+   (add-hook 'before-save-hook 'my-eglot-organize-imports nil t)
+   (add-hook 'before-save-hook 'eglot-format-buffer)
+#+end_src
+
+* Treesitter
+For all my syntax highlighting and syntax tree needs I use ~tree-sitter~, which soon will also be built into Emacs.
+#+begin_src emacs-lisp
+  (use-package tree-sitter
+     :config
+     (global-tree-sitter-mode))
+
+  (use-package tree-sitter-langs
+    :after tree-sitter)
+#+end_src
+
+* Scala Development
+Enable scala-mode for indentation and certain language rules, with Treesitter highlighting.
+
+#+begin_src emacs-lisp
+  (use-package scala-mode
+    :interpreter ("scala" . scala-mode)
+    :hook (scala-mode . tree-sitter-hl-mode)
+    )
+#+end_src
+
+
+* flycheck
+Flycheck is an enhancement over ~flymake~ and helps better visualize and interact with errors and warnings in your Emacs buffers.
+#+begin_src emacs-lisp
+  (use-package flycheck :config (global-flycheck-mode))
+#+end_src
+
+For integrating Flycheck and Eglot, check out the cool [[https://github.com/intramurz/flycheck-eglot][flycheck-eglot package]].
+
+* company
+For all my auto-complete needs I use ~company~ which works wonderfully and is highly customizable.
+#+begin_src emacs-lisp
+  (use-package company
+    :custom
+    (company-minimum-prefix-length 1)
+    (company-idle-delay 0.5)
+    (company-tooltip-align-annotations t)
+    (company-tooltip-margin 2)
+    :config
+    (global-company-mode))
+#+end_src
+
+The ~company-quickhelp~ package will help to visualize available documentation right in the auto-completion tooltip, a feature present in many modern IDEs.
+#+begin_src emacs-lisp
+  (use-package company-quickhelp
+    :after (company)
+    :config
+    (company-quickhelp-mode))
+#+end_src
+
+With all of this setup you will be able to have a productive experience, that surpasses the performance and joy of use of other IDEs.
+You may want to, on a per project basis, run ~sbt bloopInstall~ to get the full experience of Metals LSP. This requires the plugin: ~addSbtPlugin("ch.epfl.scala" % "sbt-bloop" % "1.5.6")~.
+
+You may have more success with running the ~bloopInstall~ as ~sbt -Dbloop.export-jar-classifiers=sources bloopInstall~.
+
+Also, remember that running ~M-x eglot*~ will show all eglot commands available, and teach you some of the shortcuts too.
+
+Feel free to check [[https://git.sr.ht/~teutonicjoe/dotfiles][my dotfiles on SourceHut]] which might help you get your Emacs setup just right 👌.
+
+Have a nice development day today!

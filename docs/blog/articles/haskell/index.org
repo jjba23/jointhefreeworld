@@ -1,0 +1,14 @@
+#+title: Haskell
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+
+<2024-04-20 za> - [[file:free-alacarte.html][Free à la Carte]]
+
+<2022-10-10 Mon> - [[file:running-hoogle-locally.html][Running Hoogle locally]]
+
+<2022-09-12 Mon>- [[file:type-safety-back-and-forth.html][Type safety back and forth]]
+
+<2022-09-10 Sat> - [[file:why-haskell-is-important.html][Why Haskell is important ?]]
+
+<2021-08-21 Sat> - [[file:haskell-in-production-at-foxdown-systems.html][Haskell in Production @ Foxdown Systems]]
+Haskell is the first programming language Foxdown reaches for when we build production software systems.

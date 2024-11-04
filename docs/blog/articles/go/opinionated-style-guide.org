@@ -1,0 +1,989 @@
+#+title: Opinionated Style Guide
+#+options: num:nil toc:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2021-01-26 Tue>
+
+This serves as a supplement to
+[[https://golang.org/doc/effective_go.html][Effective Go]], based on
+years of experience and inspiration/ideas from conference talks.
+
+** Add context to errors
+:PROPERTIES:
+:CUSTOM_ID: add-context-to-errors
+:END:
+*Don't:*
+
+#+begin_src go
+file, err := os.Open("foo.txt")
+if err != nil {
+    return err
+}
+#+end_src
+
+Using the approach above can lead to unclear error messages because of
+missing context.
+
+*Do:*
+
+#+begin_src go
+file, err := os.Open("foo.txt")
+if err != nil {
+    return fmt.Errorf("open foo.txt failed: %w", err)
+}
+#+end_src
+
+Wrapping errors with a custom message provides context as it gets
+propagated up the stack. This does not always make sense. If you're
+unsure if the context of a returned error is at all times sufficient,
+wrap it.
+
+** Dependency management
+:PROPERTIES:
+:CUSTOM_ID: dependency-management
+:END:
+*** Use modules
+:PROPERTIES:
+:CUSTOM_ID: use-modules
+:END:
+Use [[https://github.com/golang/go/wiki/Modules][modules]], since it is
+the built-in go dependency management tooling and will be widely
+supported (available with Go 1.11+).
+
+*** Use Semantic Versioning
+:PROPERTIES:
+:CUSTOM_ID: use-semantic-versioning
+:END:
+Tag your packages using [[http://semver.org][Semantic Versioning]],
+check the
+[[https://github.com/golang/go/wiki/Modules#how-to-prepare-for-a-release][modules
+wiki]] for more information about best practices regarding releases. The
+git tag for your go package should have the format
+=v<major>.<minor>.<patch>=, e.g., =v1.0.1=.
+
+** Structured logging
+:PROPERTIES:
+:CUSTOM_ID: structured-logging
+:END:
+*Don't:*
+
+#+begin_src go
+log.Printf("Listening on :%d", port)
+http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+// 2017/07/29 13:05:50 Listening on :80
+#+end_src
+
+*Do:*
+
+#+begin_src go
+import "github.com/sirupsen/logrus"
+// ...
+
+logger.WithField("port", port).Info("Server is listening")
+http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+// {"level":"info","msg":"Server is listening","port":"7000","time":"2017-12-24T13:25:31+01:00"}
+#+end_src
+
+This is a harmless example, but using structured logging makes debugging
+and log parsing easier.
+
+** Avoid global variables
+:PROPERTIES:
+:CUSTOM_ID: avoid-global-variables
+:END:
+*Don't:*
+
+#+begin_src go
+var db *sql.DB
+
+func main() {
+    db = // ...
+    http.HandleFunc("/drop", DropHandler)
+    // ...
+}
+
+func DropHandler(w http.ResponseWriter, r *http.Request) {
+    db.Exec("DROP DATABASE prod")
+}
+#+end_src
+
+Global variables make testing and readability hard and every method has
+access to them (even those, that don't need it).
+
+*Do:*
+
+#+begin_src go
+func main() {
+    db := // ...
+    handlers := Handlers{DB: db}
+    http.HandleFunc("/drop", handlers.DropHandler)
+    // ...
+}
+
+type Handlers struct {
+    DB *sql.DB
+}
+
+func (h *Handlers) DropHandler(w http.ResponseWriter, r *http.Request) {
+    h.DB.Exec("DROP DATABASE prod")
+}
+#+end_src
+
+Use structs to encapsulate the variables and make them available only to
+those functions that actually need them by making them methods
+implemented for that struct.
+
+Alternatively, higher-order functions can be used to inject dependencies
+via closures.
+
+#+begin_src go
+func main() {
+    db := // ...
+    http.HandleFunc("/drop", DropHandler(db))
+    // ...
+}
+
+func DropHandler(db *sql.DB) http.HandleFunc {
+    return func (w http.ResponseWriter, r *http.Request) {
+        db.Exec("DROP DATABASE prod")
+    }
+}
+#+end_src
+
+If you really need global variables or constants, e.g., for defining
+errors or string constants, put them at the top of your file.
+
+*Don't:*
+
+#+begin_src go
+import "xyz"
+
+func someFunc() {
+    //...
+}
+
+const route = "/some-route"
+
+func someOtherFunc() {
+    // usage of route
+}
+
+var NotFoundErr = errors.New("not found")
+
+func yetAnotherFunc() {
+    // usage of NotFoundErr
+}
+#+end_src
+
+*Do:*
+
+#+begin_src go
+import "xyz"
+
+const route = "/some-route"
+
+var NotFoundErr = errors.New("not found")
+
+func someFunc() {
+    //...
+}
+
+func someOtherFunc() {
+    // usage of route
+}
+
+func yetAnotherFunc() {
+    // usage of NotFoundErr
+}
+#+end_src
+
+** Keep the happy path left
+:PROPERTIES:
+:CUSTOM_ID: keep-the-happy-path-left
+:END:
+*Don't:*
+
+#+begin_src go
+if item, ok := someMap[someKey]; ok {
+    return item
+}
+return ErrKeyNotFound
+#+end_src
+
+*Do:*
+
+#+begin_src go
+item, ok := someMap[someKey]
+if !ok {
+    return ErrKeyNotFound
+}
+return item
+#+end_src
+
+This helps to keep your code clear and readable. Not doing it
+accumulates in larger functions and leads to the happy path being buried
+in a lot of if/for/... statements.
+
+** Testing
+:PROPERTIES:
+:CUSTOM_ID: testing
+:END:
+*** Use an assert libary
+:PROPERTIES:
+:CUSTOM_ID: use-an-assert-libary
+:END:
+*Don't:*
+
+#+begin_src go
+func TestAdd(t *testing.T) {
+    actual := 2 + 2
+    expected := 4
+    if (actual != expected) {
+        t.Errorf("Expected %d, but got %d", expected, actual)
+    }
+}
+#+end_src
+
+*Do:*
+
+#+begin_src go
+import "github.com/stretchr/testify/assert"
+
+func TestAdd(t *testing.T) {
+    actual := 2 + 2
+    expected := 4
+    assert.Equal(t, expected, actual)
+}
+#+end_src
+
+Using assert libraries makes your tests more readable, requires less
+code and provides consistent error output.
+
+*** Use sub-tests to structure functional tests
+:PROPERTIES:
+:CUSTOM_ID: use-sub-tests-to-structure-functional-tests
+:END:
+*Don't:*
+
+#+begin_src go
+func TestSomeFunctionSuccess(t *testing.T) {
+    // ...
+}
+
+func TestSomeFunctionWrongInput(t *testing.T) {
+    // ...
+}
+#+end_src
+
+*Do:*
+
+#+begin_src go
+func TestSomeFunction(t *testing.T) {
+    t.Run("success", func(t *testing.T){
+        //...
+    })
+
+    t.Run("wrong input", func(t *testing.T){
+        //...
+    })
+}
+#+end_src
+
+*** Use table driven tests
+:PROPERTIES:
+:CUSTOM_ID: use-table-driven-tests
+:END:
+*Don't:*
+
+#+begin_src go
+func TestAdd(t *testing.T) {
+    assert.Equal(t, 1+1, 2)
+    assert.Equal(t, 1+-1, 0)
+    assert.Equal(t, 1, 0, 1)
+    assert.Equal(t, 0, 0, 0)
+}
+#+end_src
+
+The above approach looks simpler, but it's much harder to find a failing
+case, especially when having hundreds of cases.
+
+*Do:*
+
+#+begin_src go
+func TestAdd(t *testing.T) {
+    cases := []struct {
+        A, B, Expected int
+    }{
+        {1, 1, 2},
+        {1, -1, 0},
+        {1, 0, 1},
+        {0, 0, 0},
+    }
+
+    for _, tc := range cases {
+        t.Run(fmt.Sprintf("%d + %d", tc.A, tc.B), func(t *testing.T) {
+            t.Parallel()
+            assert.Equal(t, t.Expected, tc.A+tc.B)
+        })
+    }
+}
+#+end_src
+
+Using table-driven tests in combination with subtests gives you direct
+insight about which case is failing and which cases are tested. --
+[[https://youtu.be/8hQG7QlcLBk?t=7m34s][Mitchell Hashimoto at GopherCon
+2017]]
+
+Running subtests in parallel allow you to have a lot more test cases and
+still get those awesomely fast go build times. --
+[[https://blog.golang.org/subtests][The Go Blog]]
+
+*** Avoid mocks
+:PROPERTIES:
+:CUSTOM_ID: avoid-mocks
+:END:
+*Don't:*
+
+#+begin_src go
+func TestRun(t *testing.T) {
+    mockConn := new(MockConn)
+    run(mockConn)
+}
+#+end_src
+
+*Do:*
+
+#+begin_src go
+func TestRun(t *testing.T) {
+    ln, err := net.Listen("tcp", "127.0.0.1:0")
+    t.AssertNil(t, err)
+
+    var server net.Conn
+    go func() {
+        defer ln.Close()
+        server, err := ln.Accept()
+        t.AssertNil(t, err)
+    }()
+
+    client, err := net.Dial("tcp", ln.Addr().String())
+    t.AssertNil(err)
+
+    run(client)
+}
+#+end_src
+
+Only use mocks if not otherwise possible, favor real implementations. --
+[[https://youtu.be/8hQG7QlcLBk?t=26m51s][Mitchell Hashimoto at GopherCon
+2017]]
+
+*** Avoid DeepEqual
+:PROPERTIES:
+:CUSTOM_ID: avoid-deepequal
+:END:
+*Don't:*
+
+#+begin_src go
+type myType struct {
+    id         int
+    name       string
+    irrelevant []byte
+}
+
+func TestSomething(t *testing.T) {
+    actual := &myType{/* ... */}
+    expected := &myType{/* ... */}
+    assert.True(t, reflect.DeepEqual(expected, actual))
+}
+#+end_src
+
+*Do:*
+
+#+begin_src go
+type myType struct {
+    id         int
+    name       string
+    irrelevant []byte
+}
+
+func (m *myType) testString() string {
+    return fmt.Sprintf("%d.%s", m.id, m.name)
+}
+
+func TestSomething(t *testing.T) {
+    actual := &myType{/* ... */}
+    expected := &myType{/* ... */}
+    if actual.testString() != expected.testString() {
+        t.Errorf("Expected '%s', got '%s'", expected.testString(), actual.testString())
+    }
+    // or assert.Equal(t, actual.testString(), expected.testString())
+}
+#+end_src
+
+Using =testString()= for comparing structs helps on complex structs with
+many fields that are not relevant for the equality check. This approach
+only makes sense for very big or tree-like structs. --
+[[https://youtu.be/8hQG7QlcLBk?t=30m45s][Mitchell Hashimoto at GopherCon
+2017]]
+
+Google open sourced their [[http://github.com/google/go-cmp][go-cmp]]
+package as a more powerful and safer alternative to =reflect.DeepEqual=.
+-- [[https://twitter.com/francesc/status/885630175668346880][Joe Tsai]].
+
+*** Add examples to your test files to demonstrate usage
+:PROPERTIES:
+:CUSTOM_ID: add-examples-to-your-test-files-to-demonstrate-usage
+:END:
+#+begin_src go
+func ExamleSomeInterface_SomeMethod(){
+    instance := New()
+    result, err := instance.SomeMethod()
+    fmt.Println(result, err)
+    // Output: someResult, <nil>
+}
+#+end_src
+
+** Use linters
+:PROPERTIES:
+:CUSTOM_ID: use-linters
+:END:
+Use all the linters included in
+[[https://github.com/golangci/golangci-lint][golangci-lint]] to lint
+your projects before committing.
+
+#+begin_src sh
+# Installation - replace vX.X.X with the version you want to use
+GO111MODULE=on go get github.com/golangci/golangci-lint/cmd/golangci-lint@vX.X.X
+# traditional way without go module
+go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+
+
+# Usage in the project workspace
+golangci-lint run
+#+end_src
+
+For detailed usage and the ci-pipeline installation guide visit
+[[https://github.com/golangci/golangci-lint][golangci-lint]].
+
+** Use goimports
+:PROPERTIES:
+:CUSTOM_ID: use-goimports
+:END:
+Only commit gofmt'd files. Use =goimports= for this to format/update the
+import statements as well.
+
+** Use meaningful variable names
+:PROPERTIES:
+:CUSTOM_ID: use-meaningful-variable-names
+:END:
+Avoid single-letter variable names. They may seem more readable to you
+at the moment of writing but they make the code hard to understand for
+your colleagues and your future self.
+
+*Don't:*
+
+#+begin_src go
+func findMax(l []int) int {
+    m := l[0]
+    for _, n := range l {
+        if n > m {
+            m = n
+        }
+    }
+    return m
+}
+#+end_src
+
+*Do:*
+
+#+begin_src go
+func findMax(inputs []int) int {
+    max := inputs[0]
+    for _, value := range inputs {
+        if value > max {
+            max = value
+        }
+    }
+    return max
+}
+#+end_src
+
+Single-letter variable names are fine in the following cases. * They are
+absolut standard like ... * =t= in tests * =r= and =w= in http request
+handlers * =i= for the index in a loop * They name the receiver of a
+method, e.g., =func (s *someStruct) myFunction(){}=
+
+Of course also too long variables names like
+=createInstanceOfMyStructFromString= should be avoided.
+
+** Avoid side-effects
+:PROPERTIES:
+:CUSTOM_ID: avoid-side-effects
+:END:
+*Don't:*
+
+#+begin_src go
+func init() {
+    someStruct.Load()
+}
+#+end_src
+
+Side effects are only okay in special cases (e.g. parsing flags in a
+cmd). If you find no other way, rethink and refactor.
+
+** Favour pure functions
+:PROPERTIES:
+:CUSTOM_ID: favour-pure-functions
+:END:
+
+#+begin_quote
+In computer programming, a function may be considered a pure function if
+both of the following statements about the function hold: 1. The
+function always evaluates the same result value given the same argument
+value(s). The function result value cannot depend on any hidden
+information or state that may change while program execution proceeds or
+between different executions of the program, nor can it depend on any
+external input from I/O devices. 2. Evaluation of the result does not
+cause any semantically observable side effect or output, such as
+mutation of mutable objects or output to I/O devices.
+
+#+end_quote
+
+-- [[https://en.wikipedia.org/wiki/Pure_function][Wikipedia]]
+
+*Don't:*
+
+#+begin_src go
+func MarshalAndWrite(some *Thing) error {
+    b, err := json.Marshal(some)
+    if err != nil {
+        return err
+    }
+
+    return ioutil.WriteFile("some.thing", b, 0644)
+}
+#+end_src
+
+*Do:*
+
+#+begin_src go
+// Marshal is a pure func (even though useless)
+func Marshal(some *Thing) ([]bytes, error) {
+    return json.Marshal(some)
+}
+
+// ...
+#+end_src
+
+This is obviously not possible at all times, but trying to make every
+possible func pure makes code more understandable and improves
+debugging.
+
+** Don't over-interface
+:PROPERTIES:
+:CUSTOM_ID: dont-over-interface
+:END:
+*Don't:*
+
+#+begin_src go
+type Server interface {
+    Serve() error
+    Some() int
+    Fields() float64
+    That() string
+    Are([]byte) error
+    Not() []string
+    Necessary() error
+}
+
+func debug(srv Server) {
+    fmt.Println(srv.String())
+}
+
+func run(srv Server) {
+    srv.Serve()
+}
+#+end_src
+
+*Do:*
+
+#+begin_src go
+type Server interface {
+    Serve() error
+}
+
+func debug(v fmt.Stringer) {
+    fmt.Println(v.String())
+}
+
+func run(srv Server) {
+    srv.Serve()
+}
+#+end_src
+
+Favour small interfaces and only expect the interfaces you need in your
+funcs.
+
+** Don't under-package
+:PROPERTIES:
+:CUSTOM_ID: dont-under-package
+:END:
+Deleting or merging packages is far easier than splitting big ones up.
+When unsure if a package can be split, do it.
+
+** Handle signals
+:PROPERTIES:
+:CUSTOM_ID: handle-signals
+:END:
+*Don't:*
+
+#+begin_src go
+func main() {
+    for {
+        time.Sleep(1 * time.Second)
+        ioutil.WriteFile("foo", []byte("bar"), 0644)
+    }
+}
+#+end_src
+
+*Do:*
+
+#+begin_src go
+func main() {
+    logger := // ...
+    sc := make(chan os.Signal, 1)
+    done := make(chan bool)
+
+    go func() {
+        for {
+            select {
+            case s := <-sc:
+                logger.Info("Received signal, stopping application",
+                    zap.String("signal", s.String()))
+                done <- true
+                return
+            default:
+                time.Sleep(1 * time.Second)
+                ioutil.WriteFile("foo", []byte("bar"), 0644)
+            }
+        }
+    }()
+
+    signal.Notify(sc, os.Interrupt, os.Kill)
+    <-done // Wait for go-routine
+}
+#+end_src
+
+Handling signals allows us to gracefully stop our server, close open
+files and connections and therefore prevent file corruption among other
+things.
+
+** Divide imports
+:PROPERTIES:
+:CUSTOM_ID: divide-imports
+:END:
+*Don't:*
+
+#+begin_src go
+import (
+    "encoding/json"
+    "github.com/some/external/pkg"
+    "fmt"
+    "github.com/this-project/pkg/some-lib"
+    "os"
+)
+#+end_src
+
+*Do:*
+
+#+begin_src go
+import (
+    "encoding/json"
+    "fmt"
+    "os"
+
+    "github.com/bahlo/this-project/pkg/some-lib"
+
+    "github.com/bahlo/another-project/pkg/some-lib"
+    "github.com/bahlo/yet-another-project/pkg/some-lib"
+
+    "github.com/some/external/pkg"
+    "github.com/some-other/external/pkg"
+)
+#+end_src
+
+Divide imports into four groups sorted from internal to external for
+readability: 1. Standard library 2. Project internal packages 3. Company
+internal packages 4. External packages
+
+** Avoid unadorned return
+:PROPERTIES:
+:CUSTOM_ID: avoid-unadorned-return
+:END:
+*Don't:*
+
+#+begin_src go
+func run() (n int, err error) {
+    // ...
+    return
+}
+#+end_src
+
+*Do:*
+
+#+begin_src go
+func run() (n int, err error) {
+    // ...
+    return n, err
+}
+#+end_src
+
+Named returns are good for documentation, unadorned returns are bad for
+readability and error-prone.
+
+** Use canonical import path
+:PROPERTIES:
+:CUSTOM_ID: use-canonical-import-path
+:END:
+*Don't:*
+
+#+begin_src go
+package sub
+#+end_src
+
+*Do:*
+
+#+begin_src go
+package sub // import "github.com/my-package/pkg/sth/else/sub"
+#+end_src
+
+Adding the canonical import path adds context to the package and makes
+importing easy.
+
+** Avoid empty interface
+:PROPERTIES:
+:CUSTOM_ID: avoid-empty-interface
+:END:
+*Don't:*
+
+#+begin_src go
+func run(foo interface{}) {
+    // ...
+}
+#+end_src
+
+Empty interfaces make code more complex and unclear, avoid them where
+you can.
+
+** Main first
+:PROPERTIES:
+:CUSTOM_ID: main-first
+:END:
+*Don't:*
+
+#+begin_src go
+package main // import "github.com/me/my-project"
+
+func someHelper() int {
+    // ...
+}
+
+func someOtherHelper() string {
+    // ...
+}
+
+func Handler(w http.ResponseWriter, r *http.Reqeust) {
+    // ...
+}
+
+func main() {
+    // ...
+}
+#+end_src
+
+*Do:*
+
+#+begin_src go
+package main // import "github.com/me/my-project"
+
+func main() {
+    // ...
+}
+
+func Handler(w http.ResponseWriter, r *http.Reqeust) {
+    // ...
+}
+
+func someHelper() int {
+    // ...
+}
+
+func someOtherHelper() string {
+    // ...
+}
+#+end_src
+
+Putting =main()= first makes reading the file a lot easier. Only the
+=init()= function should be above it.
+
+** Use internal packages
+:PROPERTIES:
+:CUSTOM_ID: use-internal-packages
+:END:
+If you're creating a cmd, consider moving libraries to =internal/= to
+prevent import of unstable, changing packages.
+
+** Avoid helper/util
+:PROPERTIES:
+:CUSTOM_ID: avoid-helperutil
+:END:
+Use clear names and try to avoid creating a =helper.go=, =utils.go= or
+even package.
+
+** Embed binary data
+:PROPERTIES:
+:CUSTOM_ID: embed-binary-data
+:END:
+To enable single-binary deployments, use tools to add templates and
+other static assets to your binary
+(e.g. [[https://github.com/gobuffalo/packr][github.com/gobuffalo/packr]]).
+
+** Use =io.WriteString=
+:PROPERTIES:
+:CUSTOM_ID: use-io.writestring
+:END:
+A number of important types that satisfy =io.Writer= also have a
+=WriteString= method, including =*bytes.Buffer=, =*os.File= and
+=*bufio.Writer=. =WriteString= is behavioral contract with implicit
+assent that passed string will be written in efficient way, without a
+temporary allocation. Therefore using =io.WriteString= may improve
+performance at most, and at least string will be written in any way.
+
+*Don't:*
+
+#+begin_src go
+var w io.Writer = new(bytes.Buffer)
+str := "some string"
+w.Write([]byte(str))
+#+end_src
+
+*Do:*
+
+#+begin_src go
+var w io.Writer = new(bytes.Buffer)
+str := "some string"
+io.WriteString(w, str)
+#+end_src
+
+** Use functional options
+:PROPERTIES:
+:CUSTOM_ID: use-functional-options
+:END:
+#+begin_src go
+
+func main() {
+    // ...
+    startServer(
+        WithPort(8080),
+        WithTimeout(1 * time.Second),
+    )
+}
+
+type Config struct {
+    port    int
+    timeout time.Duration
+}
+
+type ServerOpt func(*Config)
+
+func WithPort(port int) ServerOpt {
+    return func(cfg *Config) {
+        cfg.port = port
+    }
+}
+
+func WithTimeout(timeout time.Duration) ServerOpt {
+    return func(cfg *Config) {
+        cfg.timeout = timeout
+    }
+}
+
+func startServer(opts ...ServerOpt) {
+    cfg := new(Config)
+    for _, fn := range opts {
+        fn(cfg)
+    }
+
+    // ...
+}
+
+#+end_src
+
+** Structs
+:PROPERTIES:
+:CUSTOM_ID: structs
+:END:
+*** Use named structs
+:PROPERTIES:
+:CUSTOM_ID: use-named-structs
+:END:
+If a struct has more than one field, include field names when
+instantiating it.
+
+*Don't:*
+
+#+begin_src go
+params := myStruct{
+    1,
+    true,
+}
+#+end_src
+
+*Do:*
+
+#+begin_src go
+params := myStruct{
+    Foo: 1,
+    Bar: true,
+}
+#+end_src
+
+*** Avoid new keyword
+:PROPERTIES:
+:CUSTOM_ID: avoid-new-keyword
+:END:
+Using the normal syntax instead of the =new= keyword makes it more clear
+what is happening: a new instance of the struct is created =MyStruct{}=
+and we get the pointer for it with =&=.
+
+*Don't:*
+
+#+begin_src go
+s := new(MyStruct)
+#+end_src
+
+*Do:*
+
+#+begin_src go
+s := &MyStruct{}
+#+end_src
+
+** Consistent header naming
+:PROPERTIES:
+:CUSTOM_ID: consistent-header-naming
+:END:
+*Don't:*
+
+#+begin_src go
+r.Header.Get("authorization")
+w.Header.Set("Content-type")
+w.Header.Set("content-type")
+w.Header.Set("content-Type")
+#+end_src
+
+*Do:*
+
+#+begin_src go
+r.Header.Get("Authorization")
+w.Header.Set("Content-Type")
+#+end_src

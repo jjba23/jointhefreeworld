@@ -1,0 +1,47 @@
+#+title: Join the Free World - Joe's Blog
+#+options: num:nil toc:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2023-04-21 Fri> 
+
+#+begin_aside
+- [[file:articles/haskell/index.html][Haskell ]]
+- [[file:articles/emacs/index.html][Emacs]]
+- [[file:articles/gnu-linux/index.html][GNU/Linux]]
+- [[file:articles/ci/index.html][CI - Continuous Integration]]
+- [[file:articles/go/index.html][Go]]
+- [[file:articles/freebsd/index.html][FreeBSD]]
+- [[file:articles/development/index.html][Development]]
+- [[file:articles/personal/index.html][Personal]]  
+#+end_aside
+
+* Highlighted articles
+
+<2024-08-13 Tue> - [[file:articles/emacs/emacs-registers.html][Emacs registers - a god-send for your day job]] - Ever had to work very long files, in projects that you are not familiar with, and felt very lost, without an anchor point? Enter Emacs and its registry system, which allows you to "bookmark" locations of a file (buffer) and return to them, and much much more!
+
+<2024-06-18 di> - [[file:articles/development/tech-radar.html][My Tech Radar]] - Tech changes fast. But it’s becoming an ever-more critical component of success.
+
+<2024-06-17 Mon> - [[file:articles/personal/brief-aan-mijzelf.html][Brief aan Mijzelf - Letter to myself]] - Jij en ik weten dat levend zijn pieken en dalen betekent.
+
+<2024-04-20 za> - [[file:articles/haskell/free-alacarte.html][Free à la Carte]] - Modelling effects with free monads in a simple and composable way with Haskell. Checkout my custom library and how to use it.
+
+<2024-02-27 di> - [[file:articles/development/sql-select-all.html][Why SQL SELECT * is a bad idea]] - Doing a ~SELECT *~ may seem like a time-saver, but it's actually setting you up for problems in the long run, specially when database schema changes.
+
+<2024-02-26 ma> - [[file:articles/development/black-box-testing.html][Black Box Testing in modern Software]] - Testing software at a high level means freedom of implementation and refactoring, while maintaining guarantees of correctness.
+
+<2024-02-01 do> - [[file:articles/development/system-interaction-model.html][System Interaction Model - Software Design]] - My hot take on software desing using the years of experience on ever-changing business requirements, and wish for expressive, functional programming loving code.
+
+<2023-11-02 do> - [[file:articles/gnu-linux/openvpn3-on-nixos-with-web-based-saml.html][Open VPN 3 on NixOS with Web-based SAML]] - Learn how to install and configure OpenVPN 3 client on NixOS, in a reproducible way.
+
+<2023-08-25 Fri> - [[file:articles/gnu-linux/windows-11-bootable-usb-from-gnu-linux.html][Bootable Windows 11 USB from GNU Linux]] - procedure for creating a bootable USB flash drive with Windows 11. The same process should also work with any HDD/SSD connected to your system.
+
+<2023-08-18 Fri> - [[file:articles/gnu-linux/openvpn3-on-voidlinux.html][OpenVPN3 on Void Linux]] - Learn how to build OpenVPN 3 from source code and install it on Void Linux, for SAML VPN auth.
+
+<2023-04-28 Fri> - [[file:articles/emacs/emacs-for-absolute-begginners.html][Emacs for absolute beginners]] - In this article, I'm going to give you exactly what you need to get started using Emacs and understand the basic concepts and key bindings of the editor.
+
+<2023-04-26 Wed> -  [[file:articles/emacs/emacs-and-scala-setup-with-eglot.html][Emacs and Scala setup with Eglot]] - Learn how to setup your favourite text editor, Emacs, as a super powerful and capable Scala IDE (integrated development environment) with the latest and most performant approach.
+
+<2022-09-12 Mon> - [[file:articles/haskell/type-safety-back-and-forth.html][Type safety back and forth]] - Types are a powerful construct for improving program safety. Haskell has a few notable ways of handling potential failure, the most famous being the venerable Maybe type.
+
+<2021-09-21 Tue> - [[file:articles/development/german-naming-convention.html][German / Dutch naming convention]] - There's one thing that could make our life as software engineers much easier: better naming convention.

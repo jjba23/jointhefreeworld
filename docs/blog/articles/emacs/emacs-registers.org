@@ -1,0 +1,73 @@
+#+title: Emacs registers - a god-send for your day job
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2024-08-13 Tue>
+
+Ever had to work very long files, in projects that you are not familiar with, and felt very lost, without an anchor point?
+
+Enter Emacs and its registry system, which allows you to "bookmark" locations of a file (buffer) and return to them, and much much more!
+
+
+* Registers
+Emacs registers are places you can save text or positions for later use. Text and rectangles saved in registers can be copied into the buffer once or many times; you can move point to a position saved in a register.
+
+Each register has a name which is a single character. A register can store a piece of text, a rectangle, a position, a window configuration or a file name, but only one thing at any given time. Whatever you store in a register remains there until you store something else in that register. To see what a register r contains, use ~M-x view-register~.
+
+~M-x view-register RET r~
+Display a description of what register r contains.
+
+* Saving Positions in Registers
+Saving a position records a spot in a buffer so that you can move back there later. Moving to a saved position reselects that buffer and moves point to that spot.
+
+~C-x r SPC r~
+Save position of point in register r (point-to-register).
+~C-x r j r~
+Jump to the position saved in register r (jump-to-register).
+To save the current position of point in a register, choose a name r and type ~C-x r SPC r~. The register r retains the position thus saved until you store something else in that register.
+
+The command ~C-x r j r~ moves point to the position recorded in register r. The register is not affected; it continues to record the same position. You can jump to the same position using the same register any number of times.
+
+* Saving Text in Registers
+When you want to insert a copy of the same piece of text several times, it may be inconvenient to yank it from the kill ring, since each subsequent kill moves that entry further down the ring. An alternative is to store the text in a register with ~C-x r s (copy-to-register)~ and then retrieve it with ~C-x r i (insert-register)~.
+
+~C-x r s r~
+Copy region into register r ~(copy-to-register)~.
+~C-x r i r~
+Insert text from register r ~(insert-register)~.
+~C-x r s r~ stores a copy of the text of the region into the register named r. Given a numeric argument, ~C-x r s r~ deletes the text from the buffer as well.
+
+~C-x r i r~ inserts in the buffer the text from register r. Normally it leaves point before the text and places the mark after, but with a numeric argument ~C-u~ it puts point after the text and the mark before.
+
+* Saving Rectangles in Registers
+A register can contain a rectangle instead of linear text. The rectangle is represented as a list of strings. See section Rectangles, for basic information on how to specify a rectangle in the buffer.
+
+~C-x r r r~
+Copy the region-rectangle into register r (copy-region-to-rectangle). With numeric argument, delete it as well.
+~C-x r i r~
+Insert the rectangle stored in register r (if it contains a rectangle) (insert-register).
+
+The ~C-x r i r~ command inserts a text string if the register contains one, and inserts a rectangle if the register contains one.
+
+* Saving Window Configurations in Registers
+You can save the window configuration of the selected frame in a register, or even the configuration of all frames, and restore the configuration later.
+
+~C-x r w r~
+Save the state of the selected frame's windows in register r (window-configuration-to-register).
+~C-x r f r~
+Save the state of all windows in all frames in register r (frame-configuration-to-register).
+
+Use ~C-x r j r~ to restore a window or frame configuration. This is the same command used to restore a cursor position. When you restore a frame configuration, any existing frames not included in the configuration become invisible. If you wish to delete these frames instead, use C-u C-x r j r.
+
+* Keeping File Names in Registers
+If you visit certain file names frequently, you can visit them more conveniently if you put their names in registers. Here's the Lisp code used to put a file name in a register:
+
+~(set-register ?r '(file . name))~
+For example,
+
+~(set-register ?z '(file . "/gd/gnu/emacs/19.0/src/ChangeLog"))~
+puts the file name shown in register `z'.
+
+To visit the file whose name is in register r, type ~C-x r j r~. (This is the same command used to jump to a position or restore a frame configuration.)
+
+Go to the previous, next section.

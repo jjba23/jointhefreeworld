@@ -1,0 +1,20 @@
+#+title: Development
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+
+<2024-06-18 di> - [[file:tech-radar.html][My Tech Radar]]
+
+<2024-02-27 di> - [[file:sql-select-all.html][Why SQL SELECT * is a bad idea]]
+
+<2024-02-26 ma> - [[file:black-box-testing.html][Black Box Testing in modern Software]]
+
+<2024-02-01 do> - [[file:system-interaction-model.html][System Interaction Model - Software Design]]
+
+<2021-01-31 Sun> - [[file:ssr-wins-over-javascript.html][SSR wins over Javascript]]
+
+<2021-09-21 Tue> - [[file:german-naming-convention.html][German / Dutch naming convention]]
+
+<2021-08-29 Sun> - [[file:breaking-free-of-javascript.html][Breaking free of Javascript]]
+
+<2020-09-18 Fri> - [[file:a-great-programmer.html][What makes a great programmer ?]]

@@ -1,0 +1,79 @@
+#+title: Running Hoogle locally
+#+options: num:nil toc:ni
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2022-10-10 Mon>
+
+Stackage is a neat tool to use when developing Software in Haskell. It's
+integrated with the Hoogle search engine that can search on type
+signatures (and function names) which lets you find almost any function
+easily.
+
+One of the downsides of Hoogle is that it can be slow for people with
+some slower connections and so looking up any kind of documentation
+becomes a really frustrating experience.
+
+The other issue with using Hoogle is that when you look up documentation
+for a function of a library that you use in a project, you need to make
+sure you are looking at the documentation for the exact version of that
+library that you are using in your package.yml or .cabal file; otherwise
+you maybe looking at an entirely different api and end up wasting a lot
+of time.
+
+Stackage solves this by letting you search against a particular snapshot
+where all the versions of your libraries will be pinned against that
+snapshot (see the resolver field in stackage.yaml).
+
+Wouldn't it be nice if we could run Hoogle locally for our project with
+all the documentation we need available at our fingertips? What would be
+even better is that Hoogle was seeded with only the versions of
+dependencies in our project that we care about.
+
+Well thanks to the fantastic "An opinionated guide to Haskell in 2018"
+by Alexis King we now know how!
+
+The basic steps are:
+
+*Generate Haddock documentation when you compile your project*
+
+#+begin_src shell
+stack test --fast --haddock-deps
+#+end_src
+
+The first time you run this it can take a while.
+
+*Generate a local Hoogle database*
+
+#+begin_src shell
+stack hoogle -- generate --local
+#+end_src
+
+*Run your local Hoogle server*
+
+#+begin_src shell
+stack hoogle -- server --local --port=8080
+#+end_src
+
+*Profit*
+
+You can get full access to your local Hoogle by opening =localhost:8080=
+in your browser.
+
+Something to be aware of is that when you add new dependencies or change
+existing ones in your project you need to generate your local Hoogle
+database again:
+
+Unfortunately, you will have to manually regenerate the Hoogle database
+when you install new packages and their documentation, which you can do
+by re-running =stack hoogle -- generate --local=.
+
+Fortunately, regenerating the database doesn't take very long, as long
+as you've been properly rebuilding the documentation with
+=--haddock-deps=.
+
+This shouldn't take too long though if you've been generating your
+Haddock as per step 1.
+
+Original post can be found
+[[https://blog.ssanj.net/posts/2019-10-19-running-hoogle-locally-for-haskell-dev.html][here]].

@@ -1,0 +1,49 @@
+#+title: Open VPN 3 on NixOS with Web-based SAML
+#+options: num:nil toc:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2023-11-02 Thu>
+
+
+* OpenVPN 3 on NixOS with Web-based SAML
+
+Recently at work we migrated from a simple OpenVPN profile with AWS credentials to a profile that authenticates based on SAML via your browser.
+
+Worth noting, SAML web-based authentication for OpenVPN only works with OpenVPN 3. This means that we need OpenVPN 3 now running, and also that you can't run the VPN as a systemd service unfortunately.
+
+I got it working previously with Void Linux, but I have since moved to NixOS, my love 💘.
+
+I was struggling for a while in finding the best way to run the VPN with NixOS in the nicest way possible. This solution likely also applies to people running the Nix package manager in other distros, though I have not tested that.
+
+The solution is quite simple and reliable thanks to Nix, and way simpler than my other attempts in other distros, having to even build OpenVPN from source.
+
+All you need to do, is in your ~/etc/nixos/configuration.nix~ to add the ~openvpn3~ package to the list of system programs to install.
+
+#+begin_src nix
+  environment.systemPackages = with pkgs; [
+    # ........ 
+    openvpn3
+  ];
+#+end_src
+
+Then, and very importantly, you need to add a line that enables the OpenVPN3 client.
+
+#+begin_src nix
+  programs.openvpn3.enable = true;
+#+end_src
+
+I highly recommend using the NixOS package and option search website, e.g. https://search.nixos.org . This is also extremely useful when searching on how to best configure your Nix systems.
+
+I then usually create a shell alias to start the VPN I want and auto auth with the browser. For me, using Fish shell and configuring it via Nix, this looks something like the following:
+
+#+begin_src nix
+  programs.fish.shellAliases = {
+    zd-vpn = "openvpn3 session-start --config ~/Documenten/my-vpn-file.ovpn && openvpn3 session-auth";
+  };
+#+end_src
+
+Then just run your command, and your browser should open automatically and authenticate.
+
+Send me a mail if you have any questions or comments.
+Stay positive, sharp, critical, caring for one another, and loving Nix & reproducible systems.

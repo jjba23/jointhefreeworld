@@ -1,0 +1,40 @@
+#+title: Why SQL SELECT * is a bad idea
+#+options: num:nil toc:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2021-02-27 Tue>
+
+There are some anti-patterns one should avoid when writing SQL queries. Sometimes these may seem like a shortcut, but in reality this can lead to bugs, problems, and brittle applications.
+
+It's always better to use the explicit column list in the SELECT query than a * (star) wildcard. It not only improves the performance but also makes your code more explicit. It also helps you create maintainable code, which will not break when you add/remove columns from your table, especially if you have views that refer to the original table.
+
+* SELECT *
+Doing a ~SELECT *~ may seem like a time-saver, but it's actually setting you up for problems in the long run, specially when database schema changes.
+
+** Breaks Views While Adding New Columns to a Table
+When you use SELECT * in views, then you create subtle bugs if a new column has been added ro an old one is removed from the table. Why? Because your view might break, or start returning an incorrect result.
+
+** Dependency on Order of Columns on ResultSet
+When you use the SELECT * query in your application and have any dependency on order of column, which you should not, the ordering of the result set will change if you add a new column or change the order of columns.
+
+** Conflicts in a JOIN Query 
+When you use SELECT * in JOIN query, you can introduce complications when multiple tables have columns with the same name e.g. status, active, name, etc.
+
+** More Application Memory
+Due to this increase in data, your application may require more memory just to hold unnecessary data that it will not be using
+
+** Increased Network Traffic
+SELECT * obviously returns more data than required to the client, which, in turn, will use more network bandwidth.
+
+** Unnecessary I/O (Input Output)
+By using SELECT *, you can be returning unnecessary data that will just be ignored, but fetching that data is not free of cost.
+
+* COUNT(*)
+One should default to using ~COUNT~ clauses with column names, such as ~COUNT(id)~, since this will count values which are non-NULL.
+
+If NULL is explicitly wanted then one can choose for ~COUNT(1)~ or ~COUNT(*)~.
+There is a negligible performance difference, at least in PostgreSQL between 1 and * , so use at your discretion.
+
+
+

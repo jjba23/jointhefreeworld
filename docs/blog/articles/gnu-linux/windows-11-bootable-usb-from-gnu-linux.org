@@ -1,0 +1,112 @@
+#+title: Create a Windows 11 bootable USB from GNU Linux
+#+options: num:nil toc:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2023-08-25 Fri>
+
+Below is the procedure for creating a bootable USB flash drive with Windows 11. The same process should also work with any HDD/SSD connected to your system.
+
+** Download Windows 11 image
+
+https://www.microsoft.com/software-download/windows11
+
+#+begin_src bash
+  sha256sum Win11_English_x64v1.iso
+  4bc6c7e7c61af4b5d1b086c5d279947357cff45c2f82021bb58628c2503eb64e  Win11_English_x64v1.iso
+#+end_src
+
+** Plug your USB flash drive
+
+Linux detected ~/dev/sda~ as the USB stick, in your case it will most likely take a different name.
+
+** Format your USB flash drive
+
+Work as root account and make sure to replace /dev/sda with your USB flash drive!
+Use lsblk and dmesg | tail -50 commands to locate your USB flash drive.
+
+#+begin_src bash
+  sudo wipefs -a /dev/sda
+  sudo parted /dev/sda
+  (parted) mklabel gpt                                                      
+  (parted) mkpart BOOT fat32 0% 1GiB
+  (parted) mkpart INSTALL ntfs 1GiB 10GiB
+  (parted) quit
+#+end_src
+
+Check the drive layout now:
+
+In my case I've used 100% instead of 10GiB when created the "INSTALL" ntfs partition - mkpart INSTALL ntfs 1GiB 100%. But you can use anything that should be larger than 6 GiB to fit the data from Windows ISO image.
+
+#+begin_src bash
+  sudo parted /dev/sda unit B print
+  Model: SanDisk Extreme (scsi)
+  Disk /dev/sda: 62742792192B
+  Sector size (logical/physical): 512B/512B
+  Partition Table: gpt
+  Disk Flags: 
+
+  Number  Start        End           Size          File system  Name     Flags
+  1      1048576B     1073741823B   1072693248B                BOOT     msftdata
+  2      1073741824B  62742593535B  61668851712B               INSTALL  msftdata
+#+end_src
+
+
+** Mount Windows ISO somewhere
+
+I mounted it to /mnt/iso directory:
+
+#+begin_src bash
+  sudo mkdir /mnt/iso
+  sudo mount /home/<your user>/Downloads/Win11_English_x64v1.iso /mnt/iso/
+#+end_src
+
+** Format 1st partition of your USB flash drive as FAT32
+
+#+begin_src bash
+  sudo mkfs.vfat -n BOOT /dev/sda1
+  sudo mkdir /mnt/vfat
+  sudo mount /dev/sda1 /mnt/vfat/
+#+end_src
+
+** Copy everything from Windows ISO image except for the sources directory there
+
+#+begin_src bash
+  sudo rsync -r --progress --exclude sources --delete-before /mnt/iso/ /mnt/vfat/
+#+end_src
+
+** Copy only boot.wim file from the sources directory, while keeping the same path layout
+
+#+begin_src bash
+  sudo mkdir /mnt/vfat/sources
+  sudo cp /mnt/iso/sources/boot.wim /mnt/vfat/sources/
+#+end_src
+
+** Format 2nd partition of your USB flash drive as NTFS
+
+#+begin_src bash
+  sudo mkfs.ntfs --quick -L INSTALL /dev/sda2 
+  sudo mkdir /mnt/ntfs
+  sudo mount /dev/sda2 /mnt/ntfs
+#+end_src
+
+** Copy everything from Windows ISO image there
+
+#+begin_src bash
+  sudo rsync -r --progress --delete-before /mnt/iso/ /mnt/ntfs/
+#+end_src
+
+** Unmount the USB flash drive and Windows ISO image
+
+#+begin_src bash
+  sudo umount /mnt/ntfs
+  sudo umount /mnt/vfat
+  sudo umount /mnt/iso
+  sudo sync
+#+end_src
+
+** Power off your USB flash drive
+
+#+begin_src bash
+  sudo udisksctl power-off -b /dev/sda
+#+end_src

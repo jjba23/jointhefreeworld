@@ -1,0 +1,96 @@
+#+title: GNU Guix VM aarch64
+#+options: num:nil toc:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2021-12-21 Tue>
+
+
+One day, I decided on a whim to try Guix in a VM on a M3 Mac.
+
+It seemed like a good idea at the time, but I'd never used Guix before and it ended up being quite a grind to figure out how to get it running.
+
+The initial issue for me was that Guix doesn't provide iso installer images for aarch64.
+
+Yes, you can build one yourself, but after I'd put in the time to figure out how to do that, though, the iso installer would just hang. The serial console would say
+
+
+#+begin_example
+waiting for partition '31393730-3031-3031-3139-333333313833' to appear...
+#+end_example
+
+The Guix ISO installer didn't work for me on aarch64. Making a VM image or doing a manual install did work.
+
+I show a list of steps for getting Guix installed on an aarch64 VM on macOS, and include a small starter confguration file.
+
+It can be helpful to pull a specific commit of the distro that includes a working, precompiled kernel.
+
+7. Update the Guix package descriptions and basic packages:
+
+   #+begin_example
+    user@debian:~$ guix pull
+   #+end_example
+
+   This will take a while.
+
+Create a Guix configuration file on the Debian system. It defines how
+   your Guix install is set up and what it will initially contain.
+
+   Put the following into a file called =config.scm= on Debian:
+
+   #+begin_example
+    (use-modules (gnu))
+    (use-service-modules networking)
+    (use-package-modules certs)
+
+    (operating-system
+      (host-name "guix")
+      (timezone "Europe/Berlin")
+      (locale "en_US.utf8")
+
+      (bootloader (bootloader-configuration
+                    (bootloader grub-efi-bootloader)
+                    (targets '("/boot/efi"))))
+      (kernel-arguments (list "console=ttyS0,115200"))
+      (file-systems (append
+              (list (file-system
+                              (device "/dev/vda2")
+                              (mount-point "/")
+                              (type "ext4"))
+                            (file-system
+                              (device "/dev/vda1")
+                              (mount-point "/boot/efi")
+                              (type "vfat")))
+                          %base-file-systems))
+
+      (users (cons (user-account
+                    (name "yourname")
+                    (group "users")
+
+                    (supplementary-groups '("wheel"
+                                            "audio" "video")))
+                   %base-user-accounts))
+
+      (packages (append (list nss-certs) %base-packages))
+
+      (services (append (list (service dhcp-client-service-type))
+                        %base-services)))
+   #+end_example
+
+   This was adapted from the Guix =bare-bones.tmpl= and =lightweight-desktop.tmpl= files.
+
+Build a Guix VM image. This will be the qemu hard drive for your Guix VM.
+
+   #+begin_example
+guix system image --image-type=qcow2 --image-size=140G config.scm
+   #+end_example
+
+   This will take a while.
+
+   At the end of the process, it will leave you with the name of a qcow2 image file:
+
+   #+begin_example
+    /gnu/store/z08hk66ig6dn32ivvysphr0d2b0alym0-image.qcow2
+   #+end_example
+
+   Mine was 422Mb in size.
