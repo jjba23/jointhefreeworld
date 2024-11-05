@@ -1,4 +1,4 @@
-#+title: Join the Free World - Joe's Blog
+#+title: Joe's Blog - Join the Free World
 #+options: num:nil toc:nil
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com

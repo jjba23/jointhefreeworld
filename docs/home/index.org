@@ -1,10 +1,10 @@
-#+title: Join the Free World - Joe's Website
+#+title: Joe's web-site - Join the Free World
 #+options: num:nil toc:nil
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
 I am /Josep Bigorra/, call me /Joe/. 
-Welcome to my few squre meters of internet 🤟🏼 !
+Welcome to my few square meters of Internet 🤟🏼 !
 
 I am a /Software Engineer/ ⚙️, member of /the church of Emacs/, /GNU/Linux, Nix and Haskell fanatic/, living in the Netherlands 🇳🇱.
 You could also describe me as Functional Programming/ Enthusiast, /Free Software/ Advocate and perfectionist.
@@ -19,32 +19,18 @@ I strive for a free world and I'm a supporter of the Free Software Foundation.
 
 I want you to feel at home here in this corner of the web, and that you join me in my adventure for more freedom in our day-to-day computing. Join the free world we've built, thanks to GNU, Linux and thousands of other wonderful projects.
 
-I'm always working on computer systems, improving my Emacs workflow and config file, working with functional programming, engineering reliable systems and databases.
+I'm always working on computer systems, improving my Emacs workflow and configuration files, working with functional programming, engineering reliable systems and databases.
 
-You can also find me playing some guitar 🎸, or doing some CrossFit.
-
-#+begin_html
-<div class="mt-4 flex flex-row flex-wrap align-center justify-center">
-
-<div class="p-4 w-full md:w-1/2 flex justify-center">
-<iframe height="auto" class="rounded-xl" src="https://www.youtube.com/embed/aayuccvU-Tw?si=DC52k4OZgNLHB7K2"
-    title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen autoplay=1></iframe>
-</div>
-
-<div class="p-4 w-full md:w-1/2 flex justify-center">
-<iframe height="auto" class="rounded-xl" src="https://www.youtube.com/embed/5CAl7VJAEyU?si=U0TGHV60QyYzLn8Y"
-    title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-</div>
-
-</div>
-#+end_html
+[[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][see my videos here]], about music, guitar 🎸, GNU Guix, Nix, Haskell, or meet me at the gym and let's do some CrossFit.
 
 
 * My code
 
-See all the source code for my projects at GitHub: https://github.com/jjba23. I try to release all my personal projects in a way that is free as in freedom and released under the GNU General Public License (GPL) v3.0 or later.
+See all the source code for my projects at GitHub: https://github.com/jjba23.
 
-Find the source code for this very website https://github.com/jjba23/jjba , also released under the GNU GPL.
+I try to release all my personal projects in a way that is free as in freedom and released under the GNU General Public License (GPL) v3.0 or later, and some libraries with the Lesser GPL.
+
+Find the source code for this very web-site https://github.com/jjba23/jointhefreeworld , also released under the GNU GPL.
 
 🐧
 
