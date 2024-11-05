@@ -3,7 +3,7 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 #+language: en
-#+date: <2023-04-21 Fri> 
+
 
 ** Categories
 - [[file:articles/haskell/][Haskell ]]
