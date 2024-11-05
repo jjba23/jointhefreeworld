@@ -6,22 +6,22 @@
 ;; Version: 0.1.0
 ;; Author: Josep Bigorra <jjbigorra@gmail.com>
 ;; Maintainer: Josep Bigorra <jjbigorra@gmail.com>
-;; URL: https://github.com/jjba23/sss
+;; URL: https://github.com/jjba23/jointhefreeworld
 ;; Package: emacs
 ;; Package-Requires: ((emacs "29.1"))
 
-;; sss is free software: you can redistribute it and/or modify
+;; jointhefreeworld is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
 
-;; sss is distributed in the hope that it will be useful,
+;; jointhefreeworld is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with sss.  If not, see <https://www.gnu.org/licenses/>.
+;; along with jointhefreeworld.  If not, see <https://www.gnu.org/licenses/>.
 
 ;;; Commentary:
 
@@ -82,35 +82,13 @@
 (defun jfw/embed-video (video-id)
   (format yt-iframe-format video-id))
 
-(setq user-full-name "David Wilson")
-(setq user-mail-address "david@systemcrafters.net")
+(setq user-full-name "Josep Bigorra")
+(setq user-mail-address "jjbigorra@gmail.com")
 
 (defvar jfw/site-url (if (string-equal (getenv "CI") "true")
                          "https://jointhefreeworld.org"
                        "http://localhost:50011")
   "The URL for the site being generated.")
-
-;; (defun jfw/embed-list-form ()
-;;   `(div (@ (class "list-form center"))
-;;         (div (@ (class "list-form-title")) "Subscribe to the jointhefreeworld.org newsletter!")
-;;         (form (@ (method "POST")
-;;                  (action "https://www.simplelists.com/subscribe.php"))
-;;               (input (@ (type "hidden") (name "format") (value "text")))
-;;               (input (@ (type "hidden") (name "action") (value "subscribe")))
-;;               (input (@ (type "hidden") (name "list") (value "news@lists.systemcrafters.net")))
-;;               (div (@ (class "list-form-message"))
-;;                    "Stay up to date with the latest System Crafters news and updates!  Read the "
-;;                    (a (@ (href "/newsletter/")) "Newsletter")
-;;                    " page for more information.")
-;;               (div (@ (class "row"))
-;;                    (div (@ (class "column"))
-;;                         (div (@ (class "row center list-form-label")) "Name (optional)")
-;;                         (div (@ (class "row")) (input (@ (type "text") (name "name")))))
-;;                    (div (@ (class "column"))
-;;                         (div (@ (class "row center list-form-label")) "Email Address")
-;;                         (div (@ (class "row")) (input (@ (type "text") (name "email"))))))
-;;               (div nil
-;;                    (input (@ (type "submit") (value "Subscribe!")))))))
 
 (org-link-set-parameters
  "yt"
@@ -143,26 +121,13 @@
                                 (a (@ (class "nav-link") (href "https://casadelcata.es")) "Casa del Cata") " "
                                 ))))))
 
-;; Home
-;; Blog
-;; CV/Resume
-;; GitHub
-;; LinkedIn
-;; WikiMusic
-;; Holiday in the Canary Islands ?
+
 
 (defun jfw/site-footer ()
   (list `(footer (@ (class "site-footer"))
                  (div (@ (class "container"))
                       (div (@ (class "row"))
                            (div (@ (class "column"))
-                                ;; (p (a (@ (href ,(concat jfw/site-url "/privacy-policy/"))) "Privacy Policy")
-                                ;;    " · "
-                                ;;    (a (@ (href ,(concat jfw/site-url "/credits/"))) "Credits")
-                                ;;    " · "
-                                ;;    (a (@ (href ,(concat jfw/site-url "/rss/"))) "RSS Feeds")
-                                ;;    " · "
-                                ;;    )
                                 (p "© 2024 jointhefreeworld"))
                            (div (@ (class "column align-right"))
                                 (p (a (@ (href "https://github.com/jjba23/jointhefreeworld"))
@@ -210,22 +175,16 @@
             (meta (@ (author "Josep Bigorra - jointhefreeworld")))
             (meta (@ (name "viewport")
                      (content "width=device-width, initial-scale=1, shrink-to-fit=no")))
-            (link (@ (rel "icon") (type "image/png") (href "/img/favicon.png")))
-            (link (@ (rel "alternative")
-                     (type "application/rss+xml")
-                     (title "System Crafters News")
-                     (href ,(concat jfw/site-url "/rss/news.xml"))))
-            (link (@ (rel "stylesheet") (href ,(concat jfw/site-url "/fonts/iosevka-aile/iosevka-aile.css"))))
-            (link (@ (rel "stylesheet") (href ,(concat jfw/site-url "/fonts/jetbrains-mono/jetbrains-mono.css"))))
-            (link (@ (rel "stylesheet") (href ,(concat jfw/site-url "/css/code.css"))))
-            (link (@ (rel "stylesheet") (href ,(concat jfw/site-url "/css/site.css"))))
-            (script (@ (defer "defer")
-                       (data-domain "systemcrafters.net")
-                       (src "https://plausible.io/js/plausible.js"))
-                    ;; Empty string to cause a closing </script> tag
-                    "")
+            (link (@ (rel "icon") (type "image/png") (href "/static/img/favicon.png")))
+            ;; (link (@ (rel "alternative")
+            ;;          (type "application/rss+xml")
+            ;;          (title "jointhefreeworld news")
+            ;;          (href ,(concat jfw/site-url "/rss/news.xml"))))
+            
+            (link (@ (rel "stylesheet") (href ,(concat jfw/site-url "/static/css/main.css"))))
+            
             ,(when head-extra head-extra)
-            (title ,(concat title " - System Crafters")))
+            (title ,(concat title " - jointhefreeworld")))
            (body ,@(unless exclude-header
                      (jfw/site-header))
                  (div (@ (class "container"))
@@ -239,7 +198,7 @@
                            ,(when pre-content pre-content)
                            (div (@ (id "content"))
                                 ,content))
-                      ;; ,(jfw/embed-list-form)
+                      
                       )
                  ,@(unless exclude-footer
                      (jfw/site-footer)))))))
@@ -325,7 +284,7 @@ holding contextual information."
             block-type
             (or contents
                 (if (string= block-type "cta")
-                    "If you find this guide helpful, please consider supporting System Crafters via the links on the <a href=\"/how-to-help/#support-my-work\">How to Help</a> page!"
+                    "If you find this guide helpful, please consider supporting us via the links on the <a href=\"/how-to-help/#support-my-work\">How to Help</a> page!"
                   "")))))
 
 (org-export-define-derived-backend 'site-html 'html
@@ -494,23 +453,18 @@ holding contextual information."
                                      (getenv "CI"))
                                  "true"))  )
 
-  ;; (webfeeder-build "rss/news.xml"
-  ;;                  "./public"
-  ;;                  jfw/site-url
-  ;;                  (let ((default-directory (expand-file-name "./public/")))
-  ;;                    (remove "news/index.html"
-  ;;                            (directory-files-recursively "news"
-  ;;                                                         ".*\\.html$")))
-  ;;                  :builder 'webfeeder-make-rss
-  ;;                  :title "System Crafters News"
-  ;;                  :description "News and Insights from System Crafters!"
-  ;;                  :author "David Wilson")
+;; (webfeeder-build "rss/news.xml"
+;;                  "./public"
+;;                  jfw/site-url
+;;                  (let ((default-directory (expand-file-name "./public/")))
+;;                    (remove "news/index.html"
+;;                            (directory-files-recursively "news"
+;;                                                         ".*\\.html$")))
+;;                  :builder 'webfeeder-make-rss
+;;                  :title "System Crafters News"
+;;                  :description "News and Insights from System Crafters!"
+;;                  :author "David Wilson")
 
-  ;; (jfw/generate-redirects '(("support-the-channel" . "how-to-help")
-  ;;                           ("videos" . "guides")))
-
-  ;; Copy the domains file to ensure the custom domain resolves
-  ;;(copy-file ".domains" "public/.domains" t)
 
 
 (provide 'jointhefreeworld-site)
