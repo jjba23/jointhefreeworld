@@ -10,12 +10,8 @@ I am a /Software Engineer/ ⚙️, member of /the church of Emacs/, /GNU/Linux, 
 You could also describe me as Functional Programming/ Enthusiast, /Free Software/ Advocate and perfectionist.
 
 
-#+begin_html
-<aside>
-<p><a href="../blog/index.html">Come checkout my blog here</a>, where I discuss programming, my thoughts on life, and write some guides.</p>
-<p><a href="https://wikimusic.jointhefreeworld.org/">Come checkout WikiMusic</a>, the invite-only high quality music database, tabs, sheets</p>
-</aside>
-#+end_html
+[[../blog/index.html][visit my blog]] ,  where I discuss engineering, my thoughts on life, and write some guides.
+
 
 
 * More 

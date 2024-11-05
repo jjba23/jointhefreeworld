@@ -56,7 +56,25 @@
   font-weight: 300;
   src: url('/static/ttf/IntelOneMono-LightItalic.ttf') format('truetype');
 }
-
+html {
+    background: #fdf6e3;
+    color: #1e1e1e;
+}
 body {
     font-family: 'Intel One Mono', monospace;
 }
+a, button, h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+}
+a {color: #713600}
+
+h1, h2, h3, h4, h5, h6 {color: #3d240c;}
+
+body {
+padding-left: 1.9rem;
+padding-right: 1.9rem;
+padding-bottom: 1.6rem;
+padding-top: 1.6rem;
+margin: auto;
+}
+code {background: rgba(113, 54, 0, 0.1); color: #000; padding: 0.2rem; border-radius: 0.6rem; }
