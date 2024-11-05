@@ -14,15 +14,18 @@ Note that unless otherwise mentioned, list items are in the ~adopt~ phase.
 * Languages & Frameworks
 ** Haskell
 ** Scala
-** Flutter
-** Svelte
 ** Typescript
+** Svelte
+** Scheme, ELisp, or SBCL
 ** Nix
-* Platforms
-** Amazon AWS
+** GNU Guix
 * Tools
 ** PostgreSQL
+** SQLite
+** Emacs
 * Techniques
 ** Nix Flakes
 ** Nix dev shells
 ** GitHub CI/CD
+* Platforms
+** Amazon AWS
