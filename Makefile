@@ -6,7 +6,7 @@ publish:
 serve:
 	darkhttpd ./public --port 50011
 dev:
-	watchexec -r -e org,css -- "CI=false make publish && make serve"
+	watchexec -i "public/**" -r -e org,css,el -- "CI=false make publish && make serve"
 deploy:
 	CI=true make publish
 	rm -rf /srv/http/jointhefreeworld.org

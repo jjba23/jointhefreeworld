@@ -88,13 +88,13 @@ body {
     padding-bottom: 1.6rem;
     padding-top: 1.6rem;
     margin: auto;
-    line-height: 1.6;
+    line-height: 2rem;
+    word-break: break-word;
 }
 
 p {
-    overflow: hidden;
     max-width: 86ch;
-    white-space: nowrap;
+    font-size: 1rem;
 }
 
 code {
@@ -107,12 +107,32 @@ code {
     padding-bottom: 0.1rem;
     border-radius: 0.6rem;
     font-family: 'Intel One Mono', monospace;
+    font-size: 0.9rem;
 }
 
 pre {
-    background: rgba(113, 54, 0, 0.1);
-    color: #1e1e1e;
+    background: #303230;
+    color: #fdf6e3;
     padding: 1rem;
     border-radius: 0.6rem;
+    line-height: 1.6rem;
     font-family: 'Intel One Mono', monospace;
+    font-size: 0.9rem;
+}
+
+/* org specific */
+
+.timestamp-wrapper {
+    background: rgba(113, 54, 0, 0.1);
+    padding: 0.2rem;
+    border-radius: 0.6rem;
+}
+
+.timestamp {
+    font-weight: 500;
+    font-size: 0.8rem;
+}
+
+.nav-link {
+    padding: 1rem;
 }

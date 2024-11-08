@@ -6,36 +6,36 @@
 I am /Josep Bigorra/, call me /Joe/. 
 Welcome to my few square meters of Internet 🤟🏼 !
 
-I am a /Software Engineer/ ⚙️, member of /the church of Emacs/, /GNU/Linux, Nix and Haskell fanatic/, living in the Netherlands 🇳🇱.
+I am a /Software Engineer/ ⚙️, member of /the church of Emacs/, /GNU/Linux, Guix, Nix and Haskell fanatic/, living in the Netherlands 🇳🇱.
 You could also describe me as Functional Programming/ Enthusiast, /Free Software/ Advocate and perfectionist.
 
+[[../blog/index.html][Visit my blog]],  where I discuss engineering, my thoughts on life, and write some guides.
 
-[[../blog/index.html][visit my blog]] ,  where I discuss engineering, my thoughts on life, and write some guides.
+* My own software 🐧
 
+/jointhefreeworld/ represents the ecosystem of free software I make and share with the world.
+See all the source code for my projects at GitHub: https://github.com/jjba23.
 
+I try to release all my personal projects in a way that is free as in freedom.
+This means using the GNU General Public License (GPL) v3.0 or later, and some libraries with the Lesser GPL.
 
-* More 
+Find the source code for this very web-site https://github.com/jjba23/jointhefreeworld , also released under the GNU GPL.
+
+** My technology choices ⚙️
+
+I develop all kinds of tech solutions for day to day problems of me and of my clients. Along the years I have developed some tastes and choices, along with experience in certain tooling.
+
+Tech changes fast. But it’s becoming an ever-more critical component of success.
+
+See my tech radar here: [[file:../blog/articles/development/tech-radar/][My Tech Radar]].
+
+* More ➕
 I strive for a free world and I'm a supporter of the Free Software Foundation. 
 
 I want you to feel at home here in this corner of the web, and that you join me in my adventure for more freedom in our day-to-day computing. Join the free world we've built, thanks to GNU, Linux and thousands of other wonderful projects.
 
 I'm always working on computer systems, improving my Emacs workflow and configuration files, working with functional programming, engineering reliable systems and databases.
 
-[[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][see my videos here]], about music, guitar 🎸, GNU Guix, Nix, Haskell, or meet me at the gym and let's do some CrossFit.
+[[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][See my videos here]], about music, guitar 🎸, GNU Guix, Nix, Haskell, or meet me at the gym and let's do some CrossFit.
 
 
-* My code
-
-See all the source code for my projects at GitHub: https://github.com/jjba23.
-
-I try to release all my personal projects in a way that is free as in freedom and released under the GNU General Public License (GPL) v3.0 or later, and some libraries with the Lesser GPL.
-
-Find the source code for this very web-site https://github.com/jjba23/jointhefreeworld , also released under the GNU GPL.
-
-🐧
-
-** My technology choices
-
-I develop all kinds of tech solutions for day to day problems of me and of my clients. Along the years I have developed some tastes and choices, along with experience in certain tooling. Tech changes fast. But it’s becoming an ever-more critical component of success.
-
-See my tech radar here: [[file:../blog/articles/development/tech-radar.html][My Tech Radar]].

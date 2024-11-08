@@ -106,7 +106,7 @@
   (list `(header (@ (class "site-header"))
                  (div (@ (class "container"))
                       (div (@ (class "site-title"))
-                           (p "jointhefreeworld.org")
+                           (em "jointhefreeworld.org")
                            ))
                  (div (@ (class "site-masthead"))
                       (div (@ (class "container"))
@@ -253,7 +253,7 @@
      (when (and container (not (string= "" container)))
        (format "<%s%s>" container (if container-class (format " class=\"%s\"" container-class) "")))
      (if (not (org-export-low-level-p headline info))
-         (format "<h%d%s><a id=\"%s\" class=\"anchor\" href=\"#%s\">¶</a>%s</h%d>%s"
+         (format "<h%d%s><a id=\"%s\" class=\"anchor\" href=\"#%s\">#</a>&nbsp;%s</h%d>%s"
                  level
                  (or attributes "")
                  anchor-name
