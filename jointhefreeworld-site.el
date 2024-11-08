@@ -123,16 +123,19 @@
 
 
 (defun jfw/site-footer ()
-  (list `(footer (@ (class "site-footer"))
-                 (div (@ (class "container"))
-                      (div (@ (class "row"))
-                           (div (@ (class "column"))
-                                (p "© 2024 jointhefreeworld"))
-                           (div (@ (class "column align-right"))
-                                (p (a (@ (href "https://github.com/jjba23/jointhefreeworld"))
-                                      (img (@ (src ,(concat jfw/site-url "/img/github.png"))
-                                              (style "width: 120px")
-                                              (alt "Contribute on GitHub")))))))))))
+  (list
+   `(hr)
+   `(footer (@ (class "site-footer"))
+            (div (@ (class "container"))
+                 (div (@ (class "row"))
+                      (div (@ (class "column"))
+                           (p "© 2024 jointhefreeworld"))
+                      (div (@ (class "column align-right"))
+                           (p
+                            (a (@ (href "https://github.com/jjba23/jointhefreeworld"))
+                               (img (@ (src ,(concat jfw/site-url "/img/github.png"))
+                                       (style "width: 120px")
+                                       (alt "Contribute on GitHub")))))))))))
 
 (defun get-article-output-path (org-file pub-dir)
   (let ((article-dir (concat pub-dir
