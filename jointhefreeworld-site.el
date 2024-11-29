@@ -6,7 +6,7 @@
 ;; Version: 0.1.0
 ;; Author: Josep Bigorra <jjbigorra@gmail.com>
 ;; Maintainer: Josep Bigorra <jjbigorra@gmail.com>
-;; URL: https://github.com/jjba23/jointhefreeworld
+;; URL: https://codeberg.org/jjba23/jointhefreeworld
 ;; Package: emacs
 ;; Package-Requires: ((emacs "29.1"))
 
@@ -114,7 +114,7 @@
                                 (a (@ (class "nav-link") (href "/")) "Home") " "
                                 (a (@ (class "nav-link") (href "/blog/")) "Blog") " "
                                 (a (@ (class "nav-link") (href "/cv/")) "CV/Resume") " "
-                                (a (@ (class "nav-link") (href "https://github.com/jjba23")) "GitHub") " "
+                                (a (@ (class "nav-link") (href "https://codeberg.org/jjba23")) "Codeberg") " "
                                 (a (@ (class "nav-link") (href "https://www.linkedin.com/in/josepjba/")) "LinkedIn") " "
                                 (a (@ (class "nav-link") (href "https://wikimusic.jointhefreeworld.org")) "WikiMusic") " "
                                 (a (@ (class "nav-link") (href "https://casadelcata.es")) "Casa del Cata") " "
@@ -132,10 +132,10 @@
                            (p "© 2024 jointhefreeworld"))
                       (div (@ (class "column align-right"))
                            (p
-                            (a (@ (href "https://github.com/jjba23/jointhefreeworld"))
+                            (a (@ (href "https://codeberg.org/jjba23/jointhefreeworld"))
                                (img (@ (src ,(concat jfw/site-url "/img/github.png"))
                                        (style "width: 120px")
-                                       (alt "Contribute on GitHub")))))))))))
+                                       (alt "Contribute on Codeberg")))))))))))
 
 (defun get-article-output-path (org-file pub-dir)
   (let ((article-dir (concat pub-dir

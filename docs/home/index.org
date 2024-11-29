@@ -14,12 +14,12 @@ You could also describe me as Functional Programming/ Enthusiast, /Free Software
 * My own software 🐧
 
 /jointhefreeworld/ represents the ecosystem of free software I make and share with the world.
-See all the source code for my projects at GitHub: https://github.com/jjba23.
+See all the source code for my projects at Codeberg: https://codeberg.org/jjba23.
 
 I try to release all my personal projects in a way that is free as in freedom.
 This means using the GNU General Public License (GPL) v3.0 or later, and some libraries with the Lesser GPL.
 
-Find the source code for this very web-site https://github.com/jjba23/jointhefreeworld , also released under the GNU GPL.
+Find the source code for this very web-site https://codeberg.org/jjba23/jointhefreeworld , also released under the GNU GPL.
 
 ** My technology choices ⚙️
 
