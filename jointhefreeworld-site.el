@@ -1,6 +1,5 @@
 ;;; jointhefreeworld-site.el --- Build jointhefreeworld.org
 
-
 ;; Copyright (C) 2024 Josep Bigorra
 
 ;; Version: 0.1.0
