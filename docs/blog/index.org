@@ -6,8 +6,9 @@
 
 
 ** Categories
-- [[file:articles/haskell/][Haskell ]]
 - [[file:articles/emacs/][Emacs]]
+- [[file:articles/haskell/][Haskell]]
+- [[file:articles/lisps/][Lisps]]
 - [[file:articles/gnu-linux/][GNU/Linux]]
 - [[file:articles/ci/][CI - Continuous Integration]]
 - [[file:articles/go/][Go]]
@@ -17,6 +18,8 @@
 
 
 ** Highlighted articles
+
+<2024-12-02 ma> - [[https://artanis.dev/blog/why-to-port-to-artanis.html][Why port web Scheme applications to Artanis?]]
 
 <2024-08-13 Tue> - [[file:articles/emacs/emacs-registers.org][Emacs registers - a god-send for your day job]] - Ever had to work very long files, in projects that you are not familiar with, and felt very lost, without an anchor point? Enter Emacs and its registry system, which allows you to "bookmark" locations of a file (buffer) and return to them, and much much more!
 
