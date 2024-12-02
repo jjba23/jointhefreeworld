@@ -2,6 +2,8 @@
 
 My personal homepage, blogs, and "Jointhefreeworld" movement website.
 
+Visit at [[https://jointhefreeworld.org][jointhefreeworld.org]].
+
 ** How does this work?
 
 I like writing all my documentation and blog posts in the amazing Org mode, from within Emacs.
