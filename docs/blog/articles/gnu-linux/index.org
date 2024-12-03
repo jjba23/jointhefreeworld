@@ -2,6 +2,8 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
+<2024-12-03 di> - [[https://guix.gnu.org/blog/2018/multi-dimensional-transactions-and-rollbacks-oh-my/][How Guix enables multi-dimensional rollbacks and more reproducibility!]]
+
 <2023-11-02 do> - [[file:openvpn3-on-nixos-with-web-based-saml.org][Open VPN 3 on NixOS with Web-based SAML]]
 
 <2023-08-25 Fri> - [[file:windows-11-bootable-usb-from-gnu-linux.org][Bootable Windows 11 USB from GNU Linux]]
