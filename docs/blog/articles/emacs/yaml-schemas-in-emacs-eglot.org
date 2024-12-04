@@ -1,0 +1,41 @@
+#+title: YAML Schemas in Emacs with Eglot
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2024-12-04 wo>
+#+options: toc:nil num:nil
+
+Are you someone that enjoys Emacs and the amazing built-in package Eglot, which enables Emacs to provide intelligent completions and error reporting, linting, and more with language servers ?
+
+Are you ocasionally editing YAML files and would like to use JSON Schemas for YAML, get some feedback from Emacs, the right completions for a configuration file ?
+
+** Almost a type system for YAML 💚
+
+Let me introduce [[https://github.com/redhat-developer/yaml-language-server][yaml-language-server]] (easily installed from Nix too).
+
+By the way if you want to see advanced Eglot configuration check the manual or my own dotfiles at: [[https://codeberg.org/jjba23/sss][https://codeberg.org/jjba23/sss]].
+
+Say no more, configure Eglot directly like below.
+This will ensure you can load several schemas with semantic / domain meaning, but always have the ~yamllint~ schema as fallback.
+
+** Configuring Eglot
+
+#+begin_src emacs-lisp
+
+  (setq-default eglot-workspace-configuration
+                '(:yaml ( :format (:enable t)
+                          :validate t
+                          :hover t
+                          :completion t
+                          :schemas (https://raw.githubusercontent.com/my-user/my-project/project.schema.yml ["project.yml"]
+                                    https://json.schemastore.org/yamllint.json ["/*.yml"])
+                          :schemaStore (:enable t))
+                   ;; here other language server configurations
+                  ))
+#+end_src
+
+
+And have Eglot start ~yaml-language-server --stdio~ automatically.
+
+See the language server's documentation for more details on how to load YAML schemas from various sources, even declaratively in the YAML file itself.
+
