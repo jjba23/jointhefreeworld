@@ -19,6 +19,8 @@
 
 ** Highlighted articles
 
+<2024-12-09 ma> - [[file:podman-root-less-guix.org][Podman root-less setup on GNU Guix system for easy containers under the Shepherd's system]] - By leveraging Podman, a daemonless container engine, we can achieve rootless containerization, enhancing security and flexibility with Guix.
+
 <2024-12-04 wo> - [[file:articles/emacs/yaml-schemas-in-emacs-eglot.org][YAML Schemas in Emacs with Eglot]] - Are you editing YAML files and would like to use JSON Schemas for YAML in Emacs ?
 
 <2024-12-03 di> - [[https://guix.gnu.org/blog/2018/multi-dimensional-transactions-and-rollbacks-oh-my/][How Guix enables multi-dimensional rollbacks and more reproducibility!]]
