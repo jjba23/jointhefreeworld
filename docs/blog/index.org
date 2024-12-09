@@ -6,6 +6,7 @@
 
 
 ** Categories
+
 - [[file:articles/emacs/][Emacs]]
 - [[file:articles/haskell/][Haskell]]
 - [[file:articles/lisps/][Lisps]]
