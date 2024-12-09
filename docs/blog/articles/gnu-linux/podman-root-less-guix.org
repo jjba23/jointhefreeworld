@@ -17,13 +17,6 @@ In this post I will explain what it takes to setup Podman in a root-less manner,
 
 Every engineer in anno 2024 ends up spinning a "Docker" container or two in their job or as a hobby, so for me it's important to be able to do this seamlessly in my beloved Guix system, or as I have recently taken to calling it, Supreme Sexp System - see more [[https://codeberg.org/jjba23/sss][here]].
 
-Podman is in technical terms also superior and cleaner than Docker, as well as a more permissive license.
-
-Using a root-less setup (no sudo for docker) one achieve more stability and flexibility in the system.
-
-Podman is also daemon-less, which brings great benefits, but can be used via Unix sockets too on demand.
-
-
 
 ** Why not Docker?
 
@@ -33,8 +26,7 @@ Podman is also daemon-less, which brings great benefits, but can be used via Uni
 - Consistency
 - Features (pods, compose, kube, etc)
 
-Basically all the functionality of the docker, but a bit cleaner
-implementation and organization wise.
+Basically all the functionality of the docker, but a bit cleaner implementation and organization wise.
 
 
 ** Adding to Guix
@@ -139,7 +131,13 @@ Or run your favourite integration test pipeline.
 
 ** Enjoy
 
-🎉 Now you should be set to run testcontainers, even with Ryuk.
+🎉 Now you should be set to run testcontainers, even with Ryuk. Otherwise make sure to tweak ~~/.testcontainers.properties~.
+
+Podman is in technical terms also superior and cleaner than Docker, as well as a more permissive license.
+
+Using a root-less setup (no sudo for docker) one achieve more stability and flexibility in the system.
+
+Podman is also daemon-less, which brings great benefits, but can be used via Unix sockets too on demand.
 
 
 ** More on this
