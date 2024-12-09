@@ -1,0 +1,157 @@
+#+title: Podman root-less setup on GNU Guix
+#+options: num:nil toc:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2024-12-09 ma>
+
+Have you ever heard about Docker ?
+
+Containerization has revolutionized the way we deploy and manage applications. By isolating processes and their dependencies, containers offer a lightweight and efficient solution for software deployment and help reproducibility.
+
+GNU Guix, a powerful and pure functional system and package manager, provides a robust foundation for building and managing software systems.
+
+By leveraging Podman, a daemonless container engine, we can achieve rootless containerization, enhancing security and flexibility.
+
+In this post I will explain what it takes to setup Podman in a root-less manner, for your user in Guix.
+
+Every engineer in anno 2024 ends up spinning a "Docker" container or two in their job or as a hobby, so for me it's important to be able to do this seamlessly in my beloved Guix system, or as I have recently taken to calling it, Supreme Sexp System - see more [[https://codeberg.org/jjba23/sss][here]].
+
+Podman is in technical terms also superior and cleaner than Docker, as well as a more permissive license.
+
+Using a root-less setup (no sudo for docker) one achieve more stability and flexibility in the system.
+
+Podman is also daemon-less, which brings great benefits, but can be used via Unix sockets too on demand.
+
+
+
+** Why not Docker?
+
+- Security
+- Simplicity
+- Modularity
+- Consistency
+- Features (pods, compose, kube, etc)
+
+Basically all the functionality of the docker, but a bit cleaner
+implementation and organization wise.
+
+
+** Adding to Guix
+
+Make sure to remove Docker installation first completely and then the ~docker~ group from your users, if you previously used docker:
+
+#+begin_src scheme
+  (user-account
+    (name "joe")
+    (group "users")
+    (supplementary-groups '("wheel" "netdev" "audio" "video" "input")))
+  
+#+end_src
+
+Then we will need to allocate some sub-uids and sub-gids, and for that we create a ~etc-service~ with Guix:
+
+#+begin_src scheme
+  (define sss-joe-subuid
+  (simple-service
+   'podman-subuid-subgid
+   ;; If subuid/subgid will be needed somewhere else, the service must be
+   ;; created to handle it.
+   etc-service-type
+   `(("subuid"
+      ,(plain-file
+        "subuid"
+        (string-append "joe" ":100000:65536\n")))
+     ("subgid"
+      ,(plain-file
+        "subgid"
+        (string-append "joe" ":100000:65536\n"))))))
+#+end_src
+
+~iptables~ service or equivalent is necessary for networking in Podman:
+#+begin_src  scheme
+   (define sss-iptables (service iptables-service-type
+                                 (iptables-configuration)))                         
+#+end_src
+
+
+You can feel free to also alias in your shell docker to podman, to help you rebuild muscle memory, e.g. .
+#+begin_src scheme
+  alias docker-compose="podman-compose"
+  alias docker="podman"
+  alias podman-unix-socket="podman system service --time=0 unix:///tmp/podman.sock"
+
+#+end_src
+
+For running with Testcontainers, one should use the Unix socket.
+
+~podman system service --time=0 unix:///tmp/podman.sock~
+
+
+~DOCKER_HOST~ should be set to the socket you use, e.g. ~unix:///tmp/podman.sock~
+
+You can do this with Guix home or manually before running certain programs.
+
+You should also configure container registries and policies, for example with Guix Home:
+
+#+begin_src scheme
+  `((".config/containers/registries.conf"
+            ,(plain-file
+              "registries.conf"
+              "unqualified-search-registries = ['docker.io', \
+  'registry.fedoraproject.org', \
+  'registry.access.redhat.com', \
+  'registry.centos.org']"))
+
+           (".config/containers/policy.json"
+            ,(plain-file
+              "policy.json"
+              "{\"default\": [{\"type\": \"insecureAcceptAnything\"}]}"))    
+           )
+#+end_src
+
+
+You will then need some packages from Guix packages:
+
+#+begin_src sh
+  slirp4netns podman podman-compose passt
+#+end_src
+
+** Testing
+
+Make sure you reboot and have cleaned any previous trace of Docker.
+
+
+Check if things work then:
+- ~podman ps -a~
+- ~podman run --rm alpine ls / -lia~
+- ~podman images~
+- ~podman ps -a~
+- ~podman run -dt -p 8080:80/tcp httpd~
+- ~podman stop -l~
+- ~podman rm -l~
+
+Or run your favourite integration test pipeline.
+
+
+
+
+
+** Enjoy
+
+🎉 Now you should be set to run testcontainers, even with Ryuk.
+
+
+** More on this
+
+See the official documentation of Podman root-less here:
+https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md
+https://github.com/containers/podman/blob/main/rootless.md
+https://opensource.com/article/19/2/how-does-rootless-podman-work
+
+*** Shoutout to Andrew!
+Make sure to check Andrew Tropin's video for another great explanation on this interesting topic:
+
+[[https://www.youtube.com/watch?v=CC7t7foYkko&list=LL&index=1&t=305s][https://www.youtube.com/watch?v=CC7t7foYkko&list=LL&index=1&t=305s]]
+
+
