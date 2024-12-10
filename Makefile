@@ -1,7 +1,7 @@
 publish:
 	rm -rf ./public .org-cache
 	emacs -Q --batch -l ./jointhefreeworld-site.el --funcall jfw/publish
-	mkdir -p ./public/cv && cp ./docs/cv/index.html ./public/cv/
+	mkdir -p ./public && cp -rf ./docs/cv ./public/
 	cp -Rf ./static ./public/static
 serve:
 	darkhttpd ./public --port 50011
