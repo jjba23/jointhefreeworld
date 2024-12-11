@@ -8,3 +8,4 @@ Visit at [[https://jointhefreeworld.org][jointhefreeworld.org]].
 
 I like writing all my documentation and blog posts in the amazing Org mode, from within Emacs.
 I also use Emacs to generate HTML from these files, which I then host online.
+
