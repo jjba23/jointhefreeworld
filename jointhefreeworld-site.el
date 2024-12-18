@@ -182,7 +182,7 @@
             ;;          (title "jointhefreeworld news")
             ;;          (href ,(concat jfw/site-url "/rss/news.xml"))))
             
-            (link (@ (rel "stylesheet") (href ,(concat jfw/site-url "/static/css/main.css"))))
+            (link (@ (rel "stylesheet") (href ,(concat jfw/site-url "/static/css/jointhefreeworld.css"))))
             
             ,(when head-extra head-extra)
             (title ,(concat title " - jointhefreeworld")))

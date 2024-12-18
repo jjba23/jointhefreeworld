@@ -11,7 +11,7 @@
 - [[file:articles/lisps/][Lisps]]
 - [[file:articles/haskell/][Haskell]]
 - [[file:articles/gnu-linux/][GNU/Linux]]
-- [[file:articles/ci/][CI - Continuous Integration]]
+- [[file:articles/ci/][Continuous Integration]]
 - [[file:articles/go/][Go]]
 - [[file:articles/freebsd/][FreeBSD]]
 - [[file:articles/development/][Development]]

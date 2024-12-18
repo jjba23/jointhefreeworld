@@ -4,7 +4,7 @@ publish:
 	mkdir -p ./public && cp -rf ./docs/cv ./public/
 	cp -Rf ./static ./public/static
 serve:
-	darkhttpd ./public --port 50011
+	darkhttpd ./public --index index.html --port 50011 
 dev:
 	watchexec -i "public/**" -r -e org,css,el -- "CI=false make publish && make serve"
 deploy:
