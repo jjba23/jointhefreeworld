@@ -1,9 +1,10 @@
-#+title: Joe's Blog - Join the Free World
+#+title: Welcome to Joe's Blog
 #+options: num:nil toc:nil
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 #+language: en
 
+jointhefreeworld.org
 
 ** Categories
 
