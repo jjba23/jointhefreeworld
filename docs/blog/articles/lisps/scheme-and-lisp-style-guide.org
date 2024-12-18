@@ -136,12 +136,24 @@ preceding text and before a closing bracket.
 
   Unacceptable:
 
+#+begin_src scheme
+
     (foo(bar baz)quux)
     (foo ( bar baz ) quux)
 
+#+end_src
+
+
+
   Acceptable:
 
-    (foo (bar baz) quux)
+    #+begin_src scheme
+
+(foo (bar baz) quux)
+
+    #+end_src
+
+    
 
   Rationale:  This is the same spacing found in standard typography of
   European text.  It is more aesthetically pleasing.
@@ -151,6 +163,8 @@ preceding text and before a closing bracket.
 Absolutely do *not* place closing brackets on their own lines.
 
   Unacceptable:
+
+#+begin_src scheme
 
     (define (factorial x)
       (if (< x 2)
@@ -162,12 +176,22 @@ Absolutely do *not* place closing brackets on their own lines.
       )
     )
 
+#+end_src
+
+
+
   Acceptable:
 
-    (define (factorial x)
+ #+begin_src scheme
+
+   (define (factorial x)
       (if (< x 2)
           1
           (* x (factorial (- x 1)))))
+
+ #+end_src
+
+ 
 
   Rationale:  The parentheses grow lonely if their closing brackets are
   all kept separated and segregated.
@@ -180,21 +204,33 @@ does *not* make the unacceptable example above acceptable.
 When commenting out fragments of expressions with line comments, it may
 be necessary to break a line before a sequence of closing brackets:
 
+#+begin_src scheme
+
   (define (foo bar)
     (list (frob bar)
           (zork bar)
           ;; (zap bar)
           ))
 
+#+end_src
+
+
+
 This is acceptable, but there are other alternatives.  In Common Lisp,
 one can use the read-time conditional syntax, `#+' or `#-', with a
 feature conditional that is guaranteed to be false or true -- `#+(OR)'
 or `#-(AND)' --; for example,
 
+#+begin_src scheme
+
   (define (foo bar)
     (list (frob bar)
           (zork bar)
           #+(or) (zap bar))).
+
+#+end_src
+
+
 
 Read-time conditionals are expression-oriented, not line-oriented, so
 the closing brackets need not be placed on the following line.  Some
@@ -202,11 +238,17 @@ Scheme implementations, and SRFI 62, also support expression comments
 with `#;', which are operationally equivalent to the above read-time
 conditionals for Common Lisp:
 
+#+begin_src scheme
+
   (define (foo bar)
     (list (frob bar)
           (zork bar)
           #;
            (zap bar)))
+
+#+end_src
+
+
 
 The expression is placed on another line in order to avoid confusing
 editors that do not recognize S-expression comments; see the section
@@ -221,6 +263,8 @@ bracket and immediately before a closing bracket for very long lists,
 especially in files under version control.  This eases the maintenance
 of the lists and clarifies version diffs.  Example:
 
+#+begin_src scheme
+
   (define colour-names         ;Add more colour names to this list!
     '(
       blue
@@ -232,6 +276,10 @@ of the lists and clarifies version diffs.  Example:
       scarlet
       turquoise
       ))
+
+#+end_src
+
+
 
 *** Parenthetical Philosophy
 
@@ -267,6 +315,8 @@ configure Emacs so that any non-standard forms are indented
 appropriately.
 
   Unacceptable:
+  
+#+begin_src scheme
 
     (+ (sqrt -1)
       (* x y)
@@ -277,16 +327,26 @@ appropriately.
        (* x y)
        (+ p q))
 
-  Acceptable:
+  #+end_src
 
-    (+ (sqrt -1)
+  
+
+    Acceptable:
+
+  #+begin_src scheme
+
+      (+ (sqrt -1)
+         (* x y)
+         (+ p q))
+
+      (+
+       (sqrt -1)
        (* x y)
        (+ p q))
 
-    (+
-     (sqrt -1)
-     (* x y)
-     (+ p q))
+#+end_src
+
+
 
   Rationale:  The columnar alignment allows the reader to follow the
   operands of any operation straightforwardly, simply by scanning
@@ -307,6 +367,8 @@ whose operators are lists:
 
   Questionable:
 
+#+begin_src scheme
+
     ((car x)                            ;Requires hand indentation.
        (cdr x)
        foo)
@@ -314,7 +376,13 @@ whose operators are lists:
     ((car x) (cdr x)                    ;GNU Emacs
      foo)
 
+#+end_src
+
+
+
   Preferable:
+
+#+begin_src scheme
 
     ((car x)                            ;Any Emacs
      (cdr x)
@@ -323,14 +391,24 @@ whose operators are lists:
     ((car x) (cdr x)                    ;Edwin
              foo)
 
+#+end_src
+
+
+
   Rationale:  The operands should be aligned, as if it were any other
   procedure call with a name in the operator position; anything other
   than this is confusing because it gives some operands greater visual
   distinction, allowing others to hide from the viewer's sight.  For
   example, the questionable indentation
 
+#+begin_src scheme
+
     ((car x) (cdr x)
      foo)
+
+#+end_src
+
+
 
   can make it hard to see that FOO and (CDR X) are both operands here
   at the same level.  However, GNU Emacs will generate that indentation
@@ -344,15 +422,29 @@ of the first subform.
 
   Unacceptable:
 
-    ("foo" "bar" "baz" "quux" "zot"
+ #+begin_src scheme
+
+   ("foo" "bar" "baz" "quux" "zot"
            "mumble" "frotz" "gargle" "mumph")
 
+ #+end_src
+
+ 
+
   Questionable, but acceptable:
+
+#+begin_src scheme
 
     (3 1 4 1 5 9 2 6 5 3 5 8 9 7 9 3 2 3 8 4 6 2 6 4
        3 3 8 3 2 7 9 5 0 2 8 8 4 1 9 7 1 6 9 3 9 9 3)
 
+#+end_src
+
+
+
   Acceptable:
+
+#+begin_src scheme
 
     ("foo" "bar" "baz" "quux" "zot"
      "mumble" "frotz" "gargle" "mumph")
@@ -360,6 +452,10 @@ of the first subform.
     ("foo"
      "bar" "baz" "quux" "zot"
      "mumble" "frotz" "gargle" "mumph")
+
+#+end_src
+
+
 
   Rationale:  Seldom is the first subform distinguished for any reason,
   if it is a literal; usually in this case it indicates pure data, not
@@ -386,15 +482,27 @@ were derived directly from a foreign language without translation.
 
   Unacceptable:
 
-    XMLHttpRequest
+  #+begin_src scheme
+
+  XMLHttpRequest
     foreach
     append_map
 
+  #+end_src
+
+  
+
   Acceptable:
 
-    xml-http-request
+ #+begin_src scheme
+
+   xml-http-request
     for-each
     append-map
+
+ #+end_src
+
+ 
 
 *** Funny Characters
 
@@ -523,6 +631,8 @@ and the text is acceptable are margin comments.
 
   Examples:
 
+#+begin_src scheme
+
     ;;;; Frob Grovel
 
     ;;; This section of code has some important implications:
@@ -535,6 +645,10 @@ and the text is acceptable are margin comments.
       (quux zot
             mumble             ;Zibblefrotz.
             frotz))
+
+#+end_src
+
+
 
 * Riastradh's Non-Standard Rules
 
@@ -958,15 +1072,32 @@ Do not use this extension.
   who suggest that they be used for `clauses', or for forms that are
   parts of enclosing forms.  This would lead to such constructions as
 
-    (let [(x 5) (y 3)] ...)
+    #+begin_src scheme
+
+(let [(x 5) (y 3)] ...)
+
+    #+end_src
+
+    
 
   or
 
-    (let ([x 5] [y 3]) ...)
+    #+begin_src scheme
+
+(let ([x 5] [y 3]) ...)
+
+    #+end_src
+
+    
 
   or
 
-    (let [[x 5] [y 3]] ...),
+    #+begin_src scheme
+
+(let [[x 5] [y 3]] ...),
+
+    #+end_src 
+   
 
   the first two of which the author of this guide has seen both of, and
   the last of which does nothing to help to distinguish the parentheses
