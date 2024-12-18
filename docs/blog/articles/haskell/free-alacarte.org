@@ -6,8 +6,6 @@
 #+date: <2024-04-20 Sat>
 
 
-* Free à la Carte
-
 Free monads based on  from intuitions from the Data types à la Carte paper. Combine functors and make embedded DSLs in Haskell.
 
 See the original paper, by Wouter Swierstra: https://webspace.science.uu.nl/~swier004/publications/2008-jfp.pdf .

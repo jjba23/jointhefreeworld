@@ -8,8 +8,8 @@
 ** Categories
 
 - [[file:articles/emacs/][Emacs]]
-- [[file:articles/haskell/][Haskell]]
 - [[file:articles/lisps/][Lisps]]
+- [[file:articles/haskell/][Haskell]]
 - [[file:articles/gnu-linux/][GNU/Linux]]
 - [[file:articles/ci/][CI - Continuous Integration]]
 - [[file:articles/go/][Go]]
@@ -19,6 +19,8 @@
 
 
 ** Highlighted articles
+
+<2024-12-18 wo> - [[file:articles/lisps/scheme-and-lisp-style-guide.org][Scheme & Lisp Style Guide]] - Riastradh's Lisp Style Rules for some really clean Scheme, Lisp and Guile code.
 
 <2024-12-09 ma> - [[file:articles/gnu-linux/podman-root-less-guix.org][Podman root-less setup on GNU Guix system for easy containers under the Shepherd's system]] - By leveraging Podman, a daemonless container engine, we can achieve rootless containerization, enhancing security and flexibility with Guix.
 
