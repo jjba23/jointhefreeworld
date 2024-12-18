@@ -77,6 +77,8 @@ a, button, h1, h2, h3, h4, h5, h6 {
 a {
     color: #824700;
     text-decoration: none;
+    font-style: normal;
+    font-weight: 900;
            
 }
 
@@ -97,7 +99,10 @@ body {
 p {
     max-width: 86ch;
     font-size: 1rem;
+    font-style: italic;
 }
+
+
 
 code {
     background: rgba(113, 54, 0, 0.1);
@@ -110,12 +115,13 @@ code {
     border-radius: 0.6rem;
     font-family: 'Monaspace Neon', monospace;
     font-size: 0.9rem;
+    font-style: normal;    
 }
 
 pre {
     background: #efefef;
     color: #000;
-    border: 1px solid #cfcfcf;
+    border: 1px solid rgba(223,223,223, 0.6);
     padding-left: 1.2rem;
     padding-right: 1.2rem;
     padding-top: 2.2rem;
@@ -125,6 +131,7 @@ pre {
     font-family: 'Monaspace Neon', monospace;
     font-size: 0.9rem;
     overflow-x: scroll;
+    font-style: normal;
 }
 
 /* org specific */
@@ -133,11 +140,13 @@ pre {
     background: rgba(113, 54, 0, 0.1);
     padding: 0.2rem;
     border-radius: 0.6rem;
+    margin: 1rem;
 }
 
 .timestamp {
     font-weight: 500;
     font-size: 0.8rem;
+    font-style: normal;    
 }
 
 .nav-link {
@@ -158,3 +167,4 @@ pre {
 li {
     text-transform: uppercase;
 }
+

@@ -2,16 +2,16 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
-<2021-12-02 Thu> - [[file:rcd-scripting.org][rc.d scripting]]
+<2021-12-02 Thu> [[file:rcd-scripting.org][rc.d scripting]]
 
-<2021-09-17 Fri> - [[file:pkg-or-ports.org][pkg or ports ?]]
+<2021-09-17 Fri> [[file:pkg-or-ports.org][pkg or ports ?]]
 
-<2021-08-31 Tue> - [[file:updating-freebsd-in-iocage.org][Updating FreeBSD in iocage]]
+<2021-08-31 Tue> [[file:updating-freebsd-in-iocage.org][Updating FreeBSD in iocage]]
 
-<2021-08-31 Tue> - [[file:practical-rcd-scripting-and-go.org][Practical rc.d scripting and Go]]
+<2021-08-31 Tue> [[file:practical-rcd-scripting-and-go.org][Practical rc.d scripting and Go]]
 
-<2020-11-19 Thu> - [[file:jails-with-a-loopback-ip.org][Jails with a loopback IP]]
+<2020-11-19 Thu> [[file:jails-with-a-loopback-ip.org][Jails with a loopback IP]]
 
-<2020-11-19 Thu> - [[file:root-on-zfs-with-partitions.org][Root on ZFS with partitions]]
+<2020-11-19 Thu> [[file:root-on-zfs-with-partitions.org][Root on ZFS with partitions]]
 
-<2020-09-19 Sat> - [[file:running-postgresql-on-freebsd.org][Running PostgreSQL on FreeBSD]]
+<2020-09-19 Sat> [[file:running-postgresql-on-freebsd.org][Running PostgreSQL on FreeBSD]]

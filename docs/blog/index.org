@@ -20,23 +20,23 @@
 
 ** Highlighted articles
 
-<2024-12-18 wo> - [[file:articles/lisps/scheme-and-lisp-style-guide.org][Scheme & Lisp Style Guide]] - Riastradh's Lisp Style Rules for some really clean Scheme, Lisp and Guile code.
+<2024-12-18 wo> [[file:articles/lisps/scheme-and-lisp-style-guide.org][Scheme & Lisp Style Guide]] - Riastradh's Lisp Style Rules for some really clean Scheme, Lisp and Guile code.
 
-<2024-12-09 ma> - [[file:articles/gnu-linux/podman-root-less-guix.org][Podman root-less setup on GNU Guix system for easy containers under the Shepherd's system]] - By leveraging Podman, a daemonless container engine, we can achieve rootless containerization, enhancing security and flexibility with Guix.
+<2024-12-09 ma> [[file:articles/gnu-linux/podman-root-less-guix.org][Podman root-less setup on GNU Guix system for easy containers under the Shepherd's system]] - By leveraging Podman, a daemonless container engine, we can achieve rootless containerization, enhancing security and flexibility with Guix.
 
-<2024-12-04 wo> - [[file:articles/emacs/yaml-schemas-in-emacs-eglot.org][YAML Schemas in Emacs with Eglot]] - Are you editing YAML files and would like to use JSON Schemas for YAML in Emacs ?
+<2024-12-04 wo> [[file:articles/emacs/yaml-schemas-in-emacs-eglot.org][YAML Schemas in Emacs with Eglot]] - Are you editing YAML files and would like to use JSON Schemas for YAML in Emacs ?
 
-<2024-12-03 di> - [[https://guix.gnu.org/blog/2018/multi-dimensional-transactions-and-rollbacks-oh-my/][How Guix enables multi-dimensional rollbacks and more reproducibility!]]
+<2024-12-03 di> [[https://guix.gnu.org/blog/2018/multi-dimensional-transactions-and-rollbacks-oh-my/][How Guix enables multi-dimensional rollbacks and more reproducibility!]]
 
 <2024-12-02 ma> - [[https://artanis.dev/blog/why-to-port-to-artanis.html][Why port web Scheme applications to Artanis?]]
 
-<2024-08-13 Tue> - [[file:articles/emacs/emacs-registers.org][Emacs registers - a god-send for your day job]] - Ever had to work very long files, in projects that you are not familiar with, and felt very lost, without an anchor point? Enter Emacs and its registry system, which allows you to "bookmark" locations of a file (buffer) and return to them, and much much more!
+<2024-08-13 Tue> [[file:articles/emacs/emacs-registers.org][Emacs registers - a god-send for your day job]] - Ever had to work very long files, in projects that you are not familiar with, and felt very lost, without an anchor point? Enter Emacs and its registry system, which allows you to "bookmark" locations of a file (buffer) and return to them, and much much more!
 
-<2024-06-18 di> - [[file:articles/development/tech-radar.org][My Tech Radar]] - Tech changes fast. But it’s becoming an ever-more critical component of success.
+<2024-06-18 di> [[file:articles/development/tech-radar.org][My Tech Radar]] - Tech changes fast. But it’s becoming an ever-more critical component of success.
 
-<2024-06-17 Mon> - [[file:articles/personal/brief-aan-mijzelf.org][Brief aan Mijzelf - Letter to myself]] - Jij en ik weten dat levend zijn pieken en dalen betekent.
+<2024-06-17 Mon> [[file:articles/personal/brief-aan-mijzelf.org][Brief aan Mijzelf - Letter to myself]] - Jij en ik weten dat levend zijn pieken en dalen betekent.
 
-<2024-04-20 za> - [[file:articles/haskell/free-alacarte.org][Free à la Carte]] - Modeling effects with free monads in a simple and composable way with Haskell. Checkout my custom library and how to use it.
+<2024-04-20 za> [[file:articles/haskell/free-alacarte.org][Free à la Carte]] - Modeling effects with free monads in a simple and composable way with Haskell. Checkout my custom library and how to use it.
 
 <2024-02-27 di> - [[file:articles/development/sql-select-all.org][Why SQL SELECT * is a bad idea]] - Doing a ~SELECT *~ may seem like a time-saver, but it's actually setting you up for problems in the long run, specially when database schema changes.
 
