@@ -151,6 +151,8 @@ pre {
 
 .nav-link {
     padding: 1rem;
+    font-style: normal;
+    text-transform: uppercase;
 }
 
 .org-ul {
