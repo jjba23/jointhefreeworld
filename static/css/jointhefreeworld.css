@@ -119,9 +119,9 @@ code {
 }
 
 pre {
-    background: #efefef;
+    background: rgba(223,223,223, 0.2);
     color: #000;
-    border: 1px solid rgba(223,223,223, 0.2);
+    border: 1px solid rgba(223,223,223, 0.4);
     padding-left: 1.2rem;
     padding-right: 1.2rem;
     padding-top: 2.2rem;
