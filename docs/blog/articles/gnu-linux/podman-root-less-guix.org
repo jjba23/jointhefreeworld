@@ -20,6 +20,8 @@ Every engineer in anno 2024 ends up spinning a "Docker" container or two in thei
 
 ** Why not Docker?
 
+Podman is basically an upgrade in several fronts:
+
 - Security
 - Simplicity
 - Modularity
@@ -115,17 +117,18 @@ Make sure you reboot and have cleaned any previous trace of Docker.
 
 
 Check if things work then:
-- ~podman ps -a~
-- ~podman run --rm alpine ls / -lia~
-- ~podman images~
-- ~podman ps -a~
-- ~podman run -dt -p 8080:80/tcp httpd~
-- ~podman stop -l~
-- ~podman rm -l~
+
+#+begin_src sh
+podman ps -a
+podman run --rm alpine ls / -lia
+podman images
+podman ps -a
+podman run -dt -p 8080:80/tcp httpd
+podman stop -l
+podman rm -l
+#+end_src
 
 Or run your favourite integration test pipeline.
-
-
 
 
 
