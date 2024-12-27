@@ -12,7 +12,7 @@ The universe blessed me and the GNU inspired me and I am configuring most of my 
 
 This includes things like: operating system (Guix), project management, websites, curriculum vitae, Emacs, Qutebrowser, etc.
 
-
+[[/static/img/2024-12-27T21-56-27,947274345+01-00.png]]
 
 ** Configurability
 
