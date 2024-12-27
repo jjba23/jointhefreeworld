@@ -1,0 +1,69 @@
+#+title: Embracing the eternal Sexp wisdom with the GNU
+
+
+/Behold the holy Sexp/
+
+
+=(sqrt (+ 14 5 3 1))=
+
+I have recently reached new heights in declarative configurations of operating systems, programs and my workflow ⚙️
+
+The universe blessed me and the GNU inspired me and I am configuring most of my life and projects with several variants of Lisp and dialects.
+
+This includes things like: operating system (Guix), project management, websites, curriculum vitae, Emacs, Qutebrowser, etc.
+
+
+
+** Configurability
+
+One of the things I will achieve among many others, is that with a change of one variable i can change completely all themes and settings for the entire system and all programs.
+
+Even programs that are not aware of dark/light mode stuff, they will be forced to by me and I never lose state.
+
+I am not afraid to change computers, my config works and is reproducible.
+
+
+** Software that lasts forever
+
+a great thing is that the stuff you build with Lisp is made to last. Lisp is mature, and due to how it works, things are never out of date, and "everything is basically a list", sounds strange at first but its insanely powerful.
+
+Lisp was also was the first language used for AI development, and still is big at that.
+
+** My mission
+
+I am trying to build configurable, hacker friendly stuff for the next 40 years and for that I am of opinion everyone should use a Lisp.
+
+If you need more complicated data modelling then i'd reach for Haskell. If you need low level shit then Rust or Go.
+
+Also, the GNU project and Free Software Foundation defined Lisp (Guile Scheme) as the official language for the project so a big one for me, and of course also my belovedtext editor (Emacs) is configured with it.
+
+
+-----
+
+I want you to look at the code for iter-vitae my new *Curriculum Vitae* generator, you will like it.
+
+This uses SXML, which is HTML as Lisp - kinda like components.
+
+
+** Iter Vitae: "Journey of Life"
+
+/the progression of one's life and career/
+
+See at codeberg.org
+https://codeberg.org/jjba23/iter-vitae
+
+I recommend you to download a zip file and just get a feel
+
+-----
+
+
+** Supreme Sexp System - SSS
+
+/a Lisp machine adventure/
+
+Then if you really wanna go down the rabbit hole check out my Supreme Sexp System,
+
+With this, you can configure your entire operating system and programs declaratively, with Lisp.
+
+See at codeberg.org
+https://codeberg.org/jjba23/sss
