@@ -21,6 +21,8 @@ jointhefreeworld.org
 
 ** Highlighted articles
 
+<2024-12-27 vr> [[file:articles/lisps/embracing-the-eternal-sexp-wisdom-of-the-gnu.org][Embracing the eternal Sexp wisdom with the GNU]] - I have recently reached new heights in declarative configurations of operating systems, programs and my workflow ⚙️ and development.
+
 <2024-12-18 wo> [[file:articles/lisps/scheme-and-lisp-style-guide.org][Scheme & Lisp Style Guide]] - Riastradh's Lisp Style Rules for some really clean Scheme, Lisp and Guile code.
 
 <2024-12-09 ma> [[file:articles/gnu-linux/podman-root-less-guix.org][Podman root-less setup on GNU Guix system for easy containers under the Shepherd's system]] - By leveraging Podman, a daemonless container engine, we can achieve rootless containerization, enhancing security and flexibility with Guix.
