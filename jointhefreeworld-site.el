@@ -129,12 +129,15 @@
                  (div (@ (class "row"))
                       (div (@ (class "column"))
                            (p "© 2024 jointhefreeworld"))
+                      (small "Licensed under the GNU GPL v3 or newer")
                       (div (@ (class "column align-right"))
                            (p
                             (a (@ (href "https://codeberg.org/jjba23/jointhefreeworld"))
                                (img (@ (src ,(concat jfw/site-url "/img/github.png"))
                                        (style "width: 120px")
-                                       (alt "Contribute on Codeberg")))))))))))
+                                       (alt "View the code on Codeberg")))))
+                           (p
+                            (a (@(href ,(string-join (list jfw/site-url "rss.xml") "/"))) "RSS"))))))))
 
 (defun get-article-output-path (org-file pub-dir)
   (let ((article-dir (concat pub-dir
