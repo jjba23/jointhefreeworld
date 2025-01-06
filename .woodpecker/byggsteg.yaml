@@ -12,5 +12,5 @@ steps:
         -X POST -H 'Content-Type: application/x-www-form-urlencoded' \
         -H 'Authorization: Basic $BYGGSTEG_KEY' \
         --data-urlencode \
-        'job-code=`((project . "jointhefreeworld")(branch-name . "trunk")(task . "pull-and-deploy")(clone-url . "https://codeberg.org/jjba23/jointhefreeworld"))'
+        'job-code=(lambda() `((project . "jointhefreeworld")(branch-name . "trunk")(task . "pull-and-deploy")(clone-url . "https://codeberg.org/jjba23/jointhefreeworld")))'
 
