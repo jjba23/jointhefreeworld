@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 2024 Josep Bigorra
 
-;; Version: 0.1.0
+;; Version: 0.1.1
 ;; Author: Josep Bigorra <jjbigorra@gmail.com>
 ;; Maintainer: Josep Bigorra <jjbigorra@gmail.com>
 ;; URL: https://codeberg.org/jjba23/jointhefreeworld
@@ -129,12 +129,15 @@
                  (div (@ (class "row"))
                       (div (@ (class "column"))
                            (p "© 2024 jointhefreeworld"))
+                      (small "Licensed under the GNU GPL v3 or newer")
                       (div (@ (class "column align-right"))
                            (p
                             (a (@ (href "https://codeberg.org/jjba23/jointhefreeworld"))
                                (img (@ (src ,(concat jfw/site-url "/img/github.png"))
                                        (style "width: 120px")
-                                       (alt "Contribute on Codeberg")))))))))))
+                                       (alt "View the code on Codeberg")))))
+                           (p
+                            (a (@(href ,(string-join (list jfw/site-url "rss.xml") "/"))) "RSS"))))))))
 
 (defun get-article-output-path (org-file pub-dir)
   (let ((article-dir (concat pub-dir
@@ -407,11 +410,9 @@ holding contextual information."
       ;; NOTE: Hardcoding this at 8am for now
       (encode-time 0 0 8 day month year))))
 
-                                        ;(defun jfw/rss-extract-summary (html-file)
-                                        ;  )
 
-(setq webfeeder-title-function #'jfw/rss-extract-title
-      webfeeder-date-function #'jfw/rss-extract-date)
+(setq webfeeder-title-function #'jfw/rss-extract-title)
+;; webfeeder-date-function #'jfw/rss-extract-date)
 
 (setq org-publish-project-alist
       (list '("jointhefreeworld:main"
@@ -429,42 +430,25 @@ holding contextual information."
               :publishing-function org-html-publish-to-html
               :with-title t
               :recursive t
-              :with-timestamps t)  
-            ))
-
-;; TODO: Generate a _redirects file instead once Codeberg Pages releases a new version
-(defun jfw/generate-redirects (redirects)
-  (dolist (redirect redirects)
-    (let ((output-path (concat "./public/" (car redirect) "/index.html"))
-          (redirect-url (concat jfw/site-url "/" (cdr redirect) "/")))
-      (make-directory (file-name-directory output-path) t)
-      (with-temp-file output-path
-        (insert
-         (jfw/generate-page "Redirecting..."
-                            (concat "You are being redirected to "
-                                    "<a href=\"" redirect-url "\">" redirect-url "</a>")
-                            '()
-                            :head-extra
-                            (concat "<meta http-equiv=\"refresh\" content=\"0; url='" redirect-url "'\"/>")))))))
+              :with-timestamps t)))
 
 (defun jfw/publish ()
   "Publish the entire site."
   (interactive)
-  (org-publish-all (string-equal (or (getenv "FORCE")
-                                     (getenv "CI"))
-                                 "true"))  )
+  (org-publish-all t)
+  (webfeeder-build "rss.xml"
+                   "./public"
+                   jfw/site-url
+                   (let ((default-directory (expand-file-name "./public/")))
+                     (remove "news/index.html"
+                             (directory-files-recursively "blog/articles"
+                                                          ".*\\.html$")))
+                   :builder 'webfeeder-make-rss
+                   :title "Jointhefreeworld News"
+                   :description "News and Insights from the Jointhefreeworld project!"
+                   :author "Josep Bigorra")
+  )
 
-;; (webfeeder-build "rss/news.xml"
-;;                  "./public"
-;;                  jfw/site-url
-;;                  (let ((default-directory (expand-file-name "./public/")))
-;;                    (remove "news/index.html"
-;;                            (directory-files-recursively "news"
-;;                                                         ".*\\.html$")))
-;;                  :builder 'webfeeder-make-rss
-;;                  :title "System Crafters News"
-;;                  :description "News and Insights from System Crafters!"
-;;                  :author "David Wilson")
 
 
 
