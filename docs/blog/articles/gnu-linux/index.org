@@ -2,6 +2,8 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
+<2025-01-11 za> - [[file:gnu-guix-virtual-machine-image-aarch64.org][GNU Guix Virtual Machine on AArch64/ARM64]] - The Guix ISO installer didn't work for me on aarch64. Making a qcow2 VM image or doing a manual install did work.
+
 <2024-12-09 ma> [[file:podman-root-less-guix.org][Podman root-less setup on GNU Guix system for easy containers under the Shepherd's system]] -  By leveraging Podman, a daemonless container engine, we can achieve rootless containerization, enhancing security and flexibility with Guix.
 
 <2024-12-03 di> [[https://guix.gnu.org/blog/2018/multi-dimensional-transactions-and-rollbacks-oh-my/][How Guix enables multi-dimensional rollbacks and more reproducibility!]]

@@ -21,6 +21,8 @@ jointhefreeworld.org
 
 ** Highlighted articles
 
+<2025-01-11 za> - [[file:articles/gnu-linux/gnu-guix-virtual-machine-image-aarch64.org][GNU Guix Virtual Machine on AArch64/ARM64]] - The Guix ISO installer didn't work for me on aarch64. Making a qcow2 VM image or doing a manual install did work.
+
 <2024-12-27 vr> [[file:articles/lisps/embracing-the-eternal-sexp-wisdom-of-the-gnu.org][Embracing the eternal Sexp wisdom with the GNU]] - I have recently reached new heights in declarative configurations of operating systems, programs and my workflow ⚙️ and development.
 
 <2024-12-18 wo> [[file:articles/lisps/scheme-and-lisp-style-guide.org][Scheme & Lisp Style Guide]] - Riastradh's Lisp Style Rules for some really clean Scheme, Lisp and Guile code.
