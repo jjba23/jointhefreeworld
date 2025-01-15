@@ -431,6 +431,14 @@ holding contextual information."
               :publishing-function org-html-publish-to-html
               :with-title t
               :recursive t
+              :with-timestamps t)
+            '("jointhefreeworld:portfolio"
+              :base-directory "./docs/portfolio/"
+              :base-extension "org"
+              :publishing-directory "./public/portfolio"
+              :publishing-function org-html-publish-to-html
+              :with-title t
+              :recursive t
               :with-timestamps t)))
 
 (defun jfw/publish ()
