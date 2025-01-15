@@ -112,6 +112,7 @@
                            (nav (@ (class "nav"))
                                 (a (@ (class "nav-link") (href "/")) "Home") " "
                                 (a (@ (class "nav-link") (href "/blog/")) "Blog") " "
+                                (a (@ (class "nav-link") (href "/portfolio/")) "Portfolio") " "
                                 (a (@ (class "nav-link") (href "/cv/")) "CV/Resume") " "
                                 (a (@ (class "nav-link") (href "https://codeberg.org/jjba23")) "Codeberg") " "
                                 (a (@ (class "nav-link") (href "https://www.linkedin.com/in/josepjba/")) "LinkedIn") " "

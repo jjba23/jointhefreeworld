@@ -1,0 +1,14 @@
+#+title: Joe's Portfolio
+#+options: num:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+
+** Scheme projects
+
+[[https://codeberg.org/jjba23/sss][SSS - Supreme Sexp System]] - This custom GNU Guix + Linux setup enhances customization to infinity, encourages the hacking spirit, and offers a superior user experience thanks in part too to REPL (Read Eval Print Loop) and Lisps. Sway, Foot, Qutebrowser, etc.
+
+** Scala projects
+
+[[https://codeberg.org/jjba23/zzspec][zzspec]] - a library that helps you write better tests leveraging ZIO and ZIO test, as well as testcontainers, black box and integration tests.
+
+[[https://codeberg.org/jjba23/dmtscala][dmtscala]] - a data model translator that can take Scala case classes and other data models and convert them to several programming languages.

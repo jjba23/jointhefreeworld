@@ -12,4 +12,5 @@ deploy:
 	rm -rfv /srv/http/jointhefreeworld.org/index.html
 	rm -rfv /srv/http/jointhefreeworld.org/blog
 	rm -rfv /srv/http/jointhefreeworld.org/cv
+	rm -rfv /srv/http/jointhefreeworld.org/portfolio
 	cp -rfv public/* /srv/http/jointhefreeworld.org/
