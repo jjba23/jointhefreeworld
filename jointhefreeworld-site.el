@@ -432,6 +432,14 @@ holding contextual information."
               :with-title t
               :recursive t
               :with-timestamps t)
+            '("jointhefreeworld:manuals"
+              :base-directory "./docs/manuals/"
+              :base-extension "org"
+              :publishing-directory "./public/manuals"
+              :publishing-function org-html-publish-to-html
+              :with-title t
+              :recursive t
+              :with-timestamps t)
             '("jointhefreeworld:portfolio"
               :base-directory "./docs/portfolio/"
               :base-extension "org"
