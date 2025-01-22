@@ -115,6 +115,7 @@
                                 (a (@ (class "nav-link") (href "/portfolio/")) "Portfolio") " "
                                 (a (@ (class "nav-link") (href "/cv/")) "CV/Resume") " "
                                 (a (@ (class "nav-link") (href "https://codeberg.org/jjba23")) "Codeberg") " "
+                                (a (@ (class "nav-link") (href "/manuals/")) "Manuals") " "
                                 (a (@ (class "nav-link") (href "https://www.linkedin.com/in/josepjba/")) "LinkedIn") " "
                                 (a (@ (class "nav-link") (href "https://wikimusic.jointhefreeworld.org")) "WikiMusic") " "
                                 (a (@ (class "nav-link") (href "https://casadelcata.es")) "Casa del Cata") " "
