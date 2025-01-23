@@ -112,8 +112,10 @@
                            (nav (@ (class "nav"))
                                 (a (@ (class "nav-link") (href "/")) "Home") " "
                                 (a (@ (class "nav-link") (href "/blog/")) "Blog") " "
+                                (a (@ (class "nav-link") (href "/portfolio/")) "Portfolio") " "
                                 (a (@ (class "nav-link") (href "/cv/")) "CV/Resume") " "
                                 (a (@ (class "nav-link") (href "https://codeberg.org/jjba23")) "Codeberg") " "
+                                (a (@ (class "nav-link") (href "/manuals/")) "Manuals") " "
                                 (a (@ (class "nav-link") (href "https://www.linkedin.com/in/josepjba/")) "LinkedIn") " "
                                 (a (@ (class "nav-link") (href "https://wikimusic.jointhefreeworld.org")) "WikiMusic") " "
                                 (a (@ (class "nav-link") (href "https://casadelcata.es")) "Casa del Cata") " "
@@ -427,6 +429,22 @@ holding contextual information."
               :base-directory "./docs/blog/"
               :base-extension "org"
               :publishing-directory "./public/blog"
+              :publishing-function org-html-publish-to-html
+              :with-title t
+              :recursive t
+              :with-timestamps t)
+            '("jointhefreeworld:manuals"
+              :base-directory "./docs/manuals/"
+              :base-extension "org"
+              :publishing-directory "./public/manuals"
+              :publishing-function org-html-publish-to-html
+              :with-title t
+              :recursive t
+              :with-timestamps t)
+            '("jointhefreeworld:portfolio"
+              :base-directory "./docs/portfolio/"
+              :base-extension "org"
+              :publishing-directory "./public/portfolio"
               :publishing-function org-html-publish-to-html
               :with-title t
               :recursive t

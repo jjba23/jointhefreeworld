@@ -19,13 +19,13 @@ Yes, you can build one yourself, but after I'd put in the time to figure out how
 waiting for partition '31393730-3031-3031-3139-333333313833' to appear...
 #+end_example
 
-The Guix ISO installer didn't work for me on aarch64. Making a VM image or doing a manual install did work.
+The Guix ISO installer didn't work for me on aarch64. Making a qcow2 VM image or doing a manual install did work.
 
 I show a list of steps for getting Guix installed on an aarch64 VM on macOS, and include a small starter confguration file.
 
 It can be helpful to pull a specific commit of the distro that includes a working, precompiled kernel.
 
-7. Update the Guix package descriptions and basic packages:
+Update the Guix package descriptions and basic packages:
 
    #+begin_example
     user@debian:~$ guix pull
@@ -33,10 +33,9 @@ It can be helpful to pull a specific commit of the distro that includes a workin
 
    This will take a while.
 
-Create a Guix configuration file on the Debian system. It defines how
-   your Guix install is set up and what it will initially contain.
+Create a Guix configuration file on the Debian system. It defines how your Guix install is set up and what it will initially contain.
 
-   Put the following into a file called =config.scm= on Debian:
+Put the following into a file called =config.scm= on Debian:
 
    #+begin_example
     (use-modules (gnu))

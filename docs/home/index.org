@@ -9,7 +9,9 @@ Welcome to my few square meters of Internet 🤟🏼 !
 I am a /Software Engineer/ ⚙️, member of /the church of Emacs/, /GNU/Linux, Guix, Nix and Haskell fanatic/, living in the Netherlands 🇳🇱.
 You could also describe me as Functional Programming/ Enthusiast, /Free Software/ Advocate and perfectionist.
 
-[[../blog/index.html][Visit my blog]],  where I discuss engineering, my thoughts on life, and write some guides.
+*[[../blog/index.html][Visit my blog]]*,  where I discuss engineering, my thoughts on life, and write some guides.
+
+*[[../portfolio/index.html][Visit my portfolio]]*,  where I showcase my projects and software I build.
 
 * My own software 🐧
 
