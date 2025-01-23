@@ -191,7 +191,7 @@
             (title ,(concat title " - jointhefreeworld")))
            (body ,@(unless exclude-header
                      (jfw/site-header))
-                 (div (@ (class "container"))
+                 (div (@ (class "container flex justify-center"))
                       (div (@ (class "site-post"))
                            (h1 (@ (class "site-post-title"))
                                ,title)

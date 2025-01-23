@@ -99,7 +99,7 @@ body {
 p {
     max-width: 86ch;
     font-size: 1rem;
-    font-style: italic;
+   
 }
 
 
@@ -155,14 +155,21 @@ pre {
     text-transform: uppercase;
 }
 
-.org-ul {
+.nav-link:hover {
+    color: #713600;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #713600;
+    text-decoration: underline;
+}
+
+.nav {
     display: flex;
     flex-direction: row;
-    row-gap: 1.1rem;
-    column-gap: 2.2em;
     flex-wrap: wrap;
     align-items: center;
-    margin-start: 1rem;
     justify-content: start;
     list-style: none;
 }
@@ -171,3 +178,10 @@ li {
     text-transform: uppercase;
 }
 
+.flex { display: flex }
+
+.flex-wrap { flex-wrap: wrap }
+
+.flex-row { flex-direction: row }
+
+.justify-center { justify-content: center }
