@@ -102,24 +102,23 @@
      (jfw/embed-video path))))
 
 (defun jfw/site-header ()
-  (list `(header (@ (class "site-header"))
+  (list
+   `(div (@ (class "site-title"))
+         (em "jointhefreeworld.org"))
+   `(header (@ (class "site-header flex justify-center"))
+            (div (@ (class "site-masthead"))
                  (div (@ (class "container"))
-                      (div (@ (class "site-title"))
-                           (em "jointhefreeworld.org")
-                           ))
-                 (div (@ (class "site-masthead"))
-                      (div (@ (class "container"))
-                           (nav (@ (class "nav"))
-                                (a (@ (class "nav-link") (href "/")) "Home") " "
-                                (a (@ (class "nav-link") (href "/blog/")) "Blog") " "
-                                (a (@ (class "nav-link") (href "/portfolio/")) "Portfolio") " "
-                                (a (@ (class "nav-link") (href "/cv/")) "CV/Resume") " "
-                                (a (@ (class "nav-link") (href "https://codeberg.org/jjba23")) "Codeberg") " "
-                                (a (@ (class "nav-link") (href "/manuals/")) "Manuals") " "
-                                (a (@ (class "nav-link") (href "https://www.linkedin.com/in/josepjba/")) "LinkedIn") " "
-                                (a (@ (class "nav-link") (href "https://wikimusic.jointhefreeworld.org")) "WikiMusic") " "
-                                (a (@ (class "nav-link") (href "https://casadelcata.es")) "Casa del Cata") " "
-                                ))))))
+                      (nav (@ (class "nav"))
+                           (a (@ (class "nav-link") (href "/")) "Home") " "
+                           (a (@ (class "nav-link") (href "/blog/")) "Blog") " "
+                           (a (@ (class "nav-link") (href "/portfolio/")) "Portfolio") " "
+                           (a (@ (class "nav-link") (href "/cv/")) "CV/Resume") " "
+                           (a (@ (class "nav-link") (href "https://codeberg.org/jjba23")) "Codeberg") " "
+                           (a (@ (class "nav-link") (href "/manuals/")) "Manuals") " "
+                           (a (@ (class "nav-link") (href "https://www.linkedin.com/in/josepjba/")) "LinkedIn") " "
+                           (a (@ (class "nav-link") (href "https://wikimusic.jointhefreeworld.org")) "WikiMusic") " "
+                           (a (@ (class "nav-link") (href "https://casadelcata.es")) "Casa del Cata") " "
+                           ))))))
 
 
 
@@ -135,9 +134,7 @@
                       (div (@ (class "column align-right"))
                            (p
                             (a (@ (href "https://codeberg.org/jjba23/jointhefreeworld"))
-                               (img (@ (src ,(concat jfw/site-url "/img/github.png"))
-                                       (style "width: 120px")
-                                       (alt "View the code on Codeberg")))))
+                               "🔗 source code on Codeberg"))
                            (p
                             (a (@(href ,(string-join (list jfw/site-url "rss.xml") "/"))) "RSS"))))))))
 
