@@ -11,7 +11,6 @@ deploy:
 	CI=true make publish
 	rm -rfv /srv/http/jointhefreeworld.org/index.html
 	rm -rfv /srv/http/jointhefreeworld.org/blog
-	rm -rfv /srv/http/jointhefreeworld.org/cv
 	rm -rfv /srv/http/jointhefreeworld.org/portfolio
 	rm -rfv /srv/http/jointhefreeworld.org/manuals/index.html
 	cp -rfv public/* /srv/http/jointhefreeworld.org/
