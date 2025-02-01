@@ -117,7 +117,7 @@ pre {
     line-height: 1.6rem;
     font-family: 'Adwaita Mono', monospace;
     font-size: 0.9rem;
-    overflow-x: auto;
+    overflow-x: scroll;
     font-style: normal;
 }
 
