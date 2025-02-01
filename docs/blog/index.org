@@ -4,19 +4,9 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 
-jointhefreeworld.org
-
 ** Categories
 
-- [[/blog/articles/emacs/][Emacs]]
-- [[/blog/articles/lisps/][Lisps]]
-- [[/blog/articles/haskell/][Haskell]]
-- [[/blog/articles/gnu-linux/][GNU/Linux]]
-- [[/blog/articles/development/][Dev]]
-- [[/blog/articles/ci/][CI/CD]]
-- [[/blog/articles/go/][Go]]
-- [[/blog/articles/freebsd/][FreeBSD]]
-- [[/blog/articles/personal/][Personal]]  
+[[/blog/articles/emacs/][Emacs]] | [[/blog/articles/lisps/][Lisps]] | [[/blog/articles/haskell/][Haskell]] | [[/blog/articles/gnu-linux/][GNU/Linux]] | [[/blog/articles/development/][Dev]] | [[/blog/articles/ci/][CI/CD]] | [[/blog/articles/go/][Go]] | [[/blog/articles/freebsd/][FreeBSD]] | [[/blog/articles/personal/][Personal]]  
 
 
 ** Highlighted articles

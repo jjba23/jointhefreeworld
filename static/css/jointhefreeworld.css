@@ -51,7 +51,7 @@ html {
 }
 
 body {
-    font-family: 'Adwaita Mono', monospace;
+    font-family: 'Adwaita Sans', sans-serif;
 }
 
 a, button, h1, h2, h3, h4, h5, h6 {
@@ -95,13 +95,12 @@ p {
 code {
     background: rgba(113, 54, 0, 0.1);
     color: #1e1e1e;
-    font-weight: 700;
-    padding-left: 0.2rem;
-    padding-right: 0.2rem;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
     padding-top: 0.2rem;
     padding-bottom: 0.2rem;
     border-radius: 0.6rem;
-    font-family: 'Monaspace Neon', monospace;
+    font-family: 'Adwaita Mono', monospace;
     font-size: 0.9rem;
     font-style: normal;    
 }
@@ -116,9 +115,9 @@ pre {
     padding-bottom: 2.2rem;
     border-radius: 0.6rem;
     line-height: 1.6rem;
-    font-family: 'Monaspace Neon', monospace;
+    font-family: 'Adwaita Mono', monospace;
     font-size: 0.9rem;
-    overflow-x: scroll;
+    overflow-x: auto;
     font-style: normal;
 }
 
@@ -167,7 +166,7 @@ a:hover {
     list-style: none;
 }
 
-li {
+.nav > li {
     text-transform: uppercase;
 }
 
