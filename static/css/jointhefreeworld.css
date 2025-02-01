@@ -59,7 +59,7 @@ a, button, h1, h2, h3, h4, h5, h6 {
 }
 
 a {
-    color: #824700;
+    color: #935822;
     text-decoration: none;
     font-style: normal;
     font-weight: 900;
@@ -84,10 +84,13 @@ body {
 p {
     max-width: 86ch;
     font-size: 1rem;
-    font-style: italic;
 }
 
 
+.site-masthead {
+    max-width: 82ch;
+    font-size: 0.9rem;
+}
 
 code {
     background: rgba(113, 54, 0, 0.1);
@@ -135,19 +138,31 @@ pre {
 }
 
 .nav-link {
-    padding: 1rem;
+    color: #935822;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
     font-style: normal;
     text-transform: uppercase;
+    font-size: 0.9em;
 }
 
-.org-ul {
+.nav-link:hover {
+    color: #713600;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #713600;
+    text-decoration: underline;
+}
+
+.nav {
     display: flex;
     flex-direction: row;
-    row-gap: 1.1rem;
-    column-gap: 2.2em;
     flex-wrap: wrap;
     align-items: center;
-    margin-start: 1rem;
     justify-content: start;
     list-style: none;
 }
@@ -156,3 +171,10 @@ li {
     text-transform: uppercase;
 }
 
+.flex { display: flex }
+
+.flex-wrap { flex-wrap: wrap }
+
+.flex-row { flex-direction: row }
+
+.justify-center { justify-content: center }
