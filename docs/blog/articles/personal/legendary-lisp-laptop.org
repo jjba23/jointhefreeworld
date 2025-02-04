@@ -9,7 +9,9 @@ For the past month or so, I've been running Guix system on my Framework laptop, 
 
 I have affectionately also started calling it a Legendary Lisp Laptop - LLL
 
-[[https://jointhefreeworld.org/static-assets/other/img/sss-2025-02-04.png]]
+Below you can see the laptop before placing the keyboard, display bezel, SSD and RAM in. You can tell this is simple and easy to repair :)
+
+[[https://jointhefreeworld.org/static-assets/blog/img/lisp-machine-laptop/4.jpg]]
 
 ** Why Framework?
 
@@ -41,10 +43,6 @@ Below you can see the SSD, RAM and keyboard.
 
 [[https://jointhefreeworld.org/static-assets/blog/img/lisp-machine-laptop/3.jpg]]
 
-Below you can see the laptop before placing the keyboard, display bezel, SSD and RAM in. You can tell this is simple and easy to repair :)
-
-[[https://jointhefreeworld.org/static-assets/blog/img/lisp-machine-laptop/4.jpg]]
-
 Below you can see the Guix install screen I booted using a USB.
 
 Note: I had to manually tweak the BIOS settings a bit, disabling secure boot and setting the date and time correctly, to get the installer to connect properly to Internet. Framework provides a really nice BIOS actually, really happy about it.
@@ -58,6 +56,10 @@ Below you can see me running Emacs on a TTY, working without a graphical session
 Below you can see the Framework running SSS Sway session, with Emacs, Thunar and the Foot terminal.
 
 [[https://jointhefreeworld.org/static-assets/blog/img/lisp-machine-laptop/7.jpg]]
+
+And here SSS in all its glory:
+
+[[https://jointhefreeworld.org/static-assets/other/img/sss-2025-02-04.png]]
 
 ** About the software I run on it
 
