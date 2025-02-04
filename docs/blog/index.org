@@ -11,6 +11,8 @@
 
 ** Highlighted articles
 
+<2025-02-04 di> [[/blog/articles/personal/legendary-lisp-laptop/index.html][Legendary Lisp Laptop - Framework]] - a modern Lisp machine with Framework laptop
+
 <2025-01-11 za> - [[/blog/articles/gnu-linux/gnu-guix-virtual-machine-image-aarch64/index.html][GNU Guix Virtual Machine on AArch64/ARM64]] - The Guix ISO installer didn't work for me on aarch64. Making a qcow2 VM image or doing a manual install did work.
 
 <2024-12-27 vr> [[/blog/articles/lisps/embracing-the-eternal-sexp-wisdom-of-the-gnu/index.html][Embracing the eternal Sexp wisdom with the GNU]] - I have recently reached new heights in declarative configurations of operating systems, programs and my workflow ⚙️ and development.

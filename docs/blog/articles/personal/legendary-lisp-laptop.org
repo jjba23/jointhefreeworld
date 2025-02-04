@@ -1,0 +1,81 @@
+#+title: Legendary Lisp Laptop - a modern Lisp machine with Framework laptop
+#+options: num:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+date: <2025-02-04 di>
+#+language: en
+
+For the past month or so, I've been running Guix system on my Framework laptop, turning it into what I like to call a modern Lisp machine.
+
+I have affectionately also started calling it a Legendary Lisp Laptop - LLL
+
+[[https://jointhefreeworld.org/static-assets/other/img/sss-2025-02-04.png]]
+
+** Why Framework?
+
+Framework laptops stand out in a market dominated by disposable, locked-down devices. Their modular design means users can replace or upgrade parts easily, extending the laptop’s lifespan far beyond that of typical consumer models. This approach not only saves money but also significantly reduces electronic waste.
+
+Check out their website here: https://frame.work/
+
+By designing a laptop that prioritizes repairability and fixability, Framework empowers users to maintain and upgrade their devices instead of discarding them. This has a profound ecological impact — fewer laptops ending up in landfills means less e-waste and a more sustainable approach to personal computing.
+
+Choosing a Framework laptop isn’t just about flexibility and performance; it’s also a commitment to sustainability and responsible consumption. If you're looking for a machine that aligns with both high customizability and environmental consciousness, Framework is the way to go.
+
+I am extremely pleased with the laptop. Keyboard is great actually, it has also backlight, screen is high resolution and has very nice colors, WiFi range is very good, and CPU is surprisingly good, even with me choosing the lowest-powered one. Overall I am extremely satisfied with this machine, and the price too.
+
+** The assembly process
+
+Below follow a lot of pictures about the unboxing and assembly process. I chose for the DIY edition, which means you need to assemble the entire thing yourself.
+
+You can see the assembly guide of Framework here: https://guides.frame.work/Guide/Framework+Laptop+13+(AMD+Ryzen%E2%84%A2+7040+Series)+DIY+Edition+Quick+Start+Guide/211
+
+You can also choose for a model that comes pre-assembled, but for me, this is part of the fun.
+
+[[https://jointhefreeworld.org/static-assets/blog/img/lisp-machine-laptop/2.jpg]]
+
+Below you can see the "hot-swappable" adapter cards, you can choose your connectors to your taste. I chose 2 USB-C, 1 HDMI, 1 USB-A and 1 ethernet port for every now and then.
+
+[[https://jointhefreeworld.org/static-assets/blog/img/lisp-machine-laptop/1.jpg]]
+
+Below you can see the SSD, RAM and keyboard.
+
+[[https://jointhefreeworld.org/static-assets/blog/img/lisp-machine-laptop/3.jpg]]
+
+Below you can see the laptop before placing the keyboard, display bezel, SSD and RAM in. You can tell this is simple and easy to repair :)
+
+[[https://jointhefreeworld.org/static-assets/blog/img/lisp-machine-laptop/4.jpg]]
+
+Below you can see the Guix install screen I booted using a USB.
+
+Note: I had to manually tweak the BIOS settings a bit, disabling secure boot and setting the date and time correctly, to get the installer to connect properly to Internet. Framework provides a really nice BIOS actually, really happy about it.
+
+[[https://jointhefreeworld.org/static-assets/blog/img/lisp-machine-laptop/5.jpg]]
+
+Below you can see me running Emacs on a TTY, working without a graphical session. I do this sometimes when I am in the mood :)
+
+[[https://jointhefreeworld.org/static-assets/blog/img/lisp-machine-laptop/6.jpg]]
+
+Below you can see the Framework running SSS Sway session, with Emacs, Thunar and the Foot terminal.
+
+[[https://jointhefreeworld.org/static-assets/blog/img/lisp-machine-laptop/7.jpg]]
+
+** About the software I run on it
+
+With Guix’s declarative system configuration and my setup which uses, among others, Emacs, Sway, Qutebrowser, in SSS (the Supreme Sexp System), this machine is my daily driver for both work and personal engineering projects.
+
+Guix is the perfect operating system for a Lisp enthusiast. It embraces the same principles: functional purity, immutability, and reproducibility. The entire system configuration is written in Lisp (Guile Scheme), making it a natural fit for someone who appreciates the elegance of Lisp. By using Guix, I can declaratively manage my entire system state and configurations, rolling back configurations seamlessly when needed.
+
+SSS, my custom environment, brings the power of s-expressions to every aspect of my workflow. Instead of relying on traditional shell scripting, I use Lisp to configure and automate my system.
+
+If you are interested, read more about it here: https://codeberg.org/jjba23/sss
+
+At work, I primarily develop in Scala, and despite my heavily Lisp-centric setup, this laptop functions perfectly for that. Guix allows me to keep isolated, reproducible environments using Guix (and Nix) shell, so I can spin up development environments without polluting my system.
+
+Whether I'm writing functional code, hacking on my Guix configuration, or working in Emacs Lisp, my laptop stays flexible and efficient.
+
+Using a Lisp-driven system in 2025 might sound niche, but it has brought immense joy and efficiency to my workflow. The Framework laptop itself is an excellent hardware choice due to its repairability and modular design, and Guix ensures my software stack remains under my control. With SSS, Emacs, and Sway, I feel like I'm using a machine that truly adapts to me, rather than the other way around.
+
+If you're interested in building your own modern Lisp machine, I highly recommend Fractal Design North cases for desktops, and Framework laptops for portable devices - also give Guix a spin.
+
+
+
