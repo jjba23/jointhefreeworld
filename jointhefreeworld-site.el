@@ -108,7 +108,7 @@
    `(header (@ (class "site-header flex"))
             (div (@ (class "site-masthead"))
                  (div (@ (class "container"))
-                      (details (@ (class "nav-details"))
+                      (details (@ (open "true")(class "nav-details"))
                                (summary "site navigation")
                                (nav (@ (class "nav"))
                                     (a (@ (class "nav-link") (href "/")) "Home") " "
