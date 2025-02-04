@@ -177,3 +177,6 @@ a:hover {
 .flex-row { flex-direction: row }
 
 .justify-center { justify-content: center }
+
+.figure { text-align:center }
+

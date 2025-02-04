@@ -222,9 +222,17 @@
                                (file-name-sans-extension
                                 (org-element-property :path link)))))
 
-  (let ((exported-link (org-export-custom-protocol-maybe link contents 'html info)))
+  (let ((exported-link (org-export-custom-protocol-maybe link contents 'html info))
+        (img-style "style=\"width: 100%; max-width: 800px; border-radius: 10px;\""))
     (cond
      (exported-link exported-link)
+     ((or (string-match-p "jpg\\'" (org-element-property :raw-link link))
+          (string-match-p "jpeg\\'" (org-element-property :raw-link link))
+          (string-match-p "png\\'" (org-element-property :raw-link link))
+          (string-match-p "webp\\'" (org-element-property :raw-link link)))
+      (format "<img %s src=\"%s\">"
+              img-style
+              (org-element-property :raw-link link)))
      ((equal contents nil)
       (format "<a href=\"%s\">%s</a>"
               (org-element-property :raw-link link)
