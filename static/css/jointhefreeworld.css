@@ -184,3 +184,7 @@ a:hover {
 .max-w-full { max-width: 100% }
 
 .site-post-title { text-align: center }
+
+summary { cursor: pointer }
+
+.nav-details  { width: 100% }

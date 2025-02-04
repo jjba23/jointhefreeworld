@@ -1,4 +1,4 @@
-#+title: Welcome to Joe's Blog
+#+title: Joe's Blog
 #+options: num:nil toc:nil
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
@@ -8,10 +8,9 @@
 
 [[/blog/articles/emacs/][Emacs]] | [[/blog/articles/lisps/][Lisps]] | [[/blog/articles/haskell/][Haskell]] | [[/blog/articles/gnu-linux/][GNU/Linux]] | [[/blog/articles/development/][Dev]] | [[/blog/articles/ci/][CI/CD]] | [[/blog/articles/go/][Go]] | [[/blog/articles/freebsd/][FreeBSD]] | [[/blog/articles/personal/][Personal]]  
 
-
 ** Highlighted articles
 
-<2025-02-04 di> [[/blog/articles/personal/legendary-lisp-laptop/index.html][Legendary Lisp Laptop - Framework]] - a modern Lisp machine with Framework laptop
+<2025-02-04 di> [[/blog/articles/gnu-linux/legendary-lisp-laptop/index.html][Legendary Lisp Laptop - Framework]] - a modern Lisp machine with Framework laptop
 
 <2025-01-11 za> - [[/blog/articles/gnu-linux/gnu-guix-virtual-machine-image-aarch64/index.html][GNU Guix Virtual Machine on AArch64/ARM64]] - The Guix ISO installer didn't work for me on aarch64. Making a qcow2 VM image or doing a manual install did work.
 

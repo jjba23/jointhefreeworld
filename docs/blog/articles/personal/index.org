@@ -2,6 +2,4 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
-<2025-02-04 di> [[/blog/articles/personal/legendary-lisp-laptop/index.html][Legendary Lisp Laptop - Framework]] - a modern Lisp machine with Framework laptop
-
 <2024-06-17 Mon> [[/blog/articles/personal/brief-aan-mijzelf/index.html][Brief aan Mijzelf - Letter to myself]] - Jij en ik weten dat levend zijn pieken en dalen betekent.
