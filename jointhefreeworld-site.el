@@ -105,20 +105,24 @@
   (list
    `(div (@ (class "site-title"))
          (em "jointhefreeworld.org"))
-   `(header (@ (class "site-header flex justify-center"))
+   `(header (@ (class "site-header flex"))
             (div (@ (class "site-masthead"))
                  (div (@ (class "container"))
-                      (nav (@ (class "nav"))
-                           (a (@ (class "nav-link") (href "/")) "Home") " "
-                           (a (@ (class "nav-link") (href "/blog/")) "Blog") " "
-                           (a (@ (class "nav-link") (href "/portfolio/")) "Portfolio") " "
-                           (a (@ (class "nav-link") (href "/cv/")) "CV/Resume") " "
-                           (a (@ (class "nav-link") (href "https://codeberg.org/jjba23")) "Codeberg") " "
-                           (a (@ (class "nav-link") (href "/manuals/")) "Manuals") " "
-                           (a (@ (class "nav-link") (href "https://www.linkedin.com/in/josepjba/")) "LinkedIn") " "
-                           (a (@ (class "nav-link") (href "https://wikimusic.jointhefreeworld.org")) "WikiMusic") " "
-                           (a (@ (class "nav-link") (href "https://casadelcata.es")) "Casa del Cata") " "
-                           ))))))
+                      (details
+                       (summary "site navigation")
+                       (nav (@ (class "nav"))
+                            (a (@ (class "nav-link") (href "/")) "Home") " "
+                            (a (@ (class "nav-link") (href "/blog/")) "Blog") " "
+                            (a (@ (class "nav-link") (href "/portfolio/")) "Portfolio") " "
+                            (a (@ (class "nav-link") (href "/cv/")) "CV/Resume") " "
+                            (a (@ (class "nav-link") (href "https://codeberg.org/jjba23")) "Codeberg") " "
+                            (a (@ (class "nav-link") (href "/manuals/")) "Manuals") " "
+                            (a (@ (class "nav-link") (href "https://www.linkedin.com/in/josepjba/")) "LinkedIn") " "
+                            (a (@ (class "nav-link") (href "https://wikimusic.jointhefreeworld.org")) "WikiMusic") " "
+                            (a (@ (class "nav-link") (href "https://byggsteg.jointhefreeworld.org")) "Byggsteg") " "
+                            (a (@ (class "nav-link") (href "https://lucidplan.jointhefreeworld.org")) "LucidPlan") " "
+                            (a (@ (class "nav-link") (href "https://casadelcata.es")) "Casa del Cata") " "
+                            )))))))
 
 
 
@@ -191,19 +195,16 @@
             (title ,(concat title " - jointhefreeworld")))
            (body ,@(unless exclude-header
                      (jfw/site-header))
-                 (div (@ (class "container flex justify-center"))
-                      (div (@ (class "site-post"))
-                           (h1 (@ (class "site-post-title"))
-                               ,title)
-                           ,(when publish-date
-                              `(p (@ (class "site-post-meta")) ,publish-date))
-                           ,(if-let ((video-id (plist-get info :video)))
-                                (jfw/embed-video video-id))
-                           ,(when pre-content pre-content)
-                           (div (@ (id "content"))
-                                ,content))
-                      
-                      )
+                 (div (@ (class "container flex flex-col items-center"))
+                      (h1 (@ (class "site-post-title"))
+                          ,title)
+                      ,(when publish-date
+                         `(p (@ (class "site-post-meta")) ,publish-date))
+                      ,(if-let ((video-id (plist-get info :video)))
+                           (jfw/embed-video video-id))
+                      ,(when pre-content pre-content)
+                      (div (@ (id "content")(class "break-word max-w-full"))
+                           ,content))
                  ,@(unless exclude-footer
                      (jfw/site-footer)))))))
 

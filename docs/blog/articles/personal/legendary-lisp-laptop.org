@@ -9,6 +9,19 @@ For the past month or so, I've been running Guix system on my Framework laptop, 
 
 I have affectionately also started calling it a Legendary Lisp Laptop - LLL
 
+I chose the Framework Laptop 13,5" since it is big enough for me and it is really lightweight and portable. I mostly have external monitors anyway, at home and at work.
+
+** Technical specifications
+
+- AMD Ryzen™ 5 7640U (up to 4.9GHz, 6-core/12-thread)
+- Memory: DDR5-5600 - 32GB (2 x 16GB)
+- Storage: WD_BLACK™ SN770 NVMe™- M.2 2280 - 1TB
+- Battery - 55Wh
+- Webcam Module (1st Gen)
+- 13.5" 2256x1504 60Hz matte display
+- WiFi: RZ616 WiFi
+- USB-C x2, USB-A, HDMI, Ethernet
+
 Below you can see the laptop before placing the keyboard, display bezel, SSD and RAM in. You can tell this is simple and easy to repair :)
 
 [[https://jointhefreeworld.org/static-assets/blog/img/lisp-machine-laptop/4.jpg]]
