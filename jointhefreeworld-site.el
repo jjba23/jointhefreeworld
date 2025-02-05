@@ -231,7 +231,7 @@
           (string-match-p "jpeg\\'" (org-element-property :raw-link link))
           (string-match-p "png\\'" (org-element-property :raw-link link))
           (string-match-p "webp\\'" (org-element-property :raw-link link)))
-      (format "<img %s src=\"%s\">"
+      (format "<img loading=\"lazy\" %s src=\"%s\">"
               img-style
               (org-element-property :raw-link link)))
      ((equal contents nil)
