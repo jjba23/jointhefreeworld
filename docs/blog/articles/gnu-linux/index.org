@@ -2,6 +2,8 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
+ <2025-02-17 Mon> [[/blog/articles/gnu-linux/conky-wayland-guix/index.html][Building Conky with Wayland Support on GNU Guix]] -  Since I use GNU Guix and run a Wayland-based environment (Sway), I wanted to get Conky building with Wayland support.
+
 <2025-02-04 di> [[/blog/articles/gnu-linux/legendary-lisp-laptop/index.html][Legendary Lisp Laptop - Framework]] - a modern Lisp machine with Framework laptop
 
 <2025-01-11 za> - [[/blog/articles/gnu-linux/gnu-guix-virtual-machine-image-aarch64/index.html][GNU Guix Virtual Machine on AArch64/ARM64]] - The Guix ISO installer didn't work for me on aarch64. Making a qcow2 VM image or doing a manual install did work.
