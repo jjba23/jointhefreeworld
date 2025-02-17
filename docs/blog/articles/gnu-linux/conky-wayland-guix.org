@@ -25,7 +25,7 @@ With a bit of tweaking, I got Conky running with Wayland on GNU Guix. While itâ€
 
 Below a screenshot of how it runs in Sway, on Guix (SSS - Supreme Sexp System):
 
-[[https://jointhefreeworld.org/static-assets/blog/2025-02-17.png]]
+[[https://jointhefreeworld.org/static-assets/blog/img/conky-wayland/2025-02-17.png]]
 
 
 Below is the Guile Scheme code I used:
