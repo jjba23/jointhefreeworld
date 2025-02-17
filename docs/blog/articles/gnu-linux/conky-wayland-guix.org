@@ -23,6 +23,10 @@ Wayland-Specific Patches: Some users have patched Conky to integrate better with
 
 With a bit of tweaking, I got Conky running with Wayland on GNU Guix. While it’s still experimental, it works well enough for basic system monitoring. If you’re on a similar setup and want a lightweight system monitor, give this a try!
 
+Below a screenshot of how it runs in Sway, on Guix (SSS - Supreme Sexp System):
+
+[[https://jointhefreeworld.org/static-assets/blog/2025-02-17.png]]
+
 
 Below is the Guile Scheme code I used:
 
