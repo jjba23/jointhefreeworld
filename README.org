@@ -62,14 +62,9 @@ Publish the entire site by running:
 
 * Configuration
 
-*Site URL*:  
-The base URL is determined by the `CI` environment variable:
-  - In CI environments: https://jointhefreeworld.org
-  - Locally: http://localhost:50011
-
 The ~org-publish-project-alist~ variable defines various projects (e.g., home, blog, manuals, portfolio). Modify these entries to suit your directory structure.
 
-Functions like `jfw/site-header`, `jfw/site-footer`, and `jfw/generate-page` can be adjusted to change the look and feel of the generated site.
+Functions like ~jfw/site-header~, ~jfw/site-footer~, and ~jfw/generate-page~ can be adjusted to change the look and feel of the generated site.
 
 -----
 
