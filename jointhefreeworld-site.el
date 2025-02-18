@@ -2,7 +2,6 @@
 
 ;; Copyright (C) 2024 Josep Bigorra
 
-;; Version: 0.1.1
 ;; Author: Josep Bigorra <jjbigorra@gmail.com>
 ;; Maintainer: Josep Bigorra <jjbigorra@gmail.com>
 ;; URL: https://codeberg.org/jjba23/jointhefreeworld
@@ -184,10 +183,6 @@
             (meta (@ (name "viewport")
                      (content "width=device-width, initial-scale=1, shrink-to-fit=no")))
             (link (@ (rel "icon") (type "image/png") (href "/static/img/favicon.png")))
-            ;; (link (@ (rel "alternative")
-            ;;          (type "application/rss+xml")
-            ;;          (title "jointhefreeworld news")
-            ;;          (href ,(concat jfw/site-url "/rss/news.xml"))))
             
             (link (@ (rel "stylesheet") (href ,(concat jfw/site-url "/static/css/jointhefreeworld.css"))))
             
@@ -287,28 +282,15 @@
 	 (code (org-html-format-code src-block info)))
     (format "<pre>%s</pre>" (string-trim code))))
 
-(defun jfw/org-html-special-block (special-block contents info)
-  "Transcode a SPECIAL-BLOCK element from Org to HTML.
-CONTENTS holds the contents of the block.  INFO is a plist
-holding contextual information."
-  (let* ((block-type (org-element-property :type special-block))
-         (attributes (org-export-read-attribute :attr_html special-block)))
-    (format "<div class=\"%s center\">\n%s\n</div>"
-            block-type
-            (or contents
-                (if (string= block-type "cta")
-                    "If you find this guide helpful, please consider supporting us via the links on the <a href=\"/how-to-help/#support-my-work\">How to Help</a> page!"
-                  "")))))
 
 (org-export-define-derived-backend 'site-html 'html
-                                   :translate-alist
-                                   '((template . jfw/org-html-template)
-                                     (link . jfw/org-html-link)
-                                     (src-block . jfw/org-html-src-block)
-                                     (special-block . jfw/org-html-special-block)
-                                     (headline . jfw/org-html-headline))
-                                   :options-alist
-                                   '((:video "VIDEO" nil nil)))
+  :translate-alist
+  '((template . jfw/org-html-template)
+    (link . jfw/org-html-link)
+    (src-block . jfw/org-html-src-block)
+    (headline . jfw/org-html-headline))
+  :options-alist
+  '((:video "VIDEO" nil nil)))
 
 (defun org-html-publish-to-html (plist filename pub-dir)
   "Publish an org file to HTML, using the FILENAME as the output directory."
