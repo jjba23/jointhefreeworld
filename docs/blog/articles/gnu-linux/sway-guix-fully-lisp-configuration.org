@@ -9,8 +9,6 @@ After using Sway as my daily Wayland compositor for quite some time, I recently 
 
 * Why Hyprland?
 
-[[https://jointhefreeworld.org/static-assets/badges/Shell-Fish-2fffb2.png]] 
-
 The main reasons for switching are:
 
 Community Size: Hyprland has a much larger and more active community. This means more contributions, faster development, and better support.
