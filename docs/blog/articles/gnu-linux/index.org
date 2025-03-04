@@ -2,6 +2,8 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
+<2025-03-04 di> [[/blog/articles/gnu-linux/sway-guix-fully-lisp-configuration.html][Moving from Sway to Hyprland - Archived SwayFX config]] - After using Sway as my daily Wayland compositor for quite some time, I recently made the switch to Hyprland. The decision wasn't made lightly, as Sway, especially with the SwayFX fork, served me well.
+
  <2025-02-17 Mon> [[/blog/articles/gnu-linux/conky-wayland-guix/index.html][Building Conky with Wayland Support on GNU Guix]] -  Since I use GNU Guix and run a Wayland-based environment (Sway), I wanted to get Conky building with Wayland support.
 
 <2025-02-04 di> [[/blog/articles/gnu-linux/legendary-lisp-laptop/index.html][Legendary Lisp Laptop - Framework]] - a modern Lisp machine with Framework laptop
