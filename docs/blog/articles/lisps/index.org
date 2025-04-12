@@ -2,6 +2,8 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
+<2024-12-27 vr> [[/blog/articles/lisps/why-i-program-in-lisp/index.html][Embracing the eternal Sexp wisdom with the GNU]] - Why choose for this paren-heavy form of lambda calculus? Lisp is a language that was designed to be used as a tool for thinking about problems, and that is the fun part of programming.
+
 <2024-12-27 vr> [[/blog/articles/lisps/embracing-the-eternal-sexp-wisdom-of-the-gnu/index.html][Embracing the eternal Sexp wisdom with the GNU]] - I have recently reached new heights in declarative configurations of operating systems, programs and my workflow ⚙️ and development.
 
 <2024-12-18 wo> [[/blog/articles/lisps/scheme-and-lisp-style-guide/index.html][Scheme & Lisp Style Guide]] - Riastradh's Lisp Style Rules for some really clean Scheme, Lisp and Guile code.
