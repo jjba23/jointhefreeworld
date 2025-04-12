@@ -10,6 +10,8 @@
 
 ** Highlighted articles
 
+<2025-04-11 Fri> [[/blog/articles/development/best-programmers/index.html][The Best Programmers I Know]] - I have met a lot of developers in my life. Lately, I asked myself: "What does it take to be one of the best? What do they all have in common?"
+
 <2025-04-11 Fri> [[/blog/articles/lisps/why-i-program-in-lisp/index.html][Why I program in Lisp?]] - Why choose for this paren-heavy form of lambda calculus? Lisp is a language that was designed to be used as a tool for thinking about problems, and that is the fun part of programming.
 
 <2025-03-04 di> [[/blog/articles/gnu-linux/sway-guix-fully-lisp-configuration/index.html][Moving from Sway to Hyprland - Archived SwayFX config]] - After using Sway as my daily Wayland compositor for quite some time, I recently made the switch to Hyprland. The decision wasn't made lightly, as Sway, especially with the SwayFX fork, served me well.
