@@ -5,9 +5,11 @@
 #+language: en
 #+date: <2024-12-09 ma>
 
-Have you ever heard about Docker ?
+Note: There is a better way to go about this, Guix now contains ~rootless-podman-service-type~ which will take care of it all pretty much for you. This article is thus outdated, and explains how we did things before that!
 
-Containerization has revolutionized the way we deploy and manage applications. By isolating processes and their dependencies, containers offer a lightweight and efficient solution for software deployment and help reproducibility.
+Thanks Hugo Buddelmeijer for alerting me to that, he wrote a blog post here: https://entropynaut.com/post/guixpodman/
+
+Have you ever heard about Docker ? Containerization has revolutionized the way we deploy and manage applications. By isolating processes and their dependencies, containers offer a lightweight and efficient solution for software deployment and help reproducibility.
 
 GNU Guix, a powerful and pure functional system and package manager, provides a robust foundation for building and managing software systems.
 
