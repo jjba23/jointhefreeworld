@@ -1,5 +1,5 @@
 #+title: The Best Programmers I Know
-options: num:nil toc:nil
+#+options: num:nil toc:nil
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 #+language: en
