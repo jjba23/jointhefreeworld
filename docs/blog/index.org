@@ -12,7 +12,7 @@
 
 <2025-04-11 Fri> [[/blog/articles/development/best-programmers/index.html][The Best Programmers I Know]] - I have met a lot of developers in my life. Lately, I asked myself: "What does it take to be one of the best? What do they all have in common?"
 
-<2025-04-11 Fri> [[/blog/articles/personal/jointhefreeworld-code-of-conduct.org][jointhefreeworld - Code of Conduct]] - This Code of Conduct exists to foster an inclusive, respectful, and cooperative environment for all contributors and users of jointhefreeworld free software project.
+<2025-04-11 Fri> [[/blog/articles/personal/jointhefreeworld-code-of-conduct/index.html][jointhefreeworld - Code of Conduct]] - This Code of Conduct exists to foster an inclusive, respectful, and cooperative environment for all contributors and users of jointhefreeworld free software project.
 
 <2025-04-11 Fri> [[/blog/articles/lisps/why-i-program-in-lisp/index.html][Why I program in Lisp?]] - Why choose for this paren-heavy form of lambda calculus? Lisp is a language that was designed to be used as a tool for thinking about problems, and that is the fun part of programming.
 
