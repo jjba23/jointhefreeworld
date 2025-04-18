@@ -1,6 +1,6 @@
-;;; jointhefreeworld-site.el --- Build jointhefreeworld.org
+;;; jointhefreeworld-site.el --- Build jointhefreeworld.org  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2024 Josep Bigorra
+;; Copyright © Josep Bigorra <jjbigorra@gmail.com>
 
 ;; Author: Josep Bigorra <jjbigorra@gmail.com>
 ;; Maintainer: Josep Bigorra <jjbigorra@gmail.com>
@@ -443,17 +443,18 @@
   "Publish the entire site."
   (interactive)
   (org-publish-all t)
-  (webfeeder-build "rss.xml"
-                   "./public"
-                   jfw/site-url
-                   (let ((default-directory (expand-file-name "./public/")))
-                     (remove "news/index.html"
-                             (directory-files-recursively "blog/articles"
-                                                          ".*\\.html$")))
-                   :builder 'webfeeder-make-rss
-                   :title "Jointhefreeworld News"
-                   :description "News and Insights from the Jointhefreeworld project!"
-                   :author "Josep Bigorra")
+  (ignore-errors
+    (webfeeder-build "rss.xml"
+                     "./public"
+                     jfw/site-url
+                     (let ((default-directory (expand-file-name "./public/")))
+                       (remove "news/index.html"
+                               (directory-files-recursively "blog/articles"
+                                                            ".*\\.html$")))
+                     :builder 'webfeeder-make-rss
+                     :title "Jointhefreeworld News"
+                     :description "News and Insights from the Jointhefreeworld project!"
+                     :author "Josep Bigorra"))
   )
 
 
