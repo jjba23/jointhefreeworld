@@ -11,6 +11,8 @@ Each project reflects my commitment to crafting robust, user-friendly solutions,
 
 Take a look around and feel free to explore the code and concepts behind them!
 
+-----
+
 *** Scheme (Lisp - Guile) projects
 
 [[https://codeberg.org/jjba23/sss][SSS - Supreme Sexp System]] - This custom GNU Guix + Linux setup enhances customization to infinity, encourages the hacking spirit, and offers a superior user experience thanks in part too to REPL (Read Eval Print Loop) and Lisps. Sway, Foot, Qutebrowser, etc.
@@ -27,11 +29,15 @@ Take a look around and feel free to explore the code and concepts behind them!
 
 [[https://codeberg.org/jjba23/hygguile][hygguile]] - Cozy and professional user-interfaces for everyone with the power of Scheme.
 
+-----
+
 *** Scala projects
 
 [[https://codeberg.org/jjba23/zzspec][ZZSpec]] - a library that helps you write better tests leveraging ZIO and ZIO test, as well as testcontainers, black box and integration tests.
 
 [[https://codeberg.org/jjba23/dmtscala][DMTScala]] - a data model translator that can take Scala case classes and other data models and convert them to several programming languages.
+
+-----
 
 *** Emacs and ELisp packages
 
@@ -44,6 +50,8 @@ Take a look around and feel free to explore the code and concepts behind them!
 [[https://codeberg.org/jjba23/dagboek.el][dagboek.el]] - Effectively manage and create diary/journal entries.
 
 [[https://codeberg.org/jjba23/git-riddance.el][git-riddance.el]] - Completely nuke the Git history of a repository from Emacs.
+
+-----
 
 *** Pages of mine
 
