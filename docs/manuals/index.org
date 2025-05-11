@@ -4,10 +4,8 @@ This is your guide to using and understanding the free software of the jointhefr
 
 Free software is all about giving you control—over the tools you use, how they work, and how you share them. Whether you're just starting out or looking to solve a tricky problem, these manuals are here to help.
 
-Each manual is easy to follow, with clear steps and tips to get you going. You’ll find instructions for setting up, using, and even tweaking the software to fit your needs.
-
-Don’t worry if you’re not a tech expert—these guides are written for everyone. Just pick the manual you need, and let’s get started!
-
 -----
 
-[[/manuals/sss/index.html][SSS manual (Supreme Sexp System)]] - the manual for SSS in English, in HTML format, with all nodes in one page
+[[/manuals/sss/index.html][SSS manual (Supreme Sexp System)]] - the manual for SSS in English (GB), in HTML format, with all nodes in one page.
+
+[[https://jointhefreeworld.org/manuals/lucidplan/index.html][LucidPlan manual]] - the manual for LucidPlan in English (GB), in HTML format, with all nodes in one page.
