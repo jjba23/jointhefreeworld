@@ -112,15 +112,15 @@
                                (nav (@ (class "nav"))
                                     (a (@ (class "nav-link") (href "/")) "Home") " "
                                     (a (@ (class "nav-link") (href "/blog/")) "Blog") " "
-                                    (a (@ (class "nav-link") (href "/portfolio/")) "Portfolio") " "
                                     (a (@ (class "nav-link") (href "/joe-cv/")) "Joe's CV/Resume") " "
                                     (a (@ (class "nav-link") (href "https://codeberg.org/jjba23")) "Codeberg") " "
-                                    (a (@ (class "nav-link") (href "/manuals/")) "Manuals") " "
+                                    (a (@ (class "nav-link") (href "/portfolio/")) "Portfolio") " "
                                     (a (@ (class "nav-link") (href "https://www.linkedin.com/in/josepjba/")) "LinkedIn") " "
-                                    (a (@ (class "nav-link") (href "https://wikimusic.jointhefreeworld.org")) "WikiMusic") " "
-                                    (a (@ (class "nav-link") (href "https://byggsteg.jointhefreeworld.org")) "Byggsteg") " "
+                                    (a (@ (class "nav-link") (href "/manuals/")) "Manuals") " "
                                     (a (@ (class "nav-link") (href "https://lucidplan.jointhefreeworld.org")) "LucidPlan") " "
-                                    (a (@ (class "nav-link") (href "https://casadelcata.es")) "Casa del Cata") " "
+                                    (a (@ (class "nav-link") (href "https://byggsteg.jointhefreeworld.org")) "Byggsteg") " "
+                                    (a (@ (class "nav-link") (href "https://wikimusic.jointhefreeworld.org")) "WikiMusic") " "
+                                    ;; (a (@ (class "nav-link") (href "https://casadelcata.es")) "Casa del Cata") " "
                                     )))))))
 
 
