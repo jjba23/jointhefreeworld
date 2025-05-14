@@ -1,0 +1,103 @@
+
+#+title: Taming Complexity with Scheme: The Byggsteg Story
+#+author: Josep Bigorra
+#+email: jjbigorra@gmail.com
+#+language: en
+
+
+* Abstract
+
+** Introducing Scheme
+
+Scheme is a classic programming language in the Lisp family. It emphasizes functional programming and domain-specific languages but adapts to other styles. Known for its clean and minimalist design, Scheme is one of the longest-lived and best-studied dynamic languages, and has many fast and portable implementations.
+
+In /Scheme/ https://www.scheme.org/
+
+
+** This paper's focus
+
+This paper explores the practical application of Scheme (Guile Scheme implementation) in the development of Byggsteg, a CI/CD orchestrator. It examines how Scheme's features, such as dynamic typing, homoiconicity, and first-class functions, influenced the design and implementation and make many difficult tasks achievable in a simple manner. The paper also discusses the use of GNU Artanis, SQLite, and other technologies within the Byggsteg architecture, and the lessons learned in applying Scheme to a real-world project management tool.
+
+We will expand on the experience and knowledge gained while creating a non-trivial production-grade software project using Scheme as only language of implementation, and in that process, creating a full-stack CI/CD system and accompanying management views, that encompass all from database access, job queueing to HTML rendering, all from the comfort of Scheme. We will cover extensively why this parenthesis-rich language provides a level of power and expressivity that is not achievable with other technologies.
+
+* Introduction
+
+Scheme was created during the 1970s at the MIT Computer Science and Artificial Intelligence Laboratory (MIT CSAIL) and released by its developers, Guy L. Steele and Gerald Jay Sussman, via a series of memos now known as the Lambda Papers.
+
+It was the first dialect of Lisp to choose lexical scope and the first to require implementations to perform tail-call optimization, giving stronger support for functional programming and associated techniques such as recursive algorithms. It was also one of the first programming languages to support first-class continuations. It had a significant influence on the effort that led to the development of Common Lisp.
+
+Scheme is primarily a functional programming language. It shares many characteristics with other members of the Lisp programming language family. Scheme's very simple syntax is based on s-expressions, parenthesized lists in which a prefix operator is followed by its arguments. Scheme programs thus consist of sequences of nested lists. Lists are also the main data structure in Scheme, leading to a close equivalence between source code and data formats (homoiconicity). Scheme programs can easily create and evaluate pieces of Scheme code dynamically.
+
+The reliance on lists as data structures is shared by all Lisp dialects. Scheme inherits a rich set of list-processing primitives such as ~cons~, ~car~ and ~cdr~ from its Lisp progenitors.
+
+Scheme uses strictly but dynamically typed variables and supports first class procedures. Thus, procedures can be assigned as values to variables or passed as arguments to procedures.
+
+In /Wikipedia/ https://en.wikipedia.org/wiki/Scheme_(programming_language)
+
+Scheme boasts several distinguishing features that set it apart from other programming languages, including other Lisps. Here are some key characteristics:
+
+- Minimalism :: Scheme has a very small core language with a concise set of primitive procedures. Much of the functionality commonly built into other languages is provided through libraries. This minimalism makes the language easier to learn and implement.
+
+- First-Class Functions :: In Scheme, functions are treated as first-class citizens. This means they can be assigned to variables and passed as arguments to other functions, returned as values from other functions and even stored in data structures. This capability enables powerful programming paradigms like higher-order functions and functional programming. 
+
+- Proper Tail Recursion :: Scheme implementations are required to be properly tail-recursive. This means that if the last operation in a function is a recursive call, the interpreter or compiler will optimize it in such a way that it doesn't consume additional stack space. This allows for writing iterative processes using recursion without the risk of stack overflow errors.
+
+- Lexical Scoping :: Scheme uses lexical (or static) scoping. This means that the scope of a variable is determined by where it is defined in the source code, not by where the function is called. This makes it easier to reason about variable bindings and avoids unexpected behavior.
+
+- Homoiconicity :: Scheme code and data have the same underlying structure – the list. This property, known as homoiconicity, allows programs to manipulate their own code as data. This is a powerful feature that facilitates metaprogramming, macros, and the creation of domain-specific languages.
+
+- Parenthesized Syntax (S-expressions) :: Scheme's syntax is based on fully parenthesized expressions called S-expressions. While this can look different from more conventional syntaxes, it provides a uniform and unambiguous structure that simplifies parsing and manipulation of code.
+
+- Dynamic Typing :: Scheme is a dynamically typed language. Type checking is performed at runtime, rather than compile time. This allows for more flexibility but also requires careful testing to catch type-related errors.
+
+- Continuations :: Scheme supports continuations, which represent the entire execution state of a program at a particular point in time. Continuations can be captured and later invoked, allowing for powerful control flow mechanisms like non-local exits, backtracking, and coroutines.
+
+These features collectively contribute to Scheme's power and expressiveness, making it a popular choice for academic use, research in programming language design, and applications where flexibility and metaprogramming capabilities are highly valued.
+
+
+In my point of view, and in retrospective, Scheme was really a great choice for developing complex systems.
+
+** What is byggsteg?
+
+byggsteg is a free software project with the aim of developing a suite of functionalities to allow engineers to deliver software quicker and with less friction, in other words a CI/CD orchestrator written in Guile Scheme.
+
+View my live instance of byggsteg here: https://byggsteg.jointhefreeworld.org
+
+It leverages SXML, SQLite3, some POSIX / UNIX utilities, and the mighty GNU Artanis web-framework.
+
+The aim of byggsteg is to release you from your dependency on proprietary systems like GitHub actions. This allows you to create continuous integration and continuous delivery (CI & CD) pipelines in an easy way that are tailored to your needs and which you fully control.
+
+Easily deploy stuff, for example to your private VPS, self-hosting or to cloud. byggsteg means "build step" in the Norwegian language.
+
+I don't mind having the software building and testing happening in the same machine as where I run the production workloads, since I am looking for supreme cost-efficiency, but it's highly recommended that you do separate these things, if you can afford it.
+
+Jobs and profiles
+
+Jobs are simple Lisp (Guile Scheme) code. Profiles are just saved jobs.
+
+byggsteg allows you to send code over the wire (HTTP) and save it too, in a thunk form, for example :
+
+#+begin_src scheme
+  (lambda()
+    `((project . "free-alacarte")
+      (branch-name . "trunk")
+      (task . "stack-test")
+      (clone-url . "https://codeberg.org/jjba23/free-alacarte")))
+#+end_src
+
+Sending things in thunk form allows one to execute any code arbitrarily, inside the lambda expression. Be responsible and wary of who you give access to your byggsteg instance.
+
+#+begin_src scheme
+(lambda()
+  (define my-project-name "wikimusic-api")
+  (define my-branch-name
+    (format #f "branch-num-~a" (* 2 (+ 3 (+ 8 10)))))
+
+  ;; remember that a ". ," and a "unquote" are equivalent
+  `((project . ,my-project-name)
+    (branch-name unquote my-branch-name)
+    (task . ("stack-build" "stack-test"))
+    (clone-url unquote (format #f "https://codeberg.org/jjba23/~a" my-project-name))))
+
+#+end_src
+
