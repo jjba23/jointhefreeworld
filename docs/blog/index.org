@@ -10,6 +10,8 @@
 
 ** Highlighted articles
 
+<2025-05-14 wo> [[/blog/articles/lisps/taming-complexity-with-scheme-the-byggsteg-story/index.html][(WIP) Taming Complexity with Scheme: The Byggsteg Story]] - This paper explores the practical application of Scheme (Guile Scheme implementation) in the development of Byggsteg, a CI/CD orchestrator.
+
 <2025-04-11 Fri> [[/blog/articles/development/best-programmers/index.html][The Best Programmers I Know]] - I have met a lot of developers in my life. Lately, I asked myself: "What does it take to be one of the best? What do they all have in common?"
 
 <2025-04-11 Fri> [[/blog/articles/personal/jointhefreeworld-code-of-conduct/index.html][jointhefreeworld - Code of Conduct]] - This Code of Conduct exists to foster an inclusive, respectful, and cooperative environment for all contributors and users of jointhefreeworld free software project.
