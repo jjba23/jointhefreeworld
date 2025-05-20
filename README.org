@@ -3,9 +3,7 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 
-
-
-[[https://jointhefreeworld.org/ggg/dist/scheme-guile.svg]]  [[https://jointhefreeworld.org/ggg/dist/gnu-guix.svg]]  [[https://jointhefreeworld.org/ggg/dist/emacs-lisp.svg]]  [[https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg]]  [[https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg]] 
+[[https://jointhefreeworld.org/ggg/dist/emacs-lisp.svg]]  [[https://jointhefreeworld.org/ggg/dist/gnu-guix.svg]]   [[https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg]]  [[https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg]] 
 
 My personal homepage, blogs, and /join the free world/ movement website.
 
