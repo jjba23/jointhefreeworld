@@ -170,6 +170,8 @@ pre {
 
 .figure { text-align:center }
 
+img { max-width: 100%; }
+
 .flex-col { flex-direction: column }
 
 .items-center { align-items: center }
