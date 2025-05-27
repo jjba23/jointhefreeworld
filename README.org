@@ -26,12 +26,6 @@ It leverages a custom HTML export backend to convert Org files into a fully styl
 *Custom HTML Export*:  
   Uses a derived `site-html` backend to generate pages with custom headers, footers, and layout.
 
-*Video Embedding*:  
-  Supports embedding YouTube videos via a custom Org link type (`yt:`) that inserts responsive iframes.
-
-*Dynamic Metadata*:  
-  Automatically includes the latest Git commit hash and publish timestamp in the generated HTML as a comment.
-
 *Multi-Project Publishing*:  
   Organizes content into multiple projects (e.g., home, blog, manuals, portfolio) via `org-publish-project-alist`.
 
@@ -101,11 +95,10 @@ We welcome everyone to feel invited to the jointhefreeworld Project, and encoura
 Find here the Backlog and Kanban boards for jointhefreeworld: https://lucidplan.jointhefreeworld.org/tickets/jointhefreeworld
 
 
------
+---------
 
 * Acknowledgements
 
-- *Josep Bigorra* – Original author and maintainer.
 - *David Wilson* – His excellent tutorials (and the [[https://systemcrafters.net][https://systemcrafters.net]]) provided much inspiration.
 - *The Emacs Community* – For the powerful tools and continuous improvements that make projects like this possible.
 
