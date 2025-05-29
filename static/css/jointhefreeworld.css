@@ -3,14 +3,12 @@
 @font-face {
     font-family: 'Adwaita Mono';
     font-style: normal;
-    font-weight: 400;
     src: url('/static/ttf/AdwaitaMono-Regular.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'Adwaita Mono';
     font-style: italic;
-    font-weight: 400;
     src: url('/static/ttf/AdwaitaMono-Italic.ttf') format('truetype');
 }
 
@@ -44,8 +42,8 @@
 /* css properties */
 
 html {
-    background: #fdf6e3;
-    color: #1e1e1e;
+    background: #efd5c5;
+    color: #232025;
 }
 
 body {
@@ -58,18 +56,18 @@ a, button, h1, h2, h3, h4, h5, h6 {
 
 a:hover {
     text-decoration: underline;
-    color: #66b2b2
+    color: #da6197;
 }
 
 a {
-    color: #006666;
+    color: #d54987;
     text-decoration: none;
     font-style: normal;
     font-weight: 700;          
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: #555555;
+    color: #3b393e;
     font-family: "Adwaita Sans", sans-serif;
     font-weight: 900;
 }
@@ -96,8 +94,8 @@ p {
 }
 
 code {
-    background: rgba(178, 216, 216, 0.1);
-    color: #1e1e1e;
+    background: rgba(218, 97, 151, 0.1);
+    color: #322f34;
     padding-left: 0.4rem;
     padding-right: 0.4rem;
     padding-top: 0.2rem;
@@ -110,9 +108,9 @@ code {
 }
 
 pre {
-    background: rgba(178, 216, 216, 0.1);
-    color: #000;
-    border: 1px solid rgba(178, 216, 216, 0.5);
+    background: rgba(218, 97, 151, 0.1);
+    color: #322f34;
+    border: 1px solid rgba(218, 97, 151, 0.5);
     padding-left: 1.2rem;
     padding-right: 1.2rem;
     padding-top: 2.2rem;
