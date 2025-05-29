@@ -140,7 +140,15 @@
                                "🔗 source code on Codeberg"))
                            (small "  ")
                            (small
-                            (a (@(href ,(string-join (list jfw/site-url "rss.xml") "/"))) "🗞️ RSS feed"))))))))
+                            (a (@(href ,(string-join (list jfw/site-url "rss.xml") "/"))) "🗞️ RSS feed"))
+                           (div (@(class "flex flex-row gap-4"))
+                                (img (@(src "https://jointhefreeworld.org/ggg/dist/emacs-lisp.svg")
+                                      (alt "https://jointhefreeworld.org/ggg/dist/emacs-lisp.svg")) "")
+                                (img (@(src "https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg")
+                                      (alt "https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg")) "")
+                                (img (@(src "https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg")
+                                      (alt "https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg")) "")
+                                )))))))
 
 (defun get-article-output-path (org-file pub-dir)
   (let ((article-dir (concat pub-dir

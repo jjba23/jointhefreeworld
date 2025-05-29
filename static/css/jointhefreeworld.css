@@ -164,6 +164,8 @@ pre {
 
 .flex-row { flex-direction: row }
 
+.gap-4 {gap: 4px}
+
 .justify-center { justify-content: center }
 
 .figure { text-align:center }
