@@ -141,7 +141,7 @@
                            (small "  ")
                            (small
                             (a (@(href ,(string-join (list jfw/site-url "rss.xml") "/"))) "🗞️ RSS feed"))
-                           (div (@(class "flex flex-row gap-4"))
+                           (div (@(class "flex flex-row gap-4 flex-wrap"))
                                 (img (@(src "https://jointhefreeworld.org/ggg/dist/emacs-lisp.svg")
                                       (alt "https://jointhefreeworld.org/ggg/dist/emacs-lisp.svg")) "")
                                 (img (@(src "https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg")
