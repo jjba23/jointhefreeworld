@@ -60,7 +60,7 @@ a:hover {
 }
 
 a {
-    color: #d54987;
+    color: #885997;
     text-decoration: none;
     font-style: normal;
     font-weight: 700;          
@@ -94,7 +94,7 @@ p {
 }
 
 code {
-    background: rgba(218, 97, 151, 0.1);
+    background: rgba(235, 216, 200, 0.3);
     color: #322f34;
     padding-left: 0.4rem;
     padding-right: 0.4rem;
@@ -108,9 +108,9 @@ code {
 }
 
 pre {
-    background: rgba(218, 97, 151, 0.1);
+    background: rgba(235, 216, 200, 0.3);
     color: #322f34;
-    border: 1px solid rgba(218, 97, 151, 0.5);
+    border: 1px solid rgba(235, 216, 200, 0.8);
     padding-left: 1.2rem;
     padding-right: 1.2rem;
     padding-top: 2.2rem;
@@ -127,7 +127,7 @@ pre {
 /* org specific */
 
 .timestamp-wrapper {
-    background: rgba(178, 216, 216, 0.1);
+    background: rgba(235, 216, 200, 0.3);
     padding: 0.2rem;
     border-radius: 0.6rem;
     margin-right: 1rem;
