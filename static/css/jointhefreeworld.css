@@ -102,7 +102,7 @@ em {
 }
 
 code {
-    background: rgba(235, 216, 200, 0.5);
+    background: rgba(235, 220, 210, 0.5);
     color: #232025;
     padding-left: 0.4rem;
     padding-right: 0.4rem;
@@ -116,9 +116,9 @@ code {
 }
 
 pre {
-    background: rgba(235, 216, 200, 0.5);
+    background: rgba(235, 220, 210, 0.5);
     color: #232025;
-    border: 1px solid rgba(235, 216, 200, 0.8);
+    border: 1px solid rgba(235, 220, 210, 0.8);
     padding-left: 1.2rem;
     padding-right: 1.2rem;
     padding-top: 2.2rem;
@@ -135,7 +135,7 @@ pre {
 /* org specific */
 
 .timestamp-wrapper {
-    background: rgba(235, 216, 200, 0.5);
+    background: rgba(235, 220, 210, 0.5);
     padding: 0.2rem;
     border-radius: 0.6rem;
     margin-right: 1rem;
