@@ -164,7 +164,13 @@ pre {
 
 .flex-row { flex-direction: row }
 
-.gap-4 {gap: 4px}
+.gap-1 { gap: 4px }
+
+.gap-2 { gap: 8px }
+
+.gap-3 { gap: 12px }
+
+.gap-4 { gap: 16px }
 
 .justify-center { justify-content: center }
 
