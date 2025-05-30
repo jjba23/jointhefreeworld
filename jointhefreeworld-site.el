@@ -126,19 +126,16 @@
 
 
 (defun jfw/site-footer ()
-  (list
-   `(hr)
-   `(footer (@ (class "site-footer"))
+  `((hr)
+    (footer (@ (class "site-footer"))
             (div (@ (class "container"))
                  (div (@ (class "flex flex-col gap-3"))
-                      (div (@ (class "column"))
-                           (em "Copyright © 2025 Josep Bigorra (jjba23) &lt;jjbigorra@gmail.com&gt;"))
+                      (em "Copyright © 2025 Josep Bigorra (jjba23) &lt;jjbigorra@gmail.com&gt;")
                       (em "Licensed under the GNU GPL v3 or newer")
-                      (div (@ (class "column align-right"))
+                      (div (@ (class "flex flex-row flex-wrap gap-3"))
                            (small
                             (a (@ (href "https://codeberg.org/jjba23/jointhefreeworld"))
                                "🔗 source code on Codeberg"))
-                           (small "  ")
                            (small
                             (a (@(href ,(string-join (list jfw/site-url "rss.xml") "/"))) "🗞️ RSS feed"))
                            )

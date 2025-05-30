@@ -87,6 +87,14 @@ p {
     font-size: 1rem;
 }
 
+hr { color: #4c4a4f; }
+
+em {
+    color: #4c4a4f;
+    max-width: 86ch;
+    font-size: 0.9rem;
+}
+
 
 .site-masthead {
     max-width: 82ch;
