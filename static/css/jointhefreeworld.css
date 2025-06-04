@@ -1,7 +1,7 @@
 /* css properties */
 
 html {
-    background: #ffe6d6;
+    background: #fff7e7;
     color: #3b393e;
 }
 
@@ -46,6 +46,14 @@ p {
     font-size: 1rem;
 }
 
+hr { color: rgba(100, 100, 100, 0.7); }
+
+em {
+    color: #4c4a4f;
+    max-width: 86ch;
+    font-size: 0.9rem;
+}
+
 
 .site-masthead {
     max-width: 82ch;
@@ -53,7 +61,7 @@ p {
 }
 
 code {
-    background: rgba(235, 216, 200, 0.5);
+    background: rgba(235, 220, 210, 0.5);
     color: #232025;
     padding-left: 0.4rem;
     padding-right: 0.4rem;
@@ -67,9 +75,9 @@ code {
 }
 
 pre {
-    background: rgba(235, 216, 200, 0.5);
+    background: rgba(235, 220, 210, 0.5);
     color: #232025;
-    border: 1px solid rgba(235, 216, 200, 0.8);
+    border: 1px solid rgba(235, 220, 210, 0.8);
     padding-left: 1.2rem;
     padding-right: 1.2rem;
     padding-top: 2.2rem;
@@ -86,7 +94,7 @@ pre {
 /* org specific */
 
 .timestamp-wrapper {
-    background: rgba(235, 216, 200, 0.5);
+    background: rgba(235, 220, 210, 0.5);
     padding: 0.2rem;
     border-radius: 0.6rem;
     margin-right: 1rem;
@@ -123,7 +131,13 @@ pre {
 
 .flex-row { flex-direction: row }
 
-.gap-4 {gap: 4px}
+.gap-1 { gap: 4px }
+
+.gap-2 { gap: 8px }
+
+.gap-3 { gap: 12px }
+
+.gap-4 { gap: 16px }
 
 .justify-center { justify-content: center }
 
