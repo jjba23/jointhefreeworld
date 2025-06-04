@@ -1,4 +1,7 @@
-/* css properties */
+:root {
+    --box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px;
+}
+
 
 html {
     background: #fff7e7;
@@ -22,7 +25,8 @@ a {
     color: #885997;
     text-decoration: none;
     font-style: normal;
-    font-weight: 700;          
+    font-weight: 700;
+    font-size: larger;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -43,17 +47,16 @@ body {
 
 p {
     max-width: 86ch;
-    font-size: 1rem;
+    font-size: large;
 }
 
-hr { color: rgba(100, 100, 100, 0.5); }
+hr { color: rgba(120, 120, 120, 0.4); }
 
 em {
     color: #4c4a4f;
     max-width: 86ch;
-    font-size: 0.9rem;
+    font-size: large;
 }
-
 
 .site-masthead {
     max-width: 82ch;
@@ -69,9 +72,9 @@ code {
     padding-bottom: 0.2rem;
     border-radius: 0.6rem;
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.9rem;
+    font-size: medium;
     font-style: normal;
-    box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px;
+    box-shadow: var(--box-shadow);
 }
 
 pre {
@@ -85,10 +88,10 @@ pre {
     border-radius: 0.6rem;
     line-height: 1.6rem;
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.9rem;
+    font-size: large;
     overflow-x: scroll;
     font-style: normal;
-    box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px;
+    box-shadow: var(--box-shadow);
 }
 
 /* org specific */
@@ -98,7 +101,7 @@ pre {
     padding: 0.2rem;
     border-radius: 0.6rem;
     margin-right: 1rem;
-    box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px;
+    box-shadow: var(--box-shadow);
 }
 
 .timestamp {
