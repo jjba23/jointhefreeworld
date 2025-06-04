@@ -159,6 +159,9 @@ img { max-width: 100%; }
 
 .site-post-title { text-align: center }
 
-summary { cursor: pointer }
+summary {
+    cursor: pointer;
+    font-size: large;
+}
 
 .nav-details  { width: 100% }
