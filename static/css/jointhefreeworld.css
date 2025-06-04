@@ -89,7 +89,7 @@ pre {
     border-radius: 0.6rem;
     line-height: 1.6rem;
     font-family: 'IBM Plex Mono', monospace;
-    font-size: large;
+    font-size: medium;
     overflow-x: scroll;
     font-style: normal;
     box-shadow: var(--box-shadow);
