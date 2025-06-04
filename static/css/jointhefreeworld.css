@@ -43,6 +43,7 @@ body {
     margin: auto;
     line-height: 2rem;
     word-break: break-word;
+    font-size: large;
 }
 
 p {
@@ -60,7 +61,7 @@ em {
 
 .site-masthead {
     max-width: 82ch;
-    font-size: 0.9rem;
+    font-size: large;
 }
 
 code {
@@ -106,7 +107,7 @@ pre {
 
 .timestamp {
     font-weight: 500;
-    font-size: 0.8rem;
+    font-size: medium;
     font-style: normal;    
 }
 
@@ -116,7 +117,7 @@ pre {
     padding-left: 0.6rem;
     padding-right: 0.6rem;
     font-style: normal;
-    font-size: 0.9em;
+    font-size: large;
 }
 
 .nav {
