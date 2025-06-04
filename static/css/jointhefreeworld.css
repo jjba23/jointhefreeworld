@@ -1,44 +1,3 @@
-
-/* Font setup */
-@font-face {
-    font-family: 'Adwaita Mono';
-    font-style: normal;
-    src: url('/static/ttf/AdwaitaMono-Regular.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Adwaita Mono';
-    font-style: italic;
-    src: url('/static/ttf/AdwaitaMono-Italic.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Adwaita Mono';
-    font-style: normal;
-    font-weight: 700;
-    src: url('/static/ttf/AdwaitaMono-Bold.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Adwaita Mono';
-    font-style: italic;
-    font-weight: 700;
-    src: url('/static/ttf/AdwaitaMono-BoldItalic.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Adwaita Sans';
-    font-style: normal;
-    src: url('/static/ttf/AdwaitaSans-Regular.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Adwaita Sans';
-    font-style: italic;
-    src: url('/static/ttf/AdwaitaSans-Italic.ttf') format('truetype');
-}
-
-
 /* css properties */
 
 html {
@@ -47,7 +6,7 @@ html {
 }
 
 body {
-    font-family: 'Adwaita Sans', sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
 }
 
 a, button, h1, h2, h3, h4, h5, h6 {
@@ -68,7 +27,7 @@ a {
 
 h1, h2, h3, h4, h5, h6 {
     color: #3b393e;
-    font-family: "Adwaita Sans", sans-serif;
+    font-family: "IBM Plex Sans", sans-serif;
     font-weight: 900;
 }
 
@@ -101,7 +60,7 @@ code {
     padding-top: 0.2rem;
     padding-bottom: 0.2rem;
     border-radius: 0.6rem;
-    font-family: 'Adwaita Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 0.9rem;
     font-style: normal;
     box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px;
@@ -117,7 +76,7 @@ pre {
     padding-bottom: 2.2rem;
     border-radius: 0.6rem;
     line-height: 1.6rem;
-    font-family: 'Adwaita Mono', monospace;
+    font-family: 'IBM Plex Mono', monospace;
     font-size: 0.9rem;
     overflow-x: scroll;
     font-style: normal;
