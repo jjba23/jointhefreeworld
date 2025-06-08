@@ -1,18 +1,40 @@
+# jointhefreeworld
+
+# Copyright © Josep Bigorra <jjbigorra@gmail.com>
+
+# jointhefreeworld.org is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# jointhefreeworld.org is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
+
 steps:
-  update-jointhefreeworld:
-    image: debian
+  byggsteg-trigger-jointhefreeworld:
+    image: curlimages/curl
     when:
       - event: [push]
         branch: [trunk]        
     environment:
       BYGGSTEG_KEY:
         from_secret: BYGGSTEG_KEY
+      BYGGSTEG_USERNAME: "Joe"
+      JOB_CODE: |
+        (lambda()
+        `((project . "jointhefreeworld")
+          (branch-name . "trunk")
+          (task . "pull-and-deploy")
+          (clone-url . "https://codeberg.org/jjba23/jointhefreeworld")))
     commands: |
-      apt-get update
-      apt-get install -y curl
       curl 'https://byggsteg.jointhefreeworld.org/api/v1/jobs/manage/submit' \
         -X POST -H 'Content-Type: application/x-www-form-urlencoded' \
-        --data-urlencode 'username=Joe' \
+        --data-urlencode "username=$BYGGSTEG_USERNAME" \
         --data-urlencode "password=$BYGGSTEG_KEY" \
-        --data-urlencode 'job-code=(lambda() `((project . "jointhefreeworld")(branch-name . "trunk")(task . "pull-and-deploy")(clone-url . "https://codeberg.org/jjba23/jointhefreeworld")))'
+        --data-urlencode "job-code=$JOB_CODE"
 
