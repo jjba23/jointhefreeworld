@@ -20,6 +20,7 @@ publish:
 	emacs -Q --batch -l ./jointhefreeworld-site.el --funcall jfw/publish
 	mkdir -p ./public
 	cp -Rf ./static ./public/static
+	cp -Rf ./static/robots.txt ./public/robots.txt
 serve:
 	darkhttpd ./public --index index.html --port 50011 
 dev:
