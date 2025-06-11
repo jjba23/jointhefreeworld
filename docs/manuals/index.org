@@ -1,4 +1,8 @@
 #+title: Manuals - jointhefreeworld.org
+#+options: num:nil toc:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
 
 This is your guide to using and understanding the free software of the jointhefreeworld project.
 
@@ -6,6 +10,10 @@ Free software is all about giving you control—over the tools you use, how they
 
 -----
 
-[[/manuals/sss/index.html][SSS manual (Supreme Sexp System)]] - the manual for SSS in English (GB), in HTML format, with all nodes in one page.
+[[/manuals/sss/index.html][SSS manual (Supreme Sexp System)]] - the manual for SSS in English (GB), in HTML format, with all nodes in one page. SSS is Supreme Sexp System - SSS - a Lisp machine adventure.
 
-[[https://jointhefreeworld.org/manuals/lucidplan/index.html][LucidPlan manual]] - the manual for LucidPlan in English (GB), in HTML format, with all nodes in one page.
+[[/manuals/byggsteg/index.html][Byggsteg manual]] - the manual for Byggsteg in English (GB), in HTML format, with all nodes in one page. Byggsteg is the CI/CD orchestrator written in Guile Scheme.
+
+[[/manuals/lucidplan/index.html][LucidPlan manual]] - the manual for LucidPlan in English (GB), in HTML format, with all nodes in one page. LucidPlan is project management for everyone.
+
+[[/manuals/wikimusic/index.html][WikiMusic manual]] - the manual for WikiMusic in English (GB), in HTML format, with all nodes in one page. WikiMusic is the musical knowledge encyclopaedia and content management system (CMS).
