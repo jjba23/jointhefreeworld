@@ -55,3 +55,4 @@ steps:
         branch: [ "trunk" ]
     settings:
       BYGGSTEG_URL: *byggsteg_url
+
