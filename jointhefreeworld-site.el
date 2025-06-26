@@ -102,7 +102,7 @@
 
 (defun jfw/site-header ()
   (list
-   `(div (@ (class "site-title"))
+   `(div (@ (id "top")(class "site-title"))
          (a (@ (href "https://jointhefreeworld.org"))(em "jointhefreeworld.org")))
    `(header (@ (class "site-header flex"))
             (div (@ (class "site-masthead"))
@@ -136,14 +136,16 @@
                                "🔗 source code on Codeberg"))
                            (small
                             (a (@(href ,(string-join (list jfw/site-url "rss.xml") "/"))) "🗞️ RSS feed"))
+                           (small
+                            (a (@(href "#top")) "⬆️ back to the top"))
                            )
                       (div (@(class "flex flex-row gap-1 flex-wrap"))
                            (img (@(src "https://jointhefreeworld.org/ggg/dist/emacs-lisp.svg")
-                                 (alt "https://jointhefreeworld.org/ggg/dist/emacs-lisp.svg")) "")
+                                  (alt "https://jointhefreeworld.org/ggg/dist/emacs-lisp.svg")) "")
                            (img (@(src "https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg")
-                                 (alt "https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg")) "")
+                                  (alt "https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg")) "")
                            (img (@(src "https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg")
-                                 (alt "https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg")) "")
+                                  (alt "https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg")) "")
                            ))))))
 
 (defun get-article-output-path (org-file pub-dir)

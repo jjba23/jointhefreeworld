@@ -68,6 +68,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
 }
 
 html {
+    scroll-behavior: smooth;
     background: var(--color-background-light);
     color: var(--color-primary);
 }
@@ -259,6 +260,21 @@ pre {
 
 .max-w-full {
     max-width: 100%;
+}
+
+.site-post-title {
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);    
+}
+
+.site-title {
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);    
+}
+
+.site-header {
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);    
 }
 
 .site-post-title {
