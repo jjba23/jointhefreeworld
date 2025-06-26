@@ -9,105 +9,150 @@ the Free Software Foundation, either version 3 of the License, or
 
 jointhefreeworld.org is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
-along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
+along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 :root {
+    /* Colors */
+    --color-primary: #3b393e;
+    --color-accent: #885997;
+    --color-hover: #da6197;
+    --color-background-light: rgb(255, 247, 231, 0.5);
+    --color-background-medium: rgb(255, 247, 231, 0.8);
+    --color-text-code: #232025;
+    --color-text-emphasis: #4c4a4f;
+    --color-hr: rgba(120, 120, 120, 0.4);
+    --color-code-background: rgba(235, 220, 210, 0.5);
+    --color-pre-border: rgba(235, 220, 210, 0.8);
+
+
+    /* Font Families */
+    --font-family-body: 'IBM Plex Sans', sans-serif;
+    --font-family-code: 'IBM Plex Mono', monospace;
+
+    /* Font Weights */
+    --font-weight-normal: 500;
+    --font-weight-bold: 700;
+    --font-weight-heavy: 900;
+
+    /* Font Sizes */
+    --font-size-small: medium;
+    --font-size-medium: large; /* Renamed from 'large' for consistency */
+    --font-size-base: large; /* For general text, renamed for clarity */
+
+    /* Spacing */
+    --spacing-xs: 0.2rem;
+    --spacing-sm: 0.4rem;
+    --spacing-md: 0.6rem;
+    --spacing-lg: 1rem;
+    --spacing-xl: 1.2rem;
+    --spacing-xxl: 1.6rem;
+    --spacing-xxxl: 1.9rem;
+    --spacing-line-height-body: 2rem;
+    --spacing-line-height-code: 1.6rem;
+
+    /* Borders & Radii */
+    --border-radius-base: 0.6rem;
+    --border-radius-lg: 1em; /* Renamed for clarity */
+
+    /* Shadows */
     --box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px;
+
+    /* Max Widths */
+    --max-width-text: 86ch;
+    --max-width-masthead: 82ch;
 }
 
-
 html {
-    background: rgb(255, 247, 231, 0.5);
-    color: #3b393e;
+    background: var(--color-background-light);
+    color: var(--color-primary);
 }
 
 body {
-    font-family: 'IBM Plex Sans', sans-serif;
+    font-family: var(--font-family-body);
+    padding-left: var(--spacing-xxxl);
+    padding-right: var(--spacing-xxxl);
+    padding-bottom: var(--spacing-xxl);
+    padding-top: var(--spacing-xxl);
+    margin: auto;
+    line-height: var(--spacing-line-height-body);
+    word-break: break-word;
+    font-size: var(--font-size-base);
 }
 
 a, button, h1, h2, h3, h4, h5, h6 {
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
 }
 
 a:hover {
     text-decoration: underline;
-    color: #da6197;
+    color: var(--color-hover);
 }
 
 a {
-    color: #885997;
+    color: var(--color-accent);
     text-decoration: none;
     font-style: normal;
-    font-weight: 700;
-    font-size: large;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-medium);
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: #3b393e;
-    font-family: "IBM Plex Sans", sans-serif;
-    font-weight: 900;
-}
-
-body {
-    padding-left: 1.9rem;
-    padding-right: 1.9rem;
-    padding-bottom: 1.6rem;
-    padding-top: 1.6rem;
-    margin: auto;
-    line-height: 2rem;
-    word-break: break-word;
-    font-size: large;
+    color: var(--color-primary);
+    font-family: var(--font-family-body);
+    font-weight: var(--font-weight-heavy);
 }
 
 p {
-    max-width: 86ch;
-    font-size: large;
+    max-width: var(--max-width-text);
+    font-size: var(--font-size-base);
 }
 
-hr { color: rgba(120, 120, 120, 0.4); }
+hr {
+    color: var(--color-hr);
+}
 
 em {
-    color: #4c4a4f;
-    max-width: 86ch;
-    font-size: large;
+    color: var(--color-text-emphasis);
+    max-width: var(--max-width-text);
+    font-size: var(--font-size-base);
 }
 
 .site-masthead {
-    max-width: 82ch;
-    font-size: large;
+    max-width: var(--max-width-masthead);
+    font-size: var(--font-size-base);
 }
 
 code {
-    background: rgba(235, 220, 210, 0.5);
-    color: #232025;
-    padding-left: 0.4rem;
-    padding-right: 0.4rem;
-    padding-top: 0.2rem;
-    padding-bottom: 0.2rem;
-    border-radius: 0.6rem;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: medium;
+    background: var(--color-code-background);
+    color: var(--color-text-code);
+    padding-left: var(--spacing-sm);
+    padding-right: var(--spacing-sm);
+    padding-top: var(--spacing-xs);
+    padding-bottom: var(--spacing-xs);
+    border-radius: var(--border-radius-base);
+    font-family: var(--font-family-code);
+    font-size: var(--font-size-small);
     font-style: normal;
     box-shadow: var(--box-shadow);
 }
 
 pre {
-    background: rgba(235, 220, 210, 0.5);
-    color: #232025;
-    border: 1px solid rgba(235, 220, 210, 0.8);
-    padding-left: 1.2rem;
-    padding-right: 1.2rem;
-    padding-top: 2.2rem;
-    padding-bottom: 2.2rem;
-    border-radius: 0.6rem;
-    line-height: 1.6rem;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: medium;
+    background: var(--color-code-background);
+    color: var(--color-text-code);
+    border: 1px solid var(--color-pre-border);
+    padding-left: var(--spacing-xl);
+    padding-right: var(--spacing-xl);
+    padding-top: var(--spacing-xxl);
+    padding-bottom: var(--spacing-xxl);
+    border-radius: var(--border-radius-base);
+    line-height: var(--spacing-line-height-code);
+    font-family: var(--font-family-code);
+    font-size: var(--font-size-small);
     overflow-x: scroll;
     font-style: normal;
     box-shadow: var(--box-shadow);
@@ -116,26 +161,26 @@ pre {
 /* org specific */
 
 .timestamp-wrapper {
-    background: rgba(235, 220, 210, 0.5);
-    padding: 0.2rem;
-    border-radius: 0.6rem;
-    margin-right: 1rem;
+    background: var(--color-code-background);
+    padding: var(--spacing-xs);
+    border-radius: var(--border-radius-base);
+    margin-right: var(--spacing-lg);
     box-shadow: var(--box-shadow);
 }
 
 .timestamp {
-    font-weight: 500;
-    font-size: medium;
-    font-style: normal;    
+    font-weight: var(--font-weight-normal);
+    font-size: var(--font-size-small);
+    font-style: normal;
 }
 
 .nav-link {
-    padding-top: 0.2rem;
-    padding-bottom: 0.2rem;
-    padding-left: 0.6rem;
-    padding-right: 0.6rem;
+    padding-top: var(--spacing-xs);
+    padding-bottom: var(--spacing-xs);
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
     font-style: normal;
-    font-size: large;
+    font-size: var(--font-size-medium);
 }
 
 .nav {
@@ -147,48 +192,80 @@ pre {
     list-style: none;
 }
 
-.flex { display: flex }
+.flex {
+    display: flex;
+}
 
-.flex-wrap { flex-wrap: wrap }
+.flex-wrap {
+    flex-wrap: wrap;
+}
 
-.flex-row { flex-direction: row }
+.flex-row {
+    flex-direction: row;
+}
 
-.gap-1 { gap: 4px }
+.gap-1 {
+    gap: 4px;
+}
 
-.gap-2 { gap: 8px }
+.gap-2 {
+    gap: 8px;
+}
 
-.gap-3 { gap: 12px }
+.gap-3 {
+    gap: 12px;
+}
 
-.gap-4 { gap: 16px }
+.gap-4 {
+    gap: 16px;
+}
 
-.justify-center { justify-content: center }
+.justify-center {
+    justify-content: center;
+}
 
-.figure { text-align:center }
+.figure {
+    text-align: center;
+}
 
-img { max-width: 100%; }
+img {
+    max-width: 100%;
+}
 
-.flex-col { flex-direction: column }
+.flex-col {
+    flex-direction: column;
+}
 
-.items-center { align-items: center }
+.items-center {
+    align-items: center;
+}
 
-.break-word { word-break: break-word }
+.break-word {
+    word-break: break-word;
+}
 
-.max-w-full { max-width: 100% }
+.max-w-full {
+    max-width: 100%;
+}
 
-.site-post-title { text-align: center }
+.site-post-title {
+    text-align: center;
+}
 
 summary {
     cursor: pointer;
-    font-size: large;
+    font-size: var(--font-size-medium);
 }
 
-.nav-details  { width: 100% }
+.nav-details {
+    width: 100%;
+}
 
 .content {
-    background-color: rgb(255, 247, 231, 0.8);
-    padding: 1.2em;
-    border-radius: 1em;
-    box-shadow: var(--box-shadow);    
+    background-color: var(--color-background-medium);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow);
 }
 
 @media only screen and (max-width: 600px) {
