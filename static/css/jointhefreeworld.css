@@ -9,11 +9,11 @@ the Free Software Foundation, either version 3 of the License, or
 
 jointhefreeworld.org is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
-along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
+along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 :root {
@@ -41,8 +41,10 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
 
     /* Font Sizes */
     --font-size-small: medium;
-    --font-size-medium: large; /* Renamed from 'large' for consistency */
-    --font-size-base: large; /* For general text, renamed for clarity */
+    --font-size-medium: large;
+    /* Renamed from 'large' for consistency */
+    --font-size-base: large;
+    /* For general text, renamed for clarity */
 
     /* Spacing */
     --spacing-xs: 0.2rem;
@@ -57,7 +59,8 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
 
     /* Borders & Radii */
     --border-radius-base: 0.6rem;
-    --border-radius-lg: 1em; /* Renamed for clarity */
+    --border-radius-lg: 1em;
+    /* Renamed for clarity */
 
     /* Shadows */
     --box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px;
@@ -95,7 +98,14 @@ body {
 }
 
 
-a, button, h1, h2, h3, h4, h5, h6 {
+a,
+button,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-weight: var(--font-weight-bold);
 }
 
@@ -112,7 +122,12 @@ a:hover {
     color: var(--color-hover);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     color: var(--color-primary);
     font-family: var(--font-family-body);
     font-weight: var(--font-weight-heavy);
@@ -131,7 +146,7 @@ li {
 hr {
     color: var(--color-hr);
     margin-top: var(--spacing-xl);
-    margin-bottom: var(--spacing-xl);    
+    margin-bottom: var(--spacing-xl);
 }
 
 em {
@@ -265,17 +280,17 @@ pre {
 .site-post-title {
     padding-left: var(--spacing-md);
     padding-right: var(--spacing-md);
-    text-align: center;    
+    text-align: center;
 }
 
 .site-title {
     padding-left: var(--spacing-md);
-    padding-right: var(--spacing-md);    
+    padding-right: var(--spacing-md);
 }
 
 .site-header {
     padding-left: var(--spacing-md);
-    padding-right: var(--spacing-md);    
+    padding-right: var(--spacing-md);
 }
 
 summary {
