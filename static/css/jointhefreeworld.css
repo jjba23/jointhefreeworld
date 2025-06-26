@@ -190,3 +190,9 @@ summary {
     border-radius: 1em;
     box-shadow: var(--box-shadow);    
 }
+
+@media only screen and (max-width: 600px) {
+    .content {
+        padding: 0;
+    }
+}
