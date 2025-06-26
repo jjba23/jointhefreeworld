@@ -51,4 +51,4 @@ I'm always working on computer systems, improving my Emacs workflow and configur
 
 ---------
 
-[[https://jointhefreeworld.org/static-assets/jointhefreeworld/jointhefreeworld-small.png]]
+[[https://jointhefreeworld.org/static-assets/jointhefreeworld/jointhefreeworld-tiny.png]]
