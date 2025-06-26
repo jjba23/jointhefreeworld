@@ -84,7 +84,7 @@ body {
     padding-top: var(--spacing-xxl);
     margin: auto;
     line-height: var(--spacing-line-height-body);
-    word-break: break-all;
+    word-wrap: overflow-wrap;
     font-size: var(--font-size-base);
 }
 
@@ -267,10 +267,6 @@ pre {
 
 .items-center {
     align-items: center;
-}
-
-.break-all {
-    word-break: break-all;
 }
 
 .max-w-full {

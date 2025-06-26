@@ -215,7 +215,7 @@
                       ,(if-let ((video-id (plist-get info :video)))
                            (jfw/embed-video video-id))
                       ,(when pre-content pre-content)
-                      (div (@ (id "content")(class "content break-all max-w-full"))
+                      (div (@ (id "content")(class "content max-w-full"))
                            ,content))
                  ,@(unless exclude-footer
                      (jfw/site-footer)))))))
