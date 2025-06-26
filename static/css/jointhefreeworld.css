@@ -358,3 +358,11 @@ h6 {
         padding-right: var(--spacing-sm);
     }
 }
+
+dl {
+    max-width: var(--max-width-text);
+}
+
+dt {
+    font-style: italic;
+}
