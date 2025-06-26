@@ -22,7 +22,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
 
 
 html {
-    background: #fff7e7;
+    background: #fff8f8;
     color: #3b393e;
 }
 
@@ -185,8 +185,8 @@ summary {
 .nav-details  { width: 100% }
 
 .content {
-    background-color: #fff8f8;
-    padding: 0.5em;
+    background-color: #fff7e7;
+    padding: 1.2em;
     border-radius: 1em;
     box-shadow: var(--box-shadow);    
 }
