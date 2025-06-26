@@ -41,7 +41,7 @@ Let's tackle some common illusions about Scheme:
 
 ** Illusion #1: It's Hard to Find Scheme Programmers
 
-Yes, directly hiring a seasoned Scheme programmer with production experience can be challenging. Five years ago, when I first aimed to build a Scheme team, this was a major concern for me too. However, within two months, I realized it was a non-issue. *Training a Scheme programmer is remarkably cost-effective.*
+Yes, directly hiring a seasoned Scheme programmer with production experience can be challenging. This is the number one reason many companies refuse certain tech. However, with Scheme, I realized it was a non-issue. *Training a Scheme programmer is remarkably cost-effective*, partly thanks to the simplicity and minimalism of the language.
 
 Here's an idea for you, to address any hiring concerns, focus on evaluating candidates' understanding of functional programming. It's a growing trend, after all! If candidates  are strong enough to receive an offer, then introduce them to the legendary book *SICP (Structure and Interpretation of Computer Programs)* during their onboarding.
 
