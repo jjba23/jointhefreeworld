@@ -49,3 +49,6 @@ I'm always working on computer systems, improving my Emacs workflow and configur
 [[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][See my videos here]], about music, guitar 🎸, GNU Guix, Nix, Haskell, or meet me at the gym and let's do some CrossFit.
 
 
+---------
+
+[[https://jointhefreeworld.org/static-assets/jointhefreeworld/jointhefreeworld-small.png]]

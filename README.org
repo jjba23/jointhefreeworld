@@ -103,3 +103,5 @@ Find here the Backlog and Kanban boards for jointhefreeworld: https://lucidplan.
 - *The Emacs Community* – For the powerful tools and continuous improvements that make projects like this possible.
 
 -----
+
+[[https://jointhefreeworld.org/static-assets/jointhefreeworld/jointhefreeworld-small.png]]
