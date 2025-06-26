@@ -19,7 +19,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
 :root {
     /* Colors */
     --color-primary: #3b393e;
-    --color-secondary: rgba(59,57,62, 0.8);
+    --color-secondary: rgba(59,57,62, 0.9);
     --color-accent: #885997;
     --color-hover: #da6197;
     --color-background-light: rgba(255, 247, 231, 0.5);
