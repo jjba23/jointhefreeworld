@@ -1,0 +1,147 @@
+#+title: Scheme and Lisps are Great for production
+#+options: num:nil toc:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2025-06-26 do>
+
+It's great that you're highlighting the power of Scheme and Lisp! Here's a revised version of your text, aiming for a more attractive, legible, and engaging presentation, while emphasizing the strengths of these languages:
+
+---------
+
+* My Journey with Scheme in Production
+
+For the past two years, I've been on a mission: using the *Scheme programming language* , write and deliver production-ready systems, and transform my computing environment (leveraging great Scheme/Lisp projects like Guix, Artanis, etc.). I have since developed several libraries, fully-fledged web applications that are database-backed, and even created my own operating system (on top of Guix), all thanks to this expressive language, that lets me lift the heaviest boulders.
+
+The existing folklore around Scheme and its Lisp family is often described as fascinating, paradoxical, and even mystical. While Scheme holds a prominent place in academia, I've noticed a significant gap in its adoption within commercial products. Discussions about the real-world challenges and solutions for using Scheme in development are surprisingly scarce, with many simply echoing conventional wisdom rather than delving into practical implementation.
+
+My personal choice has been *GNU Guile*, though I've also explored other Scheme implementations. My experience is, of course, limited, and I'm not suggesting GNU Guile is ready to replace Python, Go, Typescript, Haskell, Scala or Java overnight. However, my insights extend beyond GNU Guile to other Scheme implementations as well as other Lisp dialects.
+
+This article isn't about convincing you to choose Scheme over other languages. Instead, if you've already recognized the growing trend of *functional programming* and are curious about powerful, well-established functional languages, this piece will illuminate Scheme's often-overlooked strengths in a production setting.
+
+------------------
+
+* Why Scheme? Beyond the Cliché Questions
+
+The question "Why bother with Scheme?" is a classic one, with countless valid answers. While I can't list them all exhaustively, here's what you should know if you're new to the "Scheme land":
+
+- *Exceptional Expressiveness:* Scheme excels at allowing you to write *painless and expressive code* that significantly reduces complexity.
+- *Full Lambda Calculus Support:* Its robust support for lambda calculus offers *superior expressiveness* when you need to craft elegant and powerful abstractions.
+- *Ease of Understanding:* Scheme's clarity makes programs easier to analyze and debug, which is crucial in any development cycle.
+- *Standardized and Stable:* Scheme is a *standardized language* with well-defined grammar and standard APIs, ensuring consistency and predictability.
+- *Rapid Development:* For business logic, where low-level details aren't the primary concern, Scheme provides an excellent framework for *rapid development*.
+- *Reduced Complexity, Fewer Bugs:* Less complexity generally leads to fewer bugs. While no language guarantees bug-free code (that depends on the programmer!), Scheme's design inherently promotes clearer, more maintainable solutions.
+- *A Worthwhile Investment:* From a professional software development perspective, *Scheme is absolutely worth investing in*, and I'll demonstrate why throughout this article.
+
+------------
+
+* Dispelling the Illusions: Addressing Common Misconceptions
+
+Let's tackle some common illusions about Scheme:
+
+** Illusion #1: It's Hard to Find Scheme Programmers
+
+Yes, directly hiring a seasoned Scheme programmer with production experience can be challenging. Five years ago, when I first aimed to build a Scheme team, this was a major concern for me too. However, within two months, I realized it was a non-issue. *Training a Scheme programmer is remarkably cost-effective.*
+
+Here's an idea for you, to address any hiring concerns, focus on evaluating candidates' understanding of functional programming. It's a growing trend, after all! If candidates  are strong enough to receive an offer, then introduce them to the legendary book *SICP (Structure and Interpretation of Computer Programs)* during their onboarding.
+
+Of course, SICP is a substantial book for newcomers, so you can focus on the first two chapters. "Data abstraction" helps them understand object-oriented concepts, and "procedure abstraction" refines their algorithm implementation skills.
+
+I argue that within a month they will begin tackling small tasks, fixing bugs, and implementing minor features. SICP isn't just a book; it's a formalized educational system designed by profound minds. We can leverage this system to quickly train proficient Scheme programmers and apply their fresh knowledge to daily work.
+
+The SICP educational system empowers us to train capable Scheme programmers in a short timeframe. Most technology companies already have an onboarding period for new hires; a dedicated month for Scheme training is a good, affordable solution. Think about it: *we can spend virtually no money on this training*, and we rapidly translate the valuable knowledge from SICP into tangible product development.
+
+** Illusion #2: Scheme Isn't Fast
+
+This is *no longer true!* We have great JIT compilers and optimizations happening. Specially if you are coming from Ruby, PHP or Python land, you will notice a major speedup.
+
+Years ago, as a newbie, I was obsessed with programming language speed. As a professional developer, I've come to understand that there are at least three crucial kinds of "speed" in programming:
+
+-  *Learning speed:* How easy is it to learn a language from scratch?
+-  *Development speed:* How much can we reduce the coding effort?
+-  *Execution speed:* How quickly does the code run?
+
+This realization helped me understand why languages like Ruby on Rails gained immense popularity in web development, despite being considered "slow" in terms of execution. If execution speed were the sole criterion, assembly or even machine code would always be the superior choice.
+
+** Illusion #3: The Ecosystem is the Most Important Factor for a Language
+
+My friend, please *don't blindly trust this conjecture any longer.* It doesn't hold true in real-world development. The reality is: *the language itself is the most important factor for an ecosystem.*
+
+A large ecosystem, while containing many packages, doesn't guarantee quality or active maintenance across all packages and their dependencies. We shouldn't have blind faith in sheer quantity.
+
+The Python ecosystem, for instance, is primarily for the Python language. While Python boasts a massive ecosystem due to historical reasons, it doesn't imply that other languages require a comparably vast one. There's only one truly universal ecosystem: *the C ecosystem.* Dynamic language modules are often just bindings to existing C libraries.
+
+Therefore, if a language offers *strong FFI (Foreign Function Interface) support*, it can leverage the entire universe of C libraries. In today's landscape, with distributed processing becoming commonplace, heterogeneous systems are the norm. We don't need to build everything within a single ecosystem.
+
+So, let's break this illusion: an ecosystem can be significant in certain scenarios, but it's not the most critical aspect of a language. When we design or choose a language, we prioritize its *paradigm, grammar, expressiveness, and optimization potential.*
+
+These are the true determinants of a programming language's value. In the past, companies drove language development, and contributions to an ecosystem were often tied to payment. This made the ecosystem crucial for commercial languages to grow. Nowadays, programming languages are largely driven by *FOSS (Free and Open-Source Software) communities*, leading to naturally evolving ecosystems. An experienced developer will prioritize a language's expressiveness, as it directly impacts coding efficiency.
+
+As a final note on this, considering Guile Scheme is the official GNU project's extension language, you can be assured that this ecosystem is here to stay, keeps growing, and is of high quality. Take a look at all the Guile libraries distributed via the Guix package manager for example: [[https://jointhefreeworld.org/guile-show-hub/][https://jointhefreeworld.org/guile-show-hub/]]
+
+-------
+
+* Understanding the Trade-offs: The "Cons" of Scheme
+
+No language is perfect. Here are a few current challenges for Scheme:
+
+** Scheme Isn't Yet Fully Ready for Deep Learning
+
+Deep learning is undeniably hot right now. I'd like to mention the *AISCM project*, written in GNU Guile using LLVM JIT and based on TensorFlow. It works, and it's impressive. However, I personally don't have extensive time to dedicate to it. So, if you're serious about using Scheme for deep learning, I strongly encourage you to contribute to AISCM. Be warned, AISCM already has a substantial codebase and includes support for OpenCV and FFmpeg, thanks to its author, Jan Wedekind. While I have less information on deep learning progress in other Scheme implementations, I acknowledge this might simply be due to my limited perspective.
+
+With this being said, Scheme is by itself a great language for AI applications, as history has proved, and in the future it will continue to be so.
+
+** Scheme Has a Fragmented Community
+
+For historical reasons, there are numerous Scheme implementations, leading to a somewhat fragmented community. However, there's growing hope!
+
+First, *Scheme standardization has made excellent progress* over the past decade. *R7RS* thoughtfully separated Scheme into "small" and "big" languages. In my opinion, this was a brilliant move, preserving Scheme's minimalism while also providing a path for industrial-level library specifications.
+
+Another promising development is the rise of modern package managers. I personally use *GNU Guix*, a functional package manager (and operating system) written with GNU Guile. Most GNU Guile libraries can be installed via GNU Guix. Package managers are crucial for fostering ecosystems. In a broader sense, we might consider the GNU community as an operating system community, not just a "commercial concept" ecosystem. Of course, Racket and Chicken Scheme also boast excellent package managers, which significantly contribute to their respective communities.
+
+Ultimately, consistent standard specifications and robust package managers are key to unifying the fragmented Scheme community. It will take time, but the path is clear.
+
+** Scheme Isn't "Purely" Functional
+
+Some functional programming purists may prefer languages that strictly enforce purity, meaning no side effects. While Scheme is a *multi-paradigm language* and not exclusively functional, it offers all the powerful functional features you'd find in pure functional languages. Although side effects are permitted in Scheme, you retain complete control over when and how you use them.
+
+Even as a Haskell enjoyer, I still don't believe it's beneficial to completely forbid side effects; programmers should have the freedom to choose their approach. Scheme provides this freedom, which can be both a strength and a weakness, but it's ultimately your choice.
+
+----------
+
+* Highlighting the Advantages: The "Pros" of Scheme
+
+Now, let's explore Scheme's compelling advantages:
+
+** Scheme Excels in Web Development
+
+With most GUI programs shifting to SaaS models, web development has become increasingly vital. This is why I'm focusing on web rather than traditional GUI development.
+
+All Lisps, with their distinctive characteristics, offer compelling advantages for web development, particularly in crafting frontends and adeptly handling tree-like structures such as HTML.
+
+At the heart of Lisp's strength lies homoiconicity, the revolutionary concept that Lisp code itself is represented as data structures, primarily lists. This isn't just an academic detail; it's the bedrock for macros, Lisp's ultimate feature for extending the language. HTML, being inherently hierarchical, mirrors a tree structure perfectly.
+
+Complementing all this is the Lisp REPL (Read-Eval-Print Loop), an incredibly powerful environment for interactive development. You can connect to a running web server or application, redefine functions, test new code, and inspect data structures live, without the need to restart the entire process. This interactive fluidity is a significant advantage for debugging and rapid prototyping.
+
+Lisp's fundamental data structure, the list (S-expression), is inherently recursive, making it perfectly suited for representing tree-like data. An HTML document is, at its core, a tree where elements serve as nodes and their content or children form branches.
+
+Lisp's provides an intrinsically natural and highly efficient means to construct, traverse, and transform these tree structures. Because Lisp treats code as data, you can write functions and macros that directly manipulate these "HTML trees" as native Lisp data structures. This is *far more potent* and less error-prone than solely relying on string manipulation or external template engines. 
+
+
+** Scheme Saves You Valuable Coding Time
+
+As a seasoned programmer in other languages, higher and lower level, I firmly believe we shouldn't waste time writing non-system-level code in C/C++, Rust, Java, or Scala for example, due to their rigidity. Business logic often changes, and these languages aren't flexible enough for rapid iterations. *Don't squander your time on endless refactoring and debugging.*
+
+Scheme's *powerful expressiveness* significantly reduces the amount of code you need to write. However, its effectiveness depends on your approach. If you're looking for an abundance of pre-built libraries to minimize work, Scheme might not be your first choice.
+
+Scheme's minimalist nature also makes it exceptionally easy to embed as script code within a larger system (especially Guile).
+
+** Build a Team with Deep Computer Science Knowledge
+
+Have you ever found yourself complaining about poor code during a review, realizing that your team members haven't had the chance to truly equip themselves with fundamental computer science knowledge for serious programming?
+
+Scheme can provide that opportunity. It's easy to learn, and critically, it's powerful enough for product development.
+
+-------------
+
+Ultimately, *choose your weapon wisely.* And remember, embracing diversity in your technological toolkit and continuously learning new things is always a sound strategy.
