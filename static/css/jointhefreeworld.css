@@ -69,6 +69,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
     /* Max Widths */
     --max-width-text: 82ch;
     --max-width-masthead: 78ch;
+    --max-width-pre: 128ch;    
 }
 
 html {
@@ -191,6 +192,7 @@ pre {
     overflow-x: scroll;
     font-style: normal;
     box-shadow: var(--box-shadow);
+    max-width: var(--max-width-pre);
 }
 
 /* org specific */
