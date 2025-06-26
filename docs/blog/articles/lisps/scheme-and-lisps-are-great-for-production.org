@@ -5,7 +5,7 @@
 #+language: en
 #+date: <2025-06-26 do>
 
-It's great that you're highlighting the power of Scheme and Lisp! Here's a revised version of your text, aiming for a more attractive, legible, and engaging presentation, while emphasizing the strengths of these languages:
+I want to start by thanking the great NalaGinrut that wrote an article on this topic, which I adapted to explain my experience with Scheme and Lisps.
 
 ---------
 
