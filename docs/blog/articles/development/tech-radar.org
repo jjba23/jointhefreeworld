@@ -7,25 +7,38 @@
 
 Tech changes fast. But it’s becoming an ever-more critical component of success.
 Quadrant names: Techniques, Platforms, Tools, Languages & Frameworks
-Ring names: Adopt, Trial, Assess, Hold
+Ring names: Adopt, Trial, Assess, Deprecate
 
-Note that unless otherwise mentioned, list items are in the ~adopt~ phase.
+* ✅ Adopt
+** Languages & Frameworks
+*** Guile Scheme
+*** GNU Artanis
+*** Emacs Lisp
+*** Common Lisp
+*** Haskell
+*** Typescript
+*** Javascript (vanilla)
+** Tools
+*** GNU Guix
+*** SQLite
+*** PostgreSQL
+*** Emacs
+** Techniques
+*** Plain SQL queries
+*** Guix Manifests
+*** Guix dev shells
+*** Nix Flakes
+*** Nix dev shells
+*** Woodpecker CI/CD
+** Platforms
+*** Custom low-power green VPS
 
-* Languages & Frameworks
-** Haskell
-** Scala
-** Typescript
-** Svelte
-** Scheme, ELisp, or SBCL
-** Nix
-** GNU Guix
-* Tools
-** PostgreSQL
-** SQLite
-** Emacs
-* Techniques
-** Nix Flakes
-** Nix dev shells
-** GitHub CI/CD
-* Platforms
-** Amazon AWS
+* ❌ Deprecate
+** Languages
+*** Scala
+*** ZIO (Scala)
+*** Svelte
+** Tools
+*** MySQL
+** Platforms
+*** Amazon AWS
