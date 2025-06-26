@@ -5,41 +5,52 @@
 #+language: en
 
 Tech changes fast. But it’s becoming an ever-more critical component of success.
-Quadrant names: Techniques, Platforms, Tools, Languages & Frameworks
-Ring names: Adopt, Trial, Assess, Deprecate
+
+A Tech Radar is our trusty compass and map, charting the ever-shifting landscape of technology. It’s not just some dusty document; it's a living, breathing artifact that reflects our collective wisdom, our triumphs, and yes, our hard-won lessons.
+
+At its core, a Tech Radar is a visual tool that helps us categorize and assess various technologies – be they programming languages, development tools, ingenious techniques, or even the very platforms we build upon. It typically organizes these "blips" into different quadrants, like "Languages & Frameworks" or "Tools," and then, crucially, places them into "rings" that signify their current status. Think of these rings as a spectrum, guiding our decisions:
+
+- Adopt :: These are the technologies we've embraced, the ones that have proven their mettle in the trenches. They're reliable, we're confident in them, and they're our go-to for new projects. When something lands here, it means it's been thoroughly vetted and consistently delivers.
+- Trial :: Here, you'll find the promising newcomers or existing technologies we're actively experimenting with. We've seen some success, they're showing real potential, and we're ready to put them through their paces on a project or two to truly understand their strengths and limitations.
+- Assess :: This ring is for the intriguing ideas, the nascent technologies that have piqued our interest. They might be revolutionary, or they might just be a flash in the pan. We're keeping an eye on them, doing our research, and perhaps even building a small prototype to see if they hold water.
+- Deprecate :: This is where we park the technologies we're actively discouraging for new work. Maybe they've been superseded by something better, maybe they're too high-maintenance, or perhaps they simply don't align with our long-term vision. It's about being pragmatic and cutting our losses, preventing new projects from inheriting technical debt.
+
+  -----------------------
 
 * ✅ Adopt
-** Languages & Frameworks
-*** Guile Scheme
-*** GNU Artanis
-*** Emacs Lisp
-*** Common Lisp
-*** Haskell
-*** Typescript
-*** Javascript (vanilla)
-** Tools
-*** GNU Guix
-*** SQLite
-*** PostgreSQL
-*** Emacs
-** Techniques
-*** Plain SQL queries
-*** Guix Manifests
-*** Guix dev shells
-*** Nix Flakes
-*** Nix dev shells
-*** Woodpecker CI/CD
-** Platforms
-*** Custom low-power green VPS
+** 🐂 Languages & Frameworks
+- Guile Scheme
+- GNU Artanis
+- Emacs Lisp
+- Common Lisp
+- Haskell
+- Typescript
+- Javascript (vanilla)
+** 🧰️ Tools
+- GNU Guix
+- SQLite
+- PostgreSQL
+- Emacs
+- Org mode (Emacs)
+- Servant (Haskell), API as  a type
+** ⚙️ Techniques
+- Plain SQL queries
+- Guix Manifests
+- Guix dev shells
+- Nix Flakes
+- Nix dev shells
+- Woodpecker CI/CD
+** 🌐 Platforms
+- Custom low-power green VPS
 
 -------------
 
 * ❌ Deprecate
-** Languages
-*** Scala
-*** ZIO (Scala)
-*** Svelte
-** Tools
-*** MySQL
-** Platforms
-*** Amazon AWS
+** 🐂 Languages & Frameworks
+- Scala
+- ZIO (Scala)
+- Svelte
+** 🧰️ Tools
+- MySQL
+** 🌐 Platforms
+- Amazon AWS
