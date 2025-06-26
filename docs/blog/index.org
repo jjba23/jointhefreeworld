@@ -50,8 +50,6 @@
 
 <2024-02-26 ma> - [[/blog/articles/development/black-box-testing/index.html][Black Box Testing in modern Software]] - Testing software at a high level means freedom of implementation and refactoring, while maintaining guarantees of correctness.
 
-<2024-02-01 do> - [[/blog/articles/development/system-interaction-model/index.html][System Interaction Model - Software Design]] - My hot take on software desing using the years of experience on ever-changing business requirements, and wish for expressive, functional programming loving code.
-
 <2023-11-02 do> - [[/blog/articles/gnu-linux/openvpn3-on-nixos-with-web-based-saml/index.html][Open VPN 3 on NixOS with Web-based SAML]] - Learn how to install and configure OpenVPN 3 client on NixOS, in a reproducible way.
 
 <2023-08-25 Fri> - [[/blog/articles/gnu-linux/windows-11-bootable-usb-from-gnu-linux/index.html][Bootable Windows 11 USB from GNU Linux]] - procedure for creating a bootable USB flash drive with Windows 11. The same process should also work with any HDD/SSD connected to your system.

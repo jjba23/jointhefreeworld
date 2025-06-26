@@ -11,8 +11,6 @@
 
 <2024-02-26 ma> [[/blog/articles/development/black-box-testing/index.html][Black Box Testing in modern Software]]
 
-<2024-02-01 do> [[/blog/articles/development/system-interaction-model/index.html][System Interaction Model Software Design]]
-
 <2021-01-31 Sun> [[/blog/articles/development/ssr-wins-over-javascript/index.html][SSR wins over Javascript]]
 
 <2021-09-21 Tue> [[/blog/articles/development/german-naming-convention/index.html][German / Dutch naming convention]]
