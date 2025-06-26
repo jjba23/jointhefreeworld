@@ -63,8 +63,8 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
     --box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px;
 
     /* Max Widths */
-    --max-width-text: 86ch;
-    --max-width-masthead: 82ch;
+    --max-width-text: 82ch;
+    --max-width-masthead: 78ch;
 }
 
 html {
@@ -83,6 +83,16 @@ body {
     word-break: break-word;
     font-size: var(--font-size-base);
 }
+
+@media only screen and (max-width: 600px) {
+    body {
+        padding-left: 0;
+        padding-right: 0;
+        padding-bottom: var(--spacing-xl);
+        padding-top: var(--spacing-xl);
+    }
+}
+
 
 a, button, h1, h2, h3, h4, h5, h6 {
     font-weight: var(--font-weight-bold);
@@ -108,6 +118,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 p {
+    max-width: var(--max-width-text);
+    font-size: var(--font-size-base);
+}
+
+li {
     max-width: var(--max-width-text);
     font-size: var(--font-size-base);
 }
@@ -270,6 +285,6 @@ summary {
 
 @media only screen and (max-width: 600px) {
     .content {
-        padding: 0;
+        padding: var(--spacing-md);
     }
 }
