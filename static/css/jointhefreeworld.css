@@ -185,7 +185,7 @@ summary {
 .nav-details  { width: 100% }
 
 .content {
-    background-color: #fff7e7;
+    background-color: rgb(255, 247, 231, 0.8);
     padding: 1.2em;
     border-radius: 1em;
     box-shadow: var(--box-shadow);    
