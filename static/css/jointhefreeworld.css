@@ -81,7 +81,7 @@ body {
     padding-top: var(--spacing-xxl);
     margin: auto;
     line-height: var(--spacing-line-height-body);
-    word-break: break-word;
+    word-break: break-all;
     font-size: var(--font-size-base);
 }
 
@@ -99,17 +99,17 @@ a, button, h1, h2, h3, h4, h5, h6 {
     font-weight: var(--font-weight-bold);
 }
 
-a:hover {
-    text-decoration: underline;
-    color: var(--color-hover);
-}
-
 a {
     color: var(--color-accent);
     text-decoration: none;
     font-style: normal;
     font-weight: var(--font-weight-bold);
     font-size: var(--font-size-medium);
+}
+
+a:hover {
+    text-decoration: underline;
+    color: var(--color-hover);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -254,8 +254,8 @@ pre {
     align-items: center;
 }
 
-.break-word {
-    word-break: break-word;
+.break-all {
+    word-break: break-all;
 }
 
 .max-w-full {
@@ -264,7 +264,8 @@ pre {
 
 .site-post-title {
     padding-left: var(--spacing-md);
-    padding-right: var(--spacing-md);    
+    padding-right: var(--spacing-md);
+    text-align: center;    
 }
 
 .site-title {
@@ -275,10 +276,6 @@ pre {
 .site-header {
     padding-left: var(--spacing-md);
     padding-right: var(--spacing-md);    
-}
-
-.site-post-title {
-    text-align: center;
 }
 
 summary {

@@ -35,3 +35,5 @@ deploy:
 fmt:
 	@-find ~+ -maxdepth 8 -name "*.el" -type f -exec emacs -Q --batch {} \
 		-l $(shell realpath ./batch-indent.el) -f indent-file \;	
+lint-css:
+	stylelint --fix strict --config .stylelintrc.yml static/css/*.css
