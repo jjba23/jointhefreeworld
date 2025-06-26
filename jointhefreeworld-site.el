@@ -236,7 +236,7 @@
                                 (org-element-property :path link)))))
 
   (let ((exported-link (org-export-custom-protocol-maybe link contents 'html info))
-        (img-style "style=\"max-width: 100%; border-radius: 10px;\""))
+        (img-style "style=\"\""))
     (cond
      (exported-link exported-link)
      ((or (string-match-p "jpg\\'" (org-element-property :raw-link link))
