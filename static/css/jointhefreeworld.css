@@ -165,3 +165,10 @@ summary {
 }
 
 .nav-details  { width: 100% }
+
+.content {
+    background-color: #fff8f8;
+    padding: 0.5em;
+    border-radius: 1em;
+    box-shadow: var(--box-shadow);    
+}

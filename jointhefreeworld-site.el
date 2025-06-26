@@ -114,13 +114,11 @@
                                     (a (@ (class "nav-link") (href "/blog/")) "Blog") " "
                                     (a (@ (class "nav-link") (href "/joe-cv/")) "Joe's CV/Resume") " "
                                     (a (@ (class "nav-link") (href "https://codeberg.org/jjba23")) "Codeberg") " "
-                                    (a (@ (class "nav-link") (href "/portfolio/")) "Portfolio") " "
                                     (a (@ (class "nav-link") (href "https://www.linkedin.com/in/josepjba/")) "LinkedIn") " "
                                     (a (@ (class "nav-link") (href "/manuals/")) "Manuals") " "
                                     (a (@ (class "nav-link") (href "https://lucidplan.jointhefreeworld.org")) "LucidPlan") " "
                                     (a (@ (class "nav-link") (href "https://byggsteg.jointhefreeworld.org")) "Byggsteg") " "
                                     (a (@ (class "nav-link") (href "https://wikimusic.jointhefreeworld.org")) "WikiMusic") " "
-                                    ;; (a (@ (class "nav-link") (href "https://casadelcata.es")) "Casa del Cata") " "
                                     )))))))
 
 
@@ -215,7 +213,7 @@
                       ,(if-let ((video-id (plist-get info :video)))
                            (jfw/embed-video video-id))
                       ,(when pre-content pre-content)
-                      (div (@ (id "content")(class "break-word max-w-full"))
+                      (div (@ (id "content")(class "content break-word max-w-full"))
                            ,content))
                  ,@(unless exclude-footer
                      (jfw/site-footer)))))))
