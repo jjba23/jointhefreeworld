@@ -34,7 +34,9 @@ The core philosophy of [[https://en.wikipedia.org/wiki/Lisp_(programming_languag
 
 * My Journey with Scheme in Production
 
-For the past two years, I've been on a mission: using the *Scheme programming language* , write and deliver production-ready systems, and transform my computing environment (leveraging great Scheme/Lisp projects like Guix, Artanis, etc.). I have since developed several libraries, fully-fledged web applications that are database-backed, and even created my own operating system (on top of Guix), all thanks to this expressive language, that lets me lift the heaviest boulders.
+For the past two years, I've been on a mission: using the *Scheme programming language* , write and deliver production-ready systems, and transform my computing environment (leveraging great Scheme/Lisp projects like [[https://guix.gnu.org/][GNU Guix]], GNU Artanis, etc.).
+
+I have since developed several libraries, fully-fledged web applications that are database-backed, and even created my own operating system (on top of Guix), all thanks to this expressive language, that lets me lift the heaviest boulders.
 
 The existing folklore around Scheme and its Lisp family is often described as fascinating, paradoxical, and even mystical. While Scheme holds a prominent place in academia, I've noticed a significant gap in its adoption within commercial products. Discussions about the real-world challenges and solutions for using Scheme in development are surprisingly scarce, with many simply echoing conventional wisdom rather than delving into practical implementation.
 
@@ -94,7 +96,7 @@ The SICP educational system empowers us to train capable Scheme programmers in a
 
 ** Illusion: Scheme Isn't Fast
 
-This is *no longer true!* We have great JIT compilers and optimizations happening. Specially if you are coming from Ruby, PHP or Python land, you will notice a major speedup.
+This is *no longer true!* We have great JIT compilers and optimizations happening and lots of Guile Scheme is implemented in C. Specially if you are coming from Ruby, PHP or Python land, you will notice a major speedup.
 
 Years ago, as a newbie, I was obsessed with programming language speed. As a professional developer, I've come to understand that there are at least three crucial kinds of "speed" in programming:
 
