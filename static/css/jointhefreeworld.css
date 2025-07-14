@@ -317,7 +317,7 @@ summary {
 
 /* Responsive Heading Sizes */
 h1 {
-    font-size: clamp(1.6rem, 4.5vw + 0.25rem, 2.5rem);
+    font-size: clamp(1.5rem, 4.5vw + 0.25rem, 2.5rem);
     line-height: 1.2;
 }
 
