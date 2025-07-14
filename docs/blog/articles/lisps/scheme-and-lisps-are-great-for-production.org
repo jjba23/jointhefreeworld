@@ -147,7 +147,7 @@ Even as a Haskell enjoyer, I still don't believe it's beneficial for all softwar
 
 Now, let's explore Scheme's compelling advantages:
 
-** Scheme Excels in Web Development
+** Scheme Excels in Web Development in  Frontend and Backend
 
 With most GUI programs shifting to SaaS models, web development has become increasingly vital. This is why I'm focusing on web rather than traditional GUI development.
 
