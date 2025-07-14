@@ -172,6 +172,8 @@ Scheme's minimalist nature also makes it exceptionally easy to embed as script c
 
 ** Build a Team with Deep Computer Science Knowledge
 
+With Guile you can very easily interface with low-level C code and have the best of both worlds, good use cases are small-core large extensibility programs where you mix Guile and C, and much more, leveraging the compiler tower. Also you can run Scheme in WebAssembly nicely lately.
+
 Have you ever found yourself complaining about poor code during a review, realizing that your team members haven't had the chance to truly equip themselves with fundamental computer science knowledge for serious programming?
 
 Scheme can provide that opportunity. It's easy to learn, and critically, it's powerful enough for product development.
