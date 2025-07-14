@@ -62,7 +62,7 @@ The question "Why bother with Scheme?" is a classic one, with countless valid an
 
 Let's tackle some common illusions about Scheme:
 
-** Illusion #1: It's Hard to Find Scheme Programmers
+** Illusion: It's Hard to Find Scheme Programmers
 
 Yes, directly hiring a seasoned Scheme programmer with production experience can be challenging. This is the number one reason many companies refuse certain tech. However, with Scheme, I realized it was a non-issue. *Training a Scheme programmer is remarkably cost-effective*, partly thanks to the simplicity and minimalism of the language.
 
@@ -74,7 +74,7 @@ I argue that within a month they will begin tackling small tasks, fixing bugs, a
 
 The SICP educational system empowers us to train capable Scheme programmers in a short timeframe. Most technology companies already have an onboarding period for new hires; a dedicated month for Scheme training is a good, affordable solution. Think about it: *we can spend virtually no money on this training*, and we rapidly translate the valuable knowledge from SICP into tangible product development.
 
-** Illusion #2: Scheme Isn't Fast
+** Illusion: Scheme Isn't Fast
 
 This is *no longer true!* We have great JIT compilers and optimizations happening. Specially if you are coming from Ruby, PHP or Python land, you will notice a major speedup.
 
@@ -86,7 +86,7 @@ Years ago, as a newbie, I was obsessed with programming language speed. As a pro
 
 This realization helped me understand why languages like Ruby on Rails gained immense popularity in web development, despite being considered "slow" in terms of execution. If execution speed were the sole criterion, assembly or even machine code would always be the superior choice.
 
-** Illusion #3: The Ecosystem is the Most Important Factor for a Language
+** Illusion: The Ecosystem is the Most Important Factor for a Language
 
 My friend, please *don't blindly trust this conjecture any longer.* It doesn't hold true in real-world development. The reality is: *the language itself is the most important factor for an ecosystem.*
 
@@ -108,9 +108,16 @@ As a final note on this, considering Guile Scheme is the official GNU project's 
 
 No language is perfect. Here are a few current challenges for Scheme:
 
-** Scheme Isn't Yet Fully Ready for Deep Learning
+** Scheme Isn't Yet Fully Ready for AI/Deep Learning
 
-Deep learning is undeniably hot right now. I'd like to mention the *AISCM project*, written in GNU Guile using LLVM JIT and based on TensorFlow. It works, and it's impressive. However, I personally don't have extensive time to dedicate to it. So, if you're serious about using Scheme for deep learning, I strongly encourage you to contribute to AISCM. Be warned, AISCM already has a substantial codebase and includes support for OpenCV and FFmpeg, thanks to its author, Jan Wedekind. While I have less information on deep learning progress in other Scheme implementations, I acknowledge this might simply be due to my limited perspective.
+
+Deep learning and LLM is undeniably hot right now.
+
+Scheme can be a great choice if you are writing and chatting to REST APIs of Agents, LLMs, etc
+
+There are many scientific packages available in Specific to Guile via Guix, which allow for reproducible scientific computational in research projects.
+
+I'd like to mention the *AISCM project*, written in GNU Guile using LLVM JIT and based on TensorFlow. It works, and it's impressive. However, I personally don't have extensive time to dedicate to it. So, if you're serious about using Scheme for deep learning, I strongly encourage you to contribute to AISCM.
 
 With this being said, Scheme is by itself a great language for AI applications, as history has proved, and in the future it will continue to be so.
 
@@ -126,9 +133,9 @@ Ultimately, consistent standard specifications and robust package managers are k
 
 ** Scheme Isn't "Purely" Functional
 
-Some functional programming purists may prefer languages that strictly enforce purity, meaning no side effects. While Scheme is a *multi-paradigm language* and not exclusively functional, it offers all the powerful functional features you'd find in pure functional languages. Although side effects are permitted in Scheme, you retain complete control over when and how you use them.
+Some functional programming purists may prefer languages that strictly enforce purity, meaning no side effects/effect systems. While Scheme is a *multi-paradigm language* and not exclusively functional, it offers all the powerful functional features you'd find in pure functional languages. Although side effects are permitted in Scheme, you retain complete control over when and how you use them.
 
-Even as a Haskell enjoyer, I still don't believe it's beneficial to completely forbid side effects; programmers should have the freedom to choose their approach. Scheme provides this freedom, which can be both a strength and a weakness, but it's ultimately your choice.
+Even as a Haskell enjoyer, I still don't believe it's beneficial for all software to completely forbid side effects, only in select occasions; programmers should have the freedom to choose their approach.
 
 ----------
 
