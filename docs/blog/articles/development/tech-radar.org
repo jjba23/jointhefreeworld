@@ -26,6 +26,8 @@ At its core, a Tech Radar is a visual tool that helps us categorize and assess v
 - Haskell
 - Typescript
 - Javascript (vanilla)
+- Rust
+- GTK4 Libadwaita    
 ** 🧰️ Tools
 - GNU Guix
 - SQLite
