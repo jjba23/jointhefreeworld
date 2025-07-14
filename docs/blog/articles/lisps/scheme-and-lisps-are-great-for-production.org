@@ -44,6 +44,10 @@ This article isn't about convincing you to choose Scheme over other languages. I
 
 ------------------
 
+[[https://jointhefreeworld.org/static-assets/other/img/guile-sculptor-small.png]]
+
+-----------------
+
 * Why Scheme? Beyond the Cliché Questions
 
 The question "Why bother with Scheme?" is a classic one, with countless valid answers. While I can't list them all exhaustively, here's what you should know if you're new to the "Scheme land":
