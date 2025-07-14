@@ -1,4 +1,4 @@
-#+title: Why SQL SELECT * is a bad idea
+#+title: Why SQL SELECT * is often a bad idea
 #+options: num:nil toc:nil
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
@@ -7,7 +7,7 @@
 
 There are some anti-patterns one should avoid when writing SQL queries. Sometimes these may seem like a shortcut, but in reality this can lead to bugs, problems, and brittle applications.
 
-It's always better to use the explicit column list in the SELECT query than a * (star) wildcard. It not only improves the performance but also makes your code more explicit. It also helps you create maintainable code, which will not break when you add/remove columns from your table, especially if you have views that refer to the original table.
+It's almost always better to use the explicit column list in the SELECT query than a * (star) wildcard. It not only improves the performance but also makes your code more explicit. It also helps you create maintainable code, which will not break when you add/remove columns from your table, especially if you have views that refer to the original table.
 
 * SELECT *
 Doing a ~SELECT *~ may seem like a time-saver, but it's actually setting you up for problems in the long run, specially when database schema changes.

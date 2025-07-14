@@ -7,7 +7,7 @@
 
 <2024-06-18 di> [[/blog/articles/development/tech-radar/index.html][My Tech Radar]] - A Tech Radar is our trusty compass and map, charting the ever-shifting landscape of technology. 
 
-<2024-02-27 di> [[/blog/articles/development/sql-select-all/index.html][Why SQL SELECT * is a bad idea]]
+<2024-02-27 di> [[/blog/articles/development/sql-select-all/index.html][Why SQL SELECT * is often a bad idea]]
 
 <2024-02-26 ma> [[/blog/articles/development/black-box-testing/index.html][Black Box Testing in modern Software]]
 
