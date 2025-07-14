@@ -7,6 +7,29 @@
 
 I want to start by thanking the great NalaGinrut that wrote an article on this topic, which I adapted to explain my experience with Scheme and Lisps.
 
+----------
+
+What if I told you one of the oldest high-level programming languages is also one of the most advanced? A language so flexible that writing it feels less like coding and more like sculpting?
+
+In the vast universe of programming languages, most follow a familiar set of rules. There's a clear line between /the code you write and the data that code processes/.
+
+But hidden in plain sight is a family of languages that threw that rulebook out decades ago. λ They're called *Lisp*.
+
+The core philosophy of [[https://en.wikipedia.org/wiki/Lisp_(programming_language)][Lisp]] is disarmingly simple: code and data have the same structure. This concept, known as homoiconicity, is what gives Lisp its legendary power. It means you can write programs that write other programs, transforming the language itself to perfectly match the problem you're trying to solve.
+
+[[https://www.gnu.org/software/guile/][GNU Guile Scheme]] is a fantastic implementation of the minimalistic and academia-renowned Lisp dialect known as [[https://en.wikipedia.org/wiki/Scheme][Scheme]].
+
+#+begin_src scheme
+(define (factorial n)
+  (if (= n 0)
+      1
+      (* n (factorial (- n 1)))))
+
+(define (compose f g)
+  (lambda (x)
+    (f (g x))))
+#+end_src
+
 ---------
 
 * My Journey with Scheme in Production
