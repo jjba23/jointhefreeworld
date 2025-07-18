@@ -9,7 +9,7 @@ I want to start by thanking the great NalaGinrut that wrote an article on this t
 
 ----------
 
-What if I told you one of the oldest high-level programming languages is also one of the most advanced? A language so flexible that writing it feels less like coding and more like sculpting?
+What if I told you one of the oldest high-level programming languages is also one of the most advanced? A language so flexible and powerful, that really lets your ideas flow and super-boosts expressiveness..
 
 In the vast universe of programming languages, most follow a familiar set of rules. There's a clear line between /the code you write and the data that code processes/.
 
@@ -51,6 +51,16 @@ Some of my projects that use Scheme:
 [[https://codeberg.org/jjba23/iter-vitae][Iter Vitae]] - Iter Vitae: "Journey of Life" - the progression of one's life and career. My curriculum vitae / resume generator usign Guile Scheme and Tailwind CSS
 
 [[https://codeberg.org/jjba23/byggsteg][byggsteg]] - Byggsteg is the free as in freedom CI/CD orchestrator written in Guile Scheme.
+
+Some other cool projects:
+
+[[https://guix.gnu.org/][GNU Guix]] - GNU Guix is a package manager for GNU/Linux systems. It is designed to give users more control over their general-purpose and specialized computing environments, and make these easier to reproduce over time and deploy to one or many devices.
+
+[[https://www.spritely.institute/hoot/][Guile Hoot]] - Hoot is a Spritely project for running Scheme code on Wasm GC-capable web browsers, featuring a Scheme to Wasm compiler and a full-featured Wasm toolchain. Hoot is built on Guile and has no additional dependencies. The toolchain is self-contained and even features a Wasm interpreter for testing Hoot binaries without leaving the Guile REPL.
+
+[[https://gitlab.com/spritely/guile-goblins][Guile Goblins]] - Goblins is an actor model implementation for async and distributed network computing, written as a Guile Scheme library.  It was originally written for use in Spritely, but is fairly general.
+
+[[https://artanis.dev/][GNU Artanis]] - GNU Artanis is a production-level modern Web framework of Scheme programming language. It is designed and maintained to be robust, fast, and easy to use for professional web development.
 
 ---------------
 
