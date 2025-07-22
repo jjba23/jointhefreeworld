@@ -146,6 +146,8 @@
                                   (alt "https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg")) "")
                            (img (@(src "https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg")
                                   (alt "https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg")) "")
+                           (img (@(src "https://jointhefreeworld.org/ggg/dist/jointhefreeworld-org.svg")
+                                  (alt "https://jointhefreeworld.org/ggg/dist/jointhefreeworld-org.svg")) "")
                            ))))))
 
 (defun get-article-output-path (org-file pub-dir)
