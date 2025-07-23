@@ -12,7 +12,7 @@ Free software is all about giving you control—over the tools you use, how they
 
 [[/manuals/sss/index.html][SSS manual (Supreme Sexp System)]] - the manual for SSS in English, in HTML format, with all nodes in one page. SSS is Supreme Sexp System - SSS - a Lisp machine adventure.
 
-[[/manuals/veritas-api-documentation/index.html][Veritas test framework API]] - the manual for  in English, in HTML format, with all nodes in one page. Veritas is a Unit, Integration and Black Box testing framework powered by Lisp (Guile Scheme)
+[[/manuals/veritas-api-documentation/index.html][Veritas test framework API]] - the API Documentation of Veritas in English, in HTML format, with all nodes in one page. Veritas is a Unit, Integration and Black Box testing framework powered by Lisp (Guile Scheme)
 
 [[/manuals/byggsteg/index.html][Byggsteg manual]] - the manual for Byggsteg in English (GB), in HTML format, with all nodes in one page. Byggsteg is the CI/CD orchestrator written in Guile Scheme.
 
