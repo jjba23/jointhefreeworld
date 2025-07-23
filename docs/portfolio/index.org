@@ -3,7 +3,7 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
-Hello there! You've landed on the portfolio of Josep Jesus Bigorra Algaba, a passionate advocate for free and open-source software 👋🏼
+Hello there! You've landed on the portfolio of Josep Jesus Bigorra Algaba, a passionate advocate for free software 👋🏼
 
 Below, you'll find a collection of my projects, ranging from deep system customization and web server engineering and orchestration to developer tools and elegant Emacs enhancements 🪄
 
@@ -15,11 +15,11 @@ Take a look around and feel free to explore the code and concepts behind them!
 
 *** Scheme (Lisp - Guile) projects
 
-[[https://codeberg.org/jjba23/sss][SSS - Supreme Sexp System]] - This custom GNU Guix + Linux setup enhances customization to infinity, encourages the hacking spirit, and offers a superior user experience thanks in part too to REPL (Read Eval Print Loop) and Lisps. Sway, Foot, Qutebrowser, etc.
+[[https://codeberg.org/jjba23/sss][SSS - Supreme Sexp System]] - This custom GNU Guix + Linux setup enhances customization to infinity, encourages the hacking spirit, and offers a superior user experience thanks in part too to REPL (Read Eval Print Loop) and Lisps, GTK, Hyprland, Nyxt, Firefox, etc.
 
 [[https://codeberg.org/jjba23/wolk-jjba][Wolk JJBA]] - My web server, running CI/CD, custom services, Nginx, Minecraft and more, all working via Lisp (Guix & Guile Scheme)
 
-[[https://codeberg.org/jjba23/iter-vitae][Iter Vitae]] - Iter Vitae: "Journey of Life" - the progression of one's life and career.
+[[https://codeberg.org/jjba23/iter-vitae][Iter Vitae]] - Iter Vitae: "Journey of Life" - the progression of one's life and career. My curriculum vitae / resume generator usign Guile Scheme and Tailwind CSS
 
 [[https://codeberg.org/jjba23/byggsteg][byggsteg]] - Byggsteg is the free as in freedom CI/CD orchestrator written in Guile Scheme.
 

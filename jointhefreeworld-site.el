@@ -102,7 +102,7 @@
 
 (defun jfw/site-header ()
   (list
-   `(div (@ (class "site-title"))
+   `(div (@ (id "top")(class "site-title"))
          (a (@ (href "https://jointhefreeworld.org"))(em "jointhefreeworld.org")))
    `(header (@ (class "site-header flex"))
             (div (@ (class "site-masthead"))
@@ -114,13 +114,11 @@
                                     (a (@ (class "nav-link") (href "/blog/")) "Blog") " "
                                     (a (@ (class "nav-link") (href "/joe-cv/")) "Joe's CV/Resume") " "
                                     (a (@ (class "nav-link") (href "https://codeberg.org/jjba23")) "Codeberg") " "
-                                    (a (@ (class "nav-link") (href "/portfolio/")) "Portfolio") " "
                                     (a (@ (class "nav-link") (href "https://www.linkedin.com/in/josepjba/")) "LinkedIn") " "
                                     (a (@ (class "nav-link") (href "/manuals/")) "Manuals") " "
                                     (a (@ (class "nav-link") (href "https://lucidplan.jointhefreeworld.org")) "LucidPlan") " "
                                     (a (@ (class "nav-link") (href "https://byggsteg.jointhefreeworld.org")) "Byggsteg") " "
                                     (a (@ (class "nav-link") (href "https://wikimusic.jointhefreeworld.org")) "WikiMusic") " "
-                                    ;; (a (@ (class "nav-link") (href "https://casadelcata.es")) "Casa del Cata") " "
                                     )))))))
 
 
@@ -131,21 +129,25 @@
             (div (@ (class "container"))
                  (div (@ (class "flex flex-col gap-3"))
                       (em "Copyright © 2025 Josep Bigorra (jjba23) &lt;jjbigorra@gmail.com&gt;")
-                      (em "Licensed under the GNU GPL v3 or newer")
+                      (em "Licensed under the GNU AGPL v3 or newer")
                       (div (@ (class "flex flex-row flex-wrap gap-3"))
                            (small
                             (a (@ (href "https://codeberg.org/jjba23/jointhefreeworld"))
                                "🔗 source code on Codeberg"))
                            (small
                             (a (@(href ,(string-join (list jfw/site-url "rss.xml") "/"))) "🗞️ RSS feed"))
+                           (small
+                            (a (@(href "#top")) "⬆️ back to the top"))
                            )
                       (div (@(class "flex flex-row gap-1 flex-wrap"))
                            (img (@(src "https://jointhefreeworld.org/ggg/dist/emacs-lisp.svg")
-                                 (alt "https://jointhefreeworld.org/ggg/dist/emacs-lisp.svg")) "")
+                                  (alt "https://jointhefreeworld.org/ggg/dist/emacs-lisp.svg")) "")
                            (img (@(src "https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg")
-                                 (alt "https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg")) "")
+                                  (alt "https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg")) "")
                            (img (@(src "https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg")
-                                 (alt "https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg")) "")
+                                  (alt "https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg")) "")
+                           (img (@(src "https://jointhefreeworld.org/ggg/dist/jointhefreeworld-org.svg")
+                                  (alt "https://jointhefreeworld.org/ggg/dist/jointhefreeworld-org.svg")) "")
                            ))))))
 
 (defun get-article-output-path (org-file pub-dir)
@@ -174,6 +176,8 @@
                              info
                              &key
                              (publish-date)
+                             (content-reading-time)
+                             (exclude-content-reading-time)
                              (head-extra)
                              (pre-content)
                              (exclude-header)
@@ -210,21 +214,58 @@
                  (div (@ (class "container flex flex-col items-center"))
                       (h1 (@ (class "site-post-title"))
                           ,title)
-                      ,(when publish-date
-                         `(p (@ (class "site-post-meta")) ,publish-date))
+                      ,(when (and (not exclude-content-reading-time) content-reading-time (not (eq "" content-reading-time)))
+                         `(em (@(class "site-post-meta")) ,(format "estimated reading time: %s minutes" content-reading-time)))
+                      ,(when (and publish-date (not (eq "" publish-date)))
+                         `(p (@ (class "site-post-meta")) ,(format "written on: %s" publish-date)))
                       ,(if-let ((video-id (plist-get info :video)))
                            (jfw/embed-video video-id))
                       ,(when pre-content pre-content)
-                      (div (@ (id "content")(class "break-word max-w-full"))
+                      (div (@ (id "content")(class "content max-w-full"))
                            ,content))
                  ,@(unless exclude-footer
                      (jfw/site-footer)))))))
 
+
+
+(defun estimate-reading-time (content)
+  "Calculate the estimated reading time of CONTENT in minutes."
+  (interactive)
+  (let* ((word-list (split-string content "\\s-+" t)) ; Split by whitespace, remove empty strings
+         (word-count (length word-list))
+         (words-per-minute 180) ; Average reading speed
+         (estimated-minutes (/ (float word-count) words-per-minute))
+         (minutes (floor estimated-minutes)))
+    minutes))
+
+(defun is-exclude-content-reading-time-p (title)
+  "Predicate that determines whether a page should show
+estimated reading time based on its TITLE."
+  (pcase title
+    ("Joe's web-site - Join the Free World" t)
+    ("Joe's Blog" t)
+    ("Manuals - jointhefreeworld.org" t)
+    ("Joe's Portfolio" t)
+    ("Lisps" t)
+    ("Emacs" t)
+    ("Haskell" t)
+    ("GNU/Linux" t)
+    ("Dev" t)
+    ("CI/CD" t)
+    ("Go" t)
+    ("FreeBSD" t)
+    ("Personal" t)
+    (else nil)))
+
 (defun jfw/org-html-template (contents info)
-  (jfw/generate-page (org-export-data (plist-get info :title) info)
-                     contents
-                     info
-                     :publish-date (org-export-data (org-export-get-date info "%B %e, %Y") info)))
+  (let* ((page-title (car (plist-get info :title))))
+    (message (format "page title: %s" page-title))
+    (jfw/generate-page (org-export-data (plist-get info :title) info)
+                       contents
+                       info
+                       :publish-date (org-export-data (org-export-get-date info "%d/%m/%Y") info)
+                       :content-reading-time (estimate-reading-time contents)
+                       :exclude-content-reading-time (is-exclude-content-reading-time-p page-title))))
 
 (defun jfw/org-html-link (link contents info)
   "Removes file extension and changes the path into lowercase file:// links."
@@ -236,7 +277,7 @@
                                 (org-element-property :path link)))))
 
   (let ((exported-link (org-export-custom-protocol-maybe link contents 'html info))
-        (img-style "style=\"width: 100%; max-width: 800px; border-radius: 10px;\""))
+        (img-style "style=\"\""))
     (cond
      (exported-link exported-link)
      ((or (string-match-p "jpg\\'" (org-element-property :raw-link link))
@@ -324,31 +365,6 @@
                                           "html"))
                           plist
                           article-path))))
-
-(defun jfw/publish-newsletter-page (plist filename pub-dir)
-  "Publish a newsletter .txt file to a simple HTML page."
-  (let* ((issue-name (file-name-sans-extension
-                      (file-name-nondirectory filename)))
-         (output-file (expand-file-name
-                       (concat issue-name ".html")
-                       pub-dir))
-         (contents (with-temp-buffer
-                     (insert-file-contents filename)
-                     (buffer-string))))
-    (with-temp-file output-file
-      (insert
-       (jfw/generate-page
-        (concat "Issue "
-                (nth 2 (split-string issue-name "-")))
-        (format "<pre class=\"newsletter-text\">%s</pre>"
-                (replace-regexp-in-string
-                 "\\(http\\|https\\)://[^ \t\n\r<>\"']*[^ \t\n\r<>\".,;!?']"
-                 (lambda (match)
-                   (format "<a href=\"%s\">%s</a>" match match))
-                 contents))
-        '()
-        :exclude-header t
-        :exclude-footer t)))))
 
 (setq org-publish-use-timestamps-flag t
       org-publish-timestamp-directory "./.org-cache/"
@@ -478,4 +494,5 @@
 
 
 (provide 'jointhefreeworld-site)
+
 ;;; jointhefreeworld-site.el ends here

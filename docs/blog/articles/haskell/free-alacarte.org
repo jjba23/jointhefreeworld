@@ -10,7 +10,7 @@ Free monads based on  from intuitions from the Data types à la Carte paper. Com
 
 See the original paper, by Wouter Swierstra: https://webspace.science.uu.nl/~swier004/publications/2008-jfp.pdf .
 
-See the Haskell library I built around it: https://github.com/jjba23/free-alacarte .
+See the Haskell library I built around it: https://codeberg.org/jjba23/free-alacarte .
 
 * How do you use this ?  
 
