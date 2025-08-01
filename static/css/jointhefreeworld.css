@@ -72,6 +72,20 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
     --max-width-pre: 128ch;    
 }
 
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: fade 0.04s ease both;
+}
+
+@keyframes fade {
+  from { opacity: 0.3; }
+  to   { opacity: 1; }
+}
+
 html {
     scroll-behavior: smooth;
     background: var(--color-background-light);

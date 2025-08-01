@@ -205,6 +205,18 @@
   --font-mono: \"IBM Plex Mono\", monospace;
 }
 ")
+            (script (@(type "speculationrules"))
+                    "
+{
+  \"prerender\": [
+    {
+      \"where\": {
+        \"selector_matches\": \"a\"
+      }
+    }
+  ]
+}
+")
             (link (@ (rel "stylesheet") (href ,(concat jfw/site-url "/static/css/jointhefreeworld.css"))))
 
             ,(when head-extra head-extra)
