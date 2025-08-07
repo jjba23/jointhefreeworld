@@ -4,11 +4,11 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 
-** Categories
+**  📚 Categories
 
 [[/blog/articles/emacs/][Emacs]] | [[/blog/articles/lisps/][Lisps]] | [[/blog/articles/haskell/][Haskell]] | [[/blog/articles/gnu-linux/][GNU/Linux]] | [[/blog/articles/development/][Dev]] | [[/blog/articles/ci/][CI/CD]] | [[/blog/articles/go/][Go]] | [[/blog/articles/freebsd/][FreeBSD]] | [[/blog/articles/personal/][Personal]]  
 
-** Highlighted articles
+** 📜 Highlighted articles
 
 <2025-06-26 do> [[/blog/articles/lisps/scheme-and-lisps-are-great-for-production/index.html][Scheme and Lisps are Great for production]] - "Why bother with Scheme/Lisp?" is a classic question, with countless valid answers. While I can't list them all exhaustively, I will try to explain my motivation.
 

@@ -17,7 +17,7 @@ You could also describe me as Functional Programming/ Enthusiast, /Free Software
 
 -----
 
-* My own software 🐧
+* 🐂🐧 My own software
 
 /jointhefreeworld/ represents the ecosystem of free software I make and share with the world.
 See all the source code for my projects at Codeberg: https://codeberg.org/jjba23.
@@ -29,7 +29,7 @@ Find the 100% free source code for this very web-site https://codeberg.org/jjba2
 
 -----
 
-* My technology choices ⚙️
+* ⚙️ My technology choices
 
 I develop all kinds of tech solutions for day to day problems of me and of my clients. Along the years I have developed some tastes and choices, along with experience in certain tooling.
 
@@ -39,7 +39,7 @@ See my tech radar here: [[file:../blog/articles/development/tech-radar/][My Tech
 
 -----
 
-* More ➕
+* ➕ More
 I strive for a free world and I'm a supporter of the Free Software Foundation. 
 
 I want you to feel at home here in this corner of the web, and that you join me in my adventure for more freedom in our day-to-day computing. Join the free world we've built, thanks to GNU, Linux and thousands of other wonderful projects.

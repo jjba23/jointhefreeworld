@@ -320,12 +320,12 @@ estimated reading time based on its TITLE."
      (when (and container (not (string= "" container)))
        (format "<%s%s>" container (if container-class (format " class=\"%s\"" container-class) "")))
      (if (not (org-export-low-level-p headline info))
-         (format "<h%d%s><a id=\"%s\" class=\"anchor\" href=\"#%s\">#</a>&nbsp;%s</h%d>%s"
+         (format "<h%d%s>%s&nbsp;<a id=\"%s\" class=\"anchor\" href=\"#%s\">#</a></h%d>%s"
                  level
                  (or attributes "")
-                 anchor-name
-                 anchor-name
                  text
+                 anchor-name
+                 anchor-name
                  level
                  (or contents ""))
        (concat
