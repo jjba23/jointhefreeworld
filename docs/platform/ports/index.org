@@ -12,11 +12,12 @@ This document outlines commonly reserved ports on GNU/Linux-based virtual server
 
 Note that some of the below ports are not always in-use in a production VPS, since some are used exclusively for local development.
 
-💼  indicates production-server ports (always reserved, always in use)
-⚙️  indicates dev-only ports (only reserved in dev environment)
+💼  indicates production-server ports /(always reserved, always in use)/
+
+⚙️  indicates dev-only ports /(only reserved in dev environment)/
 
 |  port | description             |
-| ----- | -----------             |
+|-------+-------------------------|
 | 50002 | 💼 [[https://codeberg.org/jjba23/byggsteg][Byggsteg]]            |
 | 50009 | 💼 [[https://codeberg.org/jjba23/oculuslambda][Oculuslambda]]        |
 | 50011 | ⚙️ [[https://codeberg.org/jjba23/jointhefreeworld][jointhefreeworld]]    |
