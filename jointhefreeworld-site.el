@@ -112,13 +112,10 @@
                                (nav (@ (class "nav"))
                                     (a (@ (class "nav-link") (href "/")) "Home") " "
                                     (a (@ (class "nav-link") (href "/blog/")) "Blog") " "
-                                    (a (@ (class "nav-link") (href "/joe-cv/")) "Joe's CV/Resume") " "
+                                    (a (@ (class "nav-link") (href "/joe-cv/")) "Joe's CV") " "
+                                    (a (@ (class "nav-link") (href "/manuals/")) "Manuals") " "
                                     (a (@ (class "nav-link") (href "https://codeberg.org/jjba23")) "Codeberg") " "
                                     (a (@ (class "nav-link") (href "https://www.linkedin.com/in/josepjba/")) "LinkedIn") " "
-                                    (a (@ (class "nav-link") (href "/manuals/")) "Manuals") " "
-                                    (a (@ (class "nav-link") (href "https://lucidplan.jointhefreeworld.org")) "LucidPlan") " "
-                                    (a (@ (class "nav-link") (href "https://byggsteg.jointhefreeworld.org")) "Byggsteg") " "
-                                    (a (@ (class "nav-link") (href "https://wikimusic.jointhefreeworld.org")) "WikiMusic") " "
                                     )))))))
 
 
@@ -203,6 +200,18 @@
 @theme {
   --font-sans: \"IBM Plex Sans\", sans-serif;
   --font-mono: \"IBM Plex Mono\", monospace;
+}
+")
+            (script (@(type "speculationrules"))
+                    "
+{
+  \"prerender\": [
+    {
+      \"where\": {
+        \"selector_matches\": \"a\"
+      }
+    }
+  ]
 }
 ")
             (link (@ (rel "stylesheet") (href ,(concat jfw/site-url "/static/css/jointhefreeworld.css"))))
@@ -459,6 +468,14 @@ estimated reading time based on its TITLE."
               :base-directory "./docs/manuals/"
               :base-extension "org"
               :publishing-directory "./public/manuals"
+              :publishing-function org-html-publish-to-html
+              :with-title t
+              :recursive t
+              :with-timestamps t)
+            '("jointhefreeworld:platform"
+              :base-directory "./docs/platform/"
+              :base-extension "org"
+              :publishing-directory "./public/platform"
               :publishing-function org-html-publish-to-html
               :with-title t
               :recursive t

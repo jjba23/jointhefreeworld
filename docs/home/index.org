@@ -4,51 +4,53 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 
-I am /Joe/, a.k.a. jjba23 - /Josep Bigorra/.
+Welcome to my corner of the internet, I'm Josep Bigorra (a.k.a. jjba23)
 
-Welcome to my few square meters of Internet 🤟🏼 !
+Here, I share what makes me tick – /from engineering code to philosophical thoughts, all built on principles of respect and freedom/.
 
-*[[../blog/index.html][Visit my blog here]]*,  where I discuss engineering, my thoughts on life, and write some guides.
+*[[../blog/index.html][Visit my blog]]*,  where I discuss engineering, my thoughts on life, and write some guides.
 
-I am a /Software Engineer/ ⚙️, member of /the church of Emacs/, /GNU/Linux, Guix, Nix, Lisp, Scheme and Haskell fanatic/, living in the Netherlands 🇳🇱.
-You could also describe me as Functional Programming/ Enthusiast, /Free Software/ Advocate and perfectionist.
-
-*[[../portfolio/index.html][Visit my portfolio here]]* (work-in-progress 🚧) where I showcase my projects and software I build.
+See [[https://codeberg.org/jjba23][all my source code]] at Codeberg.
 
 -----
 
-* 🐂🐧 My own software
+* 🐂 🐧 jointhefreeworld? 
 
 /jointhefreeworld/ represents the ecosystem of free software I make and share with the world.
-See all the source code for my projects at Codeberg: https://codeberg.org/jjba23.
 
-I try to release all my personal projects in a way that is free as in freedom.
-This means using the GNU General Public License (GPL) v3.0 or later, and some libraries with the Lesser GPL.
+I release all my personal projects in a way that is free as in freedom and respecting of users and other hackers.
 
-Find the 100% free source code for this very web-site https://codeberg.org/jjba23/jointhefreeworld , also released under the GNU GPL.
+------------
 
------
+* 🕺🏻 About me
 
-* ⚙️ My technology choices
-
-I develop all kinds of tech solutions for day to day problems of me and of my clients. Along the years I have developed some tastes and choices, along with experience in certain tooling.
-
-Tech changes fast. But it’s becoming an ever-more critical component of success.
-
-See my tech radar here: [[file:../blog/articles/development/tech-radar/][My Tech Radar]].
-
------
-
-* ➕ More
-I strive for a free world and I'm a supporter of the Free Software Foundation. 
-
-I want you to feel at home here in this corner of the web, and that you join me in my adventure for more freedom in our day-to-day computing. Join the free world we've built, thanks to GNU, Linux and thousands of other wonderful projects.
-
-I'm always working on computer systems, improving my Emacs workflow and configuration files, working with functional programming, engineering reliable systems and databases.
-
-[[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][See my videos here]], about music, guitar 🎸, GNU Guix, Nix, Haskell, or meet me at the gym and let's do some CrossFit.
-
+- what's your name :: /Joe/ for short or /jjba23/ online.
+- passions ::  Software, Emacs, GNU/Linux, Guix, the amazing world of Free Software, Music and CrossFit.
+- λλλ ::  I usually develop in Scheme (Guile), Lisp, Haskell, Bash, Rust, Scala, Emacs Lisp, and more.
+- where :: I live in Noord-Holland, The Netherlands 🇳🇱
+- motto :: Always learning, staying humble, appreciating the small moments. Fine words and insinuating appearance are seldom associated with true virtue.
 
 ---------
 
-[[https://jointhefreeworld.org/static-assets/jointhefreeworld/jointhefreeworld-tiny.png]]
+* 🦤 More 
+
+I develop all kinds of tech solutions for day to day problems of me and of my clients and I document my tech choices in [[file:../blog/articles/development/tech-radar/][My Tech Radar]].
+
+I also [[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][make videos]], about music, guitar 🎸, GNU Guix, Nix, Haskell and more..
+
+The jointhefreeworld project has an [[../blog/articles/personal/jointhefreeworld-code-of-conduct/index.html][inclusive and community-driven code of conduct]].
+
+For development convenience in the jointhefreeworld platform, we have  [[../platform/ports/index.html][an overview of reserved ports]] in a [[https://codeberg.org/jjba23/wolk-jjba][VPS / server]].
+
+💼  For free and open source project management, check the [[https://lucidplan.jointhefreeworld.org][LucidPlan project]]. This is a good alternative to commercial project planning tools like Trello or Jira.
+
+⚙️ For CI/CD with a Lisp/Scheme flavor, free as in freedom, check the [[https://byggsteg.jointhefreeworld.org][Byggsteg project]].  Let's set you up with a Lispy server infra for continuous integration that is easy and flexible.
+
+🎻 If you play an instrument, want to learn music, or share musical knowledge, check the [[https://wikimusic.jointhefreeworld.org][WikiMusic project]].  This is a project dedicated to sharing musical knowledge and exploring music freely.
+
+*[[../portfolio/index.html][Visit my portfolio]]* (work-in-progress 🚧) where I showcase my projects and software I build.
+
+-----
+
+[[https://jointhefreeworld.org/static-assets/guile-show-hub/guile-show-hub-small.png]]
+

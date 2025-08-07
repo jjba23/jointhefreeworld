@@ -1,0 +1,37 @@
+#+title: jointhefreeworld VPS reserved ports
+#+options: num:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+
+This document outlines commonly reserved ports on GNU/Linux-based virtual servers (VPS) used in the jointhefreeworld project and wolk-jjba VPS config. Understanding these is important because:
+   - They relate to system security.
+   - Services may require specific ports to function properly.
+   - When developing services you can be aware which ports are available for use
+
+* Custom Ports
+
+Note that some of the below ports are not always in-use in a production VPS, since some are used exclusively for local development.
+
+💼  indicates production-server ports /(always reserved, always in use)/
+
+⚙️  indicates dev-only ports /(only reserved in dev environment)/
+
+|  port | description             |
+|-------+-------------------------|
+| 50002 | 💼 [[https://codeberg.org/jjba23/byggsteg][Byggsteg]]            |
+| 50009 | 💼 [[https://codeberg.org/jjba23/oculuslambda][Oculuslambda]]        |
+| 50011 | ⚙️ [[https://codeberg.org/jjba23/jointhefreeworld][jointhefreeworld]]    |
+| 50023 | ⚙️ [[https://codeberg.org/jjba23/iter-vitae][Iter Vitae]]          |
+| 50025 | 💼 [[https://codeberg.org/jjba23/lucidplan][Lucidplan]]           |
+| 50050 | 💼 [[https://codeberg.org/jjba23/wikimusic][WikiMusic]]           |
+| 50054 | ⚙️ [[https://codeberg.org/jjba23/hygguile][Hygguile]]            |
+| 50065 | ⚙️ [[https://codeberg.org/jjba23/carvoeiro-water-fun][Carvoeiro Water Fun]] |
+| 50074 | ⚙️ [[https://codeberg.org/jjba23/guile-show-hub][Guile Show Hub]]      |
+| 50077 | 💼 [[https://codeberg.org/jjba23/pingwing][Pingwing]]            |
+
+
+* System-Specific Port Usage
+
+- SSH Server :: we commonly adjust this to 2323
+- HTTP/HTTPS Web Servers :: we use the default 80 and 443 and reverse proxy (NGINX) from there
+ 
