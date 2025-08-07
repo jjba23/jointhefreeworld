@@ -4,9 +4,9 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 
-Welcome to my corner of the internet, I'm Josep Bigorra (a.k.a. jjba23)
+Welcome to Joe's corner of the internet
 
-Here, I share what makes me tick – /from engineering code to philosophical thoughts, all built on principles of respect and freedom/.
+/engineering, code, philosophical thoughts, principles, respect and freedom/.
 
 *[[../blog/index.html][Visit my blog]]*,  where I discuss engineering, my thoughts on life, and write some guides.
 
@@ -24,10 +24,10 @@ I release all my personal projects in a way that is free as in freedom and respe
 
 * 🕺🏻 About me
 
-- what's your name :: /Joe/ for short or /jjba23/ online.
+- what's your name ? :: /Joe/ for short or /jjba23/ online.
 - passions ::  Software, Emacs, GNU/Linux, Guix, the amazing world of Free Software, Music and CrossFit.
-- λλλ ::  I usually develop in Scheme (Guile), Lisp, Haskell, Bash, Rust, Scala, Emacs Lisp, and more.
-- where :: I live in Noord-Holland, The Netherlands 🇳🇱
+- λ λ λ ::  I usually develop in Scheme (Guile), Lisp, Haskell, Bash, Rust, Scala, Emacs Lisp, and more.
+- where from ? :: I live in Noord-Holland, The Netherlands 🇳🇱 I was born in Barcelona, Spain 🇪🇸
 - motto :: Always learning, staying humble, appreciating the small moments. Fine words and insinuating appearance are seldom associated with true virtue.
 
 ---------
