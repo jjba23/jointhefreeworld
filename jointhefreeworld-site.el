@@ -475,6 +475,14 @@ estimated reading time based on its TITLE."
               :with-title t
               :recursive t
               :with-timestamps t)
+            '("jointhefreeworld:platform"
+              :base-directory "./docs/platform/"
+              :base-extension "org"
+              :publishing-directory "./public/platform"
+              :publishing-function org-html-publish-to-html
+              :with-title t
+              :recursive t
+              :with-timestamps t)
             '("jointhefreeworld:portfolio"
               :base-directory "./docs/portfolio/"
               :base-extension "org"
