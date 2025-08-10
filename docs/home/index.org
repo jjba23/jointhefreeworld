@@ -12,6 +12,8 @@ Welcome to Joe's corner of the internet
 
 See [[https://codeberg.org/jjba23][all my source code]] at Codeberg.
 
+#+begin_asidde
+
 -----
 
 * 🐂 🐧 jointhefreeworld? 
@@ -29,6 +31,8 @@ I release all my personal projects in a way that is free as in freedom and respe
 - λ λ λ ::  I usually develop in Scheme (Guile), Lisp, Haskell, Bash, Rust, Scala, Emacs Lisp, and more.
 - where from ? :: I live in Noord-Holland, The Netherlands 🇳🇱 I was born in Barcelona, Spain 🇪🇸
 - motto :: Always learning, staying humble, appreciating the small moments. Fine words and insinuating appearance are seldom associated with true virtue.
+
+[[https://jointhefreeworld.org/static-assets/other/img/joe-2025-08-10.jpg]]
 
 ---------
 
