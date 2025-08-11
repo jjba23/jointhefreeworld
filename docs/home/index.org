@@ -12,8 +12,6 @@ Welcome to Joe's corner of the internet
 
 See [[https://codeberg.org/jjba23][all my source code]] at Codeberg.
 
-#+begin_asidde
-
 -----
 
 * 🐂 🐧 jointhefreeworld? 
@@ -23,18 +21,6 @@ See [[https://codeberg.org/jjba23][all my source code]] at Codeberg.
 I release all my personal projects in a way that is free as in freedom and respecting of users and other hackers.
 
 ------------
-
-* 🕺🏻 About me
-
-- what's your name ? :: /Joe/ for short or /jjba23/ online.
-- passions ::  Software, Emacs, GNU/Linux, Guix, the amazing world of Free Software, Music and CrossFit.
-- λ λ λ ::  I usually develop in Scheme (Guile), Lisp, Haskell, Bash, Rust, Scala, Emacs Lisp, and more.
-- where from ? :: I live in Noord-Holland, The Netherlands 🇳🇱 I was born in Barcelona, Spain 🇪🇸
-- motto :: Always learning, staying humble, appreciating the small moments. Fine words and insinuating appearance are seldom associated with true virtue.
-
-[[https://jointhefreeworld.org/static-assets/other/img/joe-2025-08-10.jpg]]
-
----------
 
 * 🦤 More 
 
@@ -57,4 +43,16 @@ For development convenience in the jointhefreeworld platform, we have  [[../plat
 -----
 
 [[https://jointhefreeworld.org/static-assets/guile-show-hub/guile-show-hub-small.png]]
+
+* 🕺🏻 About me
+
+- what's your name ? :: /Joe/ for short or /jjba23/ online.
+- passions ::  Software, Emacs, GNU/Linux, Guix, the amazing world of Free Software, Music and CrossFit.
+- λ λ λ ::  I usually develop in Scheme (Guile), Lisp, Haskell, Bash, Rust, Scala, Emacs Lisp, and more.
+- where from ? :: I live in Noord-Holland, The Netherlands 🇳🇱 I was born in Barcelona, Spain 🇪🇸
+- motto :: Always learning, staying humble, appreciating the small moments. Fine words and insinuating appearance are seldom associated with true virtue.
+
+[[https://jointhefreeworld.org/static-assets/other/img/joe-2025-08-10.jpg]]
+
+---------
 
