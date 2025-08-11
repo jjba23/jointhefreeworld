@@ -44,6 +44,8 @@ For development convenience in the jointhefreeworld platform, we have  [[../plat
 
 [[https://jointhefreeworld.org/static-assets/guile-show-hub/guile-show-hub-small.png]]
 
+---------
+
 * 🕺🏻 About me
 
 - what's your name ? :: /Joe/ for short or /jjba23/ online.
@@ -54,5 +56,4 @@ For development convenience in the jointhefreeworld platform, we have  [[../plat
 
 [[https://jointhefreeworld.org/static-assets/other/img/joe-2025-08-10.jpg]]
 
----------
 
