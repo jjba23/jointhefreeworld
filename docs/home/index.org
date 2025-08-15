@@ -20,7 +20,9 @@ See [[https://codeberg.org/jjba23][all my source code]] at Codeberg.
 
 It is also a non-recursive acronym:
 
-*J* ust   *O* ne  *I* nteresting  *N* ew  *T* weak , *H* ours  *E* vaporate. *F* iddling  *R* ecompiling and *E* macs for almost *E* verything, *W* orkflow  *O* ptimized, *R* ice  *L* ooks *D* ope
+#+begin_quote
+Just One Interesting New Tweak, Hours Evaporate, Fiddling, Recompiling, and Emacs for almost Everything, Workflow is Optimal, Rice Looks Dope
+#+end_quote
 
 I release all my personal projects in a way that is free as in freedom and respecting of users and other hackers.
 
