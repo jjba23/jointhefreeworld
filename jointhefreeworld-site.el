@@ -113,7 +113,7 @@
                                     (a (@ (class "nav-link") (href "/")) "Home") " "
                                     (a (@ (class "nav-link") (href "/blog/")) "Blog") " "
                                     (a (@ (class "nav-link") (href "/joe-cv/")) "Joe's CV") " "
-                                    (a (@ (class "nav-link") (href "/manuals/")) "Manuals") " "
+                                    (a (@ (class "nav-link") (href "/documentation/")) "Documentation") " "
                                     (a (@ (class "nav-link") (href "https://codeberg.org/jjba23")) "Codeberg") " "
                                     (a (@ (class "nav-link") (href "https://www.linkedin.com/in/josepjba/")) "LinkedIn") " "
                                     )))))))
@@ -253,7 +253,7 @@ estimated reading time based on its TITLE."
   (pcase title
     ("Joe's web-site - Join the Free World" t)
     ("Joe's Blog" t)
-    ("Manuals - jointhefreeworld.org" t)
+    ("Documentation - jointhefreeworld.org" t)
     ("Joe's Portfolio" t)
     ("Lisps" t)
     ("Emacs" t)
@@ -464,10 +464,10 @@ estimated reading time based on its TITLE."
               :with-title t
               :recursive t
               :with-timestamps t)
-            '("jointhefreeworld:manuals"
-              :base-directory "./docs/manuals/"
+            '("jointhefreeworld:documentation"
+              :base-directory "./docs/documentation/"
               :base-extension "org"
-              :publishing-directory "./public/manuals"
+              :publishing-directory "./public/documentation"
               :publishing-function org-html-publish-to-html
               :with-title t
               :recursive t

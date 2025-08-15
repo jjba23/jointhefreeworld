@@ -1,4 +1,4 @@
-#+title: Manuals - jointhefreeworld.org
+#+title: Documentation - jointhefreeworld.org
 #+options: num:nil toc:nil
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
@@ -6,9 +6,11 @@
 
 This is your guide to using and understanding the free software of the jointhefreeworld project.
 
-Free software is all about giving you control—over the tools you use, how they work, and how you share them. Whether you're just starting out or looking to solve a tricky problem, these manuals are here to help.
+Free software is all about giving you control—over the tools you use, how they work, and how you share them. Whether you're just starting out or looking to solve a tricky problem, this documentation is here to help.
 
 -----
+
+** User manuals
 
 [[/manuals/sss/index.html][SSS manual (Supreme Sexp System)]] - the manual for SSS in English, in HTML format, with all nodes in one page. SSS is Supreme Sexp System - SSS - a Lisp machine adventure.
 
@@ -19,3 +21,10 @@ Free software is all about giving you control—over the tools you use, how they
 [[/manuals/lucidplan/index.html][LucidPlan manual]] - the manual for LucidPlan in English (GB), in HTML format, with all nodes in one page. LucidPlan is project management for everyone.
 
 [[/manuals/wikimusic/index.html][WikiMusic manual]] - the manual for WikiMusic in English (GB), in HTML format, with all nodes in one page. WikiMusic is the musical knowledge encyclopaedia and content management system (CMS).
+
+
+-------------
+
+** API  documentation
+
+[[https://jointhefreeworld.org/api-docs/hygguile/API.html][Hygguile's API documentation]] - the technical Guile Scheme API documentation for the hygguile web UI framework.

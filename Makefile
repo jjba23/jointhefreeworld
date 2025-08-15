@@ -30,7 +30,7 @@ deploy:
 	rm -rfv /srv/http/jointhefreeworld.org/index.html
 	rm -rfv /srv/http/jointhefreeworld.org/blog
 	rm -rfv /srv/http/jointhefreeworld.org/portfolio
-	rm -rfv /srv/http/jointhefreeworld.org/manuals/index.html
+	rm -rfv /srv/http/jointhefreeworld.org/documentation/index.html
 	cp -rfv public/* /srv/http/jointhefreeworld.org/
 fmt:
 	@-find ~+ -maxdepth 8 -name "*.el" -type f -exec emacs -Q --batch {} \
