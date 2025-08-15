@@ -30,3 +30,9 @@ Free software is all about giving you control—over the tools you use, how they
 [[https://jointhefreeworld.org/api-docs/hygguile/API.html][Hygguile's API documentation]] - the technical Guile Scheme API documentation for the hygguile web UI framework.
 
 [[https://jointhefreeworld.org/api-docs/hygguile/API.html][Veritas' API documentation]] - the technical Guile Scheme API documentation for the Veritas test framework.
+
+[[https://jointhefreeworld.org/api-docs/kracht/API.html][Kracht API documentation]] - the technical Guile Scheme API documentation for the Kracht library.
+
+[[https://jointhefreeworld.org/api-docs/bewaking/API.html][Bewaking API documentation]] - the technical Guile Scheme API documentation for the Bewaking Authorization/Authentication library.
+
+[[https://jointhefreeworld.org/api-docs/orgwebalchemy/API.html][OrgWebAlchemy API documentation]] - the technical Guile Scheme API documentation for the OrgWebAlchemy library.
