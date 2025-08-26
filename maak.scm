@@ -29,14 +29,24 @@
 (define deploy-dir
   "/srv/http/jointhefreeworld.org")
 
+;; The Emacs Lisp script to run for indenting ELisp files.
+(define emacs-lisp-indent-cmd
+  '(progn (indent-region (point-min)
+                         (point-max) nil)
+          (untabify (point-min)
+                    (point-max))
+          (delete-trailing-whitespace)
+          (save-buffer)))
+
 ;; ====== Maak tasks ======
 
 (define (build)
   "Build the project."
   (delete-file-recursively ".org-cache")
   (remkdir-p "./public")
-  (manifest-shell (list "emacs -Q --batch -l ./jointhefreeworld-site.el"
-                        "--funcall jfw/publish"))
+  ($ (list "CI=true" "guix shell -m manifest.scm --"
+           "emacs -Q --batch -l ./jointhefreeworld-site.el"
+           "--funcall jfw/publish"))
   ($ '("cp -Rfv ./static ./public/static"))
   ($ '("cp -Rfv ./static/robots.txt ./public/robots.txt")))
 

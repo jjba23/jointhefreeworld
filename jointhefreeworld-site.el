@@ -189,7 +189,7 @@
             (meta (@ (author "Josep Bigorra - jointhefreeworld")))
             (meta (@ (name "viewport")
                      (content "width=device-width, initial-scale=1, shrink-to-fit=no")))
-            (link (@ (rel "icon") (type "image/png") (href "/static/img/favicon.png")))            
+            (link (@ (rel "icon") (type "image/png") (href "/static/img/favicon.png")))
             (link (@(rel "preconnect")(href "https://fonts.googleapis.com")))
             (link (@(rel "preconnect")(href "https://fonts.gstatic.com")(crossorigin "")))
             (link (@(rel "stylesheet")(href "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap")))
@@ -346,18 +346,18 @@ estimated reading time based on its TITLE."
 
 (defun jfw/org-html-src-block (src-block _contents info)
   (let* ((lang (org-element-property :language src-block))
-	 (code (org-html-format-code src-block info)))
+         (code (org-html-format-code src-block info)))
     (format "<pre>%s</pre>" (string-trim code))))
 
 
 (org-export-define-derived-backend 'site-html 'html
-  :translate-alist
-  '((template . jfw/org-html-template)
-    (link . jfw/org-html-link)
-    (src-block . jfw/org-html-src-block)
-    (headline . jfw/org-html-headline))
-  :options-alist
-  '((:video "VIDEO" nil nil)))
+                                   :translate-alist
+                                   '((template . jfw/org-html-template)
+                                     (link . jfw/org-html-link)
+                                     (src-block . jfw/org-html-src-block)
+                                     (headline . jfw/org-html-headline))
+                                   :options-alist
+                                   '((:video "VIDEO" nil nil)))
 
 (defun org-html-publish-to-html (plist filename pub-dir)
   "Publish an org file to HTML, using the FILENAME as the output directory."
