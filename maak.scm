@@ -35,8 +35,8 @@
   "Build the project."
   (delete-file-recursively ".org-cache")
   (remkdir-p "./public")
-  (manifest-shell "emacs -Q --batch -l ./jointhefreeworld-site.el"
-                  "--funcall jfw/publish")
+  (manifest-shell (list "emacs -Q --batch -l ./jointhefreeworld-site.el"
+                        "--funcall jfw/publish"))
   ($ '("cp -Rfv ./static ./public/static"))
   ($ '("cp -Rfv ./static/robots.txt ./public/robots.txt")))
 
