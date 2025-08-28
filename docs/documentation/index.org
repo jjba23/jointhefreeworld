@@ -33,6 +33,8 @@ Free software is all about giving you control—over the tools you use, how they
 
 [[https://jointhefreeworld.org/api-docs/ggg/API.html][GGG API documentation]] - the technical Guile Scheme API documentation for the GGG (Guile Glyph Generator).
 
+[[https://jointhefreeworld.org/api-docs/iter-vitae/API.html][Iter Vitae API documentation]] - the technical Guile Scheme API documentation for Iter Vitae.
+
 [[https://jointhefreeworld.org/api-docs/kracht/API.html][Kracht API documentation]] - the technical Guile Scheme API documentation for the Kracht library.
 
 [[https://jointhefreeworld.org/api-docs/bewaking/API.html][Bewaking API documentation]] - the technical Guile Scheme API documentation for the Bewaking Authorization/Authentication library.
