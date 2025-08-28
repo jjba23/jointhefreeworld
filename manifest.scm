@@ -26,6 +26,7 @@
              (gnu packages pkg-config)
              (gnu packages linux)
              (gnu packages compression)
+             (gnu packages rust-apps)
              (gnu packages texinfo)
              (gnu packages autotools)
              (gnu packages web)
@@ -33,5 +34,5 @@
              ((guix licenses)
               #:prefix license:))
 
-(packages->manifest (list texinfo darkhttpd direvent emacs))
+(packages->manifest (list texinfo darkhttpd watchexec emacs))
 

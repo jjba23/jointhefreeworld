@@ -38,6 +38,8 @@
           (delete-trailing-whitespace)
           (save-buffer)))
 
+(define hot-reload-file-types '(org el scm css))
+
 ;; ====== Maak tasks ======
 
 (define (build)
@@ -74,7 +76,14 @@
 
 (define (hot-reload)
   "Hot-reloading developer's setup."
-  ($ '("direvent direvent.conf")))
+  (manifest-shell (list "watchexec 'maak build-and-serve'"
+                        "--clear"
+                        (~ "--exts ~a"
+                           (string-join (map symbol->string
+                                             hot-reload-file-types) ","))
+                        "--on-busy-update=restart"
+                        "--shell bash"
+                        "--watch .")))
 
 (define (hr)
   "Alias to hot-reloading."
