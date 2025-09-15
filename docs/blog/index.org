@@ -10,6 +10,8 @@
 
 ** 📜 Highlighted articles
 
+<2025-09-15 ma> [[/blog/articles/development/simple-markdown-cheatsheet/index.html][Simple Markdown Cheatsheet]] - Markdown is a simple, lightweight markup language used for formatting plain text. It's designed to be easy to read and write, and it can be converted into HTML, PDF, LaTEX and many other formats.
+
 <2025-06-26 do> [[/blog/articles/lisps/scheme-and-lisps-are-great-for-production/index.html][Scheme and Lisps are Great for production]] - "Why bother with Scheme/Lisp?" is a classic question, with countless valid answers. While I can't list them all exhaustively, I will try to explain my motivation.
 
 <2025-04-11 Fri> [[/blog/articles/development/best-programmers/index.html][The Best Programmers I Know]] - I have met a lot of developers in my life. Lately, I asked myself: "What does it take to be one of the best? What do they all have in common?"

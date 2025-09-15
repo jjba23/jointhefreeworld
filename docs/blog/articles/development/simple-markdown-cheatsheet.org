@@ -1,0 +1,114 @@
+#+title: Markdown Cheat-sheet for Beginners
+#+options: num:nil toc:ni
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2025-09-15 Mon>
+
+Markdown is a simple, lightweight markup language used for formatting plain text. It's designed to be easy to read and write, and it can be converted into HTML, PDF, LaTEX and many other formats.
+
+It's a very popular format for writing documentation, blog posts, and notes. It is extremely future-proof since you write documents in plain-text, with some sprinkles of markup.
+
+The key idea is to use simple punctuation to add formatting.
+
+You don't need to memorize all of these. Just remember the basics and refer back to this guide as needed. The best way to learn Markdown is to start writing!
+
+
+* Common Formatting
+
+** Headers
+
+Headers are used for titles and subtitles. They are created with the hash symbol (~#~). The number of hashes determines the size of the header.
+
+#+begin_example
+# This is a large title (H1)
+## This is a major heading (H2)
+### This is a sub-heading (H3)
+#### This is a smaller heading (H4)
+#+end_example
+
+** Emphasis (Bold and Italic)
+
+You can make text bold or italic to add emphasis.
+
+#+begin_example
+This is **bold text** using two asterisks.
+This is also __bold text__ using two underscores.
+
+This is *italic text* using a single asterisk.
+This is also _italic text_ using a single underscore.
+#+end_example
+
+** Lists
+
+Lists are great for organizing information.
+
+*** Unordered Lists (bullet points)
+
+Use a hyphen (~-~) followed by a space.
+
+#+begin_example
+- First item in the list
+- Second item in the list
+  - A nested item
+- Third item
+#+end_example
+
+*** Ordered Lists (numbered)
+
+Use a number followed by a period and a space.
+
+#+begin_example
+1. First step
+2. Second step
+3. Third step
+   1. A nested step
+4. Final step
+#+end_example
+
+* Links and Images
+
+** Links
+
+To link to another webpage, use the format: ~[text to display](URL)~.
+
+#+begin_example
+Visit the official [Markdown website](https://daringfireball.net/projects/markdown/).
+#+end_example
+
+** Images
+
+Images are similar to links, but they start with an exclamation mark (~!~).
+
+#+begin_example
+![Alt text for the image](https://www.example.com/image.jpg)
+#+end_example
+
+* Other Useful Elements
+
+** Blockquotes
+
+To quote text from another source, use the `>` symbol.
+
+#+begin_example
+> "The simplest way to write in Markdown is to just start typing."
+>
+> This can span multiple lines.
+#+end_example
+
+** Horizontal Rule
+
+A horizontal rule is a line that separates content. Use three or more hyphens (~------~).
+
+
+** Code Blocks
+
+To show code or text that should not be formatted, use three backticks (~```~) before and after the text.
+
+#+begin_example
+```
+This text is inside a code block.
+It will not be formatted with bold or italic.
+```
+#+end_example
+
