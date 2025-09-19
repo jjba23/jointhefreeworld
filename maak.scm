@@ -38,15 +38,17 @@
           (delete-trailing-whitespace)
           (save-buffer)))
 
-(define hot-reload-file-types '(org el scm css))
+(define hot-reload-file-types
+  '(org el scm css))
 
 ;; ====== Maak tasks ======
 
-(define (build)
+(define* (build #:key ci?)
   "Build the project."
   (delete-file-recursively ".org-cache")
   (remkdir-p "./public")
-  ($ (list "CI=true" "guix shell -m manifest.scm --"
+  ($ (list (format #f "CI=~a"
+                   (if ci? "true" "false")) "guix shell -m manifest.scm --"
            "emacs -Q --batch -l ./jointhefreeworld-site.el"
            "--funcall jfw/publish"))
   ($ '("cp -Rfv ./static ./public/static"))
@@ -68,22 +70,23 @@
 (define (serve)
   "Run HTTP server serving the rendered production result of running."
   (kill-server)
-  ($ (list (~ "darkhttpd ./dist --port ~a" http-port))))
+  ($ (list (~ "darkhttpd ./public --port ~a" http-port))))
 
 (define (build-and-serve)
-  (build)
+  (build #:ci? #f)
   (serve))
 
 (define (hot-reload)
   "Hot-reloading developer's setup."
-  (manifest-shell (list "watchexec 'maak build-and-serve'"
+  (manifest-shell (list "watchexec"
                         "--clear"
                         (~ "--exts ~a"
                            (string-join (map symbol->string
                                              hot-reload-file-types) ","))
                         "--on-busy-update=restart"
                         "--shell bash"
-                        "--watch .")))
+                        "--watch . --"
+                        "maak build-and-serve")))
 
 (define (hr)
   "Alias to hot-reloading."
@@ -102,7 +105,7 @@
 
 (define (deploy)
   "Deploy the project."
-  (build)
+  (build #:ci? #t)
   (delete-file-recursively (~ "~a/index.html" deploy-dir))
   (delete-file-recursively (~ "~a/blog" deploy-dir))
   (delete-file-recursively (~ "~a/portfolio" deploy-dir))
