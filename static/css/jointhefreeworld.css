@@ -22,8 +22,8 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --color-secondary: rgba(75, 50, 7, 0.9);
   --color-accent: #944c63;
   --color-hover: #da6197;
-  --color-background-light: rgba(251, 243, 218, 0.7);
-  --color-background-medium: rgba(251, 243, 218, 0.8);
+  --color-background-light: rgba(251, 243, 218, 0.4);
+  --color-background-medium: rgba(251, 243, 218, 0.5);
   --color-text-code: #232025;
   --color-text-emphasis: #4c4a4f;
   --color-hr: rgba(120, 120, 120, 0.4);
