@@ -175,7 +175,7 @@ p {
 
 li {
   max-width: var(--max-width-text);
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-small);
 }
 
 hr {
