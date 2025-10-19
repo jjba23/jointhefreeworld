@@ -28,7 +28,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --color-text-emphasis: #4c4a4f;
   --color-hr: rgba(120, 120, 120, 0.4);
   --color-code-background: rgba(253, 249, 237, 0.5);
-  --color-border: rgba(224,224,224,0.8);
+  --color-border: rgb(165, 93, 116, 0.2);
 
   /* Font Families */
   --font-family-body: "IBM Plex Serif", serif;
@@ -41,10 +41,11 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --font-weight-heavy: 900;
 
   /* Font Sizes */
-  --font-size-small: 1em;
-  --font-size-medium: 1.1em;
-  --font-size-base: 1.1em;
-  --font-size-large: 1.2em;
+  --font-xs: 0.6em;
+  --font-sm: 1em;
+  --font-md: 1.1em;
+  --font-lg: 1.1em;
+  --font-xl: 1.2em;
 
   /* Spacing */
   --spacing-xs: 0.2rem;
@@ -107,7 +108,7 @@ body {
   margin: auto;
   line-height: var(--spacing-line-height-body);
   word-wrap: break-word;
-  font-size: var(--font-size-base);
+  font-size: var(--font-lg);
 }
 
 @media only screen and (max-width: 600px) {
@@ -135,7 +136,7 @@ a {
   text-decoration: none;
   font-style: normal;
   font-weight: var(--font-weight-bold);
-  font-size: var(--font-size-medium);
+  font-size: var(--font-md);
 }
 
 a:hover {
@@ -160,7 +161,7 @@ h6 {
 
 p {
   max-width: var(--max-width-text);
-  font-size: var(--font-size-base);
+  font-size: var(--font-lg);
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased !important;
   -moz-font-smoothing: antialiased !important;
@@ -175,7 +176,7 @@ p {
 
 li {
   max-width: var(--max-width-text);
-  font-size: var(--font-size-small);
+  font-size: var(--font-sm);
 }
 
 hr {
@@ -187,7 +188,7 @@ hr {
 em {
   color: var(--color-text-emphasis);
   max-width: var(--max-width-text);
-  font-size: var(--font-size-base);
+  font-size: var(--font-lg);
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased !important;
   -moz-font-smoothing: antialiased !important;
@@ -198,7 +199,7 @@ em {
 i {
   color: var(--color-text-emphasis);
   max-width: var(--max-width-text);
-  font-size: var(--font-size-base);
+  font-size: var(--font-lg);
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased !important;
   -moz-font-smoothing: antialiased !important;
@@ -208,7 +209,7 @@ i {
 
 .site-masthead {
   max-width: var(--max-width-masthead);
-  font-size: var(--font-size-base);
+  font-size: var(--font-lg);
 }
 
 code {
@@ -220,7 +221,7 @@ code {
   padding-bottom: var(--spacing-xs);
   border-radius: var(--border-radius-base);
   font-family: var(--font-family-code);
-  font-size: var(--font-size-small);
+  font-size: var(--font-sm);
   font-style: normal;
   box-shadow: var(--box-shadow);
 }
@@ -236,7 +237,7 @@ pre {
   border-radius: var(--border-radius-base);
   line-height: var(--spacing-line-height-code);
   font-family: var(--font-family-code);
-  font-size: var(--font-size-small);
+  font-size: var(--font-sm);
   overflow-x: scroll;
   font-style: normal;
   box-shadow: var(--box-shadow);
@@ -255,7 +256,7 @@ pre {
 
 .timestamp {
   font-weight: var(--font-weight-normal);
-  font-size: var(--font-size-small);
+  font-size: var(--font-sm);
   font-style: normal;
 }
 
@@ -266,7 +267,7 @@ pre {
   padding-right: var(--spacing-md);
   font-style: normal;
   font-weight: var(--font-weight-normal);
-  font-size: var(--font-size-medium);
+  font-size: var(--font-md);
 }
 
 .nav {
@@ -344,7 +345,7 @@ pre {
 
 summary {
   cursor: pointer;
-  font-size: var(--font-size-medium);
+  font-size: var(--font-md);
 }
 
 .nav-details {
@@ -356,6 +357,7 @@ summary {
   padding: var(--spacing-xl);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--box-shadow);
+  border: 3px solid var(--color-border);
 }
 
 @media only screen and (max-width: 600px) {
@@ -424,7 +426,7 @@ dt {
   font-style: italic;
    color: var(--color-text-emphasis);
   max-width: var(--max-width-text);
-  font-size: var(--font-size-base);
+  font-size: var(--font-lg);
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased !important;
   -moz-font-smoothing: antialiased !important;
@@ -435,4 +437,8 @@ dt {
 img {
   max-width: 100%;
   border-radius: 10px;
+}
+
+.anchor {
+    font-size: var(--font-xs)
 }
