@@ -2,6 +2,8 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
+<2025-10-19 zo> [[/blog/articles/personal/josep-astrology-by-metsatron.index.html][Mètsàtron's astral analysis of Joe's being]] - My brother from another mother, ⁨Mètsàtron Sucurí Jibōia⁩ did some astral and digital readings about me (Joe).
+
 <2025-04-11 Fri> [[/blog/articles/personal/jointhefreeworld-code-of-conduct/index.html][jointhefreeworld - Code of Conduct]] - This Code of Conduct exists to foster an inclusive, respectful, and cooperative environment for all contributors and users of jointhefreeworld free software project.
 
 <2024-06-17 Mon> [[/blog/articles/personal/brief-aan-mijzelf/index.html][Brief aan Mijzelf - Letter to myself]] - Jij en ik weten dat levend zijn pieken en dalen betekent.

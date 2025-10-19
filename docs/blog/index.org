@@ -10,6 +10,8 @@
 
 ** 📜 Highlighted articles
 
+<2025-10-19 zo> [[/blog/articles/personal/josep-astrology-by-metsatron.index.html][Mètsàtron's astral analysis of Joe's being]] - My brother from another mother, ⁨Mètsàtron Sucurí Jibōia⁩ did some astral and digital readings about me (Joe).
+
 <2025-09-15 ma> [[/blog/articles/development/simple-markdown-cheatsheet/index.html][Simple Markdown Cheatsheet]] - Markdown is a simple, lightweight markup language used for formatting plain text. It's designed to be easy to read and write, and it can be converted into HTML, PDF, LaTEX and many other formats.
 
 <2025-06-26 do> [[/blog/articles/lisps/scheme-and-lisps-are-great-for-production/index.html][Scheme and Lisps are Great for production]] - "Why bother with Scheme/Lisp?" is a classic question, with countless valid answers. While I can't list them all exhaustively, I will try to explain my motivation.
