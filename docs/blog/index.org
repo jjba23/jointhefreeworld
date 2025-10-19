@@ -10,7 +10,7 @@
 
 ** 📜 Highlighted articles
 
-<2025-10-19 zo> [[/blog/articles/personal/josep-astrology-by-metsatron.index.html][Mètsàtron's astral analysis of Joe's being]] - My brother from another mother, ⁨Mètsàtron Sucurí Jibōia⁩ did some astral and digital readings about me (Joe).
+<2025-10-19 zo> [[/blog/articles/personal/josep-astrology-by-metsatron/index.html][Mètsàtron's astral analysis of Joe's being]] - My brother from another mother, ⁨Mètsàtron Sucurí Jibōia⁩ did some astral and digital readings about me (Joe).
 
 <2025-09-15 ma> [[/blog/articles/development/simple-markdown-cheatsheet/index.html][Simple Markdown Cheatsheet]] - Markdown is a simple, lightweight markup language used for formatting plain text. It's designed to be easy to read and write, and it can be converted into HTML, PDF, LaTEX and many other formats.
 

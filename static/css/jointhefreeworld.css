@@ -20,7 +20,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   /* Colors */
   --color-primary: 261903;
   --color-secondary: rgba(75, 50, 7, 0.9);
-  --color-accent: #944c63;
+  --color-accent: #a55d74;
   --color-hover: #da6197;
   --color-background-light: rgba(251, 243, 218, 0.4);
   --color-background-medium: rgba(251, 243, 218, 0.5);
@@ -28,7 +28,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --color-text-emphasis: #4c4a4f;
   --color-hr: rgba(120, 120, 120, 0.4);
   --color-code-background: rgba(253, 249, 237, 0.5);
-  --color-pre-border: rgba(253, 249, 237, 0.9);
+  --color-border: rgba(224,224,224,0.8);
 
   /* Font Families */
   --font-family-body: "IBM Plex Serif", serif;
@@ -228,7 +228,7 @@ code {
 pre {
   background: var(--color-code-background);
   color: var(--color-text-code);
-  border: 1px solid var(--color-pre-border);
+  border: 2px solid var(--color-border);
   padding-left: var(--spacing-xl);
   padding-right: var(--spacing-xl);
   padding-top: var(--spacing-xxl);
