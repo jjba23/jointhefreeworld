@@ -110,6 +110,8 @@ body {
   font-size: var(--font-lg);
 }
 
+tr { font-size: var(--font-md) }
+
 @media only screen and (max-width: 600px) {
   body {
     padding-left: var(--spacing-xs);
@@ -117,6 +119,8 @@ body {
     padding-bottom: var(--spacing-xl);
     padding-top: var(--spacing-xl);
   }
+  
+  tr { font-size: var(--font-sm) }  
 }
 
 a,
