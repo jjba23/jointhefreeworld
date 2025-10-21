@@ -40,7 +40,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --font-weight-heavy: 900;
 
   /* Font Sizes */
-  --font-xs: 0.6em;
+  --font-xs: 0.8em;
   --font-sm: 1em;
   --font-md: 1.1em;
   --font-lg: 1.1em;
@@ -110,7 +110,7 @@ body {
   font-size: var(--font-lg);
 }
 
-tr { font-size: var(--font-md) }
+tr { font-size: var(--font-sm) }
 
 @media only screen and (max-width: 600px) {
   body {
@@ -120,7 +120,7 @@ tr { font-size: var(--font-md) }
     padding-top: var(--spacing-xl);
   }
   
-  tr { font-size: var(--font-sm) }  
+  tr { font-size: var(--font-xs) }  
 }
 
 a,
