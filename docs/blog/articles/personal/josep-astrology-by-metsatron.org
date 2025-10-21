@@ -19,18 +19,18 @@ Your astrology is giving me goose bumps!
 
 | Planet        | Sign            | Notes             |
 |---------------+-----------------+----------------------------------------------------------------------------------------------------------------------------------------------------|
-| ☀️Sun        | Capricorn ♑︎   | *Sacred Architect of Joy.* The master builder of systems, structured visionary, disciplined. Systemic creativity, devoted builder of beauty.         |
-| ☽ Moon       | Virgo ♍︎       | *Embodied Priest of Precision.* Feels through refinement. Quiet but powerful presence.                                                               |
-| ⬆️Ascendant  | Virgo ♍︎       | *The Alchemical Mirror.* Sovereign compiler of reality. Attention to detail is his spell.                                                            |
-| ☿ Mercury    | Sagittarius ♐︎ | *Philosopher of the Inner Sanctum.* Truth-seeker rooted in ancestral fire.                                                                           |
-| ♀️Venus      | Aquarius ♒︎    | *Love as Sacred Duty.* Sacred programmer of the collective. Technopoetic caretaker.                                                                  |
-| ♂️Mars       | Virgo ♍︎       | *Surgical Shakti.* Precision warrior, detail-wielder, surgical debugger of sacred . Wields clean code and righteous critique like a tantric scalpel. |
-| ♃ Jupiter    | Capricorn ♑︎   | Mastery through time and devotion. A patient teacher of inner law. Purposeful joy, wisdom through creative structure.                              |
-| ♄ Saturn     | Aries ♈︎ (Rx)  | *Initiator of Hidden Depths.* Wounded authority in intimacy, initiator into taboo.                                                                   |
-| ♅ Uranus     | Aquarius ♒︎    | *Code-Breaker.* Cyber-rebel in service. Daily routines as rebellion.                                                                                 |
-| ♆ Neptune    | Capricorn ♑︎   | *Architect of Dreams.* Mytho-poetic coder, temple-builder of beauty.                                                                                 |
-| ♇ Pluto       | Sagittarius ♐︎ | *Hunter of Dogma.* Radical mind. Seeker of Gnosis. Slayer of false narratives.                                                                       |
-| ☊ North Node | Libra ♎︎       | *Dharma through Beauty.* Anchored through relationship to value, worth, aesthetics.                                                                  |
+| ☀️Sun        | Capricorn︎     | *Sacred Architect of Joy.* The master builder of systems, structured visionary, disciplined. Systemic creativity, devoted builder of beauty.         |
+| ☽ Moon       | Virgo          | *Embodied Priest of Precision.* Feels through refinement. Quiet but powerful presence.                                                               |
+| ⬆️Ascendant  | Virgo︎         | *The Alchemical Mirror.* Sovereign compiler of reality. Attention to detail is his spell.                                                            |
+| ☿ Mercury    | Sagittarius︎   | *Philosopher of the Inner Sanctum.* Truth-seeker rooted in ancestral fire.                                                                           |
+| ♀️Venus      | Aquarius︎      | *Love as Sacred Duty.* Sacred programmer of the collective. Technopoetic caretaker.                                                                  |
+| ♂️Mars       | Virgo︎         | *Surgical Shakti.* Precision warrior, detail-wielder, surgical debugger of sacred . Wields clean code and righteous critique like a tantric scalpel. |
+| ♃ Jupiter    | Capricorn︎     | Mastery through time and devotion. A patient teacher of inner law. Purposeful joy, wisdom through creative structure.                              |
+| ♄ Saturn     | Aries          | *Initiator of Hidden Depths.* Wounded authority in intimacy, initiator into taboo.                                                                   |
+| ♅ Uranus     | Aquarius︎      | *Code-Breaker.* Cyber-rebel in service. Daily routines as rebellion.                                                                                 |
+| ♆ Neptune    | Capricorn︎     | *Architect of Dreams.* Mytho-poetic coder, temple-builder of beauty.                                                                                 |
+| ♇ Pluto       | Sagittarius︎   | *Hunter of Dogma.* Radical mind. Seeker of Gnosis. Slayer of false narratives.                                                                       |
+| ☊ North Node | Libra          | *Dharma through Beauty.* Anchored through relationship to value, worth, aesthetics.                                                                  |
 
 
 ** ☊ North Node in Libra, 2nd House
