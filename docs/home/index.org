@@ -18,6 +18,12 @@ See [[https://codeberg.org/jjba23][all my source code]] at Codeberg.
 
 /jointhefreeworld/ represents the ecosystem of free software I make and share with the world.
 
+It is also a non-recursive acronym:
+
+#+begin_quote
+Just One Interesting New Tweak, Hours Evaporate, Fiddling, Recompiling, and Emacs for almost Everything, Workflow is Optimal, Rice Looks Dope
+#+end_quote
+
 I release all my personal projects in a way that is free as in freedom and respecting of users and other hackers.
 
 ------------

@@ -5,6 +5,8 @@
 
 <2025-10-27 ma> [[/blog/articles/development/hexagon-of-doom/index.html][Hexagon of Doom - The Cost of Over-Abstraction and Indirection]] - Let me explain why I think Ports&Adapter / Hexagonal architecture introduces *net harm* to software projects.
 
+<2025-09-15 ma> [[/blog/articles/development/simple-markdown-cheatsheet/index.html][Simple Markdown Cheatsheet]] - Markdown is a simple, lightweight markup language used for formatting plain text. It's designed to be easy to read and write, and it can be converted into HTML, PDF, LaTEX and many other formats.
+
 <2025-04-11 Fri> [[/blog/articles/development/best-programmers/index.html][The Best Programmers I Know]] - I have met a lot of developers in my life. Lately, I asked myself: "What does it take to be one of the best? What do they all have in common?"
 
 <2024-06-18 di> [[/blog/articles/development/tech-radar/index.html][My Tech Radar]] - A Tech Radar is our trusty compass and map, charting the ever-shifting landscape of technology. 
