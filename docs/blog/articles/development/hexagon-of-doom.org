@@ -1,5 +1,5 @@
 #+title: Hexagon of Doom - The Cost of Over-Abstraction and Indirection
-#+options: num:nil toc:nil
+#+options: num:nil
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 #+language: en
@@ -15,14 +15,14 @@ However, like many architectural patterns, P&A is *not* a universal good. In pra
 
 Let me explain why I think that in many contemporary environments, P&A introduces *net harm* by prioritizing abstract purity over practical simplicity.
 
-* The Double-Layering Paradox (Hex + ZIO Layers)
+* The Double-Layering Paradox (Hex + Layers)
 
 The primary goal of P&A is to invert dependencies: the domain defines an interface (a *Port*), and an external module implements it (an *Adapter*). This keeps the domain clean.
 
 When you already utilize a powerful, effect-aware layering system like *ZIO Layers*, this benefit is almost entirely redundant, leading to an architectural redundancy:
 
 *Indirection for Indirection's Sake:*
-P&A adds interfaces for every dependency. When combined with ZIO's natural *Service* and *Layer* abstractions, you end up with *two or more levels of indirection* to reach a simple implementation.
+P&A adds interfaces for every dependency. When combined with a framework's natural *Service* and *Layer* abstractions, you end up with *two or more levels of indirection* to reach a simple implementation.
 
 Every time a developer needs to trace a call, they must traverse the application layer, the ZIO Service/Layer boundary, *and* the Port/Adapter boundary.
 
@@ -39,7 +39,7 @@ Most small services *are not complex enough* to warrant this pattern. We often s
 This is /architecture astronautics/ —designing for a future complexity that never materializes.
 
 *Onboarding Nightmare:*
-Team members, especially new joiners, already struggle to grasp complex functional programming paradigms like ZIO's effects and layers. Adding the P&A pattern on top of this introduces a massive *cognitive hurdle*.
+Team members, especially new joiners, already struggle to grasp complex functional programming paradigms, frameworks, effects and layers, etc. Adding the P&A pattern on top of this introduces a massive *cognitive hurdle*.
 
 The result is a team that spends more time studying the *structure* of the code than solving the *business problem*. If a developer needs four hours just to restudy the system structure before making a change, the architecture is failing.
 
@@ -79,7 +79,7 @@ val run = result.provide(
 
 A core selling point of P&A is enhanced testability. By defining a Port, you can easily mock the Adapter implementation.
 
-However, in ZIO environments, this benefit is moot. ZIO Layers already provide an elegant, built-in mechanism for swapping implementations (a.k.a., *Layer Stubbing* or *Mocking*).
+However, this benefit is moot. Frameworks already provide an elegant, built-in mechanism for swapping implementations (a.k.a., *Layer Stubbing* or *Mocking*).
 
 #+begin_src scala-ts
 // ZIO: Define a test layer with a mock implementation
@@ -158,11 +158,11 @@ Instead of resorting to heavy patterns like P&A, small teams can achieve clean, 
 
 -  *Good Domain-Driven Design (DDD):* Focus on correct *naming*, clear *domain models*, and ubiquitous language. This is where the most valuable abstraction lies.
 -  *Simple Structure:* A combination of *MVC* (Model-View-Controller, or a simple *Application Service* layer) for structure, combined with *Command and Query* abstractions for separating read/write concerns, provides excellent clarity without excessive indirection.
--  *Harness Native DI:* Leverage ZIO's *Layers* or your framework's native DI system fully. These tools were designed to manage dependencies cleanly; don't fight them by adding manual indirection.
+-  *Harness Native DI:* Leverage your framework's native DI system fully. These tools were designed to manage dependencies cleanly; don't fight them by adding manual indirection.
 
 * Know When to Stop
 
-Hexagonal Architecture is a powerful tool, but it's a tool for scaling complexity. For the vast majority of small to medium-sized projects—especially those built with modern, DI-rich frameworks like ZIO—it represents a premature optimization that results in *architecture debt* and *developer burnout*.
+Hexagonal Architecture is a powerful tool, but it's a tool for scaling complexity. For the vast majority of small to medium-sized projects—especially those built with modern, DI-rich frameworks—it represents a premature optimization that results in *architecture debt* and *developer burnout*.
 
 Before adopting a pattern, ask the critical question: *Does this solve a problem I have today, or am I abstracting for a problem I might never have?*
 
