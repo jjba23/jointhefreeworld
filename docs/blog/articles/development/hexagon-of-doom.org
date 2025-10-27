@@ -1,0 +1,170 @@
+#+title: Hexagon of Doom - The Cost of Over-Abstraction and Indirection
+#+options: num:nil toc:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2025-10-27 ma>
+
+/Disclaimer: This article reflects personal experiences and gripes within specific team environments. Your mileage may vary, but the warning against premature or redundant abstraction stands./
+
+* When "Clean Code" Becomes "Complicated Code"
+
+Hexagonal Architecture, often called *Ports and Adapters (P&A)*, is lauded for its promise of decoupling the core business logic (the "domain") from external concerns (databases, UIs, APIs). In theory, it’s a beautiful solution for creating adaptable, testable systems.
+
+However, like many architectural patterns, P&A is *not* a universal good. In practice—especially for *small projects*, *small teams*, and particularly when using modern frameworks that provide powerful *Dependency Injection (DI)* and layering capabilities (like *ZIO* or Spring)—it often transforms from an asset into a *liability*, drowning projects in unnecessary indirection and cognitive load.
+
+Let me explain why I think that in many contemporary environments, P&A introduces *net harm* by prioritizing abstract purity over practical simplicity.
+
+* The Double-Layering Paradox (Hex + ZIO Layers)
+
+The primary goal of P&A is to invert dependencies: the domain defines an interface (a *Port*), and an external module implements it (an *Adapter*). This keeps the domain clean.
+
+When you already utilize a powerful, effect-aware layering system like *ZIO Layers*, this benefit is almost entirely redundant, leading to an architectural redundancy:
+
+*Indirection for Indirection's Sake:*
+P&A adds interfaces for every dependency. When combined with ZIO's natural *Service* and *Layer* abstractions, you end up with *two or more levels of indirection* to reach a simple implementation.
+
+Every time a developer needs to trace a call, they must traverse the application layer, the ZIO Service/Layer boundary, *and* the Port/Adapter boundary.
+
+This complexity makes *debugging significantly more painful* and slows down the basic task of understanding code flow.
+
+
+* Complexity Debt: Small Teams, Big Overkill
+
+The value of an abstraction must justify its cost. For a tiny microservice that mainly performs CRUD operations or orchestrates two external calls, the architectural overhead of P&A is rarely justified.
+
+*The 9/10 Rule:*
+Most small services *are not complex enough* to warrant this pattern. We often see P&A implemented universally because /"it's good practice,"/ not because the domain demands it.
+
+This is /architecture astronautics/ —designing for a future complexity that never materializes.
+
+*Onboarding Nightmare:*
+Team members, especially new joiners, already struggle to grasp complex functional programming paradigms like ZIO's effects and layers. Adding the P&A pattern on top of this introduces a massive *cognitive hurdle*.
+
+The result is a team that spends more time studying the *structure* of the code than solving the *business problem*. If a developer needs four hours just to restudy the system structure before making a change, the architecture is failing.
+
+*Change is More Difficult:*
+Making a simple change now often requires modifications across three or four files (Domain Port, Application Service, Infrastructure Adapter, and the Layer wiring). This distributed logic dramatically increases the difficulty and risk associated with even minor feature updates.
+
+This snippet illustrates the cognitive tax of over-abstraction. You might see something like this in over-engineered code:
+#+begin_src scala-ts
+val result =
+  OrderApplicationService
+    .handle(OrderCommand.fromDto(dto))
+    .provide(
+      OrderProcessorLive.layer,
+      PaymentServiceStripeAdapter.layer,
+      InventoryPortDatabaseAdapter.layer,
+      NotificationPortEmailAdapter.layer
+    )
+#+end_src
+
+A simple CRUD endpoint now requires juggling four adapters and multiple ports — none of which add business value.
+
+Compare it to this, simpler and easier on everyone:
+#+begin_src scala-ts
+val result =
+  for {
+    order <- OrderService.create(dto)
+    _     <- NotificationService.notify(order)
+  } yield order
+
+val run = result.provide(
+  OrderService.live,
+  NotificationService.live
+)
+#+end_src
+
+* The Testability Illusion
+
+A core selling point of P&A is enhanced testability. By defining a Port, you can easily mock the Adapter implementation.
+
+However, in ZIO environments, this benefit is moot. ZIO Layers already provide an elegant, built-in mechanism for swapping implementations (a.k.a., *Layer Stubbing* or *Mocking*).
+
+#+begin_src scala-ts
+// ZIO: Define a test layer with a mock implementation
+val mockPaymentService: ULayer[PaymentServicePort] = ZLayer.succeed {
+  new PaymentServicePort {
+    def process(p: Payment) = ZIO.unit // Mocked behavior
+  }
+}
+// Now run the test using the 'provide' method with the mock layer
+// The Port interface itself wasn't strictly necessary for the mocking!
+#+end_src
+
+The P&A abstraction is simply surplus to requirements when robust DI tooling is available.
+
+* The Tyranny of Types and Namespaces
+
+P&A, when combined with enthusiastic Domain-Driven Design (DDD) and strict folder structures, can lead to an explosion of files, types, and excessively deep namespaces.
+
+This kind of verbose, deeply nested imports are telltale signs of *over-architecting*. It suggests a system size and complexity that usually only exists in a large, decades-old monolith, not a small, modern service. The sheer volume of types to track creates *cognitive overhead* that actively slows development.
+
+#+begin_quote
+🧩 Observation:
+Below you see how we’ve defined 5+ types and layers just to wire a single function.
+Every refactor means updating the Port, Adapter, and the wiring.
+Native dependency system already is your “Port”.
+#+end_quote
+
+#+begin_src scala-ts
+// --- Domain Port ---
+trait PaymentServicePort {
+  def process(payment: Payment): Task[Receipt]
+}
+
+// --- Domain Model ---
+final case class Payment(id: String, amount: BigDecimal)
+final case class Receipt(id: String, status: String)
+
+// --- Application Service (uses the Port) ---
+final class PaymentProcessor(paymentService: PaymentServicePort) {
+  def handle(p: Payment): Task[Receipt] =
+    paymentService.process(p)
+}
+
+// --- Infrastructure Adapter ---
+final class StripePaymentAdapter extends PaymentServicePort {
+  override def process(p: Payment): Task[Receipt] =
+    ZIO.succeed(Receipt(p.id, "OK - charged via Stripe"))
+}
+
+// --- ZIO Layer wiring (adds a second indirection) ---
+object PaymentLayers {
+  val stripeLayer: ULayer[PaymentServicePort] = 
+    ZLayer.succeed(new StripePaymentAdapter)
+
+  val processorLayer: URLayer[PaymentServicePort, PaymentProcessor] =
+    ZLayer.fromFunction(new PaymentProcessor(_))
+}
+
+// --- Usage ---
+val app = for {
+  processor <- ZIO.service[PaymentProcessor]
+  r         <- processor.handle(Payment("p1", 42))
+  _         <- ZIO.logInfo(r.toString)
+} yield ()
+
+val runApp =
+  app.provide(
+    PaymentLayers.processorLayer,
+    PaymentLayers.stripeLayer
+  )
+#+end_src
+
+* A Simpler Prescription for Sanity
+
+Instead of resorting to heavy patterns like P&A, small teams can achieve clean, maintainable, and highly testable code with a simpler "cocktail" of established, less intrusive patterns:
+
+-  *Good Domain-Driven Design (DDD):* Focus on correct *naming*, clear *domain models*, and ubiquitous language. This is where the most valuable abstraction lies.
+-  *Simple Structure:* A combination of *MVC* (Model-View-Controller, or a simple *Application Service* layer) for structure, combined with *Command and Query* abstractions for separating read/write concerns, provides excellent clarity without excessive indirection.
+-  *Harness Native DI:* Leverage ZIO's *Layers* or your framework's native DI system fully. These tools were designed to manage dependencies cleanly; don't fight them by adding manual indirection.
+
+* Know When to Stop
+
+Hexagonal Architecture is a powerful tool, but it's a tool for scaling complexity. For the vast majority of small to medium-sized projects—especially those built with modern, DI-rich frameworks like ZIO—it represents a premature optimization that results in *architecture debt* and *developer burnout*.
+
+Before adopting a pattern, ask the critical question: *Does this solve a problem I have today, or am I abstracting for a problem I might never have?*
+
+Often, the healthiest, most maintainable architecture is the simplest one that works. We must resist the urge to complicate code in the name of purity.
+
