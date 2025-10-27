@@ -49,14 +49,21 @@ Making a simple change now often requires modifications across three or four fil
 This snippet illustrates the cognitive tax of over-abstraction. You might see something like this in over-engineered code:
 #+begin_src scala-ts
 val result =
-  OrderApplicationService
-    .handle(OrderCommand.fromDto(dto))
-    .provide(
-      OrderProcessorLive.layer,
-      PaymentServiceStripeAdapter.layer,
-      InventoryPortDatabaseAdapter.layer,
-      NotificationPortEmailAdapter.layer
-    )
+  for {
+    order <- OrderService.create(dto)
+    _     <- NotificationService.notify(order)
+  } yield order
+
+val run = result.provide(
+  OrderService.live,
+  NotificationService.live,
+  OrderProcessorLive.layer,
+  PaymentServiceStripeAdapter.layer,
+  InventoryPortDatabaseAdapter.layer,
+  NotificationPortEmailAdapter.layer,
+  HandlebarsMailTemplating.layer,
+  MailTemplatingAdapter.layer,
+)
 #+end_src
 
 A simple CRUD endpoint now requires juggling four adapters and multiple ports — none of which add business value.
