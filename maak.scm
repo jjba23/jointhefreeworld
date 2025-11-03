@@ -52,7 +52,8 @@
            "emacs -Q --batch -l ./jointhefreeworld-site.el"
            "--funcall jfw/publish"))
   ($ '("cp -Rfv ./static ./public/static"))
-  ($ '("cp -Rfv ./static/robots.txt ./public/robots.txt")))
+  ($ '("cp -Rfv ./static/robots.txt ./public/robots.txt"))
+  ($ '("cp -Rfv ./static/sitemap.xml ./public/sitemap.xml")))
 
 (define (fmt)
   "Format project source code files."
