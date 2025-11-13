@@ -18,15 +18,15 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
 
 :root {
   /* Colors */
-  --color-primary: 261903;
+  --color-primary: #261903;
   --color-secondary: rgba(131,58,82, 0.9);
   --color-hover: #da6197;
-  --color-background-light: rgba(251, 243, 218, 0.4);
-  --color-background-medium: rgba(251, 243, 218, 0.5);
+  --color-background-light: rgba(251, 243, 218, 0.2);
+  --color-background-medium: rgba(251, 243, 218, 0.3);
   --color-text-code: #232025;
   --color-text-emphasis: #4c4a4f;
   --color-hr: rgba(120, 120, 120, 0.4);
-  --color-code-background: rgba(253, 249, 237, 0.5);
+  --color-code-background: rgba(253, 249, 237, 0.4);
   --color-border: rgb(165, 93, 116, 0.2);
 
   /* Font Families */
@@ -174,7 +174,7 @@ p {
   -moz-font-smoothing: antialiased !important;
   text-rendering: optimizelegibility !important;
   letter-spacing: 0.03em;
-  text-align: justify;
+  text-align: left;
   max-width: var(--max-width-text);
   padding-top: 0.6em;
   padding-left: 0.4em;
