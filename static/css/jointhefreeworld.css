@@ -137,9 +137,9 @@ h6 {
 
 a {
   color: var(--color-secondary);
-  text-decoration: none;
+  text-decoration: underline;
   font-style: normal;
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-normal);
   font-size: var(--font-md);
 }
 
