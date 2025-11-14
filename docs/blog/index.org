@@ -6,10 +6,11 @@
 
 **  📚 Categories
 
-[[/blog/articles/emacs/][Emacs]] | [[/blog/articles/lisps/][Lisps]] | [[/blog/articles/haskell/][Haskell]] | [[/blog/articles/gnu-linux/][GNU/Linux]] | [[/blog/articles/development/][Dev]] | [[/blog/articles/ci/][CI/CD]] | [[/blog/articles/go/][Go]] | [[/blog/articles/freebsd/][FreeBSD]] | [[/blog/articles/personal/][Personal]]  
+[[/blog/articles/emacs/][Emacs]] | [[/blog/articles/lisps/][Lisps]] | [[/blog/articles/rust/][Rust]] | [[/blog/articles/gnu-linux/][GNU/Linux]] | [[/blog/articles/development/][Dev]] | [[/blog/articles/ci/][CI/CD]] | [[/blog/articles/haskell/][Haskell]] | [[/blog/articles/go/][Go]] | [[/blog/articles/freebsd/][FreeBSD]] | [[/blog/articles/personal/][Personal]]  
 
 ** 📜 Highlighted articles
 
+<2025-11-14 vr> - [[/blog/articles/rust/simple-guix-emacs-rust-development-environment/index.html][Simple Guix Emacs Rust development environment]] - A minimal, declarative setup for productive Rust hacking on Emacs + Guix
 
 <2025-10-27 ma> [[/blog/articles/development/hexagon-of-doom/index.html][Hexagon of Doom - The Cost of Over-Abstraction and Indirection]] - Let me explain why I think Ports&Adapter / Hexagonal architecture introduces *net harm* to software projects.
 

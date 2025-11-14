@@ -257,14 +257,15 @@ pre {
   background: var(--color-code-background);
   padding: var(--spacing-xs);
   border-radius: var(--border-radius-base);
-  margin-right: var(--spacing-lg);
+  margin-right: var(--spacing-md);
   box-shadow: var(--box-shadow);
 }
 
 .timestamp {
   font-weight: var(--font-weight-normal);
-  font-size: var(--font-sm);
+  font-size: var(--font-xs);
   font-style: normal;
+  color: var(--color-text-emphasis);
 }
 
 .nav-link {

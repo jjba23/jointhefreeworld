@@ -1,0 +1,219 @@
+#+title: Simple Guix Emacs Rust development environment
+#+options: num:nil toc:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2025-11-14 vr>
+
+/A minimal, declarative setup for productive Rust hacking on Emacs + Guix/
+
+* Introduction
+
+I noticed there was a blatant lack of resources and documentation on this particular setup. So I rolled up my sleeves and wrote this article, which hopefully you find useful.
+
+[[https://rust-lang.org/][Rust]] is a modern systems programming language with a strong focus on safety and performance.  
+
+In this article, I want to show you how to integrate it with our beloved Emacs text editor power-house, and the great [[https://guix.gnu.org/][GNU Guix package manager]].
+
+[[https://www.gnu.org/s/emacs/][GNU Emacs]] is only the most flexible, programmable editor in existence. GNU Guix is the declarative, reproducible package manager built around the GNU Guile ecosystem.  
+
+Combine the three and you get a clean, reproducible, minimalistic Rust development workflow, without complications, without global toolchain pollution, and without mysterious version drift.
+
+----------------------
+
+* Overview of the Approach
+The foundation is a Guix manifest file that declares all the tools needed for Rust development.
+
+- =guix shell= to create a temporary, isolated development environment
+- Emacs packages:  =rust-mode=, =eglot=, and =toml-mode=, =direnv=
+- =rust-analyzer= , =cargo= , =clippy= and =rustc= installed via Guix
+
+This keeps your system clean, your environment reproducible on a per-project basis, and your editor fully integrated.
+If you’re already using Guix—on Guix System or as a package manager on another distro—you’re good to go.
+
+- Guix provides complete Rust toolchains as packages: =rust=, =cargo=, =clippy=, =rustfmt=
+- Guix updates are atomic and roll back cleanly
+- You can maintain multiple environments with different Rust versions by using different manifests and using the Guix time machine
+
+  ----------------------
+  
+* A Minimal Guix Manifest for Rust
+We start with the smallest useful manifest. Read more [[https://guix.gnu.org/manual/en/html_node/Writing-Manifests.html][about manifests here]]
+
+Save this as =manifest.scm=:
+
+#+begin_src scheme
+(use-modules (guix packages)
+             (gnu)
+             (gnu packages rust)
+             (gnu packages tls)
+             (gnu packages pkg-config))
+
+(packages->manifest (list openssl
+                          pkg-config
+                          rust
+                          (list rust "cargo")
+                          (list rust "tools")
+                          rust-analyzer))
+
+#+end_src
+
+This gives you:
+
+- A full Rust compiler toolchain
+- Cargo package manager
+- rust-analyzer for editor integration with clippy linter
+- Tools required for crates with native code (via =pkg-config=)
+- openssl might be optionally required for some Rust projects (for HTTP/SSL connections)
+
+You can enter the environment with:
+
+#+begin_src sh
+guix shell -m manifest.scm
+#+end_src
+
+----------------------
+
+* Configuring Emacs for Rust
+
+To integrate Emacs or your shell with the isolated environment of the manifest,  you can choose to use direnv, and place this in a =.envrc= file at the root:
+
+#+begin_src sh
+use guix
+#+end_src
+
+Read more [[https://direnv.net/][about direnv here]]
+
+Here my setup using  =eglot= and =rust-mode= in combination with =flymake= for lints (read from =clippy=). You probably can go more minimal than this, but for illustration purpose I will keep it like this.
+
+#+begin_src emacs-lisp
+
+(use-package rust-mode :ensure t)
+
+(use-package direnv
+  :ensure t
+  :bind (("C-c d d" . direnv-mode)
+         ("C-c d a" . direnv-allow)))
+
+(use-package eglot
+  :ensure nil
+  :hook ((rust-mode . eglot-ensure)
+         (before-save . eglot-format-buffer))
+  :bind (("C-c i i" . eglot-find-implementation)
+         ("C-c i e" . eglot)
+         ("C-c i k" . eglot-shutdown-all)
+         ("C-c i r" . eglot-rename)
+         ("C-c i x" . eglot-reconnect)
+         ("C-c i a" . eglot-code-actions)
+         ("C-c i m" . eglot-menu)
+         ("C-c i f" . eglot-format-buffer)
+         ("C-c i h" . eglot-inlay-hints-mode))
+  :init
+  (setq eglot-autoshutdown t
+        eglot-confirm-server-edits nil
+        eglot-report-progress t
+        eglot-extend-to-xref t
+        eglot-autoreconnect t)
+  :config
+  (setq-default eglot-workspace-configuration
+                '(:rust-analyzer (:check (:command "clippy")
+                                  :cargo (:sysroot "discover"
+                                                          :features "all"
+                                                          :buildScripts (:enable t))
+                                  :diagnostics (:disabled ["macro-error"])
+                                  :procMacro (:enable t))))
+
+  (add-hook 'eglot-managed-mode-hook
+            (lambda ()
+              ;; Show flymake diagnostics first.
+              (setq eldoc-documentation-functions
+                    (cons #'flymake-eldoc-function
+                          (remove #'flymake-eldoc-function eldoc-documentation-functions)))
+              ;; Show all eldoc feedback.
+              (setq eldoc-documentation-strategy #'eldoc-documentation-compose)))
+  )
+#+end_src
+
+----------------------
+
+* Creating and Running a Rust Project
+Inside the Guix shell:
+
+#+begin_src sh
+cargo new hello-guix
+cd hello-guix
+cargo run
+#+end_src
+
+Because everything is inside the Guix environment, you get guaranteed reproducibility:
+
+- Everyone uses the same toolchain version
+- Builds behave consistently across machines
+- No global installation conflicts
+
+rust-analyzer powers code completion, jump-to-definition, inlays, and inline diagnostics.
+
+Eglot will automatically start LSP support when you open a =.rs= file in a Cargo project.
+
+--------------------
+
+* A simple guix.scm
+
+You might also want to build production binaries/releases via Guix. This is easy to accomplish thanks to the amazing =cargo-build-system=. See an example for [[https://codeberg.org/jjba23/inkaartbrenger][my simple sitemap generator]]. You can create a ~guix.scm~ with the contents, and use it with ~guix shell~ too.
+
+#+begin_src scheme
+(use-modules (guix gexp)
+             (guix packages)
+             (guix import crate)
+             (guix git-download)
+             ((guix licenses)
+              #:prefix license:)
+             (guix build-system cargo)
+             (gnu packages)
+             (gnu packages tls)
+             (gnu packages pkg-config))
+
+(define %source-dir
+  (dirname (current-filename)))
+
+(define-public inkaartbrenger
+  (package
+    (name "inkaartbrenger")
+    (version "dev")
+    (source
+     (local-file %source-dir
+                 #:recursive? #t
+                 #:select? (git-predicate %source-dir)))
+    (build-system cargo-build-system)
+    (native-inputs (list pkg-config))
+    (inputs (cons* openssl
+                   (cargo-inputs-from-lockfile "Cargo.lock")))
+    (arguments
+     `(#:install-source? #f
+       #:tests? #f))
+    (home-page "https://codeberg.org/jjba23/inkaartbrenger")
+    (synopsis "")
+    (description "")
+    (license license:agpl3+)))
+
+inkaartbrenger
+#+end_src
+
+
+----------------
+
+* Benefits of This Setup
+- **Reproducible**: environments are fully declarative and shareable  
+- **Clean**: maintain multiple toolchains easily  
+- **Editor-friendly**: this approach works perfect for Emacs, but also  for most other editors
+- **Minimalistic**: small footprint, no rustup, no global package installs  
+
+This is an excellent foundation for serious Rust work.
+
+-----------------------
+
+* Conclusion
+With a tiny manifest and a small Emacs configuration, you get a powerful, reproducible, elegant Rust development environment.
+
+No matter what kind of developing you are doing, this setup provides a clean and reliable environment you can build on.
+
