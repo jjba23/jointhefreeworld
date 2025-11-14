@@ -121,8 +121,7 @@
 
 
 (defun jfw/site-footer ()
-  `((hr)
-    (footer (@ (class "site-footer"))
+  `((footer (@ (class "site-footer"))
             (div (@ (class "container"))
                  (div (@ (class "flex flex-col gap-3"))
                       (em "Copyright © 2025 Josep Bigorra (jjba23) &lt;jjbigorra@gmail.com&gt;")

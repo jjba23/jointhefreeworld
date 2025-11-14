@@ -59,9 +59,8 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --spacing-line-height-code: 1.6rem;
 
   /* Borders & Radii */
-  --border-radius-base: 0.6rem;
-  --border-radius-lg: 1em;
-  /* Renamed for clarity */
+  --border-radius-base: 0.9rem;
+  --border-radius-lg: 1.2em;
 
   /* Shadows */
   --box-shadow:
