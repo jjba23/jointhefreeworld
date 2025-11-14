@@ -6,7 +6,7 @@
 
 ***  📚 Categories
 
-[[/blog/articles/emacs/][Emacs]]         [[/blog/articles/lisps/][Lisps]]         [[/blog/articles/rust/][Rust]]         [[/blog/articles/gnu-linux/][GNU/Linux]]         [[/blog/articles/development/][Dev]]         [[/blog/articles/ci/][CI/CD]]         [[/blog/articles/haskell/][Haskell]]         [[/blog/articles/go/][Go]]         [[/blog/articles/freebsd/][FreeBSD]]         [[/blog/articles/personal/][Personal]]  
+[[/blog/articles/emacs/][Emacs]] ⋅ [[/blog/articles/lisps/][Lisps]] ⋅  [[/blog/articles/rust/][Rust]]  ⋅ [[/blog/articles/gnu-linux/][GNU/Linux]] ⋅  [[/blog/articles/development/][Dev]] ⋅  [[/blog/articles/ci/][CI/CD]]   [[/blog/articles/haskell/][Haskell]] ⋅  [[/blog/articles/go/][Go]] ⋅  [[/blog/articles/freebsd/][FreeBSD]]  ⋅  [[/blog/articles/personal/][Personal]]  
 
 *** 📜 Highlighted articles
 
