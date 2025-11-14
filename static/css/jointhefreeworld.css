@@ -261,7 +261,7 @@ pre {
   font-weight: var(--font-weight-normal);
   font-size: var(--font-2xs);
   font-style: normal;
-  color: var(--color-hr);
+  color: var(--color-text-emphasis);
 }
 
 .nav-link {
