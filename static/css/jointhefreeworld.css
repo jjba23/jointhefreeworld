@@ -145,6 +145,7 @@ a {
 
 a:hover {
   text-decoration: underline;
+  font-weight: var(--font-weight-bold);  
   color: var(--color-hover);
 }
 
