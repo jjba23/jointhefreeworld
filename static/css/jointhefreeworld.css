@@ -18,13 +18,13 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
 
 :root {
   /* Colors */
-  --color-primary: #261903;
-  --color-secondary: rgba(131,58,82, 0.9);
+  --color-primary: #111111;
+  --color-secondary: oklch(0.3426 0.0684 344.44);
   --color-hover: #da6197;
   --color-background-light: rgba(251, 243, 218, 0.2);
   --color-background-medium: rgba(251, 243, 218, 0.3);
-  --color-text-code: #232025;
-  --color-text-emphasis: #4c4a4f;
+  --color-text-code: #111111;
+  --color-text-emphasis: oklch(0.3128 0.0086 304.05);
   --color-hr: rgba(120, 120, 120, 0.5);
   --color-code-background: rgba(243, 239, 227, 0.4);
   --color-border: rgb(165, 93, 116, 0.2);
@@ -34,10 +34,10 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --font-family-code: "IBM Plex Mono", monospace;
 
   /* Font Weights */
-  --font-weight-light: 300;
-  --font-weight-normal: 500;
-  --font-weight-bold: 700;
-  --font-weight-heavy: 900;
+  --font-weight-light: 100;
+  --font-weight-normal: 300;
+  --font-weight-bold: 500;
+  --font-weight-heavy: 700;
 
   /* Font Sizes */
   --font-2xs: 0.7em;  
@@ -158,7 +158,7 @@ h6 {
   font-family: var(--font-family-body);
   font-weight: var(--font-weight-heavy);
   max-width: var(--max-width-text);
-  padding-top: 0.8em;
+  padding-top: 0.4em;
   padding-left: 0.4em;
   padding-right: 0.4em;
 }
@@ -184,8 +184,8 @@ p, li {
 
 hr {
   color: var(--color-hr);
-  margin-top: var(--spacing-xl);
-  margin-bottom: var(--spacing-xl);
+  margin-top: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
 }
 
 em {
@@ -216,7 +216,6 @@ i {
 }
 
 code {
-  background: var(--color-code-background);
   color: var(--color-text-code);
   padding-left: var(--spacing-sm);
   padding-right: var(--spacing-sm);
@@ -226,17 +225,16 @@ code {
   font-family: var(--font-family-code);
   font-size: var(--font-sm);
   font-style: normal;
-  box-shadow: var(--box-shadow);
 }
 
 pre {
   background: var(--color-code-background);
   color: var(--color-text-code);
   border: 2px solid var(--color-border);
-  padding-left: var(--spacing-xl);
-  padding-right: var(--spacing-xl);
-  padding-top: var(--spacing-xxl);
-  padding-bottom: var(--spacing-xxl);
+  padding-left: var(--spacing-lg);
+  padding-right: var(--spacing-lg);
+  padding-top: var(--spacing-xl);
+  padding-bottom: var(--spacing-xl);
   border-radius: var(--border-radius-base);
   line-height: var(--spacing-line-height-code);
   font-family: var(--font-family-code);
