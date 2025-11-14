@@ -124,8 +124,8 @@
   `((footer (@ (class "site-footer"))
             (div (@ (class "container"))
                  (div (@ (class "flex flex-col gap-3"))
-                      (em "Copyright © 2025 Josep Bigorra (jjba23) &lt;jjbigorra@gmail.com&gt;")
-                      (em "Licensed under the GNU AGPL v3 or newer")
+                      (em (@(class "text-sm")) "Copyright © 2025 Josep Bigorra (jjba23) &lt;jjbigorra@gmail.com&gt;")
+                      (em (@(class "text-sm")) "Licensed under the GNU AGPL v3 or newer")
                       (div (@ (class "flex flex-row flex-wrap gap-3"))
                            (small
                             (a (@ (href "https://codeberg.org/jjba23/jointhefreeworld"))
