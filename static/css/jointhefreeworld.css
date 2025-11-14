@@ -19,7 +19,6 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
 :root {
   /* Colors */
   --color-primary: #111111;
-  --color-secondary: oklch(0.3426 0.0684 344.44);
   --color-hover: #da6197;
   --color-background-light: rgba(251, 243, 218, 0.2);
   --color-background-medium: rgba(251, 243, 218, 0.3);
@@ -28,6 +27,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --color-hr: rgba(120, 120, 120, 0.5);
   --color-code-background: rgba(243, 239, 227, 0.4);
   --color-border: rgb(165, 93, 116, 0.2);
+  --color-secondary: oklch(0.3426 0.0684 344.44);
 
   /* Font Families */
   --font-family-body: "IBM Plex Serif", serif;
@@ -137,16 +137,17 @@ h6 {
 
 a {
   color: var(--color-secondary);
-  text-decoration: underline;
+  text-decoration: none;
   font-style: normal;
-  font-weight: var(--font-weight-normal);
-  font-size: var(--font-md);
+  border-bottom: 1px solid;
+  border-bottom-color: var(--color-secondary);
 }
 
 a:hover {
-  text-decoration: underline;
-  font-weight: var(--font-weight-bold);  
+  text-decoration: none;
   color: var(--color-hover);
+  border-bottom: 1px solid;
+  border-bottom-color: var(--color-hover);  
 }
 
 h1,
@@ -276,6 +277,7 @@ pre {
 .nav {
   display: flex;
   flex-direction: row;
+  gap: 8px;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
