@@ -26,7 +26,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --color-text-emphasis: oklch(0.3128 0.0086 304.05);
   --color-hr: rgba(120, 120, 120, 0.5);
   --color-code-background: rgba(243, 239, 227, 0.4);
-  --color-border: rgb(165, 93, 116, 0.2);
+  --color-border: rgb(165, 93, 116, 0.3);
   --color-secondary: oklch(0.3426 0.0684 344.44);
 
   /* Font Families */
@@ -59,8 +59,8 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --spacing-line-height-code: 1.6rem;
 
   /* Borders & Radii */
-  --border-radius-base: 0.9rem;
-  --border-radius-lg: 1.2em;
+  --border-radius-base: 1.0rem;
+  --border-radius-lg: 1.3em;
 
   /* Shadows */
   --box-shadow:
