@@ -166,9 +166,9 @@ b {
     color: var(--color-text-emphasis);
 }
 
-p {
+p, li {
   max-width: var(--max-width-text);
-  font-size: var(--font-lg);
+  font-size: var(--font-md);
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased !important;
   -moz-font-smoothing: antialiased !important;
@@ -179,11 +179,6 @@ p {
   padding-top: 0.6em;
   padding-left: 0.4em;
   padding-right: 0.4em;
-}
-
-li {
-  max-width: var(--max-width-text);
-  font-size: var(--font-sm);
 }
 
 hr {

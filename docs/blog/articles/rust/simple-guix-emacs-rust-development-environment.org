@@ -1,4 +1,4 @@
-#+title: Simple Guix Emacs Rust development environment
+#+title: Simple Rust Guix Emacs development environment
 #+options: num:nil toc:nil
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com

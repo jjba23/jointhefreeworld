@@ -2,5 +2,5 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
-<2025-11-14 vr> - [[/blog/articles/rust/simple-guix-emacs-rust-development-environment/index.html][Simple Guix Emacs Rust development environment]] - A minimal, declarative setup for productive Rust hacking on Emacs + Guix
+<2025-11-14 vr> - [[/blog/articles/rust/simple-guix-emacs-rust-development-environment/index.html][Simple Rust Guix Emacs development environment]] - A minimal, declarative setup for productive Rust hacking on Emacs + Guix
 
