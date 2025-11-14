@@ -25,7 +25,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --color-background-medium: rgba(251, 243, 218, 0.3);
   --color-text-code: #232025;
   --color-text-emphasis: #4c4a4f;
-  --color-hr: rgba(120, 120, 120, 0.4);
+  --color-hr: rgba(120, 120, 120, 0.5);
   --color-code-background: rgba(243, 239, 227, 0.4);
   --color-border: rgb(165, 93, 116, 0.2);
 
@@ -260,7 +260,7 @@ pre {
   font-weight: var(--font-weight-normal);
   font-size: var(--font-xs);
   font-style: normal;
-  color: var(--color-text-emphasis);
+  color: var(--color-hr);
 }
 
 .nav-link {
