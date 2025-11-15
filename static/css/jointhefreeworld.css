@@ -275,6 +275,8 @@ pre {
   font-style: normal;
   font-weight: var(--font-weight-normal);
   font-size: var(--text-md);
+  text-decoration: none;
+  border-bottom: none;
 }
 
 .nav {
@@ -453,4 +455,8 @@ img {
 
 .text-sm {
     font-size: var(--text-sm)
+}
+
+.border-b-none {
+    border-bottom: none;
 }

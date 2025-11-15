@@ -103,7 +103,8 @@
 (defun jfw/site-header ()
   (list
    `(div (@ (id "top")(class "site-title"))
-         (a (@ (href "https://jointhefreeworld.org"))(em "jointhefreeworld.org")))
+         (a (@ (class "border-b-none")
+               (href "https://jointhefreeworld.org"))(em "jointhefreeworld.org")))
    `(header (@ (class "site-header flex"))
             (div (@ (class "site-masthead"))
                  (div (@ (class "container"))
