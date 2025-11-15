@@ -447,6 +447,7 @@ dt {
 img {
   max-width: 100%;
   border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow);
 }
 
 .anchor {
