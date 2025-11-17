@@ -461,3 +461,21 @@ img {
 .border-b-none {
     border-bottom: none;
 }
+
+pre {
+    .org-string {
+        color: #5a7400;
+    }
+    .org-builtin {
+        color: #946830;
+    }
+    .org-keyword {
+        color: #b05350;
+    }
+    .org-comment {
+        color: #8a92ac;        
+    }
+    .org-comment-delimiter {
+        color: #8a92ac;
+    }
+}
