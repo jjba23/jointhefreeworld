@@ -155,6 +155,14 @@ rust-analyzer powers code completion, jump-to-definition, inlays, and inline dia
 
 Eglot will automatically start LSP support when you open a =.rs= file in a Cargo project.
 
+Direnv can really help to make this setup seamless, and the great =emacs-direnv= package really helps too.
+
+Bear in mind you might have add the directories to the whitelist of Guix.
+
+#+begin_src sh
+echo /home/my-repo >> /home/me/.config/guix/shell-authorized-directories
+#+end_src
+
 --------------------
 
 * A simple guix.scm
