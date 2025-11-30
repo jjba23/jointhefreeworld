@@ -31,6 +31,8 @@ Free software is all about giving you control—over the tools you use, how they
 
 [[https://jointhefreeworld.org/api-docs/olive-css/API.html][Olive CSS API documentation]] - the technical Guile Scheme API documentation for the Olive CSS utility-class framework.
 
+[[https://jointhefreeworld.org/api-docs/maak/API.html][Maak API documentation]] - the technical Guile Scheme API documentation for the Maak command runner.
+
 [[https://jointhefreeworld.org/api-docs/veritas/API.html][Veritas' API documentation]] - the technical Guile Scheme API documentation for the Veritas test framework.
 
 [[https://jointhefreeworld.org/api-docs/ggg/API.html][GGG API documentation]] - the technical Guile Scheme API documentation for the GGG (Guile Glyph Generator).
