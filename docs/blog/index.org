@@ -10,6 +10,8 @@
 
 *** 📜 Highlighted articles
 
+<2025-12-05 vr> [[/blog/articles/development/most-technical-problems-are-people-problems/index.html][Most Technical Problems are People Problems]] - In my career, I've already met several engineers openly tell me, /"I don't want to learn anything new"/ . I also realized that you'll never clean up tech debt faster than others create it.
+
 <2025-11-14 vr>  [[/blog/articles/rust/simple-guix-emacs-rust-development-environment/index.html][Simple Rust Guix Emacs development environment]] - A minimal, declarative setup for productive Rust hacking on Emacs + Guix
 
 <2025-10-27 ma> [[/blog/articles/development/hexagon-of-doom/index.html][Hexagon of Doom - The Cost of Over-Abstraction and Indirection]] - Let me explain why I think Ports&Adapter / Hexagonal architecture introduces *net harm* to software projects.
