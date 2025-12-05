@@ -7,36 +7,52 @@
 
 The article which inspired me to write this one is found at [[https://blog.joeschrag.com/2023/11/most-technical-problems-are-really.html][Helmet Hair]].
 
-I once worked at a company which had an enormous amount of technical debt - millions of lines of code, no unit tests, based on frameworks that were well over a decade out of date.  On one specific project, we had a market need to get some Windows-only modules running on Linux, and rather than cross-compiling, another team had simply copied & pasted a few hundred thousand lines of code, swapping Windows-specific components for Linux-specific.
+I have worked at several companies doing Software Engineering and I feel like I've seen the best and the worst. From aging systems containing millions of lines of untested code, built on frameworks past their expiry date, to repulsive code and deployment constructs that stemmed from disagreements, bad communication, and terrible processes, I've seen it all, ticking technical time bombs, and all, but one specific case really illustrated the cultural rot for me.
 
-For the non-technical reader, this is an enormous problem because now two versions of the code exist.  So, all features & bug fixes must be solved in two separate codebases that will grow apart over time.  When I heard about this, a young & naive version of me set out to fix the situation....
+I once worked at a big furniture company famous worldwide, which had an enormous amount of technical debt - millions of lines of code, no unit tests, frameworks that were well over 2 decades out of date, things running on mainframe IBM computer to which no replacement parts can be found, etc.
+
+On one specific project, we had a market need to get features to market really fast, but there were no limitations in tech stack or so, so it was a golden opportunity to create something beautiful and maintainable.
+
+Rather than communicating with other teams to learn, or seeing what industry standards we live by in this day and age, this team simply copied & pasted a few hundred thousand lines of the legacy code, and started hacking things onto it, effectively horseshoeing it into something that would work.
+
+For the non-technical reader, this is an enormous problem because now we have two different outdated (legacy) systems, which will start diverging, and apart from the fact that the systems are old, the software practices questionable, and the hardware is not even manufactured anymore, now all features & bug fixes must be solved in two separate codebases that will grow apart over time.  When I heard about this, a young & naive version of me thought he could fix the situation....
 
 ** People Problems
 
-*Tech debt projects are always a hard sell to management, because even if everything goes flawlessly, the code just does roughly what it did before*.  This project was no exception, and the optics weren't great.  I did as many engineers do and /ignored the politics/, put my head down, and got it done.  But, the project went long, and I lost a lot of clout in the process.
+Then there is tech debt. *Tech debt projects are always a hard sell to management, because even if everything goes flawlessly, the code just does roughly what it did before*.  This project of mine to refactor the legacy system into something modern was no exception, and the optics weren't great.  I did as many engineers do and /ignored the politics/, put my head down, and got it done.
+
+For the curious minds, yes, I managed to deploy something working at the end, and replaced the old system (eventually), but the project was really not well received by my engineer colleagues (management was indifferent).
 
 I realized I was essentially trying to solve a people problem with a technical solution.  *Most of the developers at this company were happy doing the same thing today that they did yesterday... and five years ago*.
 
 As [[https://andrewharmellaw.github.io/][Andrew Harmel-Law]] points out, code tends to follow the personalities of the people that wrote it.  The code was calcified because the developers were also.  Personality types who dislike change tend not to design their code with future change in mind.
 
-Most technical problems are really people problems.  Think about it.  Why does technical debt exist?  Because requirements weren't properly clarified before work began.  Because a salesperson promised an unrealistic deadline to a customer.  Because a developer chose an outdated technology because it was comfortable.  Because management was too reactive and cancelled a project mid-flight.  Because someone's ego wouldn't let them see a better way of doing things.
+Most technical problems are really people problems.  Think about it.  Why does technical debt exist?  Because requirements weren't properly clarified before work began.  Because a salesperson promised an unrealistic deadline to a customer.  Because a developer chose an outdated technology because it was comfortable.  Because management was too reactive and cancelled a project mid-flight.  Because someone's ego wouldn't let them see a better way of doing things. Because technology is made by people, and people are bound to make mistakes.
 
-The core issue with the project was that admitting the need for refactoring was also to admit that the way the company was building software was broken and that individual skillsets were sorely out of date.  My small team was trying to fix one module of many, while other developers were writing code as they had been for decades.
+The core issue with the project was that admitting the need for refactoring was also to admit that the way the company was building software was broken and that individual skillsets were sorely out of date. Trying to fix one part of many other problematic ones, while other developers continued doing as they always did.
 
 In my career, I've already met several engineers openly tell me, /"I don't want to learn anything new"/ . I realized that you'll never clean up tech debt faster than others create it.  It is like triage in an emergency room, you must stop the bleeding first, then you can fix whatever is broken.
 
-*An Ideal World*: The project also disabused me of the engineer's ideal of a world in which engineering problems can be solved in a vacuum - staying out of "politics" and letting the work speak for itself - a world where deadlines don't exist...and let's be honest, neither do customers.
+*An Ideal World*: The project also showed me how impossible the engineer's ideal of a world is, in which engineering problems can be solved in a vacuum - staying out of "politics" and letting the work speak for itself - a world where deadlines don't exist...and let's be honest, neither do customers.
 
 This ideal world rarely exists.  The vast majority of projects have non-technical stakeholders, and telling them "just trust me; we're working on it" doesn't cut it.  I realized that *the perception that your team is getting a lot done is just as important as getting a lot done*.
 
 Non-technical people do not intuitively understand the level of effort required or the need for tech debt cleanup; it must be communicated effectively by engineering - in both initial estimates & project updates.  Unless leadership has an engineering background, the value of the technical debt work likely needs to be quantified and shown as business value.
 
-
 Perhaps these are the lessons that prep one for more senior positions.  In my opinion, anyone above senior engineer level needs to know how to collaborate cross-functionally, regardless of whether they choose a technical or management track.  Schools teach Computer Science, not navigating personalities, egos, and personal blindspots.  
 
-I have worked with some incredible engineers - the type that have deep technical knowledge on just about any technology you bring up.  When I was younger, I wanted to be that engineer - and to some degrees I feel like I did become that.
-
-For all of their (considerable) strengths, more often than not, those engineers shy away from the interpersonal.  The tragedy is that they are incredibly productive ICs, but may fail with bigger initiatives because they are only one person (a single processor core can only go so fast).
+I have worked with some incredible engineers - the type that have deep technical knowledge on just about any technology you bring up.  When I was younger, I wanted to be that engineer - and to some degrees I feel like I did become that. For all of their (considerable) strengths, more often than not, those engineers shy away from the interpersonal.  The tragedy is that they are incredibly productive ICs, but may fail with bigger initiatives because they are only one person (a single processor core can only go so fast).
 
 Perhaps equally valuable is the /heads up coder/: the person who is deeply technical, but also able to pick their head up & see project risks coming (technical & otherwise) and steer the team around them.
 
+-------------
+
+The journey from technical problem solver to effective engineering leader often involves a sobering realization: the code is the culture made manifest.
+
+The catastrophic technical debt I've often seen, is rarely about the lack of technical skill, it is most often a symptom of deeper organizational failures. This includes fear of change, short-term managerial thinking, and a profound communication gap between the builders and the stakeholders.
+
+To truly tackle technical debt, we must evolve beyond the "Heads-Down" coder and embrace the Heads-Up Coder. This senior perspective understands that refactoring and modernization aren't technical projects, but essential parts of day-to-day work as engineer.
+
+You cannot clean up technical debt without first addressing the people, process, and politics that created it.
+
+Focusing solely on the code is like sweeping the kitchen floor while the roof is leaking.
