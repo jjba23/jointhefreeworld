@@ -5,8 +5,6 @@
 #+language: en
 #+date: <2025-12-05 ma>
 
-The article which inspired me to write this one is found at [[https://blog.joeschrag.com/2023/11/most-technical-problems-are-really.html][Helmet Hair]].
-
 I have worked at several companies doing Software Engineering and I feel like I've seen the best and the worst. From aging systems containing millions of lines of untested code, built on frameworks past their expiry date, to repulsive code and deployment constructs that stemmed from disagreements, bad communication, and terrible processes, I've seen it all, ticking technical time bombs, and all, but one specific case really illustrated the cultural rot for me.
 
 I once worked at a big furniture company famous worldwide, which had an enormous amount of technical debt - millions of lines of code, no unit tests, frameworks that were well over 2 decades out of date, things running on mainframe IBM computer to which no replacement parts can be found, etc.
@@ -17,7 +15,9 @@ Rather than communicating with other teams to learn, or seeing what industry sta
 
 For the non-technical reader, this is an enormous problem because now we have two different outdated (legacy) systems, which will start diverging, and apart from the fact that the systems are old, the software practices questionable, and the hardware is not even manufactured anymore, now all features & bug fixes must be solved in two separate codebases that will grow apart over time.  When I heard about this, a young & naive version of me thought he could fix the situation....
 
-** People Problems
+The article which inspired me to write this one is found at [[https://blog.joeschrag.com/2023/11/most-technical-problems-are-really.html][Helmet Hair]].
+
+** Tech Debt is caused mostly by People Problems
 
 Then there is tech debt. *Tech debt projects are always a hard sell to management, because even if everything goes flawlessly, the code just does roughly what it did before*.  This project of mine to refactor the legacy system into something modern was no exception, and the optics weren't great.  I did as many engineers do and /ignored the politics/, put my head down, and got it done.
 
