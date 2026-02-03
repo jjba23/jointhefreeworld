@@ -1,0 +1,44 @@
+#+title: Don't Reward the Best Firefighter
+#+options: num:nil toc:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2026-02-03 di>
+
+** The “Hero” Trap
+Every engineering team has that one *“hero.”* You know the one: the 3 AM incident response god.
+They dive into a production dumpster fire, pull a rabbit out of a hat, and somehow bring the system back online.
+
+We love them for it. We give them the shout-outs in Slack, the fat bonuses, and the “Senior Staff” titles because they're the “go-to” person when everything breaks.
+
+But by making them the main character, we're lowkey ensuring our culture stays a mess.
+
+*** Visible Heroes vs. Invisible Wins
+For every loud firefighter, there's an invisible *fire preventer.* This is the engineer who spends a month refactoring a messy legacy service that no one else wants to touch.
+
+Their work doesn't show up as a shiny new feature on the roadmap. Their success is silent---it's the catastrophic outage that *didn't* happen six months from now.
+
+And their reward? Often, it's getting passed over for a promo because their “impact” wasn't as visible as the person who “saved the day.”
+
+*** We Built a Broken Game
+This is a total incentive fail, and honestly, it's on us as managers. Our performance reviews are fundamentally biased toward *reactive work.*
+
+We're great at measuring things we can see on a dashboard:
+
+- Features shipped
+- Tickets closed
+- Incidents resolved
+
+We don't have a column on our spreadsheet for *“disasters averted.”* As a result, we've built a career ladder that basically encourages engineers to let things smolder, knowing they'll get more credit for putting out a blaze than for making sure there's no fire in the first place.
+
+*** Redefining “Impact”
+It's time to stop treating “impact” as a synonym for “loud activity.” Real impact is the verifiable elimination of future risk.
+
+- *The Automation Win:* The engineer who fixes a flaky, manual   deployment isn't just “closing a ticket.” They're giving every dev on  the team their time back, forever. That's massive, compounding impact.
+- *The Refactor Win:* The engineer who cleans up a bug-prone module isn't just “tidying up.” They are measurably lowering the failure rate for the entire business. That is direct risk reduction.
+
+We need to start hyping up the architects of fireproof buildings, not just the people who are good with a hose.
+
+This takes a conscious effort to hunt for the “invisible” work. We need to use data to quantify risk /before/ it fails and treat the reduction of that risk as a top-tier contribution.
+
+Next time you're sitting in a performance calibration, ask yourself the hard question: *Are we promoting the people who are best at navigating a broken system, or the ones who are actually fixing it?*
