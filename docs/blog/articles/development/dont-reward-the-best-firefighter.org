@@ -24,6 +24,8 @@ Their work doesn't show up as a shiny new feature on the roadmap. Their success 
 
 And their reward? Often, it's getting passed over for a promo because their “impact” wasn't as visible as the person who “saved the day.”
 
+[[https://jointhefreeworld.org/static-assets/blog/img/software-firefighter.png]]
+
 *** We Built a Broken Game
 This is a total incentive fail, and honestly, it's on us as managers. Our performance reviews are fundamentally biased toward *reactive work.*
 
