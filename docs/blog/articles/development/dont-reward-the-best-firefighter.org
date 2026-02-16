@@ -27,15 +27,17 @@ And their reward? Often, it's getting passed over for a promo because their “i
 [[https://jointhefreeworld.org/static-assets/blog/img/software-firefighter.png]]
 
 *** We Built a Broken Game
-This is a total incentive fail, and honestly, it's on us as managers. Our performance reviews are fundamentally biased toward *reactive work.*
+This is a total incentive fail, and honestly, it's on all of us. Performance reviews are fundamentally biased toward *reactive work.*
 
-We're great at measuring things we can see on a dashboard:
+Managers are great at measuring things that are visible on a dashboard:
 
 - Features shipped
 - Tickets closed
 - Incidents resolved
 
-We don't have a column on our spreadsheet for *“disasters averted.”* As a result, we've built a career ladder that basically encourages engineers to let things smolder, knowing they'll get more credit for putting out a blaze than for making sure there's no fire in the first place.
+There is no column on the spreadsheet for *“disasters averted.”*
+
+As a result, we've built a career ladder that basically encourages engineers to let things smolder, knowing they'll get more credit for putting out a blaze than for making sure there's no fire in the first place.
 
 *** Redefining “Impact”
 It's time to stop treating “impact” as a synonym for “loud activity.” Real impact is the verifiable elimination of future risk.
