@@ -6,17 +6,15 @@
 
 Welcome to Joe's corner of the internet
 
-/engineering, code, philosophical thoughts, principles, respect and freedom/.
+/engineering, philosophy, respect, freedom/, /curiosity/
 
-*[[../blog/index.html][Visit my blog]]*,  where I discuss engineering, my thoughts on life, and write some guides.
+*[[../blog/index.html][Visit my blog]]*,  where I discuss  software and other kinds of engineering, my thoughts on life, and write some how-to's.
 
-See [[https://codeberg.org/jjba23][all my source code]] at Codeberg.
+See [[https://codeberg.org/jjba23][all my programs and source code]] at Codeberg.
 
 -----
 
-* 🐂 🐧 jointhefreeworld? 
-
-/jointhefreeworld/ represents the ecosystem of free software I make and share with the world.
+/jointhefreeworld/  is the name of my überprojekt, the ecosystem of free software I make and share with the world, and all my documents and adventures on all that..
 
 It is also a non-recursive acronym:
 
@@ -26,13 +24,14 @@ Just One Interesting New Tweak, Hours Evaporate, Fiddling, Recompiling, and Emac
 
 I release all my personal projects in a way that is free as in freedom and respecting of users and other hackers.
 
+
 ------------
 
-* 🦤 More 
+* 🦤 Some random things
 
 I develop all kinds of tech solutions for day to day problems of me and of my clients and I document my tech choices in [[file:../blog/articles/development/tech-radar/][My Tech Radar]].
 
-I also [[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][make videos]], about music, guitar 🎸, GNU Guix, Nix, Haskell and more..
+I also [[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][make videos]], about music, guitar 🎸 , Lisp, GNU Guix, Nix, Haskell and more..
 
 The jointhefreeworld project has an [[../blog/articles/personal/jointhefreeworld-code-of-conduct/index.html][inclusive and community-driven code of conduct]].
 
@@ -55,10 +54,10 @@ For development convenience in the jointhefreeworld platform, we have  [[../plat
 * 🕺🏻 About me
 
 - what's your name ? :: /Joe/ for short or /jjba23/ online.
-- passions ::  Software, Emacs, GNU/Linux, Guix, the amazing world of Free Software, Music and CrossFit.
-- λ λ λ ::  I usually develop in Scheme (Guile), Lisp, Haskell, Bash, Rust, Scala, Emacs Lisp, and more.
+- passions ::  Software, Emacs, GNU/Linux, the amazing world of Free Software, Music and CrossFit.
+- λ λ λ ::  I usually develop in Scheme (Guile), Lisp, Haskell, Bash, Kotlin, Java,  Rust, Scala, Emacs Lisp, and more.
 - where from ? :: I live in Noord-Holland, The Netherlands 🇳🇱 I was born in Barcelona, Spain 🇪🇸
-- motto :: Always learning, staying humble, appreciating the small moments. Fine words and insinuating appearance are seldom associated with true virtue.
+- motto :: Fine words and insinuating appearance are seldom associated with true virtue.
 
 [[https://jointhefreeworld.org/static-assets/other/img/joe-2025-08-10.jpg]]
 
