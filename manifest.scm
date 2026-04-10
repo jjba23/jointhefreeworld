@@ -34,5 +34,5 @@
              ((guix licenses)
               #:prefix license:))
 
-(packages->manifest (list texinfo darkhttpd watchexec emacs))
+(packages->manifest (list texinfo darkhttpd watchexec emacs-no-x))
 

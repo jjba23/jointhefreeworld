@@ -48,9 +48,12 @@
   (delete-file-recursively ".org-cache")
   (remkdir-p "./public")
   ($ (list (format #f "CI=~a"
-                   (if ci? "true" "false")) "guix shell -m manifest.scm --"
+                   (if ci? "true" "false"))
+           "guix time-machine --channels=channels.scm --"
+           "shell -m manifest.scm --"
            "emacs -Q --batch -l ./jointhefreeworld-site.el"
-           "--funcall jfw/publish"))
+           "--funcall jfw/publish")
+     #:verbose? #t)
   ($ '("cp -Rfv ./static ./public/static"))
   ($ '("cp -Rfv ./static/robots.txt ./public/robots.txt"))
   ($ '("cp -Rfv ./static/sitemap.xml ./public/sitemap.xml")))
