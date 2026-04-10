@@ -2,6 +2,8 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
+<2026-04-10 vr> [[/blog/articles/lisps/functional-repository-pattern-in-scheme-with-macros/index.html][Functional repository pattern in Scheme?]] - Decoupling and abstracting the data layer in Lisp. Implementing the Repository Pattern with Hygienic Macros in Scheme.
+
 <2025-06-26 do> [[/blog/articles/lisps/scheme-and-lisps-are-great-for-production/index.html][Scheme and Lisps are Great for production]] - "Why bother with Scheme/Lisp?" is a classic question, with countless valid answers. While I can't list them all exhaustively, I will try to explain my motivation.
 
 <2025-04-11 Fri> [[/blog/articles/lisps/why-i-program-in-lisp/index.html][Why I program in Lisp?]] - Why choose for this paren-heavy form of lambda calculus? Lisp is a language that was designed to be used as a tool for thinking about problems, and that is the fun part of programming.

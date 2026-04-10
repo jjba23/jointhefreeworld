@@ -10,6 +10,8 @@
 
 *** 📜 Highlighted articles
 
+<2026-04-10 vr> [[/blog/articles/lisps/functional-repository-pattern-in-scheme-with-macros/index.html][Functional repository pattern in Scheme?]] - Decoupling and abstracting the data layer in Lisp. Implementing the Repository Pattern with Hygienic Macros in Scheme.
+
 <2026-02-03 di> [[/blog/articles/development/dont-reward-the-best-firefighter/index.html][Don't Reward the Best Firefighter]] - For every loud firefighter, there's an invisible *fire preventer.* This is the engineer who spends a month refactoring a messy legacy service that no one else wants to touch.
 
 <2025-12-05 vr> [[/blog/articles/development/most-technical-problems-are-people-problems/index.html][Most Technical Problems are People Problems]] - You cannot clean up technical debt without first addressing the people, process, and politics that created it.
