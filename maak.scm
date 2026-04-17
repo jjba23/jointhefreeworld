@@ -49,6 +49,7 @@
   (remkdir-p "./public")
   ($ (list (format #f "CI=~a"
                    (if ci? "true" "false"))
+           "LC_ALL=en_US.UTF8"
            "guix time-machine --channels=channels.scm --"
            "shell -m manifest.scm --"
            "emacs -Q --batch -l ./jointhefreeworld-site.el"
