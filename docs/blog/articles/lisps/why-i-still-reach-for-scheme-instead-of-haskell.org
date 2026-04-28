@@ -5,28 +5,30 @@
 #+language: en
 #+date: <2026-04-28 Tue>
 
-Before you sharpen your keyboards and start a flame war for the title, let me point out that I haven't written this post to talk bad about Haskell, or any other tool for that matter. In fact, I love Haskell, and I taught myself and banged my head against the wall during the course of 3 years and built several real-world projects with it (some even got a bit lucrative).
+There is a persistent tension in software engineering between the beautiful, mathematically pure ideal of a program, and the messy, pragmatic reality of just getting things done. Over my career, I've explored the depths of both extremes in an attempt to find my personal sweet spot for hacking.
 
-Between my time in the web development world, the Go world, the JVM world with Java, Scala and Kotlin, and my long history hacking in Lisp (Emacs, Common, Scheme), I have come to deeply appreciate functional programming.
+Before you sharpen your keyboards and start a flame war over the title, let me point out that I haven't written this post to talk bad about [[https://www.haskell.org/][Haskell]], or any other tool for that matter. In fact, I love Haskell. I taught myself, banged my head against the wall over the course of three years, and built several real-world projects with it (some even became a bit lucrative).
+
+Between my time in the web development world, the [[https://go.dev/][Go]] world, the JVM world with [[https://www.java.com/][Java]], [[https://www.scala-lang.org/][Scala]] and [[https://kotlinlang.org/][Kotlin]], and my long history hacking in [[https://lisp-lang.org/][Lisp]] ([[https://www.gnu.org/software/emacs/][Emacs]], [[https://common-lisp.net/][Common]], [[https://schemers.org/][Scheme]]), I have come to deeply appreciate functional programming.
 
 -----------
 
 ** Enlightening as it can be
 
-Haskell has what likely is the most amazing, enlightening and complex type system to work with (as do more ML languages).
+Haskell has what likely is the most amazing, enlightening and complex type system to work with (as do more [[https://en.wikipedia.org/wiki/ML_(programming_language)][ML languages]]).
 
-It is also the undisputed king of introducing mathematical ideas and concepts to programming, and popularizing them. Haskell circles are frequented by PhDs, category theorists and all kinds of smart people (don't underestimate other communities, like Schemers though).
+It is also the undisputed king of introducing mathematical ideas and concepts to programming, and popularizing them. Haskell circles are frequented by PhDs, computer science researchers, [[https://en.wikipedia.org/wiki/Category_theory][category theorists]] and all kinds of smart people (don't underestimate other communities, like Schemers though).
 
 Some of the amazing innovations of Haskell or that it has helped popularize, which blew my mind several times:
-- algebraic data types
-- pattern matching
-- functors, monads
-- monoids, semigroups
+- [[https://en.wikipedia.org/wiki/Algebraic_data_type][algebraic data types]]
+- [[https://en.wikipedia.org/wiki/Pattern_matching][pattern matching]]
+- [[https://en.wikipedia.org/wiki/Functor][functors]], [[https://en.wikipedia.org/wiki/Monad_(functional_programming)][monads]]
+- [[https://en.wikipedia.org/wiki/Monoid][monoids]], [[https://en.wikipedia.org/wiki/Semigroup][semigroups]]
 - effectful computation modelled as monads
-- purely functional domain-specific languages
+- purely functional domain-specific languages (DSLs)
 - etc.
 
-All these kind of things that often feel bolted-on or missing entirely in other languages!
+All these kind of things often feel bolted-on or missing entirely in other languages!
 
 For all its brilliance, Haskell resists most of the attempts people make to just *hack* and write useful code /quickly/.
 
@@ -42,43 +44,41 @@ Actually, in my opinion, Scheme (and Lisp) allows you to express complex systems
 
 Take a recent adventure of mine, for example. I was spinning up a prototype for a bookmark management tool, just one of many projects I’ve come up with over the years.
 
-I started in Haskell as I thought the beauty of data modelling and pure side-effect-free reasoing would work well: it’s also fast, elegant, and once you’ve used modules like Parsec, Servant, optparse-applicative, etc. it’s tough to imagine writing certain things, like a parser without it.
+I started in Haskell as I thought the beauty of data modelling and pure side-effect-free reasoning would work well: it’s also fast, elegant, and once you’ve used modules like [[https://hackage.haskell.org/package/parsec][Parsec]], [[https://docs.servant.dev/][Servant]], and [[https://hackage.haskell.org/package/optparse-applicative][optparse-applicative]], it’s tough to imagine writing certain things, like a parser, without it.
 
 One of the steps in the proof-of-concept was transforming some data models to XML and output them to a file.
 
-If I were doing this in Kotlin or Java, it would be trivial: drop a dependency into Gradle, wire up Jackson or a standard DOM parser, and ten minutes later the data is in memory and ready to manipulate.
+If I were doing this in Kotlin or Java, it would be trivial: drop a dependency into Gradle, wire up [[https://github.com/FasterXML/jackson][Jackson]] or a standard DOM parser, and ten minutes later the data is in memory and ready to manipulate.
 
-After a frustrating hour with my Haskell project, and even after years of experience with the language, I was still wrestling with the dependencies, and later with monadic API and I ended up giving up on the whole thing after I noticed I even forgot what I was doing in the first place.
+After a frustrating hour with my Haskell project, and even after years of experience with the language, I was still wrestling with the dependencies, and later with monadic API, and I ended up giving up on the whole thing after I noticed I even forgot what I was doing in the first place.
 
-This has often been my friction point with Haskell. It is beautiful, but it fights you when you just want to get your hands dirty and prototype, without a /big design upfront/ even though type driven development can also be nice and work well in some cases.
+This has often been my friction point with Haskell. It is beautiful, but it fights you when you just want to get your hands dirty and prototype, without a /big design upfront/ even though [[https://en.wikipedia.org/wiki/Type-driven_development][type-driven development]] can also be nice and work well in some cases.
 
-Scheme (Guile for me) doesn’t have Haskell’s brutally efficient compiler, although it is quite speedy thanks to the C foundation. What it has is the terseness, power, and more importantly, it makes the actual act of hacking a joy.
+Scheme ([[https://www.gnu.org/software/guile/][GNU Guile]] for me) doesn’t have Haskell’s brutally efficient compiler, although it is quite speedy thanks to the C foundation. What it has is the terseness, power, and more importantly, *it makes the actual act of hacking a joy*.
 
 As elegant as Haskell’s purely functional foundation is, it can really complicate simple, crucial, impure tasks like writing to files or talking over a network.
 
 Monads are Haskell’s answer to this, but they often feel like a heavy abstraction tax; they allow you to write useful software, but they rarely make it intuitive or fast to prototype.
 
-These kind of heavy-handed abstractions are in my opinion really beautiful, but not justifiable for most projects. Please do ask yourself, do I really need a functional effect system, is it worth the complexity and cognitive load? Do I really need the pure/impure computation strictness enforced at compile time? Remember that later, just adding a simple ~print~ somewhere is not going to work without refactor (welcome to ~IO~ monad).
+These kind of heavy-handed abstractions are in my opinion really beautiful, but not justifiable for most projects. Please do ask yourself, do I really need a functional effect system, is it worth the complexity and cognitive load? Do I really need the pure/impure computation strictness enforced at compile time? Remember that later, just adding a simple ~print~ somewhere is not going to work without refactor (welcome to the ~IO~ monad).
 
 As a long-time Lisper, for me this is a massive barrier to usability. In many ways, you can only fix what you can observe.
 
-Scheme, happily sacrifices academic purity so you can slap a ~(write  ...)~ anywhere in your code and instantly see what’s going on. I’m sure a Haskell purist is burying their face in their hands right now, citing ~Debug.Trace~ or questioning why I'd want side-effects in a lazy, well-optimized language. They aren't technically wrong, but the friction added to quick-and-dirty debugging is a tax I am simply not willing to pay when I'm trying to move fast.
+Scheme happily sacrifices academic purity so you can slap a ~(write ...)~ anywhere in your code and instantly see what’s going on. I’m sure a Haskell purist is burying their face in their hands right now, citing ~Debug.Trace~ or questioning why I'd want side-effects in a lazy, well-optimized language. They aren't technically wrong, but the friction added to quick-and-dirty debugging is a tax I am simply not willing to pay when I'm trying to move fast.
 
 ----------
 
 ** Meta-programming and DSLs
 
-The second problem with Monads is directly tied to their greatest strength: they are synonymous with Domain Specific Languages (DSLs).
+The second problem with Monads is directly tied to their greatest strength: they are synonymous with [[https://en.wikipedia.org/wiki/Domain-specific_language][Domain Specific Languages]] (DSLs).
 
-The promise of DSLs is fantastic—don’t write a complex program to solve a problem; write a simple program in a bespoke language designed solely for that task. Parsec is the golden child here; the parsing function is practically identical to the BNF grammar.
+The promise of DSLs is fantastic—don’t write a complex program to solve a problem; write a simple program in a bespoke language designed solely for that task. Parsec is the golden child here; the parsing function is practically identical to the [[https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form][BNF grammar]].
 
-But the success of Parsec has filled Hackage with hundreds of bespoke DSLs for everything. One for parsing, one for XML, one for generating PDFs. Each is completely different, and each demands its own learning curve. Consider parsing XML, mutating it based on some JSON from a web API, and writing it to a PDF. In the Java, Kotlin, or Scala ecosystems, you expect a certain level of consistency. You pull in three libraries, and they generally follow familiar object-oriented or functional-lite conventions. But in Haskell, three DSLs designed for three different tasks usually mean the authors optimized strictly for the domain, completely ignoring syntax consistency. Instead of five minutes skimming JavaDocs, you have hours of DSL documentation and tutorials ahead of you.
+But the success of Parsec has filled [[https://hackage.haskell.org/][Hackage]] with hundreds of bespoke DSLs for everything. One for parsing, one for XML, one for generating PDFs. Each is completely different, and each demands its own learning curve. Consider parsing XML, mutating it based on some JSON from a web API, and writing it to a PDF. In the Java ecosystem for example you expect a certain level of consistency. You pull in three libraries, and they generally follow familiar object-oriented or functional-lite conventions. But in Haskell, three DSLs designed for three different tasks usually mean the authors optimized strictly for the domain, completely ignoring syntax consistency. Instead of five minutes skimming JavaDocs, you have hours of DSL documentation and tutorials ahead of you.
 
 As we Schemers know, Scheme is intentionally simple. That simplicity isn't a limitation; it’s what makes it endlessly flexible.
 
-While modern JVM languages rely heavily on reflection or complex compiler plugins (like Kotlin's KSP) to achieve this.
-
-Lisp hackers, meanwhile, have been effortlessly reshaping the language for decades using the powerful macro system and extending and bending the language to their will.
+While modern JVM languages rely heavily on reflection or complex compiler plugins (like Kotlin's [[https://kotlinlang.org/docs/ksp-overview.html][KSP]]) to achieve this, Lisp hackers have been effortlessly reshaping the language for decades using the powerful [[https://en.wikipedia.org/wiki/Macro_(computer_science)#Lisp_macros][macro system]] and extending and bending the language to their will.
 
 #+begin_src scheme
 (define-syntax define-repo-method
@@ -89,7 +89,7 @@ Lisp hackers, meanwhile, have been effortlessly reshaping the language for decad
                    (apply (accessor repo) args)))))
 #+end_src
 
-Haskell, much like Scala's advanced type-level programming, often requires a mountain of language extensions to achieve similar flexibility (Template Haskell and its powerful but scary API).
+Haskell, much like Scala's advanced type-level programming, often requires a mountain of language extensions to achieve similar flexibility ([[https://downloads.haskell.org/ghc/latest/docs/users_guide/exts/template_haskell.html][Template Haskell]] and its powerful but scary API).
 
 #+begin_src haskell
 {-# LANGUAGE TemplateHaskell #-}
@@ -105,10 +105,30 @@ curryN n = do
   return $ LamE args (AppE (VarE f) ntup)
 #+end_src
 
-I’ve used Scheme for countless projects because of its combination of features and philosophies that bring it to my personal /"sweet spot"/. It's also an advanced language, which keeps pioneering, and of unconstrained innovation (e.g. delimited continuations). When you want to mold the syntax directly to your will, Scheme gets out of your way and helps you achieve it.
+I’ve used Scheme for countless projects because of its combination of features and philosophies that bring it to my personal /"sweet spot"/. It's also an advanced language, which keeps pioneering, and of unconstrained innovation (e.g. [[https://en.wikipedia.org/wiki/Delimited_continuation][delimited continuations]]). When you want to mold the syntax directly to your will, Scheme gets out of your way and helps you achieve it.
 
 Of course, to be completely fair about my toolkit, standard Scheme can sometimes lack the heavyweight, "batteries-included" ecosystem required for massive enterprise production compared to the JVM. Also, when compared to Haskell, Lisp compilers are modest and simple, at best, but that makes them also that much more approachable (and the error messages that much friendlier).
 
 I’m not saying Scheme is objectively better than Haskell. Languages are tools, and we should choose the right tool for the job.
 
 I will always remember all I learnt from Haskell's functional beauty and ideas, but to me, Haskell remains a platonic ideal of a programming language: lighting the way in a certain direction, but a bit too rigid for most of what I do.
+
+----------
+
+** Then there is the REPL: Interactive workflow, developer power
+
+A REPL (Read-Eval-Print Loop) is an interactive environment, which can be used connected to your console, running application, language compiler and more, which gives you superpowers as an engineer 🦸🏼.
+
+Lisp dialects, more specifically Guile Scheme, have great support for this. I personally of course like to do this with [[https://guix.gnu.org/][Guix]], [[https://www.gnu.org/software/emacs/][Emacs]], ([[https://git.sr.ht/~abcdw/emacs-arei][Arei/Ares]] + [[https://github.com/vspinu/sesman][sesman]]) you can get an ultimate extensible powerful editor experience, miles ahead of traditional IDEs 🐂 .
+
+And no, it's not the same kind of REPL you know from Haskell (GHCIDE or others) or Python. Lisp REPLs can do so much more and integrate seamlessly to your editor. Evaluate, check, change and debug live, seamlessly.
+
+It fundamentally changes the development workflow by eliminating the slow /edit, save, compile, run/ cycle. Instead of writing a whole program and then running it to see what happens, you get a fast, conversational workflow. What does this mean for in practice?
+
+- *Incremental Development:* Write, test, inspect, evaluate one function or even one line at a time. Get immediate feedback without running the entire app.
+- *Powerful Debugging:* Forget adding ~print~ statements and restarting. You can pause, inspect objects, change values, and even redefine a broken function on the fly to test a fix in any environment (yes even in production, while running).
+- *Fast Prototyping & Learning:* Instantly experiment with a new library or API. Just load it and start calling functions to see how they work, which is much faster than only reading documentation.
+
+When integrated into your code editor, you can execute any piece of code (a line, a selection, or a file) with a keyboard shortcut and see the result instantly, creating a seamless and powerful development experience.
+
+Overall Lisp languages are simply the sweet spot for me and of what I consider good developer experience. They also give you super powers and let you create beatiful systems that can last.
