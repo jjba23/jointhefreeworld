@@ -6,9 +6,11 @@
 
 ***  📚 Categories
 
-[[/blog/articles/emacs/][Emacs]] ⋅ [[/blog/articles/lisps/][Lisps]] ⋅  [[/blog/articles/rust/][Rust]]  ⋅ [[/blog/articles/gnu-linux/][GNU/Linux]] ⋅  [[/blog/articles/development/][Dev]] ⋅  [[/blog/articles/ci/][CI/CD]]   [[/blog/articles/haskell/][Haskell]] ⋅  [[/blog/articles/go/][Go]] ⋅  [[/blog/articles/freebsd/][FreeBSD]]  ⋅  [[/blog/articles/personal/][Personal]]  
+[[/blog/articles/emacs/][Emacs]] ⋅ [[/blog/articles/lisps/][Lisps]] ⋅  [[/blog/articles/rust/][Rust]]  ⋅ [[/blog/articles/gnu-linux/][GNU/Linux]] ⋅  [[/blog/articles/development/][Dev]] ⋅  [[/blog/articles/ci/][CI/CD]]   [[/blog/articles/haskell/][Haskell]] ⋅  [[/blog/articles/go/][Go]] ⋅  [[/blog/articles/freebsd/][FreeBSD]]  ⋅  [[/blog/articles/personal/][Personal]]
 
 *** 📜 Highlighted articles
+
+<2026-04-28 di> [[/blog/articles/lisps/why-i-still-reach-for-scheme-instead-of-haskell/index.html][Why I still reach for Scheme and Lisps instead of Haskell]] - Scheme (and Lisp) allows you to express complex systems and problem domains in more simple terms than any other language can. For all its brilliance, Haskell resists most of the attempts people make to just *hack* and write useful code /quickly/.
 
 <2026-04-10 vr> [[/blog/articles/lisps/functional-repository-pattern-in-scheme-with-macros/index.html][Functional repository pattern in Scheme?]] - Decoupling and abstracting the data layer in Lisp. Implementing the Repository Pattern with Hygienic Macros in Scheme.
 
