@@ -16,6 +16,10 @@ You should have received a copy of the GNU Affero General Public License
 along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+@import 'https://cdnjs.cloudflare.com/ajax/libs/Iosevka/11.1.1/iosevka/iosevka.min.css';
+/*@import 'https://cdnjs.cloudflare.com/ajax/libs/Iosevka/11.1.1/iosevka-aile/iosevka-aile.min.css';*/
+@import 'https://cdnjs.cloudflare.com/ajax/libs/Iosevka/11.1.1/iosevka-slab/iosevka-slab.min.css';
+
 :root {
   /* Colors */
   --color-primary: #111111;
@@ -30,8 +34,8 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --color-secondary: oklch(0.3426 0.0684 344.44);
 
   /* Font Families */
-  --font-family-body: "IBM Plex Serif", serif;
-  --font-family-code: "IBM Plex Mono", monospace;
+  --font-family-body: "Iosevka Slab", serif;
+  --font-family-code: "Iosevka", monospace;
 
   /* Font Weights */
   --font-weight-light: 100;
@@ -40,7 +44,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --font-weight-heavy: 700;
 
   /* Font Sizes */
-  --text-2xs: 0.7em;  
+  --text-2xs: 0.7em;
   --text-xs: 0.8em;
   --text-sm: 1em;
   --text-md: 1.1em;
@@ -119,8 +123,8 @@ tr { font-size: var(--text-sm) }
     padding-bottom: var(--spacing-xl);
     padding-top: var(--spacing-xl);
   }
-  
-  tr { font-size: var(--text-xs) }  
+
+  tr { font-size: var(--text-xs) }
 }
 
 a,
@@ -146,7 +150,7 @@ a:hover {
   text-decoration: none;
   color: var(--color-hover);
   border-bottom: 1px solid;
-  border-bottom-color: var(--color-hover);  
+  border-bottom-color: var(--color-hover);
 }
 
 h1,
@@ -473,7 +477,7 @@ pre {
         color: #b05350;
     }
     .org-comment {
-        color: #8a92ac;        
+        color: #8a92ac;
     }
     .org-comment-delimiter {
         color: #8a92ac;
