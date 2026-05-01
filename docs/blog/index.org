@@ -3,7 +3,7 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 #+language: en
-#+date: <2026-05-01 vr>
+#+date: <2025-10-27 ma>
 
 ***  📚 Categories
 
