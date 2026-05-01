@@ -1,6 +1,7 @@
 #+title: GNU/Linux
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
+#+date: <2025-10-27 ma>
 
 <2025-03-04 di> [[/blog/articles/gnu-linux/sway-guix-fully-lisp-configuration/index.html][Moving from Sway to Hyprland - Archived SwayFX config]] - After using Sway as my daily Wayland compositor for quite some time, I recently made the switch to Hyprland. The decision wasn't made lightly, as Sway, especially with the SwayFX fork, served me well.
 
@@ -18,7 +19,6 @@
 
 <2023-08-25 Fri> [[/blog/articles/gnu-linux/windows-11-bootable-usb-from-gnu-linux/index.html][Bootable Windows 11 USB from GNU Linux]]
 
-<2023-08-18 Fri> [[/blog/articles/gnu-linux/openvpn3-on-voidlinux/index.html][OpenVPN3 on Void Linux]] 
+<2023-08-18 Fri> [[/blog/articles/gnu-linux/openvpn3-on-voidlinux/index.html][OpenVPN3 on Void Linux]]
 
 <2021-12-21 Tue> [[/blog/articles/gnu-linux/arch-linux-uefi-encryption/index.html][Arch Linux UEFI + Encryption guide]]
-

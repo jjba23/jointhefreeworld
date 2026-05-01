@@ -1,4 +1,5 @@
 #+title: Embracing the eternal Sexp wisdom with the GNU
+#+date: <2025-10-27 ma>
 
 
 /Behold the holy Sexp/

@@ -1,3 +1,31 @@
-* Getting rid of Git history
+#+title: Git Riddance
+#+options: num:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2026-05-01 Fri>
 
-as
+/Git Riddance - for Good Riddance!/
+
+** Introduction
+
+~git-riddance~ is an Emacs package available at (https://codeberg.org/jjba23/git-riddance.el)  that will help you completely destroy the Git history of your desired directory, and allow you to start a new one with 1 commit, effectively obliterating other history in that branch.
+
+*Licensing*
+
+Git Riddance is licensed under the GNU General Public License v3 or newer and is completely free software.
+
+
+** Installing
+
+This package is not (yet) available in popular Emacs repositories such as MELPA or ELPA. You can for example manually copy paste, use the ~:vc~ keyword, or using Elpaca:
+
+#+begin_src emacs-lisp
+  (use-package git-riddance
+    :ensure (:host codeberg :repo "jjba23/git-riddance.el" :branch "trunk"))
+#+end_src
+
+** Using
+
+After installing, simply call ~M-x git-riddance~ or bind it to a key shortcut, and you will be prompted for the required data and target directory.
+There are some sane defaults configured, and all is customizable so you can override them with your own in your configuration.

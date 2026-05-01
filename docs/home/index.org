@@ -3,6 +3,7 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 #+language: en
+#+date: <2024-11-17 ma>
 
 Welcome to Joe's corner of the internet
 
@@ -60,5 +61,3 @@ For development convenience in the jointhefreeworld platform, we have  [[../plat
 - motto :: Fine words and insinuating appearance are seldom associated with true virtue.
 
 [[https://jointhefreeworld.org/static-assets/other/img/joe-2025-08-10.jpg]]
-
-

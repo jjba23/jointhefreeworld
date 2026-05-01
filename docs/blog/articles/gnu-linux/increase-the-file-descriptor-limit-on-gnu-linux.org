@@ -1,7 +1,10 @@
-* Increase the file descriptor count
+#+title: Increase the file descriptor count in GNU/Linux
+#+options: num:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2025-10-27 ma>
 
-
-Originally written by Marin Todorov.
 
 In Linux, you can change the maximum amount of open files. You may modify this number by using the ulimit command. It grants you the ability to control the resources available for the shell or process started by it.
 

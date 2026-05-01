@@ -1,6 +1,7 @@
 #+title: Emacs
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
+#+date: <2026-05-01 Fri>
 
 <2024-12-04 wo> [[/blog/articles/emacs/yaml-schemas-in-emacs-eglot/index.html][YAML Schemas in Emacs with Eglot]] Are you editing YAML files and would like to use JSON Schemas for YAML in Emacs ?
 

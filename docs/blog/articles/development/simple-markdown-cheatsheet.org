@@ -118,7 +118,7 @@ It will not be formatted with bold or italic.
 
 Technical users will be at ease with Markdown, and can edit it and preview it from their favorite editor (think Emacs, Vim, VSCode, IntelliJ, etc.)
 
-For non-technical users, the best Markdown editors are those that prioritize a clean, simple, and intuitive user interface. 
+For non-technical users, the best Markdown editors are those that prioritize a clean, simple, and intuitive user interface.
 
 The "What You See Is What You Get" (WYSIWYG) Approach: I recommend MarkText (desktop app), A free and open-source alternative to Typora, offering a real-time preview experience. It's known for its sleek design and focus on a clean, elegant interface.
 

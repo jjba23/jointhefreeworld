@@ -1,8 +1,8 @@
-
 #+title: Taming Complexity with Scheme: The Byggsteg Story
 #+author: Josep Bigorra
 #+email: jjbigorra@gmail.com
 #+language: en
+#+date: <2025-10-27 ma>
 
 
 * Abstract
@@ -38,7 +38,7 @@ Scheme boasts several distinguishing features that set it apart from other progr
 
 - Minimalism :: Scheme has a very small core language with a concise set of primitive procedures. Much of the functionality commonly built into other languages is provided through libraries. This minimalism makes the language easier to learn and implement.
 
-- First-Class Functions :: In Scheme, functions are treated as first-class citizens. This means they can be assigned to variables and passed as arguments to other functions, returned as values from other functions and even stored in data structures. This capability enables powerful programming paradigms like higher-order functions and functional programming. 
+- First-Class Functions :: In Scheme, functions are treated as first-class citizens. This means they can be assigned to variables and passed as arguments to other functions, returned as values from other functions and even stored in data structures. This capability enables powerful programming paradigms like higher-order functions and functional programming.
 
 - Proper Tail Recursion :: Scheme implementations are required to be properly tail-recursive. This means that if the last operation in a function is a recursive call, the interpreter or compiler will optimize it in such a way that it doesn't consume additional stack space. This allows for writing iterative processes using recursion without the risk of stack overflow errors.
 
@@ -100,4 +100,3 @@ Sending things in thunk form allows one to execute any code arbitrarily, inside 
     (clone-url unquote (format #f "https://codeberg.org/jjba23/~a" my-project-name))))
 
 #+end_src
-

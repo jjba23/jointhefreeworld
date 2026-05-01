@@ -2,6 +2,7 @@
 #+options: num:nil
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
+#+date: <2025-10-27 ma>
 
 This document outlines commonly reserved ports on GNU/Linux-based virtual servers (VPS) used in the jointhefreeworld project and wolk-jjba VPS config. Understanding these is important because:
    - They relate to system security.
@@ -34,4 +35,3 @@ Note that some of the below ports are not always in-use in a production VPS, sin
 
 - SSH Server :: we commonly adjust this to 2323
 - HTTP/HTTPS Web Servers :: we use the default 80 and 443 and reverse proxy (NGINX) from there
- 

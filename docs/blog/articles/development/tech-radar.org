@@ -3,6 +3,7 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 #+language: en
+#+date: <2026-05-01 Fri>
 
 Tech changes fast. But it’s becoming an ever-more critical component of success.
 
@@ -27,7 +28,7 @@ At its core, a Tech Radar is a visual tool that helps us categorize and assess v
 - Typescript
 - Javascript (vanilla)
 - Rust
-- GTK4 Libadwaita    
+- GTK4 Libadwaita
 ** 🧰️ Tools
 - GNU Guix
 - SQLite

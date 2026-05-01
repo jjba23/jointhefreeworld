@@ -2,6 +2,7 @@
 #+options: num:nil
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
+#+date: <2025-10-27 ma>
 
 Hello there! You've landed on the portfolio of Josep Jesus Bigorra Algaba, a passionate advocate for free software 👋🏼
 
@@ -61,4 +62,3 @@ Take a look around and feel free to explore the code and concepts behind them!
 *** Pages of my clients
 
 [[https://codeberg.org/jjba23/carvoeiro-water-fun][carvoeiro-water-fun]] - Boat and Kayak rental website as a Svelte SPA (Single-Page Application).
-
