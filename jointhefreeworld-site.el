@@ -411,22 +411,55 @@ estimated reading time based on its TITLE."
     (let ((dom (libxml-parse-html-region (point-min) (point-max))))
       (dom-text (car (dom-by-class dom "site-post-title"))))))
 
+(defun jfw/html-to-org-path (html-file)
+  "Map an outputted HTML file path back to its original Org file path."
+  (let* ((rel-path (file-relative-name html-file (expand-file-name "./public/")))
+         (dir-path (file-name-directory rel-path)))
+    (if dir-path
+        (let* ((dir-no-slash (directory-file-name dir-path))
+               (base-name (file-name-nondirectory dir-no-slash))
+               (parent-dir (file-name-directory dir-no-slash)))
+          ;; Reconstruct the path pointing to the ./docs/ directory
+          (expand-file-name (concat base-name ".org")
+                            (expand-file-name (or parent-dir "")
+                                              (expand-file-name "./docs/"))))
+      ;; Fallback if there is no directory nesting
+      (expand-file-name (concat (file-name-sans-extension rel-path) ".org")
+                        (expand-file-name "./docs/")))))
+
+(defun jfw/extract-date-from-org (org-file)
+  "Extract the #+date property from an ORG-FILE as a string."
+  (when (file-exists-p org-file)
+    (with-temp-buffer
+      (insert-file-contents org-file)
+      (goto-char (point-min))
+      ;; Case-insensitive search for #+date:
+      (when (re-search-forward "^#\\+[dD][aA][tT][eE]:[ \t]*\\(.*\\)" nil t)
+        (string-trim (match-string 1))))))
+
 (defun jfw/rss-extract-date (html-file)
-  "Extract the post date from an HTML file."
-  (with-temp-buffer
-    (insert-file-contents html-file)
-    (let* ((dom (libxml-parse-html-region (point-min) (point-max)))
-           (date-string (dom-text (car (dom-by-class dom "site-post-meta"))))
-           (parsed-date (parse-time-string date-string))
-           (day (nth 3 parsed-date))
-           (month (nth 4 parsed-date))
-           (year (nth 5 parsed-date)))
-      ;; NOTE: Hardcoding this at 8am for now
-      (encode-time 0 0 8 day month year))))
+  "Extract the post date directly from the source Org file."
+  (let* ((org-file (jfw/html-to-org-path html-file))
+         (date-string (jfw/extract-date-from-org org-file)))
+    (if date-string
+        (let* (;; Clean up Org brackets if you use <2023-10-24> formats
+               (clean-date (replace-regexp-in-string "[<>\\[\\]]" "" date-string))
+               (parsed-date (parse-time-string clean-date))
+               (day (nth 3 parsed-date))
+               (month (nth 4 parsed-date))
+               (year (nth 5 parsed-date)))
+          ;; (message (format "org-file: %s" org-file))
+          (message (format "file date: %s" date-string))
+          ;; NOTE: Hardcoding this at 8am for now, as in your original setup
+          (encode-time 0 0 8 (or day 1) (or month 1) (or year 1970)))
+      ;; Fallback: If no #+date is found, use the file's modification time
+      (if (file-exists-p org-file)
+          (file-attribute-modification-time (file-attributes org-file))
+        (current-time)))))
 
 
-(setq webfeeder-title-function #'jfw/rss-extract-title)
-;; webfeeder-date-function #'jfw/rss-extract-date)
+(setopt webfeeder-title-function #'jfw/rss-extract-title
+        webfeeder-date-function #'jfw/rss-extract-date)
 
 (setq org-publish-project-alist
       (list '("jointhefreeworld:main"
