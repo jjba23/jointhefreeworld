@@ -1,7 +1,6 @@
 #+title: Go
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
-#+date: <2025-10-27 ma>
 
 <2021-09-29 Wed> [[/blog/articles/go/how-i-write-http-services/index.html][How I wrote HTTP services]]
 

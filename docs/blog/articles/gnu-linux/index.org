@@ -1,7 +1,6 @@
 #+title: GNU/Linux
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
-#+date: <2025-10-27 ma>
 
 <2025-03-04 di> [[/blog/articles/gnu-linux/sway-guix-fully-lisp-configuration/index.html][Moving from Sway to Hyprland - Archived SwayFX config]] - After using Sway as my daily Wayland compositor for quite some time, I recently made the switch to Hyprland. The decision wasn't made lightly, as Sway, especially with the SwayFX fork, served me well.
 

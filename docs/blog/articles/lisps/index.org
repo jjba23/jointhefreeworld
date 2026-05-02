@@ -1,7 +1,6 @@
 #+title: Lisps
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
-#+date: <2025-10-27 ma>
 
 <2026-04-28 di> [[/blog/articles/lisps/why-i-still-reach-for-scheme-instead-of-haskell/index.html][Why I still reach for Scheme and Lisps instead of Haskell]] - Scheme (and Lisp) allows you to express complex systems and problem domains in more simple terms than any other language can. For all its brilliance, Haskell resists most of the attempts people make to just *hack* and write useful code /quickly/.
 

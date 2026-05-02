@@ -2,7 +2,6 @@
 #+options: num:nil
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
-#+date: <2025-10-27 ma>
 
 Hello there! You've landed on the portfolio of Josep Jesus Bigorra Algaba, a passionate advocate for free software 👋🏼
 

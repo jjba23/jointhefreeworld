@@ -1,7 +1,6 @@
 #+title: FreeBSD
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
-#+date: <2025-10-27 ma>
 
 <2021-12-02 Thu> [[/blog/articles/freebsd/rcd-scripting/index.html][rc.d scripting]]
 

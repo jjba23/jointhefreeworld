@@ -1,7 +1,6 @@
 #+title: Haskell
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
-#+date: <2025-10-27 ma>
 
 <2024-04-20 za> [[/blog/articles/haskell/free-alacarte/index.html][Free à la Carte]]
 

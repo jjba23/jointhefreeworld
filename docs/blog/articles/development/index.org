@@ -2,7 +2,6 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 #+language: en
-#+date: <2025-10-27 ma>
 
 <2026-02-03 di> [[/blog/articles/development/dont-reward-the-best-firefighter/index.html][Don't Reward the Best Firefighter]] - For every loud firefighter, there's an invisible *fire preventer.* This is the engineer who spends a month refactoring a messy legacy service that no one else wants to touch.
 

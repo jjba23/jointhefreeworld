@@ -2,7 +2,6 @@
 #+options: num:nil
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
-#+date: <2025-10-27 ma>
 
 This document outlines commonly reserved ports on GNU/Linux-based virtual servers (VPS) used in the jointhefreeworld project and wolk-jjba VPS config. Understanding these is important because:
    - They relate to system security.
