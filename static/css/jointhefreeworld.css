@@ -88,7 +88,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
     --color-text-code: #f8f8f2;
     --color-text-emphasis: #ffffff;
     --color-hr: rgba(255, 255, 255, 0.15);
-    --color-code-background: #09090b;
+    --color-code-background: rgba(12, 12, 12, 0.6);
     --color-border: rgba(218, 97, 151, 0.4);
     --color-header: #e2e8f0;
     --color-secondary: oklch(0.75 0.1 251.54);
