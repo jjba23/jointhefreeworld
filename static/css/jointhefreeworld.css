@@ -31,7 +31,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --color-hr: rgba(120, 120, 120, 0.5);
   --color-code-background: rgba(243, 239, 227, 0.3);
   --color-border: rgb(165, 93, 116, 0.3);
-  --color-header: oklch(0.3599 0.0465 65.43);
+  --color-header: rgb(165, 93, 116, 0.6);
   --color-secondary: oklch(0.528 0.1036 251.54);
 
   /* Font Families */
