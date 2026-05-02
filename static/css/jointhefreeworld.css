@@ -27,7 +27,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --color-background-light: rgba(251, 243, 218, 0.1);
   --color-background-medium: rgba(251, 243, 218, 0.2);
   --color-text-code: #111111;
-  --color-text-emphasis: ;
+  --color-text-emphasis: #222222;
   --color-hr: rgba(120, 120, 120, 0.5);
   --color-code-background: rgba(243, 239, 227, 0.3);
   --color-border: rgba(165, 93, 116, 0.4);
@@ -79,6 +79,22 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --max-width-pre: 128ch;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #e4e4e7;
+    --color-hover: #f48fb1;
+    --color-background-light: #18181b;
+    --color-background-medium: #27272a;
+    --color-text-code: #f8f8f2;
+    --color-text-emphasis: #ffffff;
+    --color-hr: rgba(255, 255, 255, 0.15);
+    --color-code-background: #09090b;
+    --color-border: rgba(218, 97, 151, 0.4);
+    --color-header: #e2e8f0;
+    --color-secondary: oklch(0.75 0.1 251.54);
+  }
+}
+
 @view-transition {
   navigation: auto;
 }
@@ -96,6 +112,8 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
     opacity: 1;
   }
 }
+
+
 
 html {
   scroll-behavior: smooth;
