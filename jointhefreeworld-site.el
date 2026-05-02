@@ -138,18 +138,12 @@
                            ))))))
 
 (defun get-article-output-path (org-file pub-dir)
-  (let ((article-dir (concat pub-dir
-                             (downcase
-                              (file-name-as-directory
-                               (file-name-sans-extension
-                                (file-name-nondirectory org-file)))))))
-
-    (if (string-match "\\/index.org\\|\\/404.org$" org-file)
-        pub-dir
-      (progn
-        (unless (file-directory-p article-dir)
-          (make-directory article-dir t))
-        article-dir))))
+  (if (string-match-p "index\\.org$\\|404\\.org$" org-file)
+      pub-dir
+    (let ((article-dir (expand-file-name (downcase (file-name-base org-file)) pub-dir)))
+      (unless (file-directory-p article-dir)
+        (make-directory article-dir t))
+      (file-name-as-directory article-dir))))
 
 (defun jfw/get-commit-hash ()
   "Get the short hash of the latest commit in the current repository."
@@ -231,21 +225,12 @@
 (defun is-exclude-content-reading-time-p (title)
   "Predicate that determines whether a page should show
 estimated reading time based on its TITLE."
-  (pcase title
-    ("Joe's web-site - Join the Free World" t)
-    ("Joe's Blog" t)
-    ("Documentation - jointhefreeworld.org" t)
-    ("Joe's Portfolio" t)
-    ("Lisps" t)
-    ("Emacs" t)
-    ("Haskell" t)
-    ("GNU/Linux" t)
-    ("Dev" t)
-    ("CI/CD" t)
-    ("Go" t)
-    ("FreeBSD" t)
-    ("Personal" t)
-    (else nil)))
+  (member title '("Joe's web-site - Join the Free World"
+                  "Joe's Blog"
+                  "Documentation - jointhefreeworld.org"
+                  "Joe's Portfolio"
+                  "Lisps" "Emacs" "Haskell" "GNU/Linux"
+                  "Dev" "CI/CD" "Go" "FreeBSD" "Personal")))
 
 (defun jfw/org-html-template (contents info)
   (let* ((page-title (car (plist-get info :title))))
@@ -441,88 +426,72 @@ estimated reading time based on its TITLE."
   "Extract the post date directly from the source Org file."
   (let* ((org-file (jfw/html-to-org-path html-file))
          (date-string (jfw/extract-date-from-org org-file)))
-    (if date-string
-        (let* (;; Clean up Org brackets if you use <2023-10-24> formats
-               (clean-date (replace-regexp-in-string "[<>\\[\\]]" "" date-string))
-               (parsed-date (parse-time-string clean-date))
-               (day (nth 3 parsed-date))
-               (month (nth 4 parsed-date))
-               (year (nth 5 parsed-date)))
-          ;; (message (format "org-file: %s" org-file))
-          (message (format "file date: %s" date-string))
-          ;; NOTE: Hardcoding this at 8am for now, as in your original setup
-          (encode-time 0 0 8 (or day 1) (or month 1) (or year 1970)))
-      ;; Fallback: If no #+date is found, use the file's modification time
-      (if (file-exists-p org-file)
-          (file-attribute-modification-time (file-attributes org-file))
-        (current-time)))))
+
+    ;; Use regex to find YYYY-MM-DD, ignoring brackets and day names (English or Dutch)
+    (if (and date-string (string-match "\\([0-9]\\{4\\}\\)-\\([0-9]\\{2\\}\\)-\\([0-9]\\{2\\}\\)" date-string))
+        (let* ((year  (string-to-number (match-string 1 date-string)))
+               (month (string-to-number (match-string 2 date-string)))
+               (day   (string-to-number (match-string 3 date-string))))
+
+          (message "------\nfile name: %s" org-file)
+          (message "file date parsed: %04d-%02d-%02d" year month day)
+
+          ;; Encode the time to UTC (t) at 23:00:00
+          (encode-time 0 0 23 day month year t))
+
+      ;; Epoch fallback for missing files
+      (encode-time 0 0 0 1 1 1970 t))))
 
 
 (setopt webfeeder-title-function #'jfw/rss-extract-title
         webfeeder-date-function #'jfw/rss-extract-date)
 
-(setq org-publish-project-alist
-      (list '("jointhefreeworld:main"
-              :base-directory "./docs/home"
-              :base-extension "org"
-              :publishing-directory "./public"
-              :publishing-function org-html-publish-to-html
-              :with-title t
-              :recursive t
-              :with-timestamps t)
-            '("jointhefreeworld:blog"
-              :base-directory "./docs/blog/"
-              :base-extension "org"
-              :publishing-directory "./public/blog"
-              :publishing-function org-html-publish-to-html
-              :with-title t
-              :recursive t
-              :with-timestamps t)
-            '("jointhefreeworld:documentation"
-              :base-directory "./docs/documentation/"
-              :base-extension "org"
-              :publishing-directory "./public/documentation"
-              :publishing-function org-html-publish-to-html
-              :with-title t
-              :recursive t
-              :with-timestamps t)
-            '("jointhefreeworld:platform"
-              :base-directory "./docs/platform/"
-              :base-extension "org"
-              :publishing-directory "./public/platform"
-              :publishing-function org-html-publish-to-html
-              :with-title t
-              :recursive t
-              :with-timestamps t)
-            '("jointhefreeworld:portfolio"
-              :base-directory "./docs/portfolio/"
-              :base-extension "org"
-              :publishing-directory "./public/portfolio"
-              :publishing-function org-html-publish-to-html
-              :with-title t
-              :recursive t
-              :with-timestamps t)))
+(let ((common-props '(:base-extension "org"
+                                      :publishing-function org-html-publish-to-html
+                                      :with-title t
+                                      :recursive t
+                                      :with-timestamps t)))
+  (setq org-publish-project-alist
+        `(("jointhefreeworld:main"
+           :base-directory "./docs/home"
+           :publishing-directory "./public"
+           ,@common-props)
+          ("jointhefreeworld:blog"
+           :base-directory "./docs/blog/"
+           :publishing-directory "./public/blog"
+           ,@common-props)
+          ("jointhefreeworld:documentation"
+           :base-directory "./docs/documentation/"
+           :publishing-directory "./public/documentation"
+           ,@common-props)
+          ("jointhefreeworld:platform"
+           :base-directory "./docs/platform/"
+           :publishing-directory "./public/platform"
+           ,@common-props)
+          ("jointhefreeworld:portfolio"
+           :base-directory "./docs/portfolio/"
+           :publishing-directory "./public/portfolio"
+           ,@common-props))))
 
 (defun jfw/publish ()
   "Publish the entire site."
   (interactive)
   (org-publish-all t)
   (ignore-errors
-    (webfeeder-build "rss.xml"
-                     "./public"
-                     jfw/site-url
-                     (let ((default-directory (expand-file-name "./public/")))
-                       (remove "news/index.html"
-                               (directory-files-recursively "blog/articles"
-                                                            ".*\\.html$")))
-                     :builder 'webfeeder-make-rss
-                     :title "Jointhefreeworld News"
-                     :description "News and Insights from the Jointhefreeworld project!"
-                     :author "Josep Bigorra"))
-  )
-
-
-
+    ;; Temporarily force Emacs to use the standard English/POSIX locale
+    ;; so webfeeder generates RFC-compliant pubDates (e.g., "Sat", "May")
+    (let ((system-time-locale "C"))
+      (webfeeder-build "rss.xml"
+                       "./public"
+                       jfw/site-url
+                       (let ((default-directory (expand-file-name "./public/")))
+                         (remove "news/index.html"
+                                 (directory-files-recursively "blog/articles"
+                                                              ".*\\.html$")))
+                       :builder 'webfeeder-make-rss
+                       :title "jointhefreeworld news"
+                       :description "News and Insights from the jointhefreeworld and jjba23 projects!"
+                       :author "Josep Bigorra"))))
 
 (provide 'jointhefreeworld-site)
 

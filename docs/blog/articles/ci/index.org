@@ -1,6 +1,6 @@
 #+title: CI / CD
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
-#+date: <2025-10-27 ma>
+#+date: <2025-10-27 Mon>
 
 <2021-01-16 Sat> [[/blog/articles/ci/shared-libraries-with-jenkins/index.html][Shared Libraries with Jenkins and Unit Tests]]
