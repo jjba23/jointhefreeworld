@@ -35,8 +35,8 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --color-secondary: oklch(0.528 0.1036 251.54);
 
   /* Font Families */
-  --font-family-body: "Iosevka Slab", serif;
-  --font-family-code: "Iosevka", monospace;
+  --font-family-body: "Iosevka Slab Web", serif;
+  --font-family-code: "Iosevka Web", monospace;
 
   /* Font Weights */
   --font-weight-light: 100;
