@@ -164,22 +164,20 @@
                              (exclude-header)
                              (exclude-footer))
   (concat
-   "<!-- Generated from " (jfw/get-commit-hash)  " on " (format-time-string "%Y-%m-%d @ %H:%M") " with " org-export-creator-string " -->\n"
+   "\n"
    "<!DOCTYPE html>"
 
-   (string-replace
-    "__RAW_CONTENT_PLACEHOLDER__"
-    (or content "")
-    (sxml-to-xml
-     `(html (@ (lang "en"))
-            (head
-             (meta (@ (charset "utf-8")))
-             (meta (@ (author "Josep Bigorra - jointhefreeworld")))
-             (meta (@ (name "viewport")
-                      (content "width=device-width, initial-scale=1, shrink-to-fit=no")))
-             (link (@ (rel "icon") (type "image/png") (href "/static/img/favicon.png")))
-             (script (@(type "speculationrules"))
-                     "
+   (thread-last
+     (sxml-to-xml
+      `(html (@ (lang "en"))
+             (head
+              (meta (@ (charset "utf-8")))
+              (meta (@ (author "Josep Bigorra - jointhefreeworld")))
+              (meta (@ (name "viewport")
+                       (content "width=device-width, initial-scale=1, shrink-to-fit=no")))
+              (link (@ (rel "icon") (type "image/png") (href "/static/img/favicon.png")))
+              (script (@(type "speculationrules"))
+                      "
 {
   \"prerender\": [
     {
@@ -190,25 +188,31 @@
   ]
 }
 ")
-             (link (@ (rel "stylesheet") (href ,(concat jfw/site-url "/static/css/jointhefreeworld.css"))))
-             ,(when head-extra head-extra)
-             (title ,(concat title " - jointhefreeworld")))
-            (body ,@(unless exclude-header
-                      (jfw/site-header))
-                  (div (@ (class "container flex flex-col items-center"))
-                       (h1 (@ (class "site-post-title"))
-                           ,title)
-                       ,(when (and (not exclude-content-reading-time) content-reading-time (not (equal "" content-reading-time)))
-                          `(em (@(class "site-post-meta")) ,(format "estimated reading time: %s minutes" content-reading-time)))
-                       ,(when (and publish-date (not (equal "" publish-date)))
-                          `(p (@ (class "site-post-meta")) ,(format "written on: %s" publish-date)))
-                       ,(if-let ((video-id (plist-get info :video)))
-                            (jfw/embed-video video-id))
-                       ,(when pre-content pre-content)
-                       (div (@ (id "content")(class "content max-w-full"))
-                            "__RAW_CONTENT_PLACEHOLDER__"))
-                  ,@(unless exclude-footer
-                      (jfw/site-footer))))))))
+              (link (@(rel "stylesheet")(href "https://cdnjs.cloudflare.com/ajax/libs/Iosevka/11.1.1/iosevka/iosevka.min.css")))
+              (link (@(rel "stylesheet")(href "https://cdnjs.cloudflare.com/ajax/libs/Iosevka/11.1.1/iosevka-slab/iosevka-slab.min.css")))
+              (link (@ (rel "stylesheet") (href ,(concat jfw/site-url "/static/css/jointhefreeworld.css"))))
+              ,(when head-extra head-extra)
+              (title "__RAW_TITLE_PLACEHOLDER__ - jointhefreeworld"))
+             (body ,@(unless exclude-header
+                       (jfw/site-header))
+                   (div (@ (class "container flex flex-col items-center"))
+                        (h1 (@ (class "site-post-title"))
+                            "__RAW_TITLE_PLACEHOLDER__")
+                        ,(when (and (not exclude-content-reading-time) content-reading-time (not (equal "" content-reading-time)))
+                           `(em (@(class "site-post-meta")) ,(format "estimated reading time: %s minutes" content-reading-time)))
+                        ,(when (and publish-date (not (equal "" publish-date)))
+                           `(p (@ (class "site-post-meta")) ,(format "written on: %s" publish-date)))
+                        ,(if-let ((video-id (plist-get info :video)))
+                             (jfw/embed-video video-id))
+                        ,(when pre-content pre-content)
+                        (div (@ (id "content")(class "content max-w-full"))
+                             "__RAW_CONTENT_PLACEHOLDER__"))
+                   ,@(unless exclude-footer
+                       (jfw/site-footer)))))
+
+     ;; Pass the result sequentially through these string-replace calls
+     (string-replace "__RAW_TITLE_PLACEHOLDER__" (or title ""))
+     (string-replace "__RAW_CONTENT_PLACEHOLDER__" (or content "")))))
 
 (defun estimate-reading-time (content)
   "Calculate the estimated reading time of CONTENT in minutes."
