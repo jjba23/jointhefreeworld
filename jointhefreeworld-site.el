@@ -125,7 +125,7 @@
   `((footer (@ (class "site-footer"))
             (div (@ (class "container"))
                  (div (@ (class "flex flex-col gap-3"))
-                      (em (@(class "text-sm")) "Copyright © Josep Bigorra (jjba23) &lt;jjbigorra@gmail.com&gt;")
+                      (em (@(class "text-sm")) "Copyright © Josep Bigorra (jjba23 - jjbigorra@gmail.com)")
                       (em (@(class "text-sm")) "Licensed under the GNU AGPL v3 or newer")
                       (div (@ (class "flex flex-row flex-wrap gap-3"))
                            (small
@@ -189,7 +189,7 @@
 }
 ")
               (link (@(rel "stylesheet")(href "https://cdnjs.cloudflare.com/ajax/libs/Iosevka/11.1.1/iosevka/iosevka.min.css")))
-              (link (@(rel "stylesheet")(href "https://cdnjs.cloudflare.com/ajax/libs/Iosevka/11.1.1/iosevka-slab/iosevka-slab.min.css")))
+              (link (@(rel "stylesheet")(href "https://cdnjs.cloudflare.com/ajax/libs/Iosevka/11.1.1/iosevka-aile/iosevka-aile.min.css")))
               (link (@ (rel "stylesheet") (href ,(concat jfw/site-url "/static/css/jointhefreeworld.css"))))
               ,(when head-extra head-extra)
               (title "__RAW_TITLE_PLACEHOLDER__ - jointhefreeworld"))

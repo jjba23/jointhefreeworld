@@ -31,8 +31,9 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --color-secondary: oklch(0.528 0.1036 251.54);
 
   /* Font Families */
-  --font-family-body: "Iosevka Slab Web", serif;
+  --font-family-body: "Iosevka Aile Web", sans-serif;
   --font-family-code: "Iosevka Web", monospace;
+  --font-family-header: "Iosevka Aile Web", serif;
 
   /* Font Weights */
   --font-weight-light: 100;
@@ -43,21 +44,21 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   /* Font Sizes */
   --text-2xs: 0.7em;
   --text-xs: 0.8em;
-  --text-sm: 1em;
-  --text-md: 1.1em;
-  --text-lg: 1.1em;
-  --text-xl: 1.2em;
+  --text-sm: 0.9em;
+  --text-md: 1.0em;
+  --text-lg: 1.0em;
+  --text-xl: 1.1em;
 
   /* Spacing */
-  --spacing-xs: 0.2rem;
-  --spacing-sm: 0.4rem;
-  --spacing-md: 0.6rem;
-  --spacing-lg: 1rem;
-  --spacing-xl: 1.2rem;
-  --spacing-xxl: 1.6rem;
-  --spacing-xxxl: 1.9rem;
-  --spacing-line-height-body: 2rem;
-  --spacing-line-height-code: 1.6rem;
+  --spacing-xs: 0.1rem;
+  --spacing-sm: 0.3rem;
+  --spacing-md: 0.5rem;
+  --spacing-lg: 0.9rem;
+  --spacing-xl: 1.1rem;
+  --spacing-xxl: 1.5rem;
+  --spacing-xxxl: 1.8rem;
+  --spacing-line-height-body: 1.9rem;
+  --spacing-line-height-code: 1.5rem;
 
   /* Borders & Radii */
   --border-radius-base: 1.0rem;
@@ -142,15 +143,17 @@ tr { font-size: var(--text-sm) }
   tr { font-size: var(--text-xs) }
 }
 
-a,
-button,
+a, button {
+  font-weight: var(--font-weight-bold);
+}
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-medium);
 }
 
 a {
@@ -175,8 +178,7 @@ h4,
 h5,
 h6 {
   color: var(--color-header);
-  font-family: var(--font-family-body);
-  font-weight: var(--font-weight-heavy);
+  font-family: var(--font-family-header);
   max-width: var(--max-width-text);
   padding-top: 0.4em;
   padding-left: 0.4em;
@@ -397,37 +399,37 @@ summary {
 
 /* Responsive Heading Sizes */
 h1 {
-  font-size: clamp(1.5rem, 4.5vw + 0.25rem, 2.5rem);
+  font-size: clamp(1.3rem, 4.5vw + 0.25rem, 2.5rem);
   line-height: 1.2;
   letter-spacing: 0.05em;
 }
 
 h2 {
-  font-size: clamp(1.3rem, 4vw + 0.2rem, 2.2rem);
+  font-size: clamp(1.1rem, 4vw + 0.2rem, 2.2rem);
   line-height: 1.25;
   letter-spacing: 0.05em;
 }
 
 h3 {
-  font-size: clamp(1.1rem, 3vw + 0.15rem, 2rem);
+  font-size: clamp(0.9rem, 3vw + 0.15rem, 2rem);
   line-height: 1.3;
   letter-spacing: 0.05em;
 }
 
 h4 {
-  font-size: clamp(1rem, 2.2vw + 0.1rem, 1.8rem);
+  font-size: clamp(0.8rem, 2.2vw + 0.1rem, 1.8rem);
   line-height: 1.35;
   letter-spacing: 0.05em;
 }
 
 h5 {
-  font-size: clamp(0.9rem, 1.5vw + 0.05rem, 1.5rem);
+  font-size: clamp(0.8rem, 1.5vw + 0.05rem, 1.5rem);
   line-height: 1.4;
   letter-spacing: 0.05em;
 }
 
 h6 {
-  font-size: clamp(0.8rem, 1vw + 0.05rem, 1.1rem);
+  font-size: clamp(0.7rem, 1vw + 0.05rem, 1.1rem);
   line-height: 1.45;
   letter-spacing: 0.05em;
 }
