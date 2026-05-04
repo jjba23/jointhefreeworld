@@ -69,6 +69,15 @@
 (use-package htmlize
   :ensure t)
 
+(use-package haskell-mode
+  :ensure t)
+
+(use-package rust-mode
+  :ensure t)
+
+(use-package kotlin-mode
+  :ensure t)
+
 (use-package webfeeder
   :ensure t)
 
