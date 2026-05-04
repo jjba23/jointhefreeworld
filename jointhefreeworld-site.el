@@ -197,8 +197,6 @@
   ]
 }
 ")
-              (link (@(rel "stylesheet")(href "https://cdnjs.cloudflare.com/ajax/libs/Iosevka/11.1.1/iosevka/iosevka.min.css")))
-              (link (@(rel "stylesheet")(href "https://cdnjs.cloudflare.com/ajax/libs/Iosevka/11.1.1/iosevka-aile/iosevka-aile.min.css")))
               (link (@ (rel "stylesheet") (href ,(concat jfw/site-url "/static/css/jointhefreeworld.css"))))
               ,(when head-extra head-extra)
               (title "__RAW_TITLE_PLACEHOLDER__ - jointhefreeworld"))

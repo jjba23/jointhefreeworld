@@ -16,6 +16,9 @@ You should have received a copy of the GNU Affero General Public License
 along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+@import 'https://cdnjs.cloudflare.com/ajax/libs/Iosevka/11.1.1/iosevka/iosevka.min.css';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/Iosevka/11.1.1/iosevka-aile/iosevka-aile.min.css';
+
 :root {
   /* Colors */
   --color-primary: #111111;
