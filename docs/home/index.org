@@ -4,9 +4,9 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 
-Welcome to Joe's corner of the internet
+Hi, I'm Joe. Welcome to my node in the free world.
 
-/engineering, philosophy, respect, freedom/, /curiosity/
+/A space where engineering meets philosophy, driven by curiosity and an uncompromising quest for freedom./
 
 *[[../blog/index.html][Visit my blog 📰]]*,  where I discuss  software and other kinds of engineering, my thoughts on life, and write some how-to's.
 
