@@ -234,8 +234,8 @@
 (defun is-exclude-content-reading-time-p (title)
   "Predicate that determines whether a page should show
 estimated reading time based on its TITLE."
-  (member title '("Joe's web-site - Join the Free World"
-                  "Joe's Blog"
+  (member title '("Joe's web-site 🌍 Join the Free World"
+                  "Joe's Blog 📰"
                   "Documentation - jointhefreeworld.org"
                   "Joe's Portfolio"
                   "Lisps" "Emacs" "Haskell" "GNU/Linux"

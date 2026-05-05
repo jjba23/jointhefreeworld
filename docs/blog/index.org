@@ -1,4 +1,4 @@
-#+title: Joe's Blog
+#+title: Joe's Blog 📰
 #+options: num:nil toc:nil
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
