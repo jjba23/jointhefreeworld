@@ -1,4 +1,4 @@
-#+title: Joe's web-site - Join the Free World
+#+title: Joe's web-site 🌍 Join the Free World
 #+options: num:nil toc:nil
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
