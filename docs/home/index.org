@@ -63,4 +63,4 @@ For development convenience in the jointhefreeworld platform, we have  [[../plat
 
 #+ATTR_ORG: :align center
 #+ATTR_HTML: :align center
-[[https://jointhefreeworld.org/static-assets/other/img/joe-2025-08-10.jpg]]
+[[https://jointhefreeworld.org/static-assets/jointhefreeworld/joe-avatar.jpg]]
