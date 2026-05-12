@@ -10,6 +10,8 @@
 
 Recently at work we migrated from a simple OpenVPN profile with AWS credentials to a profile that authenticates based on SAML via your browser. This means that we need OpenVPN 3 now running. At the time of writing there was no package in the Void Linux repos for v3 so I decided to build from source, since otherwise this would mean I cannot do my work, from Void Linux.
 
+⚠️ Note: looks like the build process for OpenVPN 3 now uses Meson. See: https://github.com/OpenVPN/openvpn3-linux/blob/master/BUILD.md
+
 In this post I explain how you should go about installing OpenVPN 3 from source on Void Linux.
 
 First remove your existing OpenVPN installation. Bear in mind that this means also removing the NetworkManager extension.
@@ -20,7 +22,7 @@ First remove your existing OpenVPN installation. Bear in mind that this means al
 
 You should then ensure that your system is up to date and install at least the following packages (maybe more are required that I missed).
 
-#+begin_src bash  
+#+begin_src bash
   sudo xbps-install -Syu
   sudo xbps-install -Sy automake autoconf autoconf-archive pkg-config liblz4-devel lz4 jsoncpp jsoncpp-devel libcap-ng-devel tinyxml2 tinyxml2-devel
 #+end_src
@@ -42,7 +44,7 @@ Then navigate to a directory of your choice (for me ~~/Ontwikkeling/Build~) and 
 
 After having navigated to that folder you can proceed to the building and installation.
 
-#+begin_src bash    
+#+begin_src bash
   ./bootstrap.sh
   ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
   make
@@ -52,7 +54,7 @@ After having navigated to that folder you can proceed to the building and instal
 
 Then make sure to reboot your system, and you can now enjoy using OpenVPN 3. See below how I use it:
 
-#+begin_src bash    
+#+begin_src bash
 sudo openvpn3 session-start --config my-file.ovpn && sudo openvpn3 session-auth
 #+end_src
 
