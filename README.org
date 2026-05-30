@@ -3,7 +3,7 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 
-[[https://jointhefreeworld.org/ggg/dist/emacs-lisp.svg]]  [[https://jointhefreeworld.org/ggg/dist/maak.svg]]  [[https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg]]  [[https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg]]  [[https://jointhefreeworld.org/ggg/dist/jointhefreeworld-org.svg]] 
+[[https://jointhefreeworld.org/ggg/dist/emacs-lisp.svg]]  [[https://jointhefreeworld.org/ggg/dist/maak.svg]]  [[https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg]]  [[https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg]]  [[https://jointhefreeworld.org/ggg/dist/jointhefreeworld-org.svg]]
 
 My personal homepage, blogs, and /join the free world/ movement website.
 
@@ -23,13 +23,13 @@ This is an Emacs Lisp tool to build and publish the [[https://jointhefreeworld.o
 It leverages a custom HTML export backend to convert Org files into a fully styled static site with dynamic content features.
 
 
-*Custom HTML Export*:  
+*Custom HTML Export*:
   Uses a derived `site-html` backend to generate pages with custom headers, footers, and layout.
 
-*Multi-Project Publishing*:  
+*Multi-Project Publishing*:
   Organizes content into multiple projects (e.g., home, blog, documentation, portfolio) via `org-publish-project-alist`.
 
-*RSS Feed Generation*:  
+*RSS Feed Generation*:
   Integrates with `webfeeder` to build an RSS feed for news and insights.
 
 
@@ -75,6 +75,16 @@ The articles, blogs, documentation and examples, including this document, which 
 https://www.gnu.org/licenses/fdl-1.3.html
 
 ----------------------
+
+* AI Policy
+
+This project adheres to the jointhefreeworld AI policy. Find it here:
+
+https://jointhefreeworld.org/blog/articles/personal/jointhefreeworld-ai-policy/index.html
+
+In summary, AI should assist human creativity and problem-solving, never replace human reasoning. We strongly favor human-authored code. While tools like Large Language Models (LLMs) and interactive chatbots can be beneficial for reviewing, refactoring small functions, or acting as a sounding board, they should be used with moderation. Contributors must maintain a deep, comprehensive understanding of the task at hand.
+
+-----------------------
 
 * Code of conduct
 
