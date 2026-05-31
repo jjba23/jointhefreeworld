@@ -18,7 +18,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
 
 /* @import 'https://cdnjs.cloudflare.com/ajax/libs/Iosevka/11.1.1/iosevka/iosevka.min.css'; */
 /* @import 'https://cdnjs.cloudflare.com/ajax/libs/Iosevka/11.1.1/iosevka-aile/iosevka-aile.min.css'; */
-@import url('https://fonts.googleapis.com/css2?family=Intel+One+Mono:ital,wght@0,300..700;1,300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Intel+One+Mono:ital,wght@0,300..700;1,300..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 
 :root {
   /* Colors */
@@ -37,7 +37,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --color-secondary: oklch(0.528 0.1036 251.54);
 
   /* Font Families */
-  --font-family-body: "Intel One Mono", sans-serif;
+  --font-family-body: "Plus Jakarta Sans", sans-serif;
   --font-family-code: "Intel One Mono", monospace;
   --font-family-header: "Intel One Mono", serif;
 
