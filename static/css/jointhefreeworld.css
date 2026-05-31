@@ -39,7 +39,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   /* Font Families */
   --font-family-body: "Plus Jakarta Sans", sans-serif;
   --font-family-code: "Intel One Mono", monospace;
-  --font-family-header: "Intel One Mono", serif;
+  --font-family-header: "Plus Jakarta Sans", serif;
 
   /* Font Weights */
   --font-weight-light: 100;
