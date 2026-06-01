@@ -3,6 +3,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 
+<2026-06-01 Mon> [[/blog/articles/development/agile-manifesto/index.html][Agile Manifesto]] - We are uncovering better ways of developing software by doing it and helping others do it. This document should help refresh you on what *Agile* truly is about.
+
 <2026-02-03 di> [[/blog/articles/development/dont-reward-the-best-firefighter/index.html][Don't Reward the Best Firefighter]] - For every loud firefighter, there's an invisible *fire preventer.* This is the engineer who spends a month refactoring a messy legacy service that no one else wants to touch.
 
 <2025-12-05 vr> [[/blog/articles/development/most-technical-problems-are-people-problems/index.html][Most Technical Problems are People Problems]] - You cannot clean up technical debt without first addressing the people, process, and politics that created it.
