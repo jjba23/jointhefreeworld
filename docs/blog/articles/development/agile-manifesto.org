@@ -11,8 +11,11 @@ Through this work we have come to value:
 
 #+begin_quote
 *Individuals and interactions* beat processes and tools
+
 *Working software* beats comprehensive documentation
+
 *Customer collaboration* beats contract negotiation
+
 *Responding to change* beats following a plan
 #+end_quote
 
