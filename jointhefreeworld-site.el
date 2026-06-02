@@ -161,6 +161,18 @@
      (with-current-buffer standard-output
        (vc-git-command t nil nil "rev-parse" "--short" "HEAD")))))
 
+(setq speculation-rules "
+{
+  \"prerender\": [
+    {
+      \"where\": {
+        \"selector_matches\": \"a\"
+      }
+    }
+  ]
+}
+")
+
 (cl-defun jfw/generate-page (title
                              content
                              info
@@ -190,17 +202,7 @@
                        (title "Jointhefreeworld News Feed")
                        (href "/rss.xml")))
               (script (@(type "speculationrules"))
-                      "
-{
-  \"prerender\": [
-    {
-      \"where\": {
-        \"selector_matches\": \"a\"
-      }
-    }
-  ]
-}
-")
+                      "__SPECULATION_RULES_PLACEHOLDER__")
               (link (@ (rel "stylesheet") (href ,(concat jfw/site-url "/static/css/jointhefreeworld.css"))))
               ,(when head-extra head-extra)
               (title "__RAW_TITLE_PLACEHOLDER__ - jointhefreeworld"))
@@ -223,6 +225,7 @@
 
      ;; Pass the result sequentially through these string-replace calls
      (string-replace "__RAW_TITLE_PLACEHOLDER__" (or title ""))
+     (string-replace "__SPECULATION_RULES_PLACEHOLDER__" (or speculation-rules ""))
      (string-replace "__RAW_CONTENT_PLACEHOLDER__" (or content "")))))
 
 (defun estimate-reading-time (content)
