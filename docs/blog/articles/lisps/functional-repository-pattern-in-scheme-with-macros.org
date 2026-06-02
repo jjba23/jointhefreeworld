@@ -12,29 +12,38 @@
 I've been working on a new approach for the data layer of my projects
 lately, and I'd love to poke your brains and get some feedback.
 
-Coming from a background in Scala, Java and other OOP languages and a
-fascination for FP languages and Lisps (as well as Rust and Haskell),
-I've seen a lot of patterns come and go.
+** What is the repository pattern?
 
-Recently, I noticed a common anti-pattern in my own Scheme projects: a
-tight coupling between my controller layer and the SQLite
-implementation. It wasn't ideal, and I really missed the clean
-separation of the *Repository Pattern*.
+Repository Pattern is an architectural software design pattern that decouples the data layer of a program with the core logic and domain.
 
-So, I set out to decouple my data layer from my controller layer in the
-MVC architecture I love. I wanted to do this using pure functional
-programming, and I ended up building something really fun using
-*Scheme's hygienic macros*.
+It brings separation of concerns as your business logic doesn't know where the data lives and asks the repository/store for it.
 
-(If you want to see this implemented in a real project, check out my
-example repo here:
-[[https://codeberg.org/jjba23/lucidplan][lucidplan]])
+It also makes testing your software much easier and your query read/write logic is kept in one place. If you need to optimize a slow database query, you change it in the repository, not sprinkled across fifty different files.
 
-I am working on adding it to
-[[https://codeberg.org/jjba23/byggsteg][byggsteg]] too.
+Coming from a background in Scala, Java and other OOP languages and a fascination for FP languages and Lisps (as well as Rust and Haskell), I've seen a lot of patterns come and go.
 
-I plan to bring this pattern to all my projects to reap the benefits of
-the eDSL, better decoupling, and easier testing. Here is how I built it.
+Recently, I noticed a common anti-pattern in my own Scheme projects: a tight coupling between my controller layer and the SQLite implementation. It wasn't ideal, and I really missed the clean separation of the *Repository Pattern*.
+
+So, I set out to decouple my data layer from my controller layer in the  MVC architecture I love. I wanted to do this using pure functional  programming, and I ended up building something really fun using *Scheme's hygienic macros*.
+
+(If you want to see this implemented in a real project, check out my example repos here:
+[[https://codeberg.org/jjba23/lucidplan][lucidplan]], and [[https://codeberg.org/jjba23/byggsteg][byggsteg]]
+
+I plan to bring this pattern to many of my projects to reap the benefits of the eDSL, better decoupling, and easier testing.
+
+---------
+
+Using it can look like this:
+
+#+begin_src scheme
+(let* ((job-repo (make-sqlite-job-repository rc))
+       (jobs (get-jobs job-repo #:limit 50 #:offset 0)))
+  (map (lambda(job) (format #t "\njob: ~a" job )) jobs))
+#+end_src
+
+So if you wanted to change tomorrow to from SQLite to PostgreSQL, you just replace one function call and done ✨
+
+----------------
 
 ** The Macros
 I created two main macros.  =define-record-with-kw= magically defines a
@@ -102,8 +111,7 @@ Here is how I use those macros to define my DSL for a “projects” entity:
 #+end_src
 
 ** The SQLite Implementation
-Finally, here is the concrete SQLite implementation using Artanis. this
-is completely decoupled from the rest of the application logic.
+Here is an example SQLite implementation using GNU Artanis. This is completely decoupled from the rest of the application logic.
 
 #+begin_src scheme
 (define-module (lucidplan sqlite project)
@@ -164,14 +172,6 @@ A condensed example with keyword arguments:
       rows))
 #+end_src
 
-Using it can look like
-
-#+begin_src scheme
-(let*
-  (job-repo (make-sqlite-job-repository rc))
-  (jobs (get-jobs job-repo #:limit 50 #:offset 0))
-.......)
-#+end_src
 
 I believe I have something really powerful cooking here, but I know
 there is always room for improvement.
