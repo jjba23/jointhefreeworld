@@ -271,8 +271,8 @@ pre {
   background: var(--color-code-background);
   color: var(--color-text-code);
   border: 2px solid var(--color-border);
-  padding-left: var(--spacing-md);
-  padding-right: var(--spacing-md);
+  padding-left: var(--spacing-lg);
+  padding-right: var(--spacing-lg);
   padding-top: var(--spacing-lg);
   padding-bottom: var(--spacing-lg);
   border-radius: var(--border-radius-base);
