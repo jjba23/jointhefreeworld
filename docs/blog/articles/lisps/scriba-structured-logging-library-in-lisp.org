@@ -4,9 +4,6 @@
 #+language: en
 #+date: <2026-06-03 Wed>
 
-[[https://jointhefreeworld.org/ggg/dist/scheme-guile.svg]] [[https://jointhefreeworld.org/ggg/dist/gnu-guix.svg]]
-[[https://jointhefreeworld.org/ggg/dist/license-lgpl3+.svg]]    [[https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg]]
-
 /A structured logging framework for Guile Scheme/
 
 #+begin_quote
