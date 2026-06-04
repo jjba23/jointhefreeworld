@@ -18,6 +18,10 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
 
 @import url('https://fonts.googleapis.com/css2?family=Intel+One+Mono:ital,wght@0,300..700;1,300..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 :root {
   /* Colors */
   --color-primary: #111111;
@@ -131,7 +135,7 @@ tr { font-size: var(--text-sm); }
 
 @media only screen and (max-width: 600px) {
   body {
-    padding: var(--spacing-xl) var(--spacing-xs);
+    padding: var(--spacing-xl) var(--spacing-md);
   }
   tr { font-size: var(--text-xs); }
 }
@@ -351,4 +355,31 @@ pre {
   .org-builtin { color: #946830; }
   .org-keyword { color: #b05350; }
   .org-comment, .org-comment-delimiter { color: #8a92ac; }
+}
+
+@media only screen and (max-width: 600px) {
+  pre, blockquote {
+    max-width: 100%;
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--spacing-lg) 0;
+}
+
+th, td {
+  text-align: left;
+  padding: var(--spacing-md);
+  vertical-align: top;
+  word-break: break-word;
+}
+
+@media only screen and (max-width: 600px) {
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
