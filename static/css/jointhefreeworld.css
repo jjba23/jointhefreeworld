@@ -80,6 +80,12 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --max-width-text: 80ch;
   --max-width-masthead: 76ch;
   --max-width-pre: 128ch;
+
+  /* Catppuccin Latte (Light Mode) Syntax Highlighting */
+  --color-syntax-string: #40a02b;
+  --color-syntax-builtin: #1e66f5;
+  --color-syntax-keyword: #8839ef;
+  --color-syntax-comment: #7c7f93;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -97,6 +103,12 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
     --color-header-2: #da6197;
     --color-header-3: #a4bcdb;
     --color-secondary: oklch(0.75 0.1 251.54);
+
+    /* Catppuccin Mocha (Dark Mode) Syntax Highlighting */
+    --color-syntax-string: #a6e3a1;
+    --color-syntax-builtin: #89b4fa;
+    --color-syntax-keyword: #cba6f7;
+    --color-syntax-comment: #6c7086;
   }
 }
 
@@ -355,6 +367,23 @@ pre {
   .org-builtin { color: #946830; }
   .org-keyword { color: #b05350; }
   .org-comment, .org-comment-delimiter { color: #8a92ac; }
+}
+
+pre {
+  .org-string {
+    color: var(--color-syntax-string);
+  }
+  .org-builtin {
+    color: var(--color-syntax-builtin);
+  }
+  .org-keyword {
+    color: var(--color-syntax-keyword);
+    font-weight: var(--font-weight-bold);
+  }
+  .org-comment, .org-comment-delimiter {
+    color: var(--color-syntax-comment);
+    font-style: italic;
+  }
 }
 
 @media only screen and (max-width: 600px) {
