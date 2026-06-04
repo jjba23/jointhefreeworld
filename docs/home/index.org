@@ -29,7 +29,7 @@ I release all my personal projects in a way that is free as in freedom and respe
 
 * 🦤 Some random things
 
-I develop all kinds of tech solutions for day to day problems of me and of my clients and I document my tech choices in [[file:../blog/articles/development/tech-radar/][My Tech Radar]].
+I develop all kinds of tech solutions for day to day problems of me and of my clients. See [[file:../blog/articles/development/tech-radar/][The FREE stack - My Tech Radar]].
 
 I also [[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][make videos]], about music, guitar 🎸 , Lisp, GNU Guix, Nix, Haskell and more..
 

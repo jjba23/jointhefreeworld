@@ -1,4 +1,4 @@
-#+title: My Tech Radar
+#+title: The FREE stack - My Tech Radar
 #+options: num:nil toc:nil
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
@@ -7,53 +7,73 @@
 
 Tech changes fast. But it’s becoming an ever-more critical component of success.
 
-A Tech Radar is our trusty compass and map, charting the ever-shifting landscape of technology. It’s not just some dusty document; it's a living, breathing artifact that reflects our collective wisdom, our triumphs, and yes, our hard-won lessons.
+A Tech Radar is our trusty compass and map, charting the ever-shifting landscape of technology.
 
-At its core, a Tech Radar is a visual tool that helps us categorize and assess various technologies – be they programming languages, development tools, ingenious techniques, or even the very platforms we build upon. It typically organizes these "blips" into different quadrants, like "Languages & Frameworks" or "Tools," and then, crucially, places them into "rings" that signify their current status. Think of these rings as a spectrum, guiding our decisions:
+The FREE stack is my collection of choices, knowledge, skills, opinions and way of working.
 
-- Adopt :: These are the technologies we've embraced, the ones that have proven their mettle in the trenches. They're reliable, we're confident in them, and they're our go-to for new projects. When something lands here, it means it's been thoroughly vetted and consistently delivers.
-- Trial :: Here, you'll find the promising newcomers or existing technologies we're actively experimenting with. We've seen some success, they're showing real potential, and we're ready to put them through their paces on a project or two to truly understand their strengths and limitations.
-- Assess :: This ring is for the intriguing ideas, the nascent technologies that have piqued our interest. They might be revolutionary, or they might just be a flash in the pan. We're keeping an eye on them, doing our research, and perhaps even building a small prototype to see if they hold water.
-- Deprecate :: This is where we park the technologies we're actively discouraging for new work. Maybe they've been superseded by something better, maybe they're too high-maintenance, or perhaps they simply don't align with our long-term vision. It's about being pragmatic and cutting our losses, preventing new projects from inheriting technical debt.
+~F – Functional~: Building declarative, predictible systems with clear effects, leveraging the magical and mathematical algebra ideas.
 
-  -----------------------
+~R – REPL~: Eliminating the agonizing "write-compile-test" lag. Hacking live on a running system via a terminal or Emacs connection where code is evaluated live and upgraded instantly.
+
+~E – Extensible~: A stack built to scale cleanly and produce extensible flexible systems.
+
+~E – Environment Control~: Complete control over your entire software lifecycle. Zero hidden telemetry, no paywalls, and single-command local self-hosting.
+
+------------------------
+
+- Adopt :: These are the technologies we've embraced, the ones that have proven their mettle in the trenches. They're reliable, we're confident in them, and they're our go-to for new projects.
+- Trial :: Here, you'll find the promising newcomers or existing technologies we're actively experimenting with. We've seen some success, they're showing real potential.
+- Assess :: This ring is for the intriguing ideas, the nascent technologies that have piqued our interest. We're keeping an eye on them, doing our research, and perhaps even building a small prototype to see if they hold water.
+- Deprecate :: This is where we park the technologies we're actively discouraging for new work. It's about being pragmatic and cutting our losses, preventing new projects from inheriting technical debt.
+
+-----------------------
 
 * ✅ Adopt
 ** 🐂 Languages & Frameworks
-- Guile Scheme
+- Guile Scheme and Lisps in general
 - GNU Artanis
 - Emacs Lisp
-- Common Lisp
-- Haskell
-- Typescript
-- Javascript (vanilla)
+- JavaScript (vanilla)
 - Rust
 - GTK4 Libadwaita
+
 ** 🧰️ Tools
 - GNU Guix
+- Emacs
+- Org mode
+- [[https://codeberg.org/jjba23/maak][Maak]] build tool and command runner
 - SQLite
 - PostgreSQL
-- Emacs
-- Org mode (Emacs)
-- Servant (Haskell), API as  a type
+- [[https://codeberg.org/jjba23/olive-css][Olive CSS]] for all serious web projects (utility class vanilla CSS)
+- [[https://codeberg.org/jjba23/hygguile][Hygguile UI components]] (batteries included Guile Scheme UI framework built on Olive CSS)
+- [[https://codeberg.org/jjba23/veritas][Veritas test framework]] (idiomatic unit, integration and black-box testing framework powered by Lisp - Guile Scheme)
+- [[https://codeberg.org/jjba23/scriba][Scriba structured logging framework]] (modular log routing, formatting, and filtering, allowing developers to generate human-readable console logs during development and machine-readable logs for production environments)
+
 ** ⚙️ Techniques
 - Plain SQL queries
 - Guix Manifests
 - Guix dev shells
+- Authorization and Authentication with [[https://codeberg.org/jjba23/bewaking][Bewaking]] tokens as cookies
 - Nix Flakes
 - Nix dev shells
 - Woodpecker CI/CD
+
 ** 🌐 Platforms
-- Custom low-power green VPS
+- Custom low-power green VPS (Hetzner)
+- Hetzner Storage Volumes with Cron-job based backups and rsync
 
 -------------
 
 * ❌ Deprecate
 ** 🐂 Languages & Frameworks
+- Haskell   (as beautiful and powerful as it is, it's simply too complex for 9/10 use-cases)
 - Scala
 - ZIO (Scala)
 - Svelte
+- Common Lisp (rather use Scheme if possible)
+- Typescript
 ** 🧰️ Tools
 - MySQL
+- Servant (Haskell), API as  a type
 ** 🌐 Platforms
 - Amazon AWS
