@@ -233,7 +233,7 @@
   (interactive)
   (let* ((word-list (split-string content "\\s-+" t)) ; Split by whitespace, remove empty strings
          (word-count (length word-list))
-         (words-per-minute 180) ; Average reading speed
+         (words-per-minute 130) ; Average reading speed
          (estimated-minutes (/ (float word-count) words-per-minute))
          (minutes (floor estimated-minutes)))
     minutes))
