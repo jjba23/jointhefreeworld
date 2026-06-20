@@ -203,7 +203,7 @@ hr {
 em, i, dt {
   color: var(--color-text-emphasis);
   max-width: var(--max-width-text);
-  font-size: var(--text-lg);
+  font-size: var(--text-md);
   letter-spacing: 0.04em;
 }
 
