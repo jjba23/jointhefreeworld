@@ -63,4 +63,4 @@ I also [[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][make videos]]
 
 #+ATTR_ORG: :align center
 #+ATTR_HTML: :align center
-[[https://jointhefreeworld.org/static-assets/jointhefreeworld/avatar-joe-smaller.png]]
+[[https://jointhefreeworld.org/static-assets/jointhefreeworld/avatar-joe-tiny.png]]
