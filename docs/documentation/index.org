@@ -12,15 +12,13 @@ Free software is all about giving you control—over the tools you use, how they
 
 ** User manuals
 
-[[/manuals/sss/index.html][SSS manual (Supreme Sexp System)]] - the manual for SSS in English, in HTML format, with all nodes in one page. SSS is Supreme Sexp System - SSS - a Lisp machine adventure.
-
 [[/manuals/veritas/index.html][Veritas test framework manual]] - the manual of Veritas in English, in HTML format, with all nodes in one page. Veritas is a Unit, Integration and Black Box testing framework powered by Lisp (Guile Scheme)
 
-[[/manuals/byggsteg/index.html][Byggsteg manual]] - the manual for Byggsteg in English (GB), in HTML format, with all nodes in one page. Byggsteg is the CI/CD orchestrator written in Guile Scheme.
+[[/manuals/byggsteg/index.html][Byggsteg manual]] - the manual for Byggsteg in English , in HTML format, with all nodes in one page. Byggsteg is the CI/CD orchestrator written in Guile Scheme.
 
-[[/manuals/lucidplan/index.html][LucidPlan manual]] - the manual for LucidPlan in English (GB), in HTML format, with all nodes in one page. LucidPlan is project management for everyone.
+[[/manuals/lucidplan/index.html][LucidPlan manual]] - the manual for LucidPlan in English , in HTML format, with all nodes in one page. LucidPlan is project management for everyone.
 
-[[/manuals/wikimusic/index.html][WikiMusic manual]] - the manual for WikiMusic in English (GB), in HTML format, with all nodes in one page. WikiMusic is the musical knowledge encyclopaedia and content management system (CMS).
+[[/manuals/wikimusic/index.html][WikiMusic manual]] - the manual for WikiMusic in English , in HTML format, with all nodes in one page. WikiMusic is the musical knowledge encyclopaedia and content management system (CMS).
 
 
 -------------
