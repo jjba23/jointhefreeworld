@@ -1,0 +1,83 @@
+#+title: jointhefreeworld - A Style Guide for Documentation
+#+options: num:nil toc:t
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2026-06-20 Sat>
+
+#+begin_quote
+Based largely on comments by: Ron Hale-Evans, Robert J. Chassell, and Richard M. Stallman.
+#+end_quote
+
+** Basic points of style
+
+- *Show, don’t just tell.* Use plenty of examples, but avoid being overly redundant.
+- Move slowly. Do not impose too much of a cognitive load at once on the reader.
+- Explain things in detail if you are writing a tutorial for a novice. Since one tends to under-explain anyway, pretend you are writing for an intelligent person who is entirely unfamiliar with the technology you are explaining.
+- Don’t say too little. If you cannot include enough information on a topic to do more than tantalize a novice, omit it entirely.
+- Do not assume the reader has specific knowledge of mathematics or computer science when it is possible they don't. You may have to explain what an integer is or what a byte is, at least at the level of a tutorial.
+- Explain your value judgments. For example, if you say a code snippet is or is not "useful", explain *why*. Value judgments can only be formed by people with knowledge of the relevant subject; if the reader already possessed that baseline knowledge, they probably wouldn't need your documentation.
+- If necessary, repeat yourself—especially if the information is vital and might be missed the first time. Also, if your reader is unlikely to remember a minor point that is nevertheless important to understand a major one, it is acceptable to restate it.
+- Design your text for a blind person; this is a good structural discipline. Documents, especially web pages, turn out much better. When you want to know how a document will sound, run it through a text-to-speech function (Emacs can do this for you via =M-x emacspeak= or similar speech facilities).
+- Diagrams are sometimes helpful. Similarly, tables and lists of categories (variable types, types of operators, etc.) can help the reader digest a large amount of information without a lot of superfluous connective text.
+- Anticipate problems the reader might encounter—"gotchas" that you might have experienced yourself—and explicitly point them out.
+
+** More points of style
+
+- *Explain conventions.* Software programming and usage often rely on conventions that are not obvious to newcomers. For example, a ~0~ return code in a C program signifies "zero errors". Always explain structural conventions such as this.
+- Always tell people how to pronounce code when you introduce new terms. For example, if you are explaining pointers, tell the reader that ~*my_ptr~ can be pronounced "the contents of the memory location ~my_ptr~". This teaches those who vocalize text internally to pronounce code correctly, rather than inventing an idiosyncratic method that could hinder their collaboration.
+- Qualify your statements. Don’t simply say, for example, "Parameters must have their types declared." Must *all* parameters have their types declared? If so, say so; if not, state precisely which parameters require it and which do not, providing clear examples.
+
+** Ordering your text
+
+- Write about the most important things in a section first. Give critical concepts their own subsections. Don’t make the mistake of writing, "Blah, blah, and blah. Oh, and by the way, this next part is really important..."
+- Put important warning notes to the reader in dedicated subsections. This visually signals their importance.
+- People tend to remember best the things they encounter first and last in a sequence.
+- Order the information in your nodes sequentially from simple to complex.
+- Don’t use complex terminology without defining it, at least in a brief, preliminary way. Never use terms in the process of defining themselves.
+- Make your assumptions clear before you rely on them. For example, if you assume that the reader knows basic trigonometry, state this constraint before launching into an example involving it. Provide pointers to where the reader can learn about the missing prerequisite.
+- Recursion and nested data structures are notoriously difficult. Your text can easily get out of control. Be extra careful to phrase your explanations cleanly so the reader does not end up in a conceptual tangle.
+- If your chapter is titled "About foo and bar", do not discuss your topics in the reverse order of "bar" and "foo". Be parallel and consistent throughout the section. Plan your text carefully in advance.
+- If you have two tables or lists of information that discuss the same items, combine them. Don’t force the reader to flip back and forth to correlate data in their head.
+- Don’t combine different topics in the same paragraph or node. If you want to start a new topic, start a new paragraph or a new node.
+- After making an important point, end the paragraph and let the reader absorb that information. Don’t clutter the paragraph with trailing details; save those details for later.
+- When explaining a feature of a program, awaken the reader’s interest by first outlining the specific problem the feature solves. Write text that motivates the reader to keep turning pages.
+
+** Code examples
+
+- Give sample output for code examples wherever possible.
+- Don’t waste the reader’s time with frivolous, overly abstract examples that have no real-world utility.
+- When you discuss a function, do not include parentheses in its name unless you are explicitly illustrating a function call. For example, write ~cos~ rather than ~cos()~.
+- In a source code block, snuggle the code up to the block markup tags. Do not insert empty lines between the lines containing formatting commands (like `#+begin_src`) and the lines containing the actual code.
+- *Always test your code.* Verify your code examples by compiling and running them immediately before finalizing your text. This applies even to one-liners.
+- Double-check your mathematical examples as well as your code. Catching a basic error will cause your reader to rapidly lose confidence in your technical accuracy.
+- Use the present "timeless" tense when describing what code does. Example: "The ~foo~ function takes an integer variable ~bar~ and multiplies it by 5."
+- Don’t use examples that will become dated. You don't know how long your text will circulate. For example, instead of binding a year variable to a fixed hardcoded string like ~2026~, use relative time offsets or abstract but realistic epoch markers.
+- Use concrete rather than abstract variable names. Concrete names reduce cognitive strain. For example, a variable called ~cost_of_lunch~ is inherently clearer than ~foo~. However, do not make names so hyper-specific that the overarching structural lesson is lost.
+- Satisfy the reader’s curiosity about whether alternative coding paths are possible, but make your ultimate architectural recommendations crystal clear.
+
+** Metaphors
+
+- Develop your metaphors explicitly. For example, if you say local variables are "invisible" outside their functions, explain that this usage stems from a structural metaphor where functions act like buildings and local variables are like people unable to look from one sealed building into another.
+- Technical jargon often carries metaphorical underpinnings. For example, pointers "point to" memory addresses. Unpack these roots when introducing jargon.
+- Explain where your metaphors break down. For example, when explaining pointers in C, note that while a real-world finger can point to anything (animal, vegetable, or mineral), a typed pointer can only point to a strictly defined type of variable (e.g., only to integers, or only to floats).
+- Use a metaphor consistently; do not mix them. If you state that local variables are "invisible" outside their functions, do not later say they are "nonexistent" without providing clear transitional text explaining why you are shifting perspective.
+- Avoid hyper-localized idioms and implicit metaphors wherever possible; they make translation into other languages exceptionally difficult.
+
+** English usage
+
+Consult established references on English style, such as the classic /The Elements of Style/ by Strunk and White.
+
+- Don’t mention non-free software by name unless it is absolutely unavoidable to explain interoperability.
+- Refer to GNU more and Unix less. Always write "GNU/Linux", never just "Linux", unless you are specifically referring strictly to the isolated Linux kernel.
+- Use the word "illegal" only for matters of state law and government policy. For violations of the syntax or semantic rules of programming languages, use "invalid" or "ill-formed".
+- Always address the reader directly as "you". Example: "If you want to display the diagram, press the ~RET~ key."
+- Use "must", "should", "may", and "can" precisely. Do not conflate rigid technical requirements with optional user choices.
+- Examples are "shown", not "given". Only useful, fully functional standalone programs qualify as free gifts to the world.
+- "Kinds of" and "types of" are strictly followed by a singular noun. It is not "types of variables", but "types of variable".
+- Place zero text between the phrase "as follows" and the data or text that is meant to follow it.
+- Maintain a strict visual and textual boundary separating plain English prose from code blocks or raw syntax.
+- Humans frequently misprocess double negatives. Phrase your text cleanly so that a reader cannot accidentally miss a critical "not". Never repeat negative constraints in a manner that visually mimics positive assertions.
+- Most programmers (with the proud exception of Lisp hackers) dislike dense parentheses in prose. Use them as sparingly as possible in body text and tables.
+- Use language precisely. For example, in languages like C, a "declaration" is fundamentally distinct from a "definition". Many technical terms sound alike and share adjacent conceptual space, but you must cleanly distinguish them for your readers. Do not merely state that two terms differ; explain the precise boundary where they part ways.
+- Similarly, distinguish separate contextual usages of the same jargon word. For example: differentiate clearly between "the value of a variable" versus "passing an argument by value".

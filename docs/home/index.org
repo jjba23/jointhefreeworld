@@ -29,17 +29,19 @@ I release all my personal projects in a way that is free as in freedom and respe
 
 I develop all kinds of tech solutions for day to day problems of me and of my clients. See [[file:../blog/articles/development/tech-radar/][The FREE stack - My Tech Radar]].
 
-I also [[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][make videos]], about music, guitar 🎸 , Lisp, GNU Guix, Nix, Haskell and more..
-
 The jointhefreeworld project has an [[../blog/articles/personal/jointhefreeworld-code-of-conduct/index.html][inclusive and community-driven code of conduct]].
 
 For development convenience in the jointhefreeworld platform, we have  [[../platform/ports/index.html][an overview of reserved ports]] in a [[https://codeberg.org/jjba23/wolk-jjba][VPS / server]].
+
+I have a useful [[/blog/articles/personal/jointhefreeworld-documentation-style-guide/index.html][Style Guide for Documentation]]  as well that can help you write better documentation, manuals, tutorials and READMEs.
 
 💼  For free and open source project management, check the [[https://lucidplan.jointhefreeworld.org][LucidPlan project]]. This is a good alternative to commercial project planning tools like Trello or Jira.
 
 ⚙️ For CI/CD with a Lisp/Scheme flavor, free as in freedom, check the [[https://byggsteg.jointhefreeworld.org][Byggsteg project]].  Let's set you up with a Lispy server infra for continuous integration that is easy and flexible.
 
 🎻 If you play an instrument, want to learn music, or share musical knowledge, check the [[https://wikimusic.jointhefreeworld.org][WikiMusic project]].  This is a project dedicated to sharing musical knowledge and exploring music freely.
+
+I also [[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][make videos]], about music, guitar 🎸 , Lisp, GNU Guix, Nix, Haskell and more..
 
 *[[../portfolio/index.html][Visit my portfolio]]* (work-in-progress 🚧) where I showcase my projects and software I build.
 
@@ -61,4 +63,4 @@ For development convenience in the jointhefreeworld platform, we have  [[../plat
 
 #+ATTR_ORG: :align center
 #+ATTR_HTML: :align center
-[[https://jointhefreeworld.org/static-assets/jointhefreeworld/joe-avatar-small.jpg]]
+[[https://jointhefreeworld.org/static-assets/jointhefreeworld/avatar-joe-tiny.png]]
