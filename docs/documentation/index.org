@@ -1,4 +1,4 @@
-#+title: Docs 📑  - jointhefreeworld.org
+#+title: Docs 📑 - jointhefreeworld.org
 #+options: num:nil toc:nil
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
