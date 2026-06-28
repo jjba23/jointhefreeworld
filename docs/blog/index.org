@@ -4,7 +4,6 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 
-*** 📚 Categories
 
 #+attr_html: :class categories
 - [[/blog/articles/emacs/][Emacs]]
