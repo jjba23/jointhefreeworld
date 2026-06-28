@@ -1,4 +1,4 @@
-#+title: Documentation - jointhefreeworld.org
+#+title: Docs 📑  - jointhefreeworld.org
 #+options: num:nil toc:nil
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
@@ -18,6 +18,8 @@ Free software is all about giving you control—over the tools you use, how they
 [[https://jointhefreeworld.org/api-docs/veritas/API.html][Veritas' API documentation]] - the technical Guile Scheme API documentation for the Veritas test framework.
 
 [[https://jointhefreeworld.org/api-docs/scriba/API.html][Scriba API documentation]] - the technical Guile Scheme API documentation for the Scriba logging framework.
+
+[[https://jointhefreeworld.org/api-docs/heks-linux/API.html][Heks Linux API documentation]] - the technical Guile Scheme API documentation for the Heks Linux system.
 
 [[https://jointhefreeworld.org/api-docs/hygguile/API.html][Hygguile's API documentation]] - the technical Guile Scheme API documentation for the hygguile web UI framework.
 

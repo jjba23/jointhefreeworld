@@ -123,7 +123,7 @@
                                     (a (@ (class "nav-link") (href "/")) "Home") " "
                                     (a (@ (class "nav-link") (href "/blog/")) "Blog") " "
                                     (a (@ (class "nav-link") (href "/joe-cv/")) "Joe's CV") " "
-                                    (a (@ (class "nav-link") (href "/documentation/")) "Documentation") " "
+                                    (a (@ (class "nav-link") (href "/documentation/")) "Docs") " "
                                     (a (@ (class "nav-link") (href "https://codeberg.org/jjba23")) "Codeberg") " "
                                     (a (@ (class "nav-link") (href "https://www.linkedin.com/in/josepjba/")) "LinkedIn") " "
                                     )))))))
@@ -243,7 +243,7 @@
 estimated reading time based on its TITLE."
   (member title '("Joe's web-site 🌍 Join the Free World"
                   "Joe's Blog 📰"
-                  "Documentation - jointhefreeworld.org"
+                  "Docs 📑 - jointhefreeworld.org"
                   "Joe's Portfolio"
                   "Lisps" "Emacs" "Haskell" "GNU/Linux"
                   "Dev" "CI/CD" "Go" "FreeBSD" "Personal")))
