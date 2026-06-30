@@ -11,6 +11,12 @@ True autonomy over your computing environment sometimes involves building your o
 We start by cloning the live development branch straight from the GNU project's forge.
 
 #+begin_src shell
+# maker sure to have Git
+sudo apt update
+sudo apt upgrade
+
+sudo apt install git
+
 cd ~/Fork # or wherever
 git clone https://git.savannah.gnu.org/git/emacs.git emacs-build
 cd emacs-build
@@ -21,12 +27,56 @@ cd emacs-build
 Depending on the compilation options we choose, we need some build and compile time dependencies. Before we can shape the metal, we need the furnace. For example in Debian we need things like:
 
 #+begin_src shell
-sudo apt-get install build-essential
+sudo apt update
+sudo apt install build-essential autoconf imagemagick libmagickwand-dev libgtk-3-dev librsvg2-dev libsqlite3-dev
 #+end_src
 
 #+begin_note
 Pro-tip: If you want a quick shortcut to grab standard development headers for graphics and window management libraries, you can run =sudo apt-get build-dep emacs= before moving to the next step.
 #+end_note
+
+*** Autogen
+
+Run the autogen.sh the first time
+This script will generate the configuration scaffold. You only really need to do this once (and I always forget about it for this very reason). Simply do this on the command line:
+
+~./autogen.sh~
+It checks that you have all you need to get started and prints output like this:
+
+#+begin_example
+Checking whether you have the necessary tools...
+(Read INSTALL.REPO for more details on building Emacs)
+Checking for autoconf (need at least version 2.65) ... ok
+Your system has the required tools.
+Building aclocal.m4 ...
+Running 'autoreconf -fi -I m4' ...
+Building 'aclocal.m4' in exec ...
+Running 'autoreconf -fi' in exec ...
+Configuring local git repository...
+'.git/config' -> '.git/config.~1~'
+git config transfer.fsckObjects 'true'
+git config diff.cpp.xfuncname '!^[ 	]*[A-Za-z_][A-Za-z_0-9]*:[[:space:]]*($|/[/*])
+^((::[[:space:]]*)?[A-Za-z_][A-Za-z_0-9]*[[:space:]]*\(.*)$
+^((#define[[:space:]]|DEFUN).*)$'
+git config diff.elisp.xfuncname '^\([^[:space:]]*def[^[:space:]]+[[:space:]]+([^()[:space:]]+)'
+git config diff.m4.xfuncname '^((m4_)?define|A._DEFUN(_ONCE)?)\([^),]*'
+git config diff.make.xfuncname '^([$.[:alnum:]_].*:|[[:alnum:]_]+[[:space:]]*([*:+]?[:?]?|!?)=|define .*)'
+git config diff.shell.xfuncname '^([[:space:]]*[[:alpha:]_][[:alnum:]_]*[[:space:]]*\(\)|[[:alpha:]_][[:alnum:]_]*=)'
+git config diff.texinfo.xfuncname '^@node[[:space:]]+([^,[:space:]][^,]+)'
+Installing git hooks...
+'build-aux/git-hooks/commit-msg' -> '.git/hooks/commit-msg'
+'build-aux/git-hooks/pre-commit' -> '.git/hooks/pre-commit'
+'build-aux/git-hooks/prepare-commit-msg' -> '.git/hooks/prepare-commit-msg'
+'build-aux/git-hooks/post-commit' -> '.git/hooks/post-commit'
+'build-aux/git-hooks/pre-push' -> '.git/hooks/pre-push'
+'build-aux/git-hooks/commit-msg-files.awk' -> '.git/hooks/commit-msg-files.awk'
+'.git/hooks/applypatch-msg.sample' -> '.git/hooks/applypatch-msg'
+'.git/hooks/pre-applypatch.sample' -> '.git/hooks/pre-applypatch'
+#+end_example
+
+You can now run ~./configure~
+Do not be intimidated by it. Focus on the final line instead, which directs you to the configure directive.
+
 
 *** Configuration Flags
 This is where you sculpt Emacs to your exact workflow. True hackers audit their build environment—you can inspect every configuration option available by running ~./configure --help~.
@@ -34,25 +84,12 @@ This is where you sculpt Emacs to your exact workflow. True hackers audit their 
 For a modern, highly optimized, Wayland-native hacker workstation, these choices are optimal:
 
 #+begin_src shell
-./configure --with-native-compilation=aot
-
---with-tree-sitter
-
---with-gif
-
---with-png
-
---with-jpeg
-
---with-rsvg
-
---with-tiff
-
---with-imagemagick
-
---with-pgtk
-
---with-mailutils
+./configure --with-native-compilation=aot \
+            --with-tree-sitter \
+            --with-pgtk \
+            --with-dbus \
+            --with-imagemagick \
+            --with-mailutils
 #+end_src
 
 *** Why these flags matter:
