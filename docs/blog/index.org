@@ -19,6 +19,8 @@
 
 *** 📜 Highlighted articles
 
+<2026-06-30 Tue> - [[/blog/articles/emacs/build-emacs-from-source/index.html][Hacking Freedom: Compiling GNU Emacs from Source]] - By compiling GNU Emacs directly from the upstream Savannah repositories, you unlock the absolute bleeding edge of the extensible, self-documenting operating system disguised as a text editor.
+
 <2026-06-21 Sat> [[/blog/articles/personal/jointhefreeworld-documentation-style-guide/index.html][jointhefreeworld - A Style Guide for Documentation]] - This style guide will help you write better documentation, manuals, tutorials and READMEs
 
 <2026-06-03 Wed> [[/blog/articles/lisps/scriba-structured-logging-library-in-lisp/index.html][Scriba v0.3.3 - Structured  Logging in Lisp]] - Scriba is a structured logging library for GNU Guile that prioritizes flexibility and observability.  It provides modular log routing, formatting, and filtering, allowing developers to generate human-readable console logs during development and machine-readable JSON logs for production environments.

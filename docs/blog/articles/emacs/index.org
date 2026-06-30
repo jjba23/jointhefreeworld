@@ -2,7 +2,9 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
-<2024-12-04 wo> [[/blog/articles/emacs/yaml-schemas-in-emacs-eglot/index.html][YAML Schemas in Emacs with Eglot]] Are you editing YAML files and would like to use JSON Schemas for YAML in Emacs ?
+<2026-06-30 Tue> - [[/blog/articles/emacs/build-emacs-from-source/index.html][Hacking Freedom: Compiling GNU Emacs from Source]] - By compiling GNU Emacs directly from the upstream Savannah repositories, you unlock the absolute bleeding edge of the extensible, self-documenting operating system disguised as a text editor.
+
+<2024-12-04 Wed> [[/blog/articles/emacs/yaml-schemas-in-emacs-eglot/index.html][YAML Schemas in Emacs with Eglot]] - Are you editing YAML files and would like to use JSON Schemas for YAML in Emacs ?
 
 <2024-08-13 Tue> [[/blog/articles/emacs/emacs-registers/index.html][Emacs registers - a god-send for your day job]] - Ever had to work very long files, in projects that you are not familiar with, and felt very lost, without an anchor point? Enter Emacs and its registry system, which allows you to "bookmark" locations of a file (buffer) and return to them, and much much more!
 

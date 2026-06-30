@@ -1,0 +1,116 @@
+#+title: Hacking Freedom: Compiling GNU Emacs from Source
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2026-06-30 Tue>
+
+By compiling GNU Emacs directly from the upstream Savannah repositories, you unlock the absolute bleeding edge of the extensible, self-documenting operating system disguised as a text editor.
+
+True autonomy over your computing environment sometimes involves building your own tools and customizing many programs.
+
+We start by cloning the live development branch straight from the GNU project's forge.
+
+#+begin_src shell
+cd ~/Fork # or wherever
+git clone https://git.savannah.gnu.org/git/emacs.git emacs-build
+cd emacs-build
+#+end_src
+
+*** Dependencies
+
+Depending on the compilation options we choose, we need some build and compile time dependencies. Before we can shape the metal, we need the furnace. For example in Debian we need things like:
+
+#+begin_src shell
+sudo apt-get install build-essential
+#+end_src
+
+#+begin_note
+Pro-tip: If you want a quick shortcut to grab standard development headers for graphics and window management libraries, you can run =sudo apt-get build-dep emacs= before moving to the next step.
+#+end_note
+
+*** Configuration Flags
+This is where you sculpt Emacs to your exact workflow. True hackers audit their build environment—you can inspect every configuration option available by running ~./configure --help~.
+
+For a modern, highly optimized, Wayland-native hacker workstation, these choices are optimal:
+
+#+begin_src shell
+./configure --with-native-compilation=aot
+
+--with-tree-sitter
+
+--with-gif
+
+--with-png
+
+--with-jpeg
+
+--with-rsvg
+
+--with-tiff
+
+--with-imagemagick
+
+--with-pgtk
+
+--with-mailutils
+#+end_src
+
+*** Why these flags matter:
+
+-  ~--with-native-compilation=aot~ :: Compiles Emacs Lisp directly into native machine code Ahead-Of-Time. Maximum performance, zero lag.
+-  ~--with-tree-sitter~ :: Swaps out old regex parsing for high-performance, incremental AST parsing. Better structural navigation and syntax awareness.
+-  ~--with-pgtk~ :: Pure GTK. Critical if you are running a modern Wayland compositor and want to bypass the legacy Xwayland translation layer completely.
+
+*** Compile and Install
+
+First, ensure you are starting from a completely pristine state. If you are rebuilding an older tree or updating a previous commit, wipe away old compilation artifacts:
+
+#+begin_src shell
+make clean
+#+end_src
+
+Now, unleash the compiler. Instead of hardcoding an arbitrary job number, let's query your machine to leverage every single parallel thread your processor has to offer:
+
+#+begin_src shell
+make -j$(nproc)
+#+end_src
+
+Once the compilation wraps up successfully, verify your creation in-place before deploying it system-wide:
+
+#+begin_src shell
+./src/emacs --version
+#+end_src
+
+You should be greeted by that glorious declaration of software liberty:
+
+#+begin_example
+GNU Emacs 31.0.50
+Copyright (C) 2026 Free Software Foundation, Inc.
+GNU Emacs comes with ABSOLUTELY NO WARRANTY.
+You may redistribute copies of GNU Emacs
+under the terms of the GNU General Public License.
+For more information about these matters, see the file named COPYING.
+#+end_example
+
+If everything looks pristine, purge any pre-packaged, stale distro binaries and inject your custom-built system into the local environment:
+
+#+begin_src shell
+sudo apt remove emacs
+sudo make install
+#+end_src
+
+Do a final check to confirm your shell path resolves directly to your new build:
+
+#+begin_src shell
+which emacs
+emacs --version
+#+end_src
+
+*** How to Roll Back
+A good hacker respects filesystem layout and modularity. *Do not delete this build directory.* Keeping this folder intact ensures you retain the local blueprint of your installation. If you ever want to upgrade to a newer upstream commit or cleanly purge this build from your system, simply navigate back here and run:
+
+#+begin_src shell
+sudo make uninstall
+#+end_src
+
+Your operating environment remains clean, untainted, and completely under your control. Welcome to the bleeding edge. Happy hacking! 🚀
