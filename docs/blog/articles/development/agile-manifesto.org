@@ -7,6 +7,7 @@
 
 We are uncovering better ways of developing software by doing it and helping others do it. Find [[https://agilemanifesto.org/][the original manifesto here]].
 
+
 Through this work we have come to value:
 
 #+begin_quote

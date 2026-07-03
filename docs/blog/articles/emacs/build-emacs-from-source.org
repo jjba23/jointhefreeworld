@@ -132,7 +132,8 @@ For more information about these matters, see the file named COPYING.
 If everything looks pristine, purge any pre-packaged, stale distro binaries and inject your custom-built system into the local environment:
 
 #+begin_src shell
-sudo apt remove emacs
+sudo apt remove emacs emacs-pgtk
+rm -rf ~/.emacs.d
 sudo make install
 #+end_src
 

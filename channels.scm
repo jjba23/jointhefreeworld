@@ -3,7 +3,7 @@
         (url "https://git.guix.gnu.org/guix.git")
         (branch "master")
         (commit
-          "4f3d9137a10d977b0f0ed519a31b90a81f6d92b7")
+          "0fb918d61609f3aadc2d8ecc212926b3bdfabb4c")
         (introduction
           (make-channel-introduction
             "9edb3f66fd807b096b48283debdcddccfea34bad"
