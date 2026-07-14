@@ -2,6 +2,8 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
+<2026-07-14 Tue> [[/blog/articles/lisps/maak/index.html][Maak: The power of Lisp that powers your trusty command runner and the enlightments]] - /The infinitely extensible command runner, control plane and project automator à la Make (Guile Scheme - Lisp)/
+
 <2026-06-03 Wed> [[/blog/articles/lisps/scriba-structured-logging-library-in-lisp/index.html][Scriba v0.3.3 - Structured  Logging in Lisp]] - Scriba is a structured logging library for GNU Guile that prioritizes flexibility and observability.  It provides modular log routing, formatting, and filtering, allowing developers to generate human-readable console logs during development and machine-readable JSON logs for production environments.
 
 <2026-04-28 di> [[/blog/articles/lisps/why-i-still-reach-for-scheme-instead-of-haskell/index.html][Why I still reach for Scheme and Lisps instead of Haskell]] - Scheme (and Lisp) allows you to express complex systems and problem domains in more simple terms than any other language can. For all its brilliance, Haskell resists most of the attempts people make to just *hack* and write useful code /quickly/.

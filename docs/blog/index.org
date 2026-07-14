@@ -19,6 +19,8 @@
 
 *** 📜 Highlighted articles
 
+<2026-07-14 Tue> [[/blog/articles/lisps/maak/index.html][Maak: The power of Lisp that powers your trusty command runner and the enlightments]] - /The infinitely extensible command runner, control plane and project automator à la Make (Guile Scheme - Lisp)/
+
 <2026-06-30 Tue> - [[/blog/articles/emacs/build-emacs-from-source/index.html][Hacking Freedom: Compiling GNU Emacs from Source]] - By compiling GNU Emacs directly from the upstream Savannah repositories, you unlock the absolute bleeding edge of the extensible, self-documenting operating system disguised as a text editor.
 
 <2026-06-21 Sat> [[/blog/articles/personal/jointhefreeworld-documentation-style-guide/index.html][jointhefreeworld - A Style Guide for Documentation]] - This style guide will help you write better documentation, manuals, tutorials and READMEs
