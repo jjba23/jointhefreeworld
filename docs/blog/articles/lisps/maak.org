@@ -13,8 +13,16 @@ Most build tools invent their own limited domain-specific language.  Maak embrac
 
 This also means your code is solid, reliable and robust for the next 50 years at least.
 
-[[https://jointhefreeworld.org/ggg/dist/scheme-guile.svg]]  [[https://jointhefreeworld.org/ggg/dist/gnu-guix.svg]]   [[https://jointhefreeworld.org/ggg/dist/maak.svg]]  [[https://jointhefreeworld.org/ggg/dist/license-gpl3+.svg]]  [[https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg]]
-[[https://jointhefreeworld.org/ggg/dist/jointhefreeworld-org.svg]]
+#+BEGIN_EXPORT html
+<div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+  <img src="https://jointhefreeworld.org/ggg/dist/scheme-guile.svg" alt="Scheme Guile" />
+  <img src="https://jointhefreeworld.org/ggg/dist/gnu-guix.svg" alt="GNU Guix" />
+  <img src="https://jointhefreeworld.org/ggg/dist/maak.svg" alt="Maak" />
+  <img src="https://jointhefreeworld.org/ggg/dist/license-gpl3+.svg" alt="GPLv3+" />
+  <img src="https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg" alt="FDLv1.3+" />
+  <img src="https://jointhefreeworld.org/ggg/dist/jointhefreeworld-org.svg" alt="Join The Free World" />
+</div>
+#+END_EXPORT
 
 -------------
 
