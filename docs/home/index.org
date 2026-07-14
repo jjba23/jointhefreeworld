@@ -10,7 +10,7 @@ Hi, I'm Joe. Welcome to my node in the free world.
 
 *[[../blog/index.html][Visit my blog 📰]]*,  where I discuss  software and other kinds of engineering, my thoughts on life, and write some how-to's.
 
-See [[https://codeberg.org/jjba23][all my programs and source code </>]] at Codeberg.
+See [[https://codeberg.org/jjba23][all my programs and source code (lots of Lisp and FP) </>]] at Codeberg.
 
 -----
 
