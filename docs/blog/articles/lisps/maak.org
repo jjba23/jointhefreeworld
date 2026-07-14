@@ -13,6 +13,8 @@ Most build tools invent their own limited domain-specific language.  Maak embrac
 
 This also means your code is solid, reliable and robust for the next 50 years at least.
 
+If you like my work, please support me by [[https://bmc.link/jjbigorra][buying me a cup of coffee ☕]] so I can continue with a lot of motivation.
+
 #+BEGIN_EXPORT html
 <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
   <img src="https://jointhefreeworld.org/ggg/dist/scheme-guile.svg" alt="Scheme Guile" />

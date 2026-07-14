@@ -25,6 +25,16 @@ A Lisp structured logging library with flexibility, performance and configuratio
 
 If you like my work, please support me by [[https://bmc.link/jjbigorra][buying me a cup of coffee ☕]] so I can continue with a lot of motivation.
 
+#+BEGIN_EXPORT html
+<div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+  <img src="https://jointhefreeworld.org/ggg/dist/scheme-guile.svg" alt="Scheme Guile" />
+  <img src="https://jointhefreeworld.org/ggg/dist/gnu-guix.svg" alt="GNU Guix" />
+  <img src="https://jointhefreeworld.org/ggg/dist/license-lgpl3+.svg" alt="LGPLv3+" />
+  <img src="https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg" alt="FDLv1.3+" />
+  <img src="https://jointhefreeworld.org/ggg/dist/jointhefreeworld-org.svg" alt="Join The Free World" />
+</div>
+#+END_EXPORT
+
 ------------------------
 
 * Why Scriba?
