@@ -341,9 +341,11 @@ fi
 
 --------
 
-* Maak runner in Emacs
+* Maak integrations
 
-Creating a connection to Maak from your favourite programmable environment should be simple. You can see how Heks Emacs does it for example here in [[https://codeberg.org/jjba23/heks-emacs/src/branch/trunk/src/modules/heks-emacs.el][heks-emacs.el]]
+Creating a connection to Maak from your favourite programmable environment should be simple.
+
+You can see an Emacs integration here: [[https://codeberg.org/jjba23/maak.el][maak.el]]
 
 [[https://jointhefreeworld.org/static-assets/maak/maak-in-emacs.png]]
 
