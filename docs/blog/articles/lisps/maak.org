@@ -265,7 +265,7 @@ If you just want to quickly install it to your profile:
 guix package --install-from-file=./guix.scm
 #+end_src
 
-For example, to enter an environment shell with mutastructura temporarily you can use:
+For example, to enter an environment shell with maak temporarily you can use:
 #+begin_src shell
 guix time-machine --channels=channels.scm -- shell -f guix.scm
 #+end_src
