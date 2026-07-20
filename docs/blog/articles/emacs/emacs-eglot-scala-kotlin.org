@@ -16,11 +16,11 @@ For reference, find my  full Eglot config here: https://codeberg.org/jjba23/heks
 
 We will walk through basic language setups, specialized workspace configuration handling, and dive deep into some advanced JSON-RPC and advice-based workarounds for *Scala (Metals)* and *Kotlin* that make development truly seamless from Emacs and liberate you from IntelliJ ☺️.
 
-It's not perfect, but it's pretty darn close to perfection if you ask me, and the developer experience and speed that it enables is just wild. Thank you Emacs, thank you GNU, than you Eglot!
+It's not perfect, but it's pretty darn close to perfection if you ask me, and the developer experience and speed that it enables is just wild. Thank you Emacs, thank you GNU, thank you Eglot! 🐂
 
 -------
 
-Before looking at the code, let’s talk about why we are doing this. For years, the conventional wisdom stated that if you write JVM languages—especially Scala or Kotlin—you must use [[https://www.jetbrains.com/idea/][IntelliJ IDEA]]. The narrative claimed that these languages are too complex for a standard text editor.
+Before looking at the code, let’s talk about why we are doing this. For years, the conventional wisdom stated that if you write JVM languages, especially Scala or Kotlin, you must use [[https://www.jetbrains.com/idea/][IntelliJ IDEA]]. The narrative claimed that these languages are too complex for a standard text editor.
 
 But what do you actually get with IntelliJ? A massive, monolithic Java application that frequently hogs 8GB+ of RAM, locks up your system while "indexing pre-built binaries," and forces you into a closed proprietary ecosystem.
 
@@ -223,7 +223,7 @@ By wrapping Eglot's URI translators with advice, we can map this custom scheme i
 
 A notorious issue in certain Kotlin LSP releases occurs during auto-completion. The server reports matching candidates, but mistakenly attaches a ~textEdit~ field containing an empty string (~newText: ""~). This causes Eglot to wipe out the word you are completing entirely.
 
-To solve this, I intercept the incoming JSON-RPC response payloads—both synchronous and asynchronous. If a Kotlin completion candidate returns an empty string edit, we strip the `textEdit` attribute completely, forcing Eglot to fall back gracefully to standard prefix matching.
+To solve this, I intercept the incoming JSON-RPC response payloads, both synchronous and asynchronous. If a Kotlin completion candidate returns an empty string edit, we strip the `textEdit` attribute completely, forcing Eglot to fall back gracefully to standard prefix matching.
 
 #+begin_src emacs-lisp
 (defun my-jsonrpc-request-kotlin-fix (orig-fn connection method params &rest args)
