@@ -311,10 +311,8 @@ This way you can easily work on the same machine with many environments and proj
 
 So I create a ~flake.nix~ and add it to Git.
 
+Kotlin development flake:
 #+begin_src nix
-#
-# Kotlin development flake
-#
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -342,9 +340,11 @@ So I create a ~flake.nix~ and add it to Git.
     };
 }
 
-#
-# Scala development flake
-#
+
+#+end_src
+
+Scala development flake.
+#+begin_src nix
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -373,7 +373,6 @@ So I create a ~flake.nix~ and add it to Git.
       });
     };
 }
-
 #+end_src
 
 Then I load the flake with [[https://direnv.net/][direnv]] so I create a ~.envrc~ file .
