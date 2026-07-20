@@ -176,7 +176,7 @@ Notable Configurations here:
 - *Metals:* Granular inlay hints are activated specifically for inferred types and type parameters while muting implicit conversions to keep buffers readable. (more options here: https://scalameta.org/metals/docs/editors/user-configuration/)
 - *YAML Schema Mapping:* Maps distinct internet-hosted JSON schemas straight to patterns of YAML files automatically.
 
----
+------
 
 * Deep Dive: The Workarounds
 
