@@ -40,13 +40,9 @@ Let's start with how =eglot= is initialized. I use Elpaca and =use-package= to m
   :ensure nil
   :hook ((scala-ts-mode . eglot-ensure)
          (sh-mode . eglot-ensure)
-         (haskell-mode . eglot-ensure)
          (markdown-mode . eglot-ensure)
          (markdown-ts-mode . eglot-ensure)
          (nix-ts-mode . eglot-ensure)
-         (go-mode . eglot-ensure)
-         (python-mode . eglot-ensure)
-         (rust-mode . eglot-ensure)
          (html-mode . eglot-ensure)
          (css-mode . eglot-ensure)
          (css-ts-mode . eglot-ensure)
@@ -281,21 +277,6 @@ Scala Metals aggressively forces full buffer semantic token refreshes. In large 
     caps))
 
 (advice-add 'eglot-client-capabilities :around #'my/eglot-disable-metals-semantic-refresh)
-#+end_src
-
-** Explicit Python Flake8 Linter Integration
-
-Sometimes you want external linters running hand-in-hand with LSP diagnostics. Here, we cleanly bind a local installation of =flake8= straight into Flymake whenever an Eglot-managed Python buffer instantiates:
-
-#+begin_src emacs-lisp
-(setq python-flymake-command '("~/.local/bin/flake8" "-") )
-(add-hook 'eglot-managed-mode-hook
-          (lambda ()
-            (when (or (derived-mode-p 'python-mode)
-                      (derived-mode-p 'python-ts-mode))
-              (add-hook 'flymake-diagnostic-functions
-                        'python-flymake nil t)
-              (flymake-start)))))
 #+end_src
 
 ------
