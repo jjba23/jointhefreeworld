@@ -301,6 +301,90 @@ To complete the setup, I load complementary minor modes outside of Eglot's core 
 - =eglot-java=: Provisions proper workspace configurations specifically for Eclipse JDT LS seamlessly.
 - =jarchive=: Works harmoniously alongside the Kotlin JAR-URI translation hack, opening zipped up source containers into regular, viewable Emacs buffers.
 
+* The way I like it on reproducibility
+
+I generally don't use the "global" system wide JDK installation, but I use isolated development reproducible shells with Nix flakes.
+
+I'll eventually probably move to using Guix, but for now package availability isn't quite there for JVM world so Nix it is.
+
+This way you can easily work on the same machine with many environments and projects (e.g. different Java versions) and no need for SDKMan or version managers, but clean isolated per-project reproducible builds.
+
+So I create a ~flake.nix~ and add it to Git.
+
+#+begin_src nix
+#
+# Kotlin development flake
+#
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    systems.url = "github:nix-systems/default";
+  };
+  outputs = { systems, nixpkgs, ... }:
+    let
+      eachSystem = f:
+        nixpkgs.lib.genAttrs (import systems)
+        (system: f nixpkgs.legacyPackages.${system});
+    in {
+      devShells = eachSystem (pkgs: {
+        default = pkgs.mkShell {
+          buildInputs = with pkgs; [
+            ktfmt
+            ktlint
+            kotlin
+            jdk25
+            nil
+            just
+            yaml-language-server
+          ];
+        };
+      });
+    };
+}
+
+#
+# Scala development flake
+#
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    systems.url = "github:nix-systems/default";
+  };
+  outputs = { systems, nixpkgs, ... }:
+    let
+      eachSystem = f:
+        nixpkgs.lib.genAttrs (import systems)
+        (system: f nixpkgs.legacyPackages.${system});
+    in {
+      devShells = eachSystem (pkgs: {
+        default = pkgs.mkShell {
+          buildInputs = with pkgs; [
+            scala_2_13
+            jdk25
+            metals
+            sbt
+            scalafmt
+            scalafix
+            scala-cli
+            yaml-language-server
+            coursier
+          ];
+        };
+      });
+    };
+}
+
+#+end_src
+
+Then I load the flake with [[https://direnv.net/][direnv]] so I create a ~.envrc~ file .
+#+begin_src
+use flake
+#+end_src
+
+This way and inside Emacs I can use [[https://github.com/wbolster/emacs-direnv][emacs-direnv]] to dynamically switch contexts inside Emacs LSPs and have even multiple running.
+
+I also plug direnv into my Bash shell configurations and thus complete the development environment.
+
 * Conclusion
 
 Eglot's minimal, built-in design doesn't mean you have to settle for sub-par language server behavior. After all, you are using Emacs, so the power is infinite!
