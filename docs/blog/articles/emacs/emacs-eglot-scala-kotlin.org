@@ -1,0 +1,318 @@
+#+title: Emacs Eglot for Scala and Kotlin (JVM)
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2026-07-20 Mon>
+
+When Emacs 29 made =eglot= the built-in, default Language Server Protocol (LSP) client, many of us rejoiced.
+
+It is lightweight, fast, adheres strictly to Emacs philosophy, and doesn't try to reinvent the wheel.
+
+However, being minimal means that when an LSP server steps out of line or acts quirky, =eglot= doesn't provide a million customizable toggles to fix it out-of-the-box. Instead, it expects you to leverage the power of Emacs Lisp.
+
+In this post, I will dissect my production-ready =eglot= setup (part of my =heks-emacs= configuration) which I use in my day-to-day work, with Scala and Kotlin (and some Java).
+
+For reference, find my  full Eglot config here: https://codeberg.org/jjba23/heks-emacs/src/branch/trunk/src/modules/eglot.el
+
+We will walk through basic language setups, specialized workspace configuration handling, and dive deep into some advanced JSON-RPC and advice-based workarounds for *Scala (Metals)* and *Kotlin* that make development truly seamless from Emacs and liberate you from IntelliJ ☺️.
+
+It's not perfect, but it's pretty darn close to perfection if you ask me, and the developer experience and speed that it enables is just wild. Thank you Emacs, thank you GNU, than you Eglot!
+
+-------
+
+* Hooks, Keybindings, and Initial Configurations
+
+Let's start with how =eglot= is initialized. I use Elpaca and =use-package= to manage the configuration, ensuring it doesn't download an external package since it is built-in (=:ensure nil=). Then I add some hooks to automatically start the language server for certain modes.
+
+#+begin_src emacs-lisp
+(use-package eglot
+:ensure nil
+:hook ((scala-ts-mode . eglot-ensure)
+(sh-mode . eglot-ensure)
+(haskell-mode . eglot-ensure)
+(markdown-mode . eglot-ensure)
+(markdown-ts-mode . eglot-ensure)
+(nix-ts-mode . eglot-ensure)
+(go-mode . eglot-ensure)
+(python-mode . eglot-ensure)
+(rust-mode . eglot-ensure)
+(html-mode . eglot-ensure)
+(css-mode . eglot-ensure)
+(css-ts-mode . eglot-ensure)
+(html-ts-mode . eglot-ensure)
+(js-mode . eglot-ensure)
+(js-ts-mode . eglot-ensure)
+(kotlin-ts-mode . eglot-ensure)
+(yaml-mode . eglot-ensure)
+(yaml-ts-mode . eglot-ensure)
+;; formatting
+(before-save . eglot-format-buffer))
+;; ..................
+;; more config
+)
+#+end_src
+
+- *Eglot-Ensure Everywhere:* I hook =eglot-ensure= into almost every programming mode I use, adapting both classic modes and modern Tree-sitter (=*-ts-mode=) alternatives.
+- *Auto-Formatting:* Adding =eglot-format-buffer= to =before-save= guarantees code style compliance automatically every time a file hits the disk.
+
+My keybindings are nested under the =C-c i= prefix, keeping them memorable and consistent across languages. The mnemonic keyword is "IDE" .
+
+#+begin_src emacs-lisp
+:bind (("C-c i i" . eglot-find-implementation)
+("C-c i e" . eglot)
+("C-c i k" . eglot-shutdown-all)
+("C-c i r" . eglot-rename)
+("C-c i x" . eglot-reconnect)
+("C-c i a" . eglot-code-actions)
+("C-c i m" . eglot-menu)
+("C-c i f" . eglot-format-buffer)
+("C-c i h" . eglot-inlay-hints-mode))
+:init
+(setq eglot-autoshutdown t
+eglot-confirm-server-edits nil
+eglot-report-progress t
+eglot-extend-to-xref t
+eglot-sync-connect 1
+eglot-connect-timeout 60
+eglot-autoreconnect t)
+#+end_src
+
+Then with these ~:init~ settings:
+
+- =eglot-autoshutdown= cleans up language server processes as soon as the last buffer managed by them is killed.
+- =eglot-extend-to-xref= allows Emacs' cross-referencing commands to smoothly transition into external library files outside your workspace directory.
+
+--------
+
+* Fine-Tuning Server Definitions and Workspaces
+
+Under the =:config= block, we begin optimizing specific language servers. For instance, removing default configurations before re-adding custom entries prevents collisions.
+
+#+begin_src emacs-lisp
+:config
+(setopt eglot-code-action-indications nil) ;; Cleans up Emacs 31 visual noise
+
+;; Clean slate for Scala and Kotlin
+(setq eglot-server-programs (assq-delete-all 'scala-mode eglot-server-programs))
+(setq eglot-server-programs (assq-delete-all 'scala-ts-mode eglot-server-programs))
+(setq eglot-server-programs (assoc-delete-all 'scala-ts-mode eglot-server-programs))
+
+(add-to-list 'eglot-server-programs `(scala-ts-mode . ("metals"
+"-Xmx4G"
+"-XX:+UseZGC"
+"-Dmetals.http=true"
+:initializationOptions (:isHttpEnabled t))))
+
+(setq eglot-server-programs (assoc-delete-all 'kotlin-ts-mode eglot-server-programs))
+(add-to-list 'eglot-server-programs '(kotlin-ts-mode . ("intellij-server" "--stdio")))
+#+end_src
+
+*Why these changes?*
+
+- *Scala (Metals):* I pass specific JVM tuning flags directly to Metals (allocating a comfortable 4GB heap and utilizing the Z Garbage Collector for minimal latency). Also, enabling Metals HTTP communication via initialization options lets us hook into specialized UI features if needed.
+- *Kotlin:* I swap out standard options for the IntelliJ-backed Kotlin Language Server (=intellij-server --stdio=).
+
+* Global Workspace Configurations
+
+=eglot-workspace-configuration= lets you pass customized variables downstream to your language servers. This section of my configuration acts like a universal =settings.json=:
+
+#+begin_src emacs-lisp
+(setq-default eglot-workspace-configuration
+              '(
+                :metals ( :autoImportBuild "all"
+                          :isHttpEnabled t
+                          :superMethodLensesEnabled t
+                          :showInferredType t
+                          :enableSemanticHighlighting t
+                          :inlayHints ( :inferredTypes (:enable t )
+                                        :implicitArguments (:enable nil)
+                                        :implicitConversions (:enable nil )
+                                        :typeParameters (:enable t )
+                                        :hintsInPatternMatch (:enable nil ))
+                          :bloopJvmProperties ["-Xmx4G"])
+                :haskell (:formattingProvider "ormolu")
+                :typescript (:format (:baseIndentSize 0
+                                                      :convertTabsToSpaces t
+                                                      :indentSize 2
+                                                      :semicolons "remove"
+                                                      :tabSize 2))
+                :javascript (:format (:baseIndentSize 0
+                                                      :convertTabsToSpaces t
+                                                      :indentSize 2
+                                                      :semicolons "remove"
+                                                      :tabSize 2))
+                :rust-analyzer (:check (:command "clippy")
+                                       :cargo (:sysroot "discover"
+                                                        :features "all"
+                                                        :buildScripts (:enable t))
+                                       :diagnostics (:disabled ["macro-error"])
+                                       :procMacro (:enable t))
+
+                :yaml ( :format (:enable t)
+                        :validate t
+                        :hover t
+                        :completion t
+                        :schemas (
+                                  https://codeberg.org/jjba23/pop-test/raw/branch/trunk/resources/json-schema/pop-test.json ["golden-test.yaml" "golden-test.yml" "pop-test.yaml" "pop-test.yml"]
+                                  https://raw.githubusercontent.com/Vandebron/gh-mpyl/refs/heads/main/src/mpyl/schema/project.schema.yml ["project.yml"]
+                                  https://json.schemastore.org/yamllint.json ["/*.yml"])
+                        :schemaStore (:enable t))
+                :nil (:formatting (:command ["nixfmt"]))))
+#+end_src
+
+Notable Configurations here:
+
+- *Metals:* Granular inlay hints are activated specifically for inferred types and type parameters while muting implicit conversions to keep buffers readable. (more options here: https://scalameta.org/metals/docs/editors/user-configuration/)
+- *YAML Schema Mapping:* Maps distinct internet-hosted JSON schemas straight to patterns of YAML files automatically.
+
+---
+
+* Deep Dive: The Workarounds
+
+This is where things get interesting. Sometimes servers violate standard LSP expectations, requiring custom Emacs Lisp logic to bridge the gap.
+
+** Fixing Eldoc Overload
+
+By default, =eldoc= can easily get flooded by different feedback mechanisms. This block prioritizes structural code diagnostics over generic hover data:
+
+#+begin_src emacs-lisp
+(add-hook 'eglot-managed-mode-hook
+          (lambda ()
+            ;; Show flymake diagnostics first.
+            (setq eldoc-documentation-functions
+                  (cons #'flymake-eldoc-function
+                        (remove #'flymake-eldoc-function eldoc-documentation-functions)))
+            ;; Show all eldoc feedback.
+            (setq eldoc-documentation-strategy #'eldoc-documentation-compose)))
+#+end_src
+
+** Kotlin Source Navigation (Jar URI Translation)
+
+When traversing into a dependency library using Kotlin, the server returns file references formatted as ~jar:///path/to/library.jar!/File.kt~. Emacs can't resolve this scheme directly out of the box, throwing errors when you try to jump to definition.
+
+By wrapping Eglot's URI translators with advice, we can map this custom scheme into something Emacs understands (especially alongside companion extensions like =jarchive=):
+
+#+begin_src emacs-lisp
+(defun heks/eglot-uri-to-path-kotlin (orig-fn uri &rest args)
+  (if (and (stringp uri) (string-prefix-p "jar:///" uri))
+      (apply orig-fn (replace-regexp-in-string "^jar:///" "jar:file:///" uri) args)
+    (apply orig-fn uri args)))
+
+(defun heks/eglot-path-to-uri-kotlin (orig-fn path &rest args)
+  (if (and (stringp path) (string-prefix-p "jar:file:///" path))
+      (replace-regexp-in-string "^jar:file:///" "jar:///" path)
+    (apply orig-fn path args)))
+
+(if (fboundp 'eglot-uri-to-path)
+    (progn
+      (advice-add 'eglot-uri-to-path :around #'heks/eglot-uri-to-path-kotlin)
+      (advice-add 'eglot-path-to-uri :around #'heks/eglot-path-to-uri-kotlin))
+  (progn
+    (advice-add 'eglot--uri-to-path :around #'heks/eglot-uri-to-path-kotlin)
+    (advice-add 'eglot--path-to-uri :around #'heks/eglot-path-to-uri-kotlin)))
+#+end_src
+
+** Intercepting the Kotlin Empty ~newText~ Auto-Completion Bug
+
+A notorious issue in certain Kotlin LSP releases occurs during auto-completion. The server reports matching candidates, but mistakenly attaches a ~textEdit~ field containing an empty string (~newText: ""~). This causes Eglot to wipe out the word you are completing entirely.
+
+To solve this, I intercept the incoming JSON-RPC response payloads—both synchronous and asynchronous. If a Kotlin completion candidate returns an empty string edit, we strip the `textEdit` attribute completely, forcing Eglot to fall back gracefully to standard prefix matching.
+
+#+begin_src emacs-lisp
+(defun my-jsonrpc-request-kotlin-fix (orig-fn connection method params &rest args)
+  "Fix kotlin-lsp empty newText bug by removing textEdit to trigger Eglot fallback."
+  (let ((result (apply orig-fn connection method params args)))
+    (when (and (eq method :textDocument/completion)
+               (derived-mode-p 'kotlin-mode 'kotlin-ts-mode)
+               result)
+      (let ((items (if (vectorp result) result (plist-get result :items))))
+        (seq-do (lambda (item)
+                  (let ((text-edit (plist-get item :textEdit)))
+                    ;; If the server sent an empty newText, strip textEdit completely
+                    ;; so Eglot falls back to replacing the actual prefix.
+                    (when (and text-edit (equal (plist-get text-edit :newText) ""))
+                      (plist-put item :textEdit nil))))
+                items)))
+    result))
+
+(defun my-jsonrpc-async-request-kotlin-fix (orig-fn connection method params &rest args)
+  "Fix kotlin-lsp empty newText bug in asynchronous Eglot requests."
+  (if (and (eq method :textDocument/completion)
+           (derived-mode-p 'kotlin-mode 'kotlin-ts-mode))
+      (let* ((orig-success (plist-get args :success-fn))
+             (new-success (lambda (result)
+                            (let ((items (if (vectorp result) result (plist-get result :items))))
+                              (seq-do (lambda (item)
+                                        (let ((text-edit (plist-get item :textEdit)))
+                                          (when (and text-edit (equal (plist-get text-edit :newText) ""))
+                                            (plist-put item :textEdit nil))))
+                                      items))
+                            (funcall orig-success result)))
+             (new-args (plist-put (copy-sequence args) :success-fn new-success)))
+        (apply orig-fn connection method params new-args))
+    (apply orig-fn connection method params args)))
+
+(advice-add 'jsonrpc-request :around #'my-jsonrpc-request-kotlin-fix)
+(advice-add 'jsonrpc-async-request :around #'my-jsonrpc-async-request-kotlin-fix)
+#+end_src
+
+** Silencing Metals Semantic Refresh Flickering
+
+Scala Metals aggressively forces full buffer semantic token refreshes. In large projects, this results in visual layout flickering and unnecessary CPU strain. Disabling this also can solve some startup issues for Metals.
+
+#+begin_src emacs-lisp
+(defun my/eglot-disable-metals-semantic-refresh (orig-fn server)
+  (let* ((caps (funcall orig-fn server))
+         (workspace (plist-get caps :workspace))
+         (tokens (plist-get workspace :semanticTokens)))
+    (when tokens
+      (plist-put tokens :refreshSupport :json-false))
+    caps))
+
+(advice-add 'eglot-client-capabilities :around #'my/eglot-disable-metals-semantic-refresh)
+#+end_src
+
+** Explicit Python Flake8 Linter Integration
+
+Sometimes you want external linters running hand-in-hand with LSP diagnostics. Here, we cleanly bind a local installation of =flake8= straight into Flymake whenever an Eglot-managed Python buffer instantiates:
+
+#+begin_src emacs-lisp
+(setq python-flymake-command '("~/.local/bin/flake8" "-") )
+(add-hook 'eglot-managed-mode-hook
+          (lambda ()
+            (when (or (derived-mode-p 'python-mode)
+                      (derived-mode-p 'python-ts-mode))
+              (add-hook 'flymake-diagnostic-functions
+                        'python-flymake nil t)
+              (flymake-start)))))
+#+end_src
+
+------
+
+* Companion Packages: Java and Compressed Archives
+
+To complete the setup, I load complementary minor modes outside of Eglot's core file, ensuring smooth operations for Java and deep navigation for packed jars:
+
+#+begin_src emacs-lisp
+(use-package eglot-java
+  :ensure t
+  :after (eglot)
+  :hook ((java-mode . eglot-java-mode)
+         (java-ts-mode . eglot-java-mode)))
+
+(use-package jarchive
+  :ensure t
+  :config
+  (jarchive-mode))
+#+end_src
+
+- =eglot-java=: Provisions proper workspace configurations specifically for Eclipse JDT LS seamlessly.
+- =jarchive=: Works harmoniously alongside the Kotlin JAR-URI translation hack, opening zipped up source containers into regular, viewable Emacs buffers.
+
+* Conclusion
+
+Eglot's minimal, built-in design doesn't mean you have to settle for sub-par language server behavior. After all, you are using Emacs, so the power is infinite!
+
+By intercepting communication at the JSON-RPC level via ~advice-add~, you can tailor client-server behaviors exactly to your liking.
+
+Happy hacking! ✨
