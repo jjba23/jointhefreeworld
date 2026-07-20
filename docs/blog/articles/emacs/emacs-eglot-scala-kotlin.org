@@ -26,31 +26,31 @@ Let's start with how =eglot= is initialized. I use Elpaca and =use-package= to m
 
 #+begin_src emacs-lisp
 (use-package eglot
-:ensure nil
-:hook ((scala-ts-mode . eglot-ensure)
-(sh-mode . eglot-ensure)
-(haskell-mode . eglot-ensure)
-(markdown-mode . eglot-ensure)
-(markdown-ts-mode . eglot-ensure)
-(nix-ts-mode . eglot-ensure)
-(go-mode . eglot-ensure)
-(python-mode . eglot-ensure)
-(rust-mode . eglot-ensure)
-(html-mode . eglot-ensure)
-(css-mode . eglot-ensure)
-(css-ts-mode . eglot-ensure)
-(html-ts-mode . eglot-ensure)
-(js-mode . eglot-ensure)
-(js-ts-mode . eglot-ensure)
-(kotlin-ts-mode . eglot-ensure)
-(yaml-mode . eglot-ensure)
-(yaml-ts-mode . eglot-ensure)
-;; formatting
-(before-save . eglot-format-buffer))
-;; ..................
-;; more config
-)
-#+end_src
+  :ensure nil
+  :hook ((scala-ts-mode . eglot-ensure)
+         (sh-mode . eglot-ensure)
+         (haskell-mode . eglot-ensure)
+         (markdown-mode . eglot-ensure)
+         (markdown-ts-mode . eglot-ensure)
+         (nix-ts-mode . eglot-ensure)
+         (go-mode . eglot-ensure)
+         (python-mode . eglot-ensure)
+         (rust-mode . eglot-ensure)
+         (html-mode . eglot-ensure)
+         (css-mode . eglot-ensure)
+         (css-ts-mode . eglot-ensure)
+         (html-ts-mode . eglot-ensure)
+         (js-mode . eglot-ensure)
+         (js-ts-mode . eglot-ensure)
+         (kotlin-ts-mode . eglot-ensure)
+         (yaml-mode . eglot-ensure)
+         (yaml-ts-mode . eglot-ensure)
+         ;; formatting
+         (before-save . eglot-format-buffer))
+  ;; ..................
+  ;; more config
+  )
+         #+end_src
 
 - *Eglot-Ensure Everywhere:* I hook =eglot-ensure= into almost every programming mode I use, adapting both classic modes and modern Tree-sitter (=*-ts-mode=) alternatives.
 - *Auto-Formatting:* Adding =eglot-format-buffer= to =before-save= guarantees code style compliance automatically every time a file hits the disk.
@@ -59,22 +59,22 @@ My keybindings are nested under the =C-c i= prefix, keeping them memorable and c
 
 #+begin_src emacs-lisp
 :bind (("C-c i i" . eglot-find-implementation)
-("C-c i e" . eglot)
-("C-c i k" . eglot-shutdown-all)
-("C-c i r" . eglot-rename)
-("C-c i x" . eglot-reconnect)
-("C-c i a" . eglot-code-actions)
-("C-c i m" . eglot-menu)
-("C-c i f" . eglot-format-buffer)
-("C-c i h" . eglot-inlay-hints-mode))
+       ("C-c i e" . eglot)
+       ("C-c i k" . eglot-shutdown-all)
+       ("C-c i r" . eglot-rename)
+       ("C-c i x" . eglot-reconnect)
+       ("C-c i a" . eglot-code-actions)
+       ("C-c i m" . eglot-menu)
+       ("C-c i f" . eglot-format-buffer)
+       ("C-c i h" . eglot-inlay-hints-mode))
 :init
 (setq eglot-autoshutdown t
-eglot-confirm-server-edits nil
-eglot-report-progress t
-eglot-extend-to-xref t
-eglot-sync-connect 1
-eglot-connect-timeout 60
-eglot-autoreconnect t)
+      eglot-confirm-server-edits nil
+      eglot-report-progress t
+      eglot-extend-to-xref t
+      eglot-sync-connect 1
+      eglot-connect-timeout 60
+      eglot-autoreconnect t)
 #+end_src
 
 Then with these ~:init~ settings:
@@ -98,10 +98,10 @@ Under the =:config= block, we begin optimizing specific language servers. For in
 (setq eglot-server-programs (assoc-delete-all 'scala-ts-mode eglot-server-programs))
 
 (add-to-list 'eglot-server-programs `(scala-ts-mode . ("metals"
-"-Xmx4G"
-"-XX:+UseZGC"
-"-Dmetals.http=true"
-:initializationOptions (:isHttpEnabled t))))
+                                                       "-Xmx4G"
+                                                       "-XX:+UseZGC"
+                                                       "-Dmetals.http=true"
+                                                       :initializationOptions (:isHttpEnabled t))))
 
 (setq eglot-server-programs (assoc-delete-all 'kotlin-ts-mode eglot-server-programs))
 (add-to-list 'eglot-server-programs '(kotlin-ts-mode . ("intellij-server" "--stdio")))
