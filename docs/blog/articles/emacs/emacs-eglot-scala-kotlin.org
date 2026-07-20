@@ -311,7 +311,7 @@ This way you can easily work on the same machine with many environments and proj
 
 So I create a ~flake.nix~ and add it to Git.
 
-Kotlin development flake:
+Kotlin development flake (TODO intellij-server via Nix):
 #+begin_src nix
 {
   inputs = {
