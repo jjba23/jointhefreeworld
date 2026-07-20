@@ -20,6 +20,17 @@ It's not perfect, but it's pretty darn close to perfection if you ask me, and th
 
 -------
 
+Before looking at the code, let’s talk about why we are doing this. For years, the conventional wisdom stated that if you write JVM languages—especially Scala or Kotlin—you must use [[https://www.jetbrains.com/idea/][IntelliJ IDEA]]. The narrative claimed that these languages are too complex for a standard text editor.
+
+But what do you actually get with IntelliJ? A massive, monolithic Java application that frequently hogs 8GB+ of RAM, locks up your system while "indexing pre-built binaries," and forces you into a closed proprietary ecosystem.
+
+Emacs turns this paradigm on its head through three core strengths:
+
+- The Unix Philosophy of LSP: Instead of a single IDE trying to compile, index, and render your code simultaneously, Emacs splits these duties. [[https://www.gnu.org/software/emacs/manual/html_node/eglot/][Eglot]] acts as a lean, protocol-first transport layer that talks to dedicated language servers via JSON-RPC.
+- Infinite Hackability: If IntelliJ has a bug in how it auto-completes Kotlin code, you are stuck waiting for JetBrains to issue a patch. In Emacs, you can write a 10-line Lisp advice function to intercept the network payload and patch the bug live in your editor buffer.
+- Unified Interface: You use the same text-manipulation utilities, text-jumping tools (=xref=), and completion frameworks (=corfu=, =company=, etc.) whether you are adjusting a Nix expression, editing a Markdown file, or refactoring a massive Scala service.
+
+-------
 * Hooks, Keybindings, and Initial Configurations
 
 Let's start with how =eglot= is initialized. I use Elpaca and =use-package= to manage the configuration, ensuring it doesn't download an external package since it is built-in (=:ensure nil=). Then I add some hooks to automatically start the language server for certain modes.

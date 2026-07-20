@@ -2,6 +2,8 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
+<2026-07-20 Mon> - [[/blog/articles/emacs/emacs-eglot-scala-kotlin/index.html][Emacs Eglot for Scala and Kotlin (JVM)]] - Enjoy Emacs and its built-in language server (LSP) super powers, for JVM languages. Let's walk through basic language setups, specialized workspace configuration handling, and dive deep into some advanced JSON-RPC and advice-based workarounds for *Scala (Metals)* and *Kotlin* that make development truly seamless from Emacs and liberate you from IntelliJ ☺️.
+
 <2026-06-30 Tue> - [[/blog/articles/emacs/build-emacs-from-source/index.html][Hacking Freedom: Compiling GNU Emacs from Source]] - By compiling GNU Emacs directly from the upstream Savannah repositories, you unlock the absolute bleeding edge of the extensible, self-documenting operating system disguised as a text editor.
 
 <2024-12-04 Wed> [[/blog/articles/emacs/yaml-schemas-in-emacs-eglot/index.html][YAML Schemas in Emacs with Eglot]] - Are you editing YAML files and would like to use JSON Schemas for YAML in Emacs ?

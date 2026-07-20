@@ -19,6 +19,8 @@
 
 *** 📜 Highlighted articles
 
+<2026-07-20 Mon> - [[/blog/articles/emacs/emacs-eglot-scala-kotlin/index.html][Emacs Eglot for Scala and Kotlin (JVM)]] - Enjoy Emacs and its built-in language server (LSP) super powers, for JVM languages. Let's walk through basic language setups, specialized workspace configuration handling, and dive deep into some advanced JSON-RPC and advice-based workarounds for *Scala (Metals)* and *Kotlin* that make development truly seamless from Emacs and liberate you from IntelliJ ☺️.
+
 <2026-07-14 Tue> [[/blog/articles/lisps/maak/index.html][Maak: The power of Lisp that powers your trusty command runner and the enlightments]] - /The infinitely extensible command runner, control plane and project automator à la Make (Guile Scheme - Lisp)/
 
 <2026-06-30 Tue> - [[/blog/articles/emacs/build-emacs-from-source/index.html][Hacking Freedom: Compiling GNU Emacs from Source]] - By compiling GNU Emacs directly from the upstream Savannah repositories, you unlock the absolute bleeding edge of the extensible, self-documenting operating system disguised as a text editor.
