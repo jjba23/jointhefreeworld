@@ -67,14 +67,13 @@ I also [[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][make videos]]
 
 --------------
 
-* What some say aobut me
-
+* What some say about me
 
 
 #+begin_quote
-Josep is a one man army. Is the youngest senior developer that I've met who can solve problems you don't even know you have. Always looks at the whole picture and finds the simplest solution for the most complicated task. He has a lot of patience, always the right answers. He is a technical person who would speak for days about technology, so... don't get him started, unless you have something to take notes.  ---- Dan Andrei Dobos (Software Engineer), colleague
+Josep is a one man army. Is the youngest senior developer that I've met who can solve problems you don't even know you have. Always looks at the whole picture and finds the simplest solution for the most complicated task. He has a lot of patience, always the right answers. He is a technical person who would speak for days about technology, so... don't get him started, unless you have something to take notes.  ---- /Dan Andrei Dobos (Software Engineer), colleague/
 #+end_quote
 
 #+begin_quote
-Josep is a humble yet very skilled developer with great analytical skills and an eye for details, not does he only master his occupation but he is also a great devops engineer. Josep knows his way around the Linux/Unix environment is if he was a Linux Engineer himself. I really enjoyed working with Joseph he is a great team player with lots of patience and communication skills.Joseph never stops being a great developer it doesn't matter if its weekend or working hours for him the moment he gets an idea or reads about something he can use he starts mastering it immediately. I strongly recommend Joseph as a colleague/team member 11/10 there are little amount of people who are as hungry for perfection as he is! ---- Miroslav Windhouwer (Linux Engineer), colleague
+Josep is a humble yet very skilled developer with great analytical skills and an eye for details, not does he only master his occupation but he is also a great devops engineer. Josep knows his way around the Linux/Unix environment is if he was a Linux Engineer himself. I really enjoyed working with Josep he is a great team player with lots of patience and communication skills.Josep never stops being a great developer it doesn't matter if its weekend or working hours for him the moment he gets an idea or reads about something he can use he starts mastering it immediately. I strongly recommend Josep as a colleague/team member 11/10 there are little amount of people who are as hungry for perfection as he is! ---- /Miroslav Windhouwer (Linux Engineer), colleague/
 #+end_quote
