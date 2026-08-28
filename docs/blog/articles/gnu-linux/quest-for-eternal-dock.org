@@ -17,6 +17,10 @@ Here's the story behind ~lambdock~ , the Wayland-native beast with infinite hack
 But to get here, I will first take you through the mindset, the graveyard of failed prototypes, the uphill battles and the ultimate conquest of GTK4 C runtime, and embedding of a living, breathing, interactive Lisp heart.
 #+end_quote
 
+#+begin_export html
+<img alt="lambdock showcase" src="https://jointhefreeworld.org/static-assets/lambdock/gif_2026-08-07_22-32-33.gif">
+#+end_export
+
 * Quest for the eternal Dock
 
 For years, desktop GNU/Linux users moving to Wayland faced a recurring tragedy: the loss of iconic, deeply hackable docks like Cairo-Dock and Plank. That being said, anno 2026, those (and other) projects have made great efforts to become Wayland-compatible, so that's great. While bar engines like Waybar and EWW excel at status displays, a true application dock that can rival those heavyweights (and macOS too) requires a unique blend of layout  positioning, dynamic window tracking, auto-hiding, and fluid hover physics for animations.
@@ -30,10 +34,6 @@ I find GTK to be the very best UI toolkit for GNU/Linux and other platforms, ann
 Why not use idiomatic modern GTK4, in the language that it's written in. Oh wait, that language, C, has ~libguile.h~, a great library inter-operability with Lisp (GNU Guile Scheme), allowing bi-directional bindings and communication. Why not go down this rabbit hole, which might at the same time teach me more about my favourite language (GNU Guile) and allow me a frictionless setup with GTK and native super performance.
 
 I therefore designed lambdock in my mind, in bed, much inspired by Emacs. A powerful, small C core that powers the program, rendering, graphics and low level details, and an embedded GNU Guile Scheme engine that at runtime is the heart and brain of the whole thing. This architecture uniquely delivers interactive socket REPL control, Lisp metaprogramming macros, dynamic multi-dock spawning, native Wayland foreign-toplevel window tracking, and frame-clock-driven hover animations.
-
-#+begin_export html
-<img alt="lambdock showcase" src="https://jointhefreeworld.org/static-assets/lambdock/gif_2026-08-07_22-32-33.gif">
-#+end_export
 
 * Graveyard of Prototypes
 
