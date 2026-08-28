@@ -17,15 +17,16 @@ Here's the story behind ~lambdock~ , the Wayland-native beast with infinite hack
 But to get here, I will first take you through the mindset, the graveyard of failed prototypes, the uphill battles and the ultimate conquest of GTK4 C runtime, and embedding of a living, breathing, interactive Lisp heart.
 #+end_quote
 
-#+begin_export html
-<img alt="lambdock showcase" src="https://jointhefreeworld.org/static-assets/lambdock/gif_2026-08-07_22-32-33.gif">
-#+end_export
 
 * Quest for the eternal Dock
 
 For years, desktop GNU/Linux users moving to Wayland faced a recurring tragedy: the loss of iconic, deeply hackable docks like Cairo-Dock and Plank. That being said, anno 2026, those (and other) projects have made great efforts to become Wayland-compatible, so that's great. While bar engines like Waybar and EWW excel at status displays, a true application dock that can rival those heavyweights (and macOS too) requires a unique blend of layout  positioning, dynamic window tracking, auto-hiding, and fluid hover physics for animations.
 
 ~lambdock~'s  is a story of resilience in many ways, as I cannot even remember how many attempts I made at building a dock (in different ways). Little did I know how many paradigms, ideas and PoCs would collapse before my vision became tangible reality.
+
+#+begin_export html
+<img alt="lambdock showcase" src="https://jointhefreeworld.org/static-assets/lambdock/gif_2026-08-07_22-32-33.gif">
+#+end_export
 
 On the 30th of July 2026, I had a revelation and set out to build *lambdock*: a Wayland-native desktop dock that wouldn't just replicate the macOS or Cairo-Dock experience, but would transcend it with full runtime inspectability, hackability, and Lisp enlightenment.
 
