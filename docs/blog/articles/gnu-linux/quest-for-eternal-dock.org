@@ -1,4 +1,4 @@
-#+title: Quest for the eternal Dock - lambdock - from prototypes and throw-away code to upstreamed in Guix & Nix
+#+title: Quest for the eternal Dock - lambdock
 #+options: num:nil toc:nil
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
