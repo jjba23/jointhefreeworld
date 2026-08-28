@@ -3,7 +3,7 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 #+language: en
-#+date: 2026-08-28
+#+date: <2026-08-28 Fri>
 
 This is the story of ~lambdock~: https://codeberg.org/jjba23/lambdock
 
