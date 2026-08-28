@@ -2,19 +2,21 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
-<2025-03-04 di> [[/blog/articles/gnu-linux/sway-guix-fully-lisp-configuration/index.html][Moving from Sway to Hyprland - Archived SwayFX config]] - After using Sway as my daily Wayland compositor for quite some time, I recently made the switch to Hyprland. The decision wasn't made lightly, as Sway, especially with the SwayFX fork, served me well.
+<2026-08-28 Fri> [[/blog/articles/gnu-linux/quest-for-eternal-dock/index.html][Quest for the eternal Dock]] - How embedding a Lisp engine created an infinitely extensible program for your daily usage and workflow improvement, Guile Scheme + C + GTK4 built the dock Wayland was waiting for, after many failed prototypes and effort.
+
+<2025-03-04 Tue> [[/blog/articles/gnu-linux/sway-guix-fully-lisp-configuration/index.html][Moving from Sway to Hyprland - Archived SwayFX config]] - After using Sway as my daily Wayland compositor for quite some time, I recently made the switch to Hyprland. The decision wasn't made lightly, as Sway, especially with the SwayFX fork, served me well.
 
  <2025-02-17 Mon> [[/blog/articles/gnu-linux/conky-wayland-guix/index.html][Building Conky with Wayland Support on GNU Guix]] -  Since I use GNU Guix and run a Wayland-based environment (Sway), I wanted to get Conky building with Wayland support.
 
-<2025-02-04 di> [[/blog/articles/gnu-linux/legendary-lisp-laptop/index.html][Legendary Lisp Laptop - Framework]] - a modern Lisp machine with Framework laptop
+<2025-02-04 Tue> [[/blog/articles/gnu-linux/legendary-lisp-laptop/index.html][Legendary Lisp Laptop - Framework]] - a modern Lisp machine with Framework laptop
 
-<2025-01-11 za> - [[/blog/articles/gnu-linux/gnu-guix-virtual-machine-image-aarch64/index.html][GNU Guix Virtual Machine on AArch64/ARM64]] - The Guix ISO installer didn't work for me on aarch64. Making a qcow2 VM image or doing a manual install did work.
+<2025-01-11 Sat> - [[/blog/articles/gnu-linux/gnu-guix-virtual-machine-image-aarch64/index.html][GNU Guix Virtual Machine on AArch64/ARM64]] - The Guix ISO installer didn't work for me on aarch64. Making a qcow2 VM image or doing a manual install did work.
 
-<2024-12-09 ma> [[/blog/articles/gnu-linux/podman-root-less-guix/index.html][Podman root-less setup on GNU Guix system for easy containers under the Shepherd's system]] -  By leveraging Podman, a daemonless container engine, we can achieve rootless containerization, enhancing security and flexibility with Guix.
+<2024-12-09 Mon> [[/blog/articles/gnu-linux/podman-root-less-guix/index.html][Podman root-less setup on GNU Guix system for easy containers under the Shepherd's system]] -  By leveraging Podman, a daemonless container engine, we can achieve rootless containerization, enhancing security and flexibility with Guix.
 
-<2024-12-03 di> [[https://guix.gnu/index.html/blog/2018/multi-dimensional-transactions-and-rollbacks-oh-my/][How Guix enables multi-dimensional rollbacks and more reproducibility!]]
+<2024-12-03 Tue> [[https://guix.gnu/index.html/blog/2018/multi-dimensional-transactions-and-rollbacks-oh-my/][How Guix enables multi-dimensional rollbacks and more reproducibility!]]
 
-<2023-11-02 do> [[/blog/articles/gnu-linux/openvpn3-on-nixos-with-web-based-saml/index.html][Open VPN 3 on NixOS with Web-based SAML]]
+<2023-11-02 Thu> [[/blog/articles/gnu-linux/openvpn3-on-nixos-with-web-based-saml/index.html][Open VPN 3 on NixOS with Web-based SAML]]
 
 <2023-08-25 Fri> [[/blog/articles/gnu-linux/windows-11-bootable-usb-from-gnu-linux/index.html][Bootable Windows 11 USB from GNU Linux]]
 
