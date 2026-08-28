@@ -79,10 +79,6 @@ The name /lambdock/ is a play on words combining:
 - *Lambs* 🐑 (gentle, fluffy, lightweight, and clean).
 - *Docks* as desktop UI components (e.g., Plank, Cairo-Dock, macOS Dock).
 
-#+BEGIN_EXPORT html
-<img src="https://jointhefreeworld.org/static-assets/lambdock/Agnus_Dei_red_flag.svg" width="380" alt="Agnus Dei">
-#+END_EXPORT
-
 ~lambdock~ adopts as  its project logo the  [[https://en.wikipedia.org/wiki/Agnus_Dei][Agnus Dei]]: The Lamb of God carrying a cross and a red flag
 
 You could say using this dock /es casi una experiencia religiosa como la de [[https://www.youtube.com/watch?v=3DV57Y4tEAM&t=3s][Enrique Iglesias]]/
