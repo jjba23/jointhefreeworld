@@ -21,7 +21,9 @@ Mine is a story of persistence in many ways, as I cannot even remember how many 
 
 On the 30th of July 2026, I had a revelation and set out to build *lambdock*: a Wayland-native desktop dock that wouldn't just replicate the macOS or Cairo-Dock experience, but would transcend it with full runtime inspectability, hackability, and Lisp enlightenment.
 
-[[https://jointhefreeworld.org/static-assets/lambdock/gif_2026-08-07_22-32-33.gif]]
+#+begin_export html
+<img alt="lambdock showcase" src="https://jointhefreeworld.org/static-assets/lambdock/gif_2026-08-07_22-32-33.gif">
+#+end_export
 
 * Graveyard of Prototypes
 
@@ -217,27 +219,16 @@ scheme@(guile-user)> (set-dock-theme! 'nature)
 scheme@(guile-user)> (reload-dock!)
 #+end_example
 
-*** Emacs (Geiser) — Recommended
-
 If you use Emacs with Geiser:
 
 1. Run ~M-x geiser-connect-local~.
 2. Select ~guile~ as the Scheme implementation.
 3. Enter the socket path: ~/tmp/lambdock-repl.sock~.
 
+See here Emacs + Geiser GIF
 #+begin_export html
-<details>
-  <summary>see Emacs + Geiser GIF</summary>
+  <img alt="lambdock showcase" src="https://jointhefreeworld.org/static-assets/lambdock/gif_2026-08-06_13-13-17.gif">
 #+end_export
-
-[[https://jointhefreeworld.org/static-assets/lambdock/gif_2026-08-06_13-13-17.gif]]
-
-#+begin_export html
-</details>
-#+end_export
-
-
-*** Other options
 
 You can connect directly from your terminal using different tooling, like ~nc~, ~ncat~,  ~socat~ wrapped with ~rlwrap~ , and others:
 
