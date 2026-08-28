@@ -25,13 +25,13 @@ On the 30th of July 2026, I had a revelation and set out to build *lambdock*: a 
 
 The journey to =lambdock= was paved with ambitious Proofs of Concept (PoCs) that ultimately died. I cycled through several languages, approaches, frameworks, and architecture experiments, chasing the dream of rapid development without sacrificing low-level display server control.
 
-#+caption: The PoC Graveyard & Lessons Learned
-| Epoch & Language                            | Promised Dream                     | The Catastrophic Reality                                                                                                                                |
-|---------------------------------------------+------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| *Guile GI* and other Guile GTK bindings       | 100% Lisp project                  | Lack of documentation, difficult to figure out bindings, contrast of imperative and functional causing lot of friction, lack of community               |
-| *Python + GTK3/4*                             | Rapid prototyping & rich ecosystem | Single-Thread problems, GIL stutters, difficult to implement smooth animations without tapping C; heavy memory footprint, subpar language, fragile IPC. |
-| *Rust + GTK bindings + Custom Compositor IPC* | Memory safety & modern concurrency | Verbose GTK4/Wayland binding friction, documentation problems; async event-loop impedance mismatches; no live REPL hackability, not clear how to integrate Lisp. |
-| *JavaScript/Node + Layer Shell*               | Web-style styling & async I/O      | Bloated resource consumption, subpar language, bad integration with Wayland protocols, not clear how to integrate Lisp.                                 |
+The quest initially aimed for a pure, 100% Lisp architecture using Guile GI and existing Guile GTK bindings. However, this vision collapsed under sparse documentation and inscrutable binding layers. Bridging GTK’s imperative, object-oriented state with functional Scheme patterns created constant architectural friction, while a small community meant every binding edge-case became a dead end.
+
+Pivoting to Python + GTK3/4 offered rapid prototyping and a massive library ecosystem, but crashed into severe real-time performance limits. Single-threaded bottlenecks and Global Interpreter Lock (GIL) stutters ruined fluid slide-out animations unless backed by custom C code. Coupled with a heavy memory footprint and fragile IPC mechanisms, the runtime proved too heavy and unpredictable for a low-latency desktop dock.
+
+Attempts with Rust, GTK bindings, and custom compositor IPC promised memory safety and fearless concurrency, yet introduced severe verbosity and binding friction. Mismatches between Rust's async event loops and GTK4's main thread created structural impedance, while the lack of dynamic reflection completely shut the door on embedding a live, interactive Lisp REPL.
+
+A final attempt using JavaScript/Node and Layer Shell targeted familiar web-style styling and asynchronous I/O. However, it suffered from bloated resource consumption, poor integration with low-level Wayland protocols, and no clear pathway for Lisp extensibility, cementing its place in the graveyard of abandoned prototypes.
 
 
 * Iron Skeleton, Lisp Soul
