@@ -38,6 +38,10 @@ The journey to =lambdock= was paved with ambitious Proofs of Concept (PoCs) that
 
 After the wreckage of many PoCs and while reading some hacker news, a thought crossed my mind, and suddenly, *absolute clarity*!
 
+While tools like Waybar and EWW excel as status bars or custom widget dashboards, ~lambdock~ is specifically engineered as a hyper-hackable, Wayland-native high-performance application dock with an embedded Lisp engine and full GTK4 graphics core.
+
+While traditional GNU/Linux docks lack native Wayland support and bar engines focus primarily on status dashboards, lambdock combines a GTK4 Wayland rendering core with an embedded GNU Guile Scheme runtime. This architecture uniquely delivers interactive socket REPL control, Lisp metaprogramming macros, dynamic multi-dock spawning, native Wayland foreign-toplevel window tracking, and frame-clock-driven fisheye hover animations.
+
 - *C + GTK4 + gtk4-layer-shell* is the undisputed champion of native Wayland surface control. C provides raw speed, zero-cost GLib integration, memory layout efficiency, flawless Wayland scanner protocol generation and the best GTK documentation you can get (also I find GTK to be the very best UI toolkit for GNU/Linux and other platforms, anno 2026).
 - *GNU Guile Scheme (=libguile=)* is the ultimate runtime mind. Instead of configuring the dock with static, dead JSON or TOML files, embedding Lisp (Guile Scheme) via =libguile.h= gives the dock a living Lisp heart and turns it into an infinitely extensible program.
 
@@ -88,36 +92,6 @@ Each configuration file defines its own isolated ~LambdockState~, position (~doc
 - *Dynamic Destruction*: Deleting a ~settings-*.scm~ file safely tears down and destroys its corresponding dock window, removing Wayland handles and GTK widgets without crashing the application.
 
 -------------
-
-* Why lambdock? A comparison table
-
-While tools like Waybar and EWW excel as status bars or custom widget dashboards, ~lambdock~ is specifically engineered as a hyper-hackable, Wayland-native high-performance application dock with an embedded Lisp engine and full GTK4 graphics core.
-
-#+ATTR_CENTRAL: :align c
-| Feature / Dimension               | ~lambdock~                         | Cairo-Dock / Plank | Waybar             | EWW / Bar Engines     | macOS Dock        |
-|-----------------------------------+------------------------------------+--------------------+--------------------+-----------------------+-------------------|
-| Primary Design Target             | Application Dock                   | Application Dock   | Top/Bottom Bar     | Widget Dashboard      | Application Dock  |
-| Wayland Native (~wlr-layer-shell~) | ✅                                 | ❌ (X11 / WNCK)    | ✅                 | ✅                    | (macOS Quartz)    |
-| UI Toolkit & Graphics Core        | GTK4 (GL / GSK)                    | GTK2 / GTK3        | GTK3               | GTK3 / Cairo          | Cocoa / Metal     |
-|-----------------------------------+------------------------------------+--------------------+--------------------+-----------------------+-------------------|
-| Config & Scripting Engine         | GNU Guile Scheme (Lisp)            | Static INI / C     | JSON / JSONC       | yuck (Custom DSL)     | Static plist      |
-| Multi-Dock Instances (Files)      | ✅ Dynamic (~settings-*.scm~)      | ⚠️ Limited         | ⚠️ Multi-bar config| ⚠️ Multi-bar config   | ❌ Single dock    |
-| Live Interactive Socket REPL      | ✅ (Emacs/Geiser, ~socat~)         | ❌                 | ❌                 | ❌                    | ❌                 |
-| Hot-Reloading                     | ✅ Runtime Code, Docks & CSS  | ❌                 | ⚠️ Config/CSS      | ✅ Config/CSS         | ❌ (~killall Dock~) |
-| Thread-Safe Async Dispatch        | ✅ GLib ~g_idle_add~               | ❌                 | ⚠️ Thread sync     | ⚠️ IPC daemon         | ✅ GCD / Dispatch |
-|-----------------------------------+------------------------------------+--------------------+--------------------+-----------------------+-------------------|
-| Wayland Window Tracking           | ✅ ~zwlr_foreign_toplevel_v1~      | ❌ (X11 only)      | ⚠️ Taskbar module  | ❌ (External scripts) | (macOS Server)    |
-| Multi-Instance Window HUD         | ✅ Focus / Close / Close-All     | ⚠️ Basic menu      | ⚠️ Basic menu      | ❌ Manual IPC         | ⚠️ Basic menu      |
-| Dynamic Polling Widgets           | ✅ Scheme Thunks (RAM/CPU/Clock)   | ⚠️ C Plugins       | ✅ Custom modules  | ✅ Yuck pollers       | ❌ Static         |
-| Hover Magnification (Fish-eye)    | ✅ Cosine-Bell (Per-Item Toggle)   | ✅ (X11 composite) | ❌                 | ❌                    | ✅ Native         |
-| Dock Viewport Scrolling           | ✅ Mouse Wheel / Touchpad          | ❌                 | ❌                 | ❌                    | ❌                 |
-| Smooth Auto-Hide Animations       | ✅ Frame-Clock Eased Slide         | ⚠️ Basic           | ⚠️ Basic           | ⚠️ CSS transitions    | ✅ Native         |
-|-----------------------------------+------------------------------------+--------------------+--------------------+-----------------------+-------------------|
-| Metaprogramming & Macros          | ✅ S-Exprs & Quasiquoting          | ❌                 | ❌                 | ⚠️ Limited yuck       | ❌                 |
-| Hermetic Guix & Nix Packaging     | ✅ ~guix.scm~ + ~flake.nix~        | ❌                 | ⚠️ Distro packages | ⚠️ Distro packages   | ❌ Proprietary OS |
-| Preset Launcher Builders          | ✅ ~preset-launchers-for~          | ❌                 | ❌                 | ❌                    | ❌ Drag-and-drop  |
-
--------
 
 * What systems does lambdock support?
 
@@ -291,7 +265,7 @@ Fully integrated into Nixpkgs and available as a Flake too:
 nix run github:jjba23/lambdock
 #+end_src
 
- More Distros Coming Soon! =lambdock= binaries and native packages are marching across the Linux ecosystem:
+ More Distros Coming Soon! =lambdock= binaries and native packages are marching across the GNU/Linux ecosystem:
 
 - *openSUSE / RPM*: Packaged on OBS with native =lambdock.spec=.
 - *Debian / Ubuntu*: Full =debian/= rules and unsigned =.deb= build pipeline.
@@ -302,7 +276,7 @@ nix run github:jjba23/lambdock
 
 * What does one learn after the Odyssey
 
-- *Don't fight the platform*: If you are building a Wayland utility on Linux, embrace C and GTK4/Layer-Shell directly. The clarity, speed, and reliability are unmatched. Even if you might have to shoot yourself in the foot a couple times with memory management ☺️
+- *Don't fight the platform*: If you are building a Wayland utility on GNU/Linux, embrace C and GTK4/Layer-Shell directly. The clarity, speed, and reliability are unmatched. Even if you might have to shoot yourself in the foot a couple times with memory management ☺️
 - *Lisp is the ultimate extension language*: Embedding =libguile= transformed a simple UI bar into an extensible and programmable canvas where users can run shell pipelines, system queries, and dynamic macros right inside their config files.
 - *Never surrender to "good enough"*: The failed PoCs were not wasted time, they were but the crucible that forged the ultimate architecture.
 
