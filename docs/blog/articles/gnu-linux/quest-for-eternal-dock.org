@@ -21,6 +21,8 @@ Mine is a story of persistence in many ways, as I cannot even remember how many 
 
 On the 30th of July 2026, I had a revelation and set out to build *lambdock*: a Wayland-native desktop dock that wouldn't just replicate the macOS or Cairo-Dock experience, but would transcend it with full runtime inspectability, hackability, and Lisp enlightenment.
 
+[[https://jointhefreeworld.org/static-assets/lambdock/gif_2026-08-07_22-32-33.gif]]
+
 * Graveyard of Prototypes
 
 The journey to =lambdock= was paved with ambitious Proofs of Concept (PoCs) that ultimately died. I cycled through several languages, approaches, frameworks, and architecture experiments, chasing the dream of rapid development without sacrificing low-level display server control.
