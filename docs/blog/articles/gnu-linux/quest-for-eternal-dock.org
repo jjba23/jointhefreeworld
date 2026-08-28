@@ -10,16 +10,26 @@ This is the story of ~lambdock~: https://codeberg.org/jjba23/lambdock
 ~lambdock~ is a modern, hyper-hackable, Wayland-native desktop dock application (C and Guile Scheme + GTK4) w/ REPL.
 
 #+begin_quote
-As a heavy computer user, spending most of my day enjoying digital life, and as an eye-candy enjoyer and workflow optimization afficionado, I have long dreamt of the ultimate desktop dock. Here's the story behind ~lambdock~ , the Wayland-native beast with infinite hackability, fluid physics animcations, instant responsiveness, and free as in freedom . But to get here, I will first take you through the mindset, the graveyard of failed prototypes, the uphill battles and the ultimate conquest of GTK4 C runtime, and embedding of a living, breathing, interactive Lisp heart.
+As a heavy computer user, spending most of my day enjoying digital life, and as an eye-candy enjoyer and workflow optimization afficionado, I have long dreamt of the ultimate desktop dock.
+
+Here's the story behind ~lambdock~ , the Wayland-native beast with infinite hackability, fluid physics animcations, instant responsiveness, and free as in freedom .
+
+But to get here, I will first take you through the mindset, the graveyard of failed prototypes, the uphill battles and the ultimate conquest of GTK4 C runtime, and embedding of a living, breathing, interactive Lisp heart.
 #+end_quote
 
 * Quest for the eternal Dock
 
-For years, desktop GNU/Linux users moving to Wayland faced a recurring tragedy: the loss of iconic, deeply hackable docks like Cairo-Dock and Plank. That being said, anno 2026, those (and other) projects have made great efforts to become Wayland-compatible, so that's great. While bar engines like Waybar and EWW excel at status displays, a true application dock that can rival those heavyweights (and macOS too) requires a unique blend of window  positioning, dynamic window tracking, auto-hiding, and fluid hover physics.
+For years, desktop GNU/Linux users moving to Wayland faced a recurring tragedy: the loss of iconic, deeply hackable docks like Cairo-Dock and Plank. That being said, anno 2026, those (and other) projects have made great efforts to become Wayland-compatible, so that's great. While bar engines like Waybar and EWW excel at status displays, a true application dock that can rival those heavyweights (and macOS too) requires a unique blend of layout  positioning, dynamic window tracking, auto-hiding, and fluid hover physics for animations.
 
-Mine is a story of persistence in many ways, as I cannot even remember how many attempts I made at building a dock (in different ways). Little did I know how many paradigms, ideas and PoCs would collapse before my vision became tangible reality.
+~lambdock~'s  is a story of resilience in many ways, as I cannot even remember how many attempts I made at building a dock (in different ways). Little did I know how many paradigms, ideas and PoCs would collapse before my vision became tangible reality.
 
 On the 30th of July 2026, I had a revelation and set out to build *lambdock*: a Wayland-native desktop dock that wouldn't just replicate the macOS or Cairo-Dock experience, but would transcend it with full runtime inspectability, hackability, and Lisp enlightenment.
+
+I find GTK to be the very best UI toolkit for GNU/Linux and other platforms, anno 2026. So for me that choice was pretty clear, even if I also toyed with Qt and others, but GTK always came  on top. After the wreckage of many PoCs and while reading some HackerNews in bed, a thought crossed my mind, and suddenly, *absolute clarity*!
+
+Why not use idiomatic modern GTK4, in the language that it's written in. Oh wait, that language, C, has ~libguile.h~, a great library inter-operability with Lisp (GNU Guile Scheme), allowing bi-directional bindings and communication. Why not go down this rabbit hole, which might at the same time teach me more about my favourite language (GNU Guile) and allow me a frictionless setup with GTK and native super performance.
+
+I therefore designed lambdock in my mind, in bed, much inspired by Emacs. A powerful, small C core that powers the program, rendering, graphics and low level details, and an embedded GNU Guile Scheme engine that at runtime is the heart and brain of the whole thing. This architecture uniquely delivers interactive socket REPL control, Lisp metaprogramming macros, dynamic multi-dock spawning, native Wayland foreign-toplevel window tracking, and frame-clock-driven hover animations.
 
 #+begin_export html
 <img alt="lambdock showcase" src="https://jointhefreeworld.org/static-assets/lambdock/gif_2026-08-07_22-32-33.gif">
@@ -29,24 +39,18 @@ On the 30th of July 2026, I had a revelation and set out to build *lambdock*: a 
 
 The journey to =lambdock= was paved with ambitious Proofs of Concept (PoCs) that ultimately died. I cycled through several languages, approaches, frameworks, and architecture experiments, chasing the dream of rapid development without sacrificing low-level display server control.
 
-The quest initially aimed for a pure, 100% Lisp architecture using Guile GI and existing Guile GTK bindings. However, this vision collapsed under sparse documentation and inscrutable binding layers. Bridging GTK’s imperative, object-oriented state with functional Scheme patterns created constant architectural friction, while a small community meant every binding edge-case became a dead end.
+The quest initially aimed for a pure, 100% Lisp architecture using Guile GI and other existing Guile GTK bindings. However, this vision collapsed under sparse documentation and inscrutable binding layers. Bridging GTK’s imperative, object-oriented state with functional Scheme patterns created constant architectural friction, and a small community meant every binding edge-case became a dead end and a long dive in the rabbit hole.
 
-Pivoting to Python + GTK3/4 offered rapid prototyping and a massive library ecosystem, but crashed into severe real-time performance limits. Single-threaded bottlenecks and Global Interpreter Lock (GIL) stutters ruined fluid slide-out animations unless backed by custom C code. Coupled with a heavy memory footprint and fragile IPC mechanisms, the runtime proved too heavy and unpredictable for a low-latency desktop dock.
+Trying Python + GTK3/4 offered rapid prototyping and a massive library ecosystem, but crashed into severe real-time performance limits. Single-threaded bottlenecks and Global Interpreter Lock (GIL) stutters ruined fluid slide-out animations unless backed by custom C code. That also triggered me to think, might as well just write this whole thing in C. Coupled with a heavy memory footprint and fragile IPC mechanisms, the runtime proved too heavy and unpredictable for a low-latency desktop dock.
 
-Attempts with Rust, GTK bindings, and custom compositor IPC promised memory safety and fearless concurrency, yet introduced severe verbosity and binding friction. Mismatches between Rust's async event loops and GTK4's main thread created structural impedance, while the lack of dynamic reflection completely shut the door on embedding a live, interactive Lisp REPL.
+Attempts with Rust, GTK bindings, and custom compositor IPC promised memory safety and fearless concurrency, yet introduced severe verbosity and binding friction. Mismatches between Rust's async event loops and GTK4's main thread created structural problems, the borrow checker was a real PITA when working with GTK and the dynamic features I wanted to support, while the lack of  reflection completely shut the door on (easily) embedding a live, interactive Lisp REPL.
 
-A final attempt using JavaScript/Node and Layer Shell targeted familiar web-style styling and asynchronous I/O. However, it suffered from bloated resource consumption, poor integration with low-level Wayland protocols, and no clear pathway for Lisp extensibility, cementing its place in the graveyard of abandoned prototypes.
+I made a final attempt by using JavaScript/Node and Layer Shell targeted familiar web-style styling and asynchronous I/O. However, this suffered from bloated resource consumption, poor integration with low-level Wayland protocols, and no clear pathway for Lisp extensibility, and thus it quickly gained its place in the graveyard of abandoned prototypes.
 
 
 * Iron Skeleton, Lisp Soul
 
-After the wreckage of many PoCs and while reading some hacker news, a thought crossed my mind, and suddenly, *absolute clarity*!
-
-While tools like Waybar and EWW excel as status bars or custom widget dashboards, ~lambdock~ is specifically engineered as a hyper-hackable, Wayland-native high-performance application dock with an embedded Lisp engine and full GTK4 graphics core.
-
-While traditional GNU/Linux docks lack native Wayland support and bar engines focus primarily on status dashboards, lambdock combines a GTK4 Wayland rendering core with an embedded GNU Guile Scheme runtime. This architecture uniquely delivers interactive socket REPL control, Lisp metaprogramming macros, dynamic multi-dock spawning, native Wayland foreign-toplevel window tracking, and frame-clock-driven fisheye hover animations.
-
-- *C + GTK4 + gtk4-layer-shell* is the undisputed champion of native Wayland surface control. C provides raw speed, zero-cost GLib integration, memory layout efficiency, flawless Wayland scanner protocol generation and the best GTK documentation you can get (also I find GTK to be the very best UI toolkit for GNU/Linux and other platforms, anno 2026).
+- *C + GTK4 + gtk4-layer-shell* is the undisputed champion of native Wayland surface control. C provides raw speed, zero-cost GLib integration, memory layout efficiency, flawless Wayland scanner protocol generation and the best GTK documentation you can get.
 - *GNU Guile Scheme (=libguile=)* is the ultimate runtime mind. Instead of configuring the dock with static, dead JSON or TOML files, embedding Lisp (Guile Scheme) via =libguile.h= gives the dock a living Lisp heart and turns it into an infinitely extensible program.
 
 #+begin_src c
@@ -242,23 +246,23 @@ rlwrap socat - UNIX-CONNECT:/tmp/lambdock-repl.sock
 
 -----------------
 
-* Victory: Upstream in Guix, Nix, and Beyond!
+* Victory: Upstream in Guix, Nix, OCI and Beyond!
 
 What began as a chaotic experiment in a local directory has officially arrived on the global stage.
 
-=lambdock= is natively packaged in GNU Guix. You can run or install it in a single hermetic command:
+=lambdock= is upstreamed and natively packaged in GNU Guix. You can run or install it in a single hermetic command:
 
 #+begin_src sh
-guix time-machine -- shell -f guix.scm -- lambdock
+guix time-machine --channels=channels.scm -- shell -f guix.scm -- lambdock
 #+end_src
 
-Fully integrated into Nixpkgs and available as a Flake too:
+Fully upstreamed into Nixpkgs (today) and available as a Flake too:
 
 #+begin_src sh
-nix run github:jjba23/lambdock
+nix --extra-experimental-features 'nix-command flakes' run .#
 #+end_src
 
- More Distros Coming Soon! =lambdock= binaries and native packages are marching across the GNU/Linux ecosystem:
+=lambdock= binaries and native packages are marching across the GNU/Linux ecosystem:
 
 - *openSUSE / RPM*: Packaged on OBS with native =lambdock.spec=.
 - *Debian / Ubuntu*: Full =debian/= rules and unsigned =.deb= build pipeline.
@@ -269,8 +273,8 @@ nix run github:jjba23/lambdock
 
 * What does one learn after the Odyssey
 
-- *Don't fight the platform*: If you are building a Wayland utility on GNU/Linux, embrace C and GTK4/Layer-Shell directly. The clarity, speed, and reliability are unmatched. Even if you might have to shoot yourself in the foot a couple times with memory management ☺️
-- *Lisp is the ultimate extension language*: Embedding =libguile= transformed a simple UI bar into an extensible and programmable canvas where users can run shell pipelines, system queries, and dynamic macros right inside their config files.
-- *Never surrender to "good enough"*: The failed PoCs were not wasted time, they were but the crucible that forged the ultimate architecture.
+- *Don't fight the platform*: If you are building a Wayland utility on GNU/Linux, consider embracing C and GTK4/Layer-Shell directly. The clarity, speed, and reliability are unmatched. Even if you might have to shoot yourself in the foot a couple times with memory management ☺️
+- *Lisp remains THE supreme extension engine*: Embedding =libguile= transformed a simple UI bar into an extensible and programmable canvas where users can run shell pipelines, system queries, and dynamic macros right inside their config files.
+- *Don't surrender to "good enough"*: The failed PoCs were not wasted time, they were but the crucible that forged the ultimate architecture.
 
 Long live Free Software, long live Lisp, and happy docking! 🐑⚓λ
