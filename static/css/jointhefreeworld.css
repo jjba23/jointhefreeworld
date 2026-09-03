@@ -18,6 +18,77 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
 
 @import url('https://fonts.googleapis.com/css2?family=Intel+One+Mono:ital,wght@0,300..700;1,300..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 
+/* --- Lucida Sans --- */
+
+@font-face {
+  font-family: 'Lucida Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/LSANS.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Lucida Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/LSANSI.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Lucida Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/LSANSD.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Lucida Sans';
+  font-style: italic;
+  font-weight: 600;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/LSANSDI.woff') format('woff');
+}
+
+
+/* --- Lucida Sans Typewriter --- */
+
+@font-face {
+  font-family: 'Lucida Sans Typewriter';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPE.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Lucida Sans Typewriter';
+  font-style: oblique;
+  font-weight: 400;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPEO.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Lucida Sans Typewriter';
+  font-style: normal;
+  font-weight: 700;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPEB.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Lucida Sans Typewriter';
+  font-style: oblique;
+  font-weight: 700;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPEBO.woff') format('woff');
+}
+
+
+/* --- Lucida Sans Unicode --- */
+
+@font-face {
+  font-family: 'Lucida Sans Unicode';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/l_10646.woff') format('woff');
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -39,9 +110,9 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --color-secondary: oklch(0.528 0.1036 251.54);
 
   /* Font Families */
-  --font-family-body: "Plus Jakarta Sans", sans-serif;
+  --font-family-body: "Lucida Sans", "Plus Jakarta Sans", sans-serif;
   --font-family-code: "Intel One Mono", monospace;
-  --font-family-header: "Plus Jakarta Sans", sans-serif;
+  --font-family-header: "Lucida Sans", "Plus Jakarta Sans", sans-serif;
 
   /* Font Weights */
   --font-weight-light: 100;
