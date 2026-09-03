@@ -1,0 +1,277 @@
+#+title: Quest for the eternal Dock - lambdock
+#+options: num:nil toc:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2026-08-28 Fri>
+
+This is the story of ~lambdock~: https://codeberg.org/jjba23/lambdock
+
+~lambdock~ is a modern, hyper-hackable, Wayland-native desktop dock application (C and Guile Scheme + GTK4) w/ REPL.
+
+#+begin_quote
+As a heavy computer user, spending most of my day enjoying digital life, and as an eye-candy enjoyer and workflow optimization afficionado, I have long dreamt of the ultimate desktop dock.
+
+Here's the story behind ~lambdock~ , the Wayland-native beast with infinite hackability, fluid physics animcations, instant responsiveness, and free as in freedom .
+
+But to get here, I will first take you through the mindset, the graveyard of failed prototypes, the uphill battles and the ultimate conquest of GTK4 C runtime, and embedding of a living, breathing, interactive Lisp heart.
+#+end_quote
+
+
+* Quest for the eternal Dock
+
+For years, desktop GNU/Linux users moving to Wayland faced a recurring tragedy: the loss of iconic, deeply hackable docks like Cairo-Dock and Plank. That being said, anno 2026, those (and other) projects have made great efforts to become Wayland-compatible, so that's great. While bar engines like Waybar and EWW excel at status displays, a true application dock that can rival those heavyweights (and macOS too) requires a unique blend of layout  positioning, dynamic window tracking, auto-hiding, and fluid hover physics for animations.
+
+~lambdock~'s  is a story of resilience in many ways, as I cannot even remember how many attempts I made at building a dock (in different ways). Little did I know how many paradigms, ideas and PoCs would collapse before my vision became tangible reality.
+
+#+begin_export html
+<img alt="lambdock showcase" src="https://jointhefreeworld.org/static-assets/lambdock/gif_2026-08-07_22-32-33.gif">
+#+end_export
+
+On the 30th of July 2026, I had a revelation and set out to build *lambdock*: a Wayland-native desktop dock that wouldn't just replicate the macOS or Cairo-Dock experience, but would transcend it with full runtime inspectability, hackability, and Lisp enlightenment.
+
+I find GTK to be the very best UI toolkit for GNU/Linux and other platforms, anno 2026. So for me that choice was pretty clear, even if I also toyed with Qt and others, but GTK always came  on top. After the wreckage of many PoCs and while reading some HackerNews in bed, a thought crossed my mind, and suddenly, *absolute clarity*!
+
+Why not use idiomatic modern GTK4, in the language that it's written in. Oh wait, that language, C, has ~libguile.h~, a great library inter-operability with Lisp (GNU Guile Scheme), allowing bi-directional bindings and communication. Why not go down this rabbit hole, which might at the same time teach me more about my favourite language (GNU Guile) and allow me a frictionless setup with GTK and native super performance.
+
+I therefore designed lambdock in my mind, in bed, much inspired by Emacs. A powerful, small C core that powers the program, rendering, graphics and low level details, and an embedded GNU Guile Scheme engine that at runtime is the heart and brain of the whole thing. This architecture uniquely delivers interactive socket REPL control, Lisp metaprogramming macros, dynamic multi-dock spawning, native Wayland foreign-toplevel window tracking, and frame-clock-driven hover animations.
+
+* Graveyard of Prototypes
+
+The journey to =lambdock= was paved with ambitious Proofs of Concept (PoCs) that ultimately died. I cycled through several languages, approaches, frameworks, and architecture experiments, chasing the dream of rapid development without sacrificing low-level display server control.
+
+The quest initially aimed for a pure, 100% Lisp architecture using Guile GI and other existing Guile GTK bindings. However, this vision collapsed under sparse documentation and inscrutable binding layers. Bridging GTK’s imperative, object-oriented state with functional Scheme patterns created constant architectural friction, and a small community meant every binding edge-case became a dead end and a long dive in the rabbit hole.
+
+Trying Python + GTK3/4 offered rapid prototyping and a massive library ecosystem, but crashed into severe real-time performance limits. Single-threaded bottlenecks and Global Interpreter Lock (GIL) stutters ruined fluid slide-out animations unless backed by custom C code. That also triggered me to think, might as well just write this whole thing in C. Coupled with a heavy memory footprint and fragile IPC mechanisms, the runtime proved too heavy and unpredictable for a low-latency desktop dock.
+
+Attempts with Rust, GTK bindings, and custom compositor IPC promised memory safety and fearless concurrency, yet introduced severe verbosity and binding friction. Mismatches between Rust's async event loops and GTK4's main thread created structural problems, the borrow checker was a real PITA when working with GTK and the dynamic features I wanted to support, while the lack of  reflection completely shut the door on (easily) embedding a live, interactive Lisp REPL.
+
+I made a final attempt by using JavaScript/Node and Layer Shell targeted familiar web-style styling and asynchronous I/O. However, this suffered from bloated resource consumption, poor integration with low-level Wayland protocols, and no clear pathway for Lisp extensibility, and thus it quickly gained its place in the graveyard of abandoned prototypes.
+
+
+* Iron Skeleton, Lisp Soul
+
+- *C + GTK4 + gtk4-layer-shell* is the undisputed champion of native Wayland surface control. C provides raw speed, zero-cost GLib integration, memory layout efficiency, flawless Wayland scanner protocol generation and the best GTK documentation you can get.
+- *GNU Guile Scheme (=libguile=)* is the ultimate runtime mind. Instead of configuring the dock with static, dead JSON or TOML files, embedding Lisp (Guile Scheme) via =libguile.h= gives the dock a living Lisp heart and turns it into an infinitely extensible program.
+
+#+begin_src c
+/* The moment C boots the Lisp engine in main.c */
+int main(int argc, char **argv) {
+#ifdef DEFAULT_GSK_RENDERER
+  g_setenv("GSK_RENDERER", DEFAULT_GSK_RENDERER, FALSE);
+#endif
+  /* Boot the GNU Guile Scheme engine and surrender control to inner_main */
+  scm_boot_guile(argc, argv, inner_main, NULL);
+  return 0;
+}
+#+end_src
+
+By hosting =libguile= directly inside C's GTK4 main loop, =lambdock= achieves what I consider the holy grail, much like GNU Emacs does: *infinite extensibility, uncompromising native performance for rendering and animation, and metaprogramming superpowers of Lisp for user configuration and live REPL inspection.*
+
+------------------
+
+* Etymology
+
+The name /lambdock/ is a play on words combining:
+
+-  *Ship Docks* ⚓ where containers and applications dock safely.
+- ~lambda λ~ expressions from functional programming & Lisp enlightenment.
+- *Lambs* 🐑 (gentle, fluffy, lightweight, and clean).
+- *Docks* as desktop UI components (e.g., Plank, Cairo-Dock, macOS Dock).
+
+~lambdock~ adopts as  its project logo the  [[https://en.wikipedia.org/wiki/Agnus_Dei][Agnus Dei]]: The Lamb of God carrying a cross and a red flag
+
+You could say using this dock /es casi una experiencia religiosa como la de [[https://www.youtube.com/watch?v=3DV57Y4tEAM&t=3s][Enrique Iglesias]]/
+
+-------------------------
+
+* Multi-Config & Multi-Dock Instance
+
+~lambdock~ features built-in multi-dock orchestration. Rather than being limited to a single dock bar, you can run multiple independent docks simultaneously across different screen edges or monitors.
+
+- *Automatic Directory Monitoring*: ~lambdock~ watches =~/.config/lambdock/= for files matching ~settings.scm~ or ~settings-*.scm~ (e.g., ~settings-left.scm~, ~settings-bottom.scm~).
+
+Each configuration file defines its own isolated ~LambdockState~, position (~dock-position~), theme (~dock-theme~), monitor targets (~dock-monitor~), and item launcher layout (~dock-items~).
+- *Dynamic Spawning*: Creating a new ~settings-2.scm~ file instantly spawns a new dock bar on screen.
+- *Dynamic Hot-Reloading*: Editing any ~settings-*.scm~ file hot-reloads that specific dock instance without flickering or restarting other running instances.
+- *Dynamic Destruction*: Deleting a ~settings-*.scm~ file safely tears down and destroys its corresponding dock window, removing Wayland handles and GTK widgets without crashing the application.
+
+-------------
+
+* What systems does lambdock support?
+
+~lambdock~ is a GNU/Linux first utility.
+
+The tool uses ~gtk4-layer-shell~ to render to the screen and positioning and for dock behavior.
+
+That means it works well in Wayland compositors that support the  ~wlr-layer-shell-unstable-v1~ protocol, including:
+
+- KDE Plasma (Wayland session)
+- Smithay-based compositors: Niri, COSMIC Desktop
+- wlroots-based compositors: Sway, Hyprland, River, Wayfire
+- Mir-based compositors
+
+Note: GNOME (Mutter) currently not supported due to not implementing the protocol
+
+----------------
+
+* How the Bi-Directional Engine Works
+
+~lambdock~ is not merely configured by Scheme. It has an embedded, extensible Lisp engine and runtime environment which complements a high-performance C applciation core and graphics engine. Execution flows bi-directionally between C and Guile.
+
+The entry point of the binary (~main.c~) boots the Guile interpreter using ~scm_boot_guile~. The C runtime acts as the host and invokes Scheme procedures to manage state and extract settings.
+
+Scheme is not restricted to passive data declarations, as it can trigger actions inside the running C engine.
+
+lambdock provides a beautiful Lisp DSL for defining your dock, based on items and presets
+
+| Scheme Constructor / Procedure | Return Type | Description | Keyword Arguments |
+|--------------------------------+-------------+-------------+-------------------|
+| ~(app-item ...)~ | Record | Custom application launcher definition | ~#:name~, ~#:exec~, ~#:icon~ |
+| ~(dynamic-item ...)~ | Record | Dynamic polling widget displaying dynamic textual data | ~#:name~, ~#:icon~, ~#:exec~, ~#:poll-fn~, ~#:interval-ms~, ~#:hover-animate?~ |
+| ~(preset-launcher 'symbol)~ | Record | Standard launcher resolved from internal preset list | Symbol (e.g. ~'emacs~, ~'alacritty~) |
+| ~(preset-launchers-for 'a 'b)~ | List | Batch helper returning a list of preset launchers | Variadic list of symbols |
+| ~(separator-item)~ | Record | Layout divider line | None |
+| ~(preset-icon 'symbol)~ | String | Resolves default icon name string for a given preset | Symbol |
+
+The magic of =lambdock= lies in the seamless bi-directional bridge between the C graphics core and the GNU Guile Scheme engine. See an example config file:
+
+#+begin_src scheme
+;; Modern, declarative Lisp configuration in ~/.config/lambdock/settings.scm
+(define dock-auto-hide? #t)
+(define dock-position 'bottom)
+(define dock-icon-size 48)
+(define dock-theme 'vanilla)
+(define dock-monitor 'all)
+
+(define dock-items
+  (append
+   (preset-launchers-for 'alacritty 'google-chrome 'spotify-flatpak 'nautilus)
+   (list (separator-item))
+   (preset-launchers-for 'emacs 'intellij 'bruno-flatpak)
+   (list (separator-item))
+   (preset-launchers-for 'ram 'cpu 'cpu-temp 'battery)))
+
+;; === you can evaluate any Lisp code here too ===
+
+(use-modules (ice-9 popen)
+             (ice-9 rdelim)
+             (srfi srfi-19)
+             (srfi srfi-1))
+
+;; Helper to run a shell command and return its output as a clean string
+(define (sh-output cmd)
+  (let* ((port (open-input-pipe cmd))
+         (output (read-line port)))
+    (close-pipe port)
+    (if (eof-object? output) "" output)))
+
+;; Enable auto-hide only on a specific hostname (e.g., laptop setup)
+(define dock-auto-hide?
+  (string=? (string-trim-both (sh-output "hostname")) "thinkpad"))
+#+end_src
+
+-------------
+
+* Read Eval Print Loop (REPL)
+
+For purposes of development, experimentation and live hackability, ~lambdock~ features an embedded GNU Guile Scheme runtime. You can enable a background Unix domain socket REPL to query or dynamically alter the running dock's state in real time.
+
+Through Guile's =(system repl server)=, =lambdock= can spawn Unix domain sockets (one per dock instance) for example at =/tmp/lambdock-repl.sock=. You can plug directly into a running dock process via Emacs (Geiser), =socat=, or =ncat=.
+
+Because GTK4 requires all UI modifications to happen on the main thread while the REPL listens on a background thread, =lambdock= uses GLib's =g_idle_add= to dispatch Scheme-triggered UI updates safely:
+
+#+begin_src c
+/* Thread-safe C callback triggered from Guile REPL evaluation */
+static gboolean on_manual_reload_idle(gpointer user_data) {
+  (void)user_data;
+  LOG_C_INFO("Main", "Redrawing UI from in-memory Guile state...");
+  redraw_active_docks();
+  return G_SOURCE_REMOVE;
+}
+
+static SCM scm_reload_dock(void) {
+  g_idle_add(on_manual_reload_idle, NULL);
+  return SCM_UNSPECIFIED;
+}
+#+end_src
+
+You can edit a theme, change icon dimensions, or redefine launchers in Emacs, issue a  =(reload-dock!)=, and watch your dock transform live, without restarting or dropping a single frame!
+
+In your =~/.config/lambdock/settings.scm= file, set =#:enable-repl?= to =#t=. You can optionally customize the socket path using =#:repl-socket-path= (defaults to =/tmp/lambdock-repl.sock=):
+
+#+begin_src scheme
+(configure-dock!
+ #:position 'bottom
+ #:items (list ...)
+ ;; .... other settings
+ #:enable-repl? #t
+ #:repl-socket-path "/tmp/lambdock-repl.sock")
+#+end_src
+
+You can then inspect or modify the dock state, and when desired also reload the dock (with ~reload-dock!~).
+
+Once connected, you can evaluate Scheme expressions against the running ~lambdock~ instance, possibilities are endless, e.g.
+
+#+begin_example
+scheme@(guile-user)> (use-modules (lambdock core))
+scheme@(guile-user)> (get-dock-theme) ;; -> 'vanilla
+scheme@(guile-user)> (set-dock-theme! 'nature)
+scheme@(guile-user)> (reload-dock!)
+#+end_example
+
+If you use Emacs with Geiser:
+
+1. Run ~M-x geiser-connect-local~.
+2. Select ~guile~ as the Scheme implementation.
+3. Enter the socket path: ~/tmp/lambdock-repl.sock~.
+
+See here Emacs + Geiser GIF
+#+begin_export html
+  <img alt="lambdock showcase" src="https://jointhefreeworld.org/static-assets/lambdock/gif_2026-08-06_13-13-17.gif">
+#+end_export
+
+You can connect directly from your terminal using different tooling, like ~nc~, ~ncat~,  ~socat~ wrapped with ~rlwrap~ , and others:
+
+#+begin_src sh
+socat - UNIX-CONNECT:/tmp/lambdock-repl.sock
+ncat -U /tmp/lambdock-repl.sock
+nc -U /tmp/lambdock-repl.sock
+rlwrap socat - UNIX-CONNECT:/tmp/lambdock-repl.sock
+#+end_src
+
+
+-----------------
+
+* Victory: Upstream in Guix, Nix, OCI and Beyond!
+
+What began as a chaotic experiment in a local directory has officially arrived on the global stage.
+
+=lambdock= is upstreamed and natively packaged in GNU Guix. You can run or install it in a single hermetic command:
+
+#+begin_src sh
+guix time-machine --channels=channels.scm -- shell -f guix.scm -- lambdock
+#+end_src
+
+Fully upstreamed into Nixpkgs (today) and available as a Flake too:
+
+#+begin_src sh
+nix --extra-experimental-features 'nix-command flakes' run .#
+#+end_src
+
+=lambdock= binaries and native packages are marching across the GNU/Linux ecosystem:
+
+- *openSUSE / RPM*: Packaged on OBS with native =lambdock.spec=.
+- *Debian / Ubuntu*: Full =debian/= rules and unsigned =.deb= build pipeline.
+- *Arch Linux*: Ready-to-build =PKGBUILD= in =packaging/arch=.
+- *Containers*: Lightweight OCI images on DockerHub for Podman/Docker.
+
+-------------------
+
+* What does one learn after the Odyssey
+
+- *Don't fight the platform*: If you are building a Wayland utility on GNU/Linux, consider embracing C and GTK4/Layer-Shell directly. The clarity, speed, and reliability are unmatched. Even if you might have to shoot yourself in the foot a couple times with memory management ☺️
+- *Lisp remains THE supreme extension engine*: Embedding =libguile= transformed a simple UI bar into an extensible and programmable canvas where users can run shell pipelines, system queries, and dynamic macros right inside their config files.
+- *Don't surrender to "good enough"*: The failed PoCs were not wasted time, they were but the crucible that forged the ultimate architecture.
+
+Long live Free Software, long live Lisp, and happy docking! 🐑⚓λ
