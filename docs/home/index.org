@@ -69,6 +69,15 @@ I also [[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][make videos]]
 
 * What some say about me
 
+#+begin_quote
+I really enjoyed working with Josep in the Payments team at Vandebron.
+
+He is one of those engineers who can look at a problem from many different angles. He has a lot of experience with Kotlin and Spring, but what really stands out is his engineering mindset and the way he thinks things through before jumping to a solution.
+
+He is also great at switching between the bigger picture and the small details, while keeping focus on what actually matters. On top of being a very strong engineer, Josep is a great team player. He explains complex topics clearly to any audience and is always happy to help the team.
+
+I've personally learned a lot from Josep, both technically and in terms of how to approach problems and think like an engineer. I'd happily recommend him to any engineering team! ---- /Andrei Karabovich (Software Engineer), colleague/
+#+end_quote
 
 #+begin_quote
 Josep is a one man army. Is the youngest senior developer that I've met who can solve problems you don't even know you have. Always looks at the whole picture and finds the simplest solution for the most complicated task. He has a lot of patience, always the right answers. He is a technical person who would speak for days about technology, so... don't get him started, unless you have something to take notes.  ---- /Dan Andrei Dobos (Software Engineer), colleague/
