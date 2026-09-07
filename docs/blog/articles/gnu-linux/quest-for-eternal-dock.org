@@ -26,6 +26,9 @@ For years, desktop GNU/Linux users moving to Wayland faced a recurring tragedy: 
 
 #+begin_export html
 <img alt="lambdock showcase" src="https://jointhefreeworld.org/static-assets/lambdock/gif_2026-08-07_22-32-33.gif">
+
+<img alt="lambdock showcase whitesur icons"
+src="https://jointhefreeworld.org/static-assets/lambdock/gif_2026-09-07_23-32-42.gif">
 #+end_export
 
 On the 30th of July 2026, I had a revelation and set out to build *lambdock*: a Wayland-native desktop dock that wouldn't just replicate the macOS or Cairo-Dock experience, but would transcend it with full runtime inspectability, hackability, and Lisp enlightenment.
