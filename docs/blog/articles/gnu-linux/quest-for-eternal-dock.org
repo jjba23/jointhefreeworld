@@ -31,6 +31,26 @@ For years, desktop GNU/Linux users moving to Wayland faced a recurring tragedy: 
 src="https://jointhefreeworld.org/static-assets/lambdock/gif_2026-09-07_23-32-42.gif">
 #+end_export
 
+-----------------
+
+
+- *Wayland Native*: Built on GTK4 and ~gtk4-layer-shell~ for smooth edge anchoring, cubic-eased slide animations, and compositor integration.
+- *Dynamic Window Tracking*: Uses ~zwlr_foreign_toplevel_manager_v1~ to display active app indicators, window titles, and popover HUDs for focusing or closing instances.
+- *Multi-Monitor Flexibility*: Span docks across all connected screens (~#:monitor 'all~) or lock them to specific output connectors (e.g., ~"DP-1"~).
+- *Smooth Auto-Hide*: Keeps the dock out of your way with configurable reveal thresholds and fluid sliding animations.
+- *Declarative Lisp Configurations* 🔮: Harness the power of GNU Guile Scheme for declarative dock setups, custom app launchers, separators, and options. Multiple config files and multiple docks are supported.
+- *Smart and Safe Hot-Reloading*: Automatic file watcher (~GFileMonitor~) and REPL hook (~reload-dock!~) safely re-evaluate Scheme settings and GTK CSS without blocking the UI thread.
+- *Live Interactive Socket REPL*: Query state or alter dock parameters live over a Unix domain socket (~/tmp/lambdock-repl.sock~) via Emacs/Geiser, ~socat~, or ~ncat~.
+- *Theme Engine*: Extensible with CSS, and ships with built-in themes, while supporting user extensions and overrides via =~/.config/lambdock/styles.css=.
+- *Flexible Icon Resolution*: Best-effort fallback pipeline resolving GTK theme icons, absolute paths, system pixmaps, and symbolic variants.
+- *Async Command Launching*: Spawns binaries, scripts, and Flatpaks asynchronously using GLib process spawning without freezing the UI.
+- *App Noise Filtering*: Flexible exclusion lists (~#:exclude-apps~) to prevent background utilities or specific application IDs from creating unwanted launchers.
+- *Reproducible Builds*: Fully hermetic development environment and builds powered by GNU Guile, Meson, and GNU Guix.
+- *Native fluid fish-eye* magnification effect on hover (a la macOS) which is opt-in since some users might want less animations.
+- *Dock Scrolling*: Seamless mouse wheel scrolling over dock items when the bar exceeds available display dimensions.
+
+----------
+
 On the 30th of July 2026, I had a revelation and set out to build *lambdock*: a Wayland-native desktop dock that wouldn't just replicate the macOS or Cairo-Dock experience, but would transcend it with full runtime inspectability, hackability, and Lisp enlightenment.
 
 I find GTK to be the very best UI toolkit for GNU/Linux and other platforms, anno 2026. So for me that choice was pretty clear, even if I also toyed with Qt and others, but GTK always came  on top. After the wreckage of many PoCs and while reading some HackerNews in bed, a thought crossed my mind, and suddenly, *absolute clarity*!
