@@ -5,6 +5,8 @@
 #+language: en
 #+date: <2026-08-28 Fri>
 
+* lambdock: quest for the eternal dock
+
 This is the story of ~lambdock~: https://codeberg.org/jjba23/lambdock
 
 ~lambdock~ is a modern, hyper-hackable, Wayland-native desktop dock application (C and Guile Scheme + GTK4) w/ REPL.
