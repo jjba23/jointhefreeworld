@@ -203,6 +203,7 @@
                        (href "/rss.xml")))
               (script (@(type "speculationrules"))
                       "__SPECULATION_RULES_PLACEHOLDER__")
+              (script (@ (defer "")(src ,(concat jfw/site-url "/static/js/symbanta.js"))))
               (link (@ (rel "stylesheet") (href ,(concat jfw/site-url "/static/css/jointhefreeworld.css"))))
               ,(when head-extra head-extra)
               (title "__RAW_TITLE_PLACEHOLDER__ - jointhefreeworld"))
