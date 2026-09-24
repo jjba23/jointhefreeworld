@@ -45,6 +45,8 @@ Parsing Expression
    SXML -> HTML
 #+end_quote
 
+See here an example showing how OrgWebAlchemy enables the LucidPlan project to render pretty Org mode to HTML
+
 [[https://jointhefreeworld.org/static-assets/orgwebalchemy/screen-2026-09-24-11-21-12.png]]
 
 [[https://jointhefreeworld.org/static-assets/orgwebalchemy/screen-2026-09-24-11-21-23.png]]
@@ -57,23 +59,8 @@ Parsing Expression
 - See the tutorial by GNU/for Emacs Lisp (is also a good learning source): https://www.gnu.org/software/emacs/manual/html_node/elisp/Parsing-Expression-Grammars.html
 - See the tutorial by GNU/for Guile: https://doc.guix.gnu.org/guile/3.0.9/en/html_node/PEG-Parsing.html
 
-** The pipeline
+------
 
-Of course Org mode is a huge piece of (great) software, so I am far from supporting all features, but some core important constructs are there:
-
-- Headings (lines starting by n *)
-- Paragraphs (any "non-special" text)
-- Unordered, Ordered and Description lists (with any level of nesting)
-- Italic, Bold, Inline Code
-- Links with and without description (with nested parsing)
-- Horizontal separators (--------) five or more dashes
-- Tables
-- ~#+begin_src~
-- ~#+begin_example~
-- ~#+begin_quote~ (with nested parsing)
-- ~#+begin_export html~ : Org syntax is parsed by your PEG grammar, but raw HTML export blocks bypass the Org inline parser and are emitted as trusted literal output.
-
--------------
 
 ** PEG vs. a mountain of regexes?
 Org-mode looks simple until you actually try to parse it. Headings are easy. A paragraph is easy. A list is easy (wait actually no, this has made me sweat).
@@ -150,6 +137,24 @@ can become an AST along the lines of:
 #+end_src
 
 I'm still busy with the exact representation and getting it all right. But as of now v1.0 has some stability :-) I would really love feedback on the project from the great smart people that hang out around here.
+
+-----------------
+
+Of course Org mode is a huge piece of (great) software, so I am far from supporting all features, but some core important constructs are there:
+
+- Headings (lines starting by n *)
+- Paragraphs (any "non-special" text)
+- Unordered, Ordered and Description lists (with any level of nesting)
+- Italic, Bold, Inline Code
+- Links with and without description (with nested parsing)
+- Horizontal separators (--------) five or more dashes
+- Tables
+- ~#+begin_src~
+- ~#+begin_example~
+- ~#+begin_quote~ (with nested parsing)
+- ~#+begin_export html~ : Org syntax is parsed by your PEG grammar, but raw HTML export blocks bypass the Org inline parser and are emitted as trusted literal output.
+
+-------------
 
 ** YAY recursive lists
 One of the fun parts has been getting nested Org lists right.
