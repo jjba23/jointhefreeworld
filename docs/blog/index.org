@@ -6,18 +6,20 @@
 
 
 #+attr_html: :class categories
-- [[/blog/articles/emacs/][Emacs]]
 - [[/blog/articles/lisps/][Lisps]]
-- [[/blog/articles/rust/][Rust]]
+- [[/blog/articles/emacs/][Emacs]]
 - [[/blog/articles/gnu-linux/][GNU/Linux]]
+- [[/blog/articles/personal/][Personal]]
 - [[/blog/articles/development/][Dev]]
 - [[/blog/articles/ci/][CI/CD]]
 - [[/blog/articles/haskell/][Haskell]]
+- [[/blog/articles/rust/][Rust]]
 - [[/blog/articles/go/][Go]]
 - [[/blog/articles/freebsd/][FreeBSD]]
-- [[/blog/articles/personal/][Personal]]
 
 *** 📜 Highlighted articles
+
+<2026-09-24 Thu> [[/blog/articles/lisps/parsing-expression-grammar-lisp-org-convert-to-html/index.html][Parsing Expression Grammar in Lisp for Org to HTML]] - Converting Org to HTML with (ice-9 peg) in Guile: OrgWebAlchemy
 
 <2026-08-28 Fri> [[/blog/articles/gnu-linux/quest-for-eternal-dock/index.html][Quest for the eternal Dock]] - How embedding a Lisp engine created an infinitely extensible program for your daily usage and workflow improvement, Guile Scheme + C + GTK4 built the dock Wayland was waiting for, after many failed prototypes and effort.
 
