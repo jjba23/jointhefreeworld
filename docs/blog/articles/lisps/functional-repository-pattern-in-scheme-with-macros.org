@@ -3,7 +3,7 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 #+language: en
-#+date: <2026-04-10 vr>
+#+date: <2026-04-10 Fri>
 
 /Implementing the Repository Pattern with Hygienic Macros in Scheme/
 

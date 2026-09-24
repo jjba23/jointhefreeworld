@@ -1,0 +1,221 @@
+#+title: Parsing Expression Grammar in Lisp: Converting Org to HTML with (ice-9 peg) in Guile
+#+options: num:nil toc:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2026-09-24 Thu>
+
+Hi everyone. In this blog post I want to take you in an adventure of parsing Org mode with Parsing Expression Grammars (PEG) in Guile Scheme (ice-9 peg) and converting to HTML (via SXML): OrgWebAlchemy.
+
+I wanted to share something with you all that I've been working on for a while. It all started with some naive regular expressions to parse Org mode content, but I pretty quickly realized I needed something smarter than that to get to where I want to. It's taken a while but I am finally more knowledgeable of what Parsing Expression Grammars can do, thanks to GNU's great (ice-9 peg) module and tutorials.
+
+I thought it might be interesting to people here who enjoy Lisp, Scheme, parsing, Org mode, or the general idea of meta-meta-meta-programming as I like to call it. Disclosure, AI has helped me get a grip of PEG and debug some things, but development of OrgWebAlchemy is "my own spaghetti" and the unit tests and manual verification (and lots of pretty printing the AST) has guided me towards quite a nice implementation (if I may say so myself).
+
+*Project's source code* @ Codeberg: https://codeberg.org/jjba23/orgwebalchemy
+
+OrgWebAlchemy is a Guile Scheme library for parsing Org-mode documents into an AST and rendering them to HTML. My main use-case is to export Org to HTML without needing Emacs, and to integrate this feature into some projects of mine, allowing me to write Org mode and have it pretty rendered.
+
+The basic idea is pretty simple:
+
+#+begin_src scheme
+(use-modules (orgwebalchemy html))
+
+(org->html "This is ~test~ code.")
+#+end_src
+
+becomes something like:
+
+#+begin_src html
+This is <code>test</code> code.
+#+end_src
+
+But the interesting part is what happens in between.
+
+#+begin_quote
+ Org document
+        |
+        v
+Parsing Expression
+    Grammar
+        |
+        v
+      AST
+        |
+        v
+   SXML -> HTML
+#+end_quote
+
+[[https://jointhefreeworld.org/static-assets/orgwebalchemy/screen-2026-09-24-11-21-12.png]]
+
+[[https://jointhefreeworld.org/static-assets/orgwebalchemy/screen-2026-09-24-11-21-23.png]]
+
+---------
+
+** More resources
+
+- See wikipedia page on PEG: https://en.wikipedia.org/wiki/Parsing_expression_grammar
+- See the tutorial by GNU/for Emacs Lisp (is also a good learning source): https://www.gnu.org/software/emacs/manual/html_node/elisp/Parsing-Expression-Grammars.html
+- See the tutorial by GNU/for Guile: https://doc.guix.gnu.org/guile/3.0.9/en/html_node/PEG-Parsing.html
+
+** The pipeline
+
+Of course Org mode is a huge piece of (great) software, so I am far from supporting all features, but some core important constructs are there:
+
+- Headings (lines starting by n *)
+- Paragraphs (any "non-special" text)
+- Unordered, Ordered and Description lists (with any level of nesting)
+- Italic, Bold, Inline Code
+- Links with and without description (with nested parsing)
+- Horizontal separators (--------) five or more dashes
+- Tables
+- ~#+begin_src~
+- ~#+begin_example~
+- ~#+begin_quote~ (with nested parsing)
+- ~#+begin_export html~ : Org syntax is parsed by your PEG grammar, but raw HTML export blocks bypass the Org inline parser and are emitted as trusted literal output.
+
+-------------
+
+** PEG vs. a mountain of regexes?
+Org-mode looks simple until you actually try to parse it. Headings are easy. A paragraph is easy. A list is easy (wait actually no, this has made me sweat).
+
+And then suddenly you have:
+
+- nested lists
+- ordered, unordered and description lists
+- different indentation levels
+- inline markup
+- links containing descriptions
+- source blocks
+- example blocks
+- quote blocks
+- tables
+- escaping
+- constructs which must stop consuming input at exactly the right place
+
+At this point, the usual approach of adding another regular expression starts to become somewhat... adventurous. :-)
+
+You end up with things like:
+
+#+begin_quote
+match this,
+unless that follows it,
+except inside this block,
+unless it is a description,
+but don't consume the newline,
+unless the previous line was a list item...
+#+end_quote
+
+That is not really describing a language anymore. It is describing the history of your parser's bugs.
+
+So OrgWebAlchemy uses Parsing Expression Grammars (PEGs) through Guile's excellent (ice-9 peg) module. e.g.
+
+#+begin_src scheme
+(define-peg-pattern element body
+  (or empty-line
+      heading
+      separator
+      table
+      src-block
+      quote-block
+      example-block
+      export-html-block
+      description-list
+      unordered-list
+      ordered-list
+      paragraph))
+#+end_src
+
+This is rather nice because the grammar itself starts looking like documentation for the language.
+
+And Guile lets us express PEGs directly as S-expressions (alternatively you can also use the more traditional syntax if you don't like it), which makes the Lisper in me very happy.
+
+One thing I particularly like about this approach is that we have loose coupling and the detail of generating SXML and then rendering HTML is a "presentation concern". this opens possibilities to later exporting to Markdown or other formats.
+
+For example:
+
+#+begin_example
+- name :: Josep
+- project :: orgwebalchemy
+- language :: Scheme
+#+end_example
+
+can become an AST along the lines of:
+
+#+begin_src scheme
+(description-list
+ (unordered-item
+  (desc-key "name")
+  (line-content "Josep"))
+ ...)
+#+end_src
+
+I'm still busy with the exact representation and getting it all right. But as of now v1.0 has some stability :-) I would really love feedback on the project from the great smart people that hang out around here.
+
+** YAY recursive lists
+One of the fun parts has been getting nested Org lists right.
+
+Something like:
+
+#+begin_example
+- Item 1
+  - Item 1.1
+  - Item 1.2
+- Item 2
+#+end_example
+
+should become a quasi-tree
+
+The parser initially produces the flat sequence of list items, and the AST processing phase turns indentation into nested structure.
+
+The HTML renderer can then naturally produce:
+
+#+begin_src html
+<ul>
+  <li>
+    Item 1
+    <ul>
+      <li>Item 1.1</li>
+      <li>Item 1.2</li>
+    </ul>
+  </li>
+  <li>Item 2</li>
+</ul>
+#+end_src
+
+I do still have a small issue here, and that is about the mixing of different list types in nested way. Hopefully it's a subtle bug to fix.
+
+The HTML side uses SXML, because if we're already writing Lisp, we might as well represent our HTML as Lisp data too. :-) that really helps a lot and makes building the markup tree so much nicer
+
+I've taken care to allow full customization to the output HTML (via Guile parameters) so that the renderer isn't hard-coded to one particular website's idea of what HTML ought to look like.Most of them are plain list of classes, but per-heading-level customization is a bit more flexible:
+
+#+begin_src scheme
+(heading-classes
+ (lambda (level)
+   (case level
+     ((1) '("text-4xl" "font-bold"))
+     ((2) '("text-2xl" "font-semibold"))
+     (else '("text-base")))))
+#+end_src
+
+** Why am I making this?
+Partly because I wanted it, I like a challenge, and it's super fun to work with parsing, ASTs and the lot... I could just use Emacs to do this job as there is no better implementation of Org.
+
+The way it's coming together though, I like the idea of having a small, hackable, free-software Org parser written in Lisp that other people can extend and customize (perhaps add more renderers, or Org features).
+
+** Free software
+
+OrgWebAlchemy is licensed under the GNU LGPL v3 or later.
+
+The project is intended to soon be packaged for GNU Guix as ~guile-orgwebalchemy~.
+
+There is also a test suite in the repository which is already proving to be a good safety net and showcase of what the parser can do.
+
+[[https://jointhefreeworld.org/static-assets/orgwebalchemy/screen-2026-09-24-10-52-55.png]]
+
+-----------------
+
+** Closing thoughts
+
+I'd be really happy to hear your thoughts, especially about the grammar, AST design, parser architecture, or interesting Org constructs that I have not handled yet.
+
+Happy hacking! ✨
