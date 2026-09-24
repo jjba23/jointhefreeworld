@@ -5,9 +5,9 @@
 #+language: en
 #+date: <2026-09-24 Thu>
 
-Hi everyone. In this blog post I want to take you in an adventure of parsing Org mode with Parsing Expression Grammars (PEG) in Guile Scheme (ice-9 peg) and converting to HTML (via SXML): OrgWebAlchemy.
+Hi everyone. In this blog post I want to take you in an adventure of parsing Org mode with Parsing Expression Grammars (PEG) in Guile Scheme ~(ice-9 peg)~ and converting to HTML (via SXML): OrgWebAlchemy.
 
-I wanted to share something with you all that I've been working on for a while. It all started with some naive regular expressions to parse Org mode content, but I pretty quickly realized I needed something smarter than that to get to where I want to. It's taken a while but I am finally more knowledgeable of what Parsing Expression Grammars can do, thanks to GNU's great (ice-9 peg) module and tutorials.
+I wanted to share something with you all that I've been working on for a while. It all started with some naive regular expressions to parse Org mode content, but I pretty quickly realized I needed something smarter than that to get to where I want to. It's taken a while but I am finally more knowledgeable of what Parsing Expression Grammars can do, thanks to GNU's great ~(ice-9 peg)~ module and tutorials.
 
 I thought it might be interesting to people here who enjoy Lisp, Scheme, parsing, Org mode, or the general idea of meta-meta-meta-programming as I like to call it. Disclosure, AI has helped me get a grip of PEG and debug some things, but development of OrgWebAlchemy is "my own spaghetti" and the unit tests and manual verification (and lots of pretty printing the AST) has guided me towards quite a nice implementation (if I may say so myself).
 
@@ -107,7 +107,7 @@ unless the previous line was a list item...
 
 That is not really describing a language anymore. It is describing the history of your parser's bugs.
 
-So OrgWebAlchemy uses Parsing Expression Grammars (PEGs) through Guile's excellent (ice-9 peg) module. e.g.
+So OrgWebAlchemy uses Parsing Expression Grammars (PEGs) through Guile's excellent ~(ice-9 peg)~ module. e.g.
 
 #+begin_src scheme
 (define-peg-pattern element body
