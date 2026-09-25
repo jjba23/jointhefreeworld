@@ -25,6 +25,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   font-style: normal;
   font-weight: 400;
   src: url('https://jointhefreeworld.org/static-assets/fonts/LSANS.woff') format('woff');
+  font-display: swap;
 }
 
 @font-face {
@@ -32,6 +33,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   font-style: italic;
   font-weight: 400;
   src: url('https://jointhefreeworld.org/static-assets/fonts/LSANSI.woff') format('woff');
+  font-display: swap;
 }
 
 @font-face {
@@ -39,6 +41,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   font-style: normal;
   font-weight: 600;
   src: url('https://jointhefreeworld.org/static-assets/fonts/LSANSD.woff') format('woff');
+  font-display: swap;
 }
 
 @font-face {
@@ -46,6 +49,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   font-style: italic;
   font-weight: 600;
   src: url('https://jointhefreeworld.org/static-assets/fonts/LSANSDI.woff') format('woff');
+  font-display: swap;
 }
 
 
@@ -56,6 +60,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   font-style: normal;
   font-weight: 400;
   src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPE.woff') format('woff');
+  font-display: swap;
 }
 
 @font-face {
@@ -63,6 +68,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   font-style: oblique;
   font-weight: 400;
   src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPEO.woff') format('woff');
+  font-display: swap;
 }
 
 @font-face {
@@ -70,6 +76,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   font-style: normal;
   font-weight: 700;
   src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPEB.woff') format('woff');
+  font-display: swap;
 }
 
 @font-face {
@@ -77,6 +84,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   font-style: oblique;
   font-weight: 700;
   src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPEBO.woff') format('woff');
+  font-display: swap;
 }
 
 
@@ -87,6 +95,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   font-style: normal;
   font-weight: 400;
   src: url('https://jointhefreeworld.org/static-assets/fonts/l_10646.woff') format('woff');
+  font-display: swap;
 }
 
 *, *::before, *::after {
