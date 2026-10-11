@@ -6,43 +6,33 @@
 
 This is your guide to using and understanding the free software of the jointhefreeworld project.
 
-Free software is all about giving you control—over the tools you use, how they work, and how you share them. Whether you're just starting out or looking to solve a tricky problem, this documentation is here to help.
+Free software is all about giving you control: over the tools you use, how they work, and how you share them. Whether you are just starting out or trying to solve a tricky problem, this documentation is here to help.
 
+You will find two kinds of reference here. *API documentation* is aimed at developers who want to call a library directly. *User manuals* explain how to install, configure, and use a whole program.
 
 -------------
 
-** API  documentation
+** API documentation
 
-[[https://jointhefreeworld.org/api-docs/maak/API.html][Maak API documentation]] - the technical Guile Scheme API documentation for the Maak command runner.
+Each of these links points to the technical Guile Scheme API reference for one of the jointhefreeworld libraries:
 
-[[https://jointhefreeworld.org/api-docs/veritas/API.html][Veritas' API documentation]] - the technical Guile Scheme API documentation for the Veritas test framework.
-
-[[https://jointhefreeworld.org/api-docs/scriba/API.html][Scriba API documentation]] - the technical Guile Scheme API documentation for the Scriba logging framework.
-
-[[https://jointhefreeworld.org/api-docs/heks-linux/API.html][Heks Linux API documentation]] - the technical Guile Scheme API documentation for the Heks Linux system.
-
-[[https://jointhefreeworld.org/api-docs/hygguile/API.html][Hygguile's API documentation]] - the technical Guile Scheme API documentation for the hygguile web UI framework.
-
-[[https://jointhefreeworld.org/api-docs/olive-css/API.html][Olive CSS API documentation]] - the technical Guile Scheme API documentation for the Olive CSS utility-class framework.
-
-[[https://jointhefreeworld.org/api-docs/ggg/API.html][GGG API documentation]] - the technical Guile Scheme API documentation for the GGG (Guile Glyph Generator).
-
-[[https://jointhefreeworld.org/api-docs/iter-vitae/API.html][Iter Vitae API documentation]] - the technical Guile Scheme API documentation for Iter Vitae.
-
-[[https://jointhefreeworld.org/api-docs/consceal/API.html][Consceal API documentation]] - the technical Guile Scheme API documentation for Consceal.
-
-[[https://jointhefreeworld.org/api-docs/kracht/API.html][Kracht API documentation]] - the technical Guile Scheme API documentation for the Kracht library.
-
-[[https://jointhefreeworld.org/api-docs/bewaking/API.html][Bewaking API documentation]] - the technical Guile Scheme API documentation for the Bewaking Authorization/Authentication library.
-
-[[https://jointhefreeworld.org/api-docs/orgwebalchemy/API.html][OrgWebAlchemy API documentation]] - the technical Guile Scheme API documentation for the OrgWebAlchemy library.
+- [[https://jointhefreeworld.org/api-docs/maak/API.html][Maak API documentation]] - the Guile Scheme API for the Maak command runner.
+- [[https://jointhefreeworld.org/api-docs/veritas/API.html][Veritas API documentation]] - the Guile Scheme API for the Veritas test framework.
+- [[https://jointhefreeworld.org/api-docs/scriba/API.html][Scriba API documentation]] - the Guile Scheme API for the Scriba logging framework.
+- [[https://jointhefreeworld.org/api-docs/heks-linux/API.html][Heks Linux API documentation]] - the Guile Scheme API for the Heks Linux system.
+- [[https://jointhefreeworld.org/api-docs/hygguile/API.html][Hygguile API documentation]] - the Guile Scheme API for the hygguile web UI framework.
+- [[https://jointhefreeworld.org/api-docs/olive-css/API.html][Olive CSS API documentation]] - the Guile Scheme API for the Olive CSS utility-class framework.
+- [[https://jointhefreeworld.org/api-docs/ggg/API.html][GGG API documentation]] - the Guile Scheme API for the GGG (Guile Glyph Generator).
+- [[https://jointhefreeworld.org/api-docs/iter-vitae/API.html][Iter Vitae API documentation]] - the Guile Scheme API for Iter Vitae.
+- [[https://jointhefreeworld.org/api-docs/consceal/API.html][Consceal API documentation]] - the Guile Scheme API for Consceal.
+- [[https://jointhefreeworld.org/api-docs/kracht/API.html][Kracht API documentation]] - the Guile Scheme API for the Kracht library.
+- [[https://jointhefreeworld.org/api-docs/bewaking/API.html][Bewaking API documentation]] - the Guile Scheme API for the Bewaking authorization and authentication library.
+- [[https://jointhefreeworld.org/api-docs/orgwebalchemy/API.html][OrgWebAlchemy API documentation]] - the Guile Scheme API for the OrgWebAlchemy library.
 
 -----
 
 ** User manuals
 
-[[/manuals/byggsteg/index.html][Byggsteg manual]] - the manual for Byggsteg in English , in HTML format, with all nodes in one page. Byggsteg is the CI/CD orchestrator written in Guile Scheme.
-
-[[/manuals/lucidplan/index.html][LucidPlan manual]] - the manual for LucidPlan in English , in HTML format, with all nodes in one page. LucidPlan is project management for everyone.
-
-[[/manuals/wikimusic/index.html][WikiMusic manual]] - the manual for WikiMusic in English , in HTML format, with all nodes in one page. WikiMusic is the musical knowledge encyclopaedia and content management system (CMS).
+- [[/manuals/byggsteg/index.html][Byggsteg manual]] - the English manual for Byggsteg, as a single HTML page containing all nodes. Byggsteg is the CI/CD orchestrator written in Guile Scheme.
+- [[/manuals/lucidplan/index.html][LucidPlan manual]] - the English manual for LucidPlan, as a single HTML page containing all nodes. LucidPlan is project management for everyone.
+- [[/manuals/wikimusic/index.html][WikiMusic manual]] - the English manual for WikiMusic, as a single HTML page containing all nodes. WikiMusic is the musical knowledge encyclopaedia and content management system (CMS).

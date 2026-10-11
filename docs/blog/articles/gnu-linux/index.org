@@ -10,7 +10,7 @@
 
 <2025-02-04 Tue> [[/blog/articles/gnu-linux/legendary-lisp-laptop/index.html][Legendary Lisp Laptop - Framework]] - a modern Lisp machine with Framework laptop
 
-<2025-01-11 Sat> - [[/blog/articles/gnu-linux/gnu-guix-virtual-machine-image-aarch64/index.html][GNU Guix Virtual Machine on AArch64/ARM64]] - The Guix ISO installer didn't work for me on aarch64. Making a qcow2 VM image or doing a manual install did work.
+<2025-01-11 Sat> [[/blog/articles/gnu-linux/gnu-guix-virtual-machine-image-aarch64/index.html][GNU Guix Virtual Machine on AArch64/ARM64]] - The Guix ISO installer didn't work for me on aarch64. Making a qcow2 VM image or doing a manual install did work.
 
 <2024-12-09 Mon> [[/blog/articles/gnu-linux/podman-root-less-guix/index.html][Podman root-less setup on GNU Guix system for easy containers under the Shepherd's system]] -  By leveraging Podman, a daemonless container engine, we can achieve rootless containerization, enhancing security and flexibility with Guix.
 

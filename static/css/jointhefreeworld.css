@@ -16,7 +16,9 @@ You should have received a copy of the GNU Affero General Public License
 along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Intel+One+Mono:ital,wght@0,300..700;1,300..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+/* Web fonts are loaded from a <link> in the document head (see
+   jfw/generate-page) rather than with an in-CSS import, so the browser
+   discovers them in the initial HTML scan and fetches them in parallel. */
 
 /* --- Lucida Sans --- */
 
@@ -103,6 +105,10 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
 }
 
 :root {
+  /* Native UI such as scrollbars and form controls follows the system
+     preference by default; the [data-theme] rules below can override it. */
+  color-scheme: light dark;
+
   /* Colors */
   --color-primary: #111111;
   --color-hover: #da6197;
@@ -168,8 +174,39 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --color-syntax-comment: #7c7f93;
 }
 
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+/* An explicit dark choice, set by the theme toggle in the header.
+   Keep this palette in sync with the system-preference block below. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-primary: #e4e4e7;
+  --color-hover: #f48fb1;
+  --color-background-light: #18181b;
+  --color-background-medium: #27272a;
+  --color-text-code: #f8f8f2;
+  --color-text-emphasis: #ffffff;
+  --color-hr: rgba(255, 255, 255, 0.15);
+  --color-code-background: rgba(12, 12, 12, 0.6);
+  --color-border: rgba(218, 97, 151, 0.4);
+  --color-header-1: #fbf3da;
+  --color-header-2: #da6197;
+  --color-header-3: #a4bcdb;
+  --color-secondary: oklch(0.75 0.1 251.54);
+
+  /* Catppuccin Mocha (Dark Mode) Syntax Highlighting */
+  --color-syntax-string: #a6e3a1;
+  --color-syntax-builtin: #89b4fa;
+  --color-syntax-keyword: #cba6f7;
+  --color-syntax-comment: #6c7086;
+}
+
+/* Fall back to the system preference when the visitor has not chosen a
+   theme. The :not() guard keeps an explicit light choice winning here. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --color-primary: #e4e4e7;
     --color-hover: #f48fb1;
     --color-background-light: #18181b;
@@ -199,6 +236,13 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: fade 0.04s ease both;
+}
+
+/* A theme change gets a longer, gentler cross-fade than a page navigation.
+   freeworld.js adds this class for the lifetime of the transition. */
+:root.theme-transition::view-transition-old(root),
+:root.theme-transition::view-transition-new(root) {
+  animation-duration: 0.32s;
 }
 
 @keyframes fade {
@@ -255,12 +299,12 @@ a:hover {
   border-bottom-color: var(--color-hover);
 }
 
-h1 { color: var(--color-header-1); }
-h2 { color: var(--color-header-2); }
-h3 { color: var(--color-header-3); }
-h4 { color: var(--color-header-1); }
-h5 { color: var(--color-header-2); }
-h6 { color: var(--color-header-3); }
+h1 { color: var(--color-header-1); font-size: clamp(1.2rem, 4.5vw + 0.25rem, 2.5rem); line-height: 1.2; letter-spacing: 0.05em; }
+h2 { color: var(--color-header-2); font-size: clamp(1.1rem, 4vw + 0.2rem, 2.2rem); line-height: 1.25; letter-spacing: 0.05em; }
+h3 { color: var(--color-header-3); font-size: clamp(0.9rem, 3vw + 0.15rem, 2rem); line-height: 1.3; letter-spacing: 0.05em; }
+h4 { color: var(--color-header-1); font-size: clamp(0.8rem, 2.2vw + 0.1rem, 1.8rem); line-height: 1.35; letter-spacing: 0.05em; }
+h5 { color: var(--color-header-2); font-size: clamp(0.8rem, 1.5vw + 0.05rem, 1.5rem); line-height: 1.4; letter-spacing: 0.05em; }
+h6 { color: var(--color-header-3); font-size: clamp(0.7rem, 1vw + 0.05rem, 1.1rem); line-height: 1.45; letter-spacing: 0.05em; }
 
 b {
   color: var(--color-text-emphasis);
@@ -396,6 +440,87 @@ blockquote {
   padding: 0 var(--spacing-md);
 }
 
+/* Theme chooser: light, dark, or follow the operating system. It stays
+   hidden until the inline script marks the document as JS-capable, so it is
+   never a dead control for visitors without JavaScript. */
+.theme-toggle {
+  display: none;
+  align-items: center;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+:root[data-js="on"] .theme-toggle {
+  display: inline-flex;
+}
+
+/* The radio inputs are the real controls: hidden, but driven by their
+   labels so native keyboard and screen-reader behaviour is preserved. */
+.theme-toggle-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.theme-toggle-option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary);
+  background: var(--color-background-medium);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-base);
+  padding: var(--spacing-xs) var(--spacing-md);
+  cursor: pointer;
+  transition: background 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+
+.theme-toggle-option:hover {
+  background: var(--color-hover);
+  color: var(--color-text-emphasis);
+}
+
+.theme-toggle-input:focus-visible + .theme-toggle-option {
+  outline: 2px solid var(--color-hover);
+  outline-offset: 1px;
+}
+
+/* The active option is derived from the resolved theme rather than from
+   :checked, so it is already correct on first paint, before the deferred
+   script has run. Absent data-theme means "follow the system". */
+:root[data-theme="light"] .theme-toggle-option[data-choice="light"],
+:root[data-theme="dark"] .theme-toggle-option[data-choice="dark"],
+:root:not([data-theme]) .theme-toggle-option[data-choice="system"] {
+  background: var(--color-hover);
+  color: var(--color-text-emphasis);
+  border-color: var(--color-hover);
+}
+
+.theme-toggle-icon {
+  font-size: var(--text-md);
+  line-height: 1;
+}
+
+@media only screen and (max-width: 600px) {
+  .theme-toggle-label {
+    display: none;
+  }
+
+  .theme-toggle-option {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+}
+
 summary {
   cursor: pointer;
   font-size: var(--text-md);
@@ -414,14 +539,6 @@ summary {
 @media only screen and (max-width: 600px) {
   .content { padding: var(--spacing-md); }
 }
-
-/* Responsive Heading Sizes */
-h1 { font-size: clamp(1.2rem, 4.5vw + 0.25rem, 2.5rem); line-height: 1.2; letter-spacing: 0.05em; }
-h2 { font-size: clamp(1.1rem, 4vw + 0.2rem, 2.2rem); line-height: 1.25; letter-spacing: 0.05em; }
-h3 { font-size: clamp(0.9rem, 3vw + 0.15rem, 2rem); line-height: 1.3; letter-spacing: 0.05em; }
-h4 { font-size: clamp(0.8rem, 2.2vw + 0.1rem, 1.8rem); line-height: 1.35; letter-spacing: 0.05em; }
-h5 { font-size: clamp(0.8rem, 1.5vw + 0.05rem, 1.5rem); line-height: 1.4; letter-spacing: 0.05em; }
-h6 { font-size: clamp(0.7rem, 1vw + 0.05rem, 1.1rem); line-height: 1.45; letter-spacing: 0.05em; }
 
 /* Footer */
 .footer { padding: var(--spacing-xl); }
@@ -443,28 +560,23 @@ img {
 .text-sm { font-size: var(--text-sm); }
 .border-b-none { border-bottom: none; }
 
-pre {
-  .org-string { color: #5a7400; }
-  .org-builtin { color: #946830; }
-  .org-keyword { color: #b05350; }
-  .org-comment, .org-comment-delimiter { color: #8a92ac; }
+pre .org-string {
+  color: var(--color-syntax-string);
 }
 
-pre {
-  .org-string {
-    color: var(--color-syntax-string);
-  }
-  .org-builtin {
-    color: var(--color-syntax-builtin);
-  }
-  .org-keyword {
-    color: var(--color-syntax-keyword);
-    font-weight: var(--font-weight-bold);
-  }
-  .org-comment, .org-comment-delimiter {
-    color: var(--color-syntax-comment);
-    font-style: italic;
-  }
+pre .org-builtin {
+  color: var(--color-syntax-builtin);
+}
+
+pre .org-keyword {
+  color: var(--color-syntax-keyword);
+  font-weight: var(--font-weight-bold);
+}
+
+pre .org-comment,
+pre .org-comment-delimiter {
+  color: var(--color-syntax-comment);
+  font-style: italic;
 }
 
 /* Updated mobile query to remove the width limit constraint */
@@ -485,7 +597,7 @@ th, td {
   text-align: left;
   padding: var(--spacing-md);
   vertical-align: top;
-  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 @media only screen and (max-width: 600px) {
@@ -528,4 +640,225 @@ ul.categories li a:hover {
   color: var(--color-text-emphasis);
   border-color: var(--color-hover);
   transform: translateY(-1px);
+}
+
+/* --- Home-page interactive sprinkles (see static/js/freeworld.js) --- */
+
+.jfw-tagline {
+  min-height: calc(var(--spacing-line-height-body) * 2);
+}
+
+.jfw-btn,
+.jfw-example {
+  font-family: var(--font-family-code);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary);
+  background: var(--color-background-medium);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-base);
+  padding: var(--spacing-xs) var(--spacing-md);
+  cursor: pointer;
+  transition: background 0.15s ease-in-out, color 0.15s ease-in-out, transform 0.15s ease-in-out;
+}
+
+.jfw-btn:hover,
+.jfw-btn:focus-visible,
+.jfw-example:hover,
+.jfw-example:focus-visible {
+  background: var(--color-hover);
+  color: var(--color-text-emphasis);
+  transform: translateY(-1px);
+}
+
+/* Interactive acronym */
+
+.jfw-acronym,
+.jfw-repl {
+  background: var(--color-background-medium);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius-base);
+  box-shadow: var(--box-shadow);
+  padding: var(--spacing-lg);
+  max-width: var(--max-width-pre);
+  margin: var(--spacing-lg) 0;
+}
+
+.jfw-acronym-hint {
+  font-size: var(--text-sm);
+}
+
+.jfw-acronym-letters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+  margin: var(--spacing-md) 0;
+}
+
+.jfw-letter {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  font-family: var(--font-family-code);
+  color: var(--color-primary);
+  background: var(--color-code-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-base);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  cursor: pointer;
+}
+
+.jfw-letter-glyph {
+  font-weight: var(--font-weight-heavy);
+  color: var(--color-syntax-keyword);
+}
+
+.jfw-letter-word {
+  display: inline-block;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  font-size: var(--text-sm);
+  transition: max-width 0.25s ease, opacity 0.25s ease;
+}
+
+.jfw-letter.is-open .jfw-letter-word {
+  max-width: 14ch;
+  opacity: 1;
+}
+
+.jfw-acronym-actions,
+.jfw-acronym-full {
+  font-size: var(--text-sm);
+}
+
+.jfw-acronym-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+/* Mini Lisp REPL */
+
+.jfw-repl-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.jfw-repl-label {
+  font-family: var(--font-family-code);
+  color: var(--color-syntax-keyword);
+}
+
+.jfw-repl-input {
+  flex: 1 1 16rem;
+  font-family: var(--font-family-code);
+  font-size: var(--text-sm);
+  color: var(--color-text-code);
+  background: var(--color-code-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-base);
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.jfw-repl-input:focus-visible {
+  outline: 2px solid var(--color-hover);
+  outline-offset: 1px;
+}
+
+.jfw-repl-output {
+  display: block;
+  margin-top: var(--spacing-md);
+  max-height: 11rem;
+  overflow-y: auto;
+  font-family: var(--font-family-code);
+  font-size: var(--text-sm);
+  line-height: var(--spacing-line-height-code);
+}
+
+.jfw-repl-line {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.jfw-repl-echo {
+  color: var(--color-text-emphasis);
+}
+
+.jfw-repl-value {
+  color: var(--color-syntax-builtin);
+}
+
+.jfw-repl-meta {
+  color: var(--color-syntax-comment);
+  font-style: italic;
+}
+
+.jfw-repl-error {
+  color: var(--color-header-3);
+  font-style: italic;
+}
+
+.jfw-repl-examples {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+}
+
+.jfw-repl-examples-label {
+  font-size: var(--text-sm);
+}
+
+.jfw-easter-hint {
+  font-size: var(--text-sm);
+}
+
+/* "free" easter egg: a short rain of parentheses */
+
+.jfw-paren-rain {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.jfw-paren {
+  position: absolute;
+  top: -2rem;
+  color: var(--color-hover);
+  font-family: var(--font-family-code);
+  font-weight: var(--font-weight-heavy);
+  animation: jfw-fall 2.4s linear forwards;
+}
+
+@keyframes jfw-fall {
+  from {
+    transform: translateY(-2rem) rotate(0deg);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(105vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jfw-paren {
+    animation: none;
+  }
+
+  /* No cross-fade for visitors who ask for less motion. */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
 }

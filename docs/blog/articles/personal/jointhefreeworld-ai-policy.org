@@ -7,7 +7,9 @@
 
 * Purpose and Scope
 
-This AI policy establishes safe guardrails for the *jointhefreeworld* project. It outlines our preferred workflows, defines the boundaries of acceptable AI tool usage, and explains the reasoning behind these choices.
+This AI policy sets clear guardrails for the *jointhefreeworld* project. It outlines our preferred workflows, defines the boundaries of acceptable AI-tool usage, and explains the reasoning behind these choices.
+
+It applies to every space where the project is developed or discussed: its repositories, issue trackers, pull requests, mailing lists, and chat rooms.
 
 Our core principle is simple: *AI should assist human creativity and problem-solving, never replace human reasoning.*
 
@@ -65,7 +67,7 @@ AI tools can be incredibly valuable for generating media, such as images, videos
 
 * Reporting and Resolution
 
-If you witness or experience behavior that violates this AI policy, please report it directly to the project maintainers or the designated contact.
+If you witness or experience behavior that violates this AI policy, please report it directly to the project maintainers by email at [[mailto:jjbigorra@gmail.com][jjbigorra@gmail.com]] or to another designated contact.
 
 - All reports will be handled confidentially and with the utmost respect.
 - Project maintainers are committed to a fair resolution. Corrective actions may include warnings, temporary repository bans, or permanent exclusion from the project.

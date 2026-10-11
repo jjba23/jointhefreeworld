@@ -6,10 +6,12 @@
 #+date: <2026-06-20 Sat>
 
 #+begin_quote
-Based largely on comments by: Ron Hale-Evans, Robert J. Chassell, and Richard M. Stallman.
+Based largely on comments by Ron Hale-Evans, Robert J. Chassell, and Richard M. Stallman.
 #+end_quote
 
-** Basic points of style
+This guide collects the habits that make technical writing clear and useful. It applies to manuals, tutorials, READMEs, and blog posts alike.
+
+* Basic points of style
 
 - *Show, don’t just tell.* Use plenty of examples, but avoid being overly redundant.
 - Move slowly. Do not impose too much of a cognitive load at once on the reader.
@@ -22,13 +24,13 @@ Based largely on comments by: Ron Hale-Evans, Robert J. Chassell, and Richard M.
 - Diagrams are sometimes helpful. Similarly, tables and lists of categories (variable types, types of operators, etc.) can help the reader digest a large amount of information without a lot of superfluous connective text.
 - Anticipate problems the reader might encounter—"gotchas" that you might have experienced yourself—and explicitly point them out.
 
-** More points of style
+* More points of style
 
 - *Explain conventions.* Software programming and usage often rely on conventions that are not obvious to newcomers. For example, a ~0~ return code in a C program signifies "zero errors". Always explain structural conventions such as this.
 - Always tell people how to pronounce code when you introduce new terms. For example, if you are explaining pointers, tell the reader that ~*my_ptr~ can be pronounced "the contents of the memory location ~my_ptr~". This teaches those who vocalize text internally to pronounce code correctly, rather than inventing an idiosyncratic method that could hinder their collaboration.
 - Qualify your statements. Don’t simply say, for example, "Parameters must have their types declared." Must *all* parameters have their types declared? If so, say so; if not, state precisely which parameters require it and which do not, providing clear examples.
 
-** Ordering your text
+* Ordering your text
 
 - Write about the most important things in a section first. Give critical concepts their own subsections. Don’t make the mistake of writing, "Blah, blah, and blah. Oh, and by the way, this next part is really important..."
 - Put important warning notes to the reader in dedicated subsections. This visually signals their importance.
@@ -43,7 +45,7 @@ Based largely on comments by: Ron Hale-Evans, Robert J. Chassell, and Richard M.
 - After making an important point, end the paragraph and let the reader absorb that information. Don’t clutter the paragraph with trailing details; save those details for later.
 - When explaining a feature of a program, awaken the reader’s interest by first outlining the specific problem the feature solves. Write text that motivates the reader to keep turning pages.
 
-** Code examples
+* Code examples
 
 - Give sample output for code examples wherever possible.
 - Don’t waste the reader’s time with frivolous, overly abstract examples that have no real-world utility.
@@ -56,7 +58,7 @@ Based largely on comments by: Ron Hale-Evans, Robert J. Chassell, and Richard M.
 - Use concrete rather than abstract variable names. Concrete names reduce cognitive strain. For example, a variable called ~cost_of_lunch~ is inherently clearer than ~foo~. However, do not make names so hyper-specific that the overarching structural lesson is lost.
 - Satisfy the reader’s curiosity about whether alternative coding paths are possible, but make your ultimate architectural recommendations crystal clear.
 
-** Metaphors
+* Metaphors
 
 - Develop your metaphors explicitly. For example, if you say local variables are "invisible" outside their functions, explain that this usage stems from a structural metaphor where functions act like buildings and local variables are like people unable to look from one sealed building into another.
 - Technical jargon often carries metaphorical underpinnings. For example, pointers "point to" memory addresses. Unpack these roots when introducing jargon.
@@ -64,7 +66,7 @@ Based largely on comments by: Ron Hale-Evans, Robert J. Chassell, and Richard M.
 - Use a metaphor consistently; do not mix them. If you state that local variables are "invisible" outside their functions, do not later say they are "nonexistent" without providing clear transitional text explaining why you are shifting perspective.
 - Avoid hyper-localized idioms and implicit metaphors wherever possible; they make translation into other languages exceptionally difficult.
 
-** English usage
+* English usage
 
 Consult established references on English style, such as the classic /The Elements of Style/ by Strunk and White.
 

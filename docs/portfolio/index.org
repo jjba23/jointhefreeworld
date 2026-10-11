@@ -3,49 +3,49 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
-Hello there! You've landed on the portfolio of Josep Jesus Bigorra Algaba, a passionate advocate for free software 👋🏼
+Hello there! You have landed on the portfolio of Josep Jesus Bigorra Algaba, a passionate advocate for free software 👋🏼
 
-Below, you'll find a collection of my projects, ranging from deep system customization and web server engineering and orchestration to developer tools and elegant Emacs enhancements 🪄
+Below you will find a collection of my projects, ranging from deep system customization and web-server engineering and orchestration to developer tools and elegant Emacs enhancements 🪄
 
-Each project reflects my commitment to crafting robust, user-friendly solutions, often with a touch of functional programming magic.
+Each project reflects my commitment to building robust, user-friendly solutions, often with a touch of functional-programming magic.
 
-Take a look around and feel free to explore the code and concepts behind them!
+Take a look around, and feel free to explore the code and the ideas behind each one!
 
 -----
 
 *** Scheme (Lisp - Guile) projects
 
-[[https://codeberg.org/jjba23/sss][SSS - Supreme Sexp System]] - This custom GNU Guix + Linux setup enhances customization to infinity, encourages the hacking spirit, and offers a superior user experience thanks in part too to REPL (Read Eval Print Loop) and Lisps, GTK, Hyprland, Nyxt, Firefox, etc.
+[[https://codeberg.org/jjba23/sss][SSS - Supreme Sexp System]] - This custom GNU Guix + Linux setup pushes customization to infinity, encourages the hacking spirit, and offers a superior user experience thanks in part to the REPL (Read Eval Print Loop), Lisps, GTK, Hyprland, Nyxt, Firefox, and more.
 
-[[https://codeberg.org/jjba23/wolk-jjba][Wolk JJBA]] - My web server, running CI/CD, custom services, Nginx, Minecraft and more, all working via Lisp (Guix & Guile Scheme)
+[[https://codeberg.org/jjba23/wolk-jjba][Wolk JJBA]] - My web server, running CI/CD, custom services, Nginx, Minecraft, and more, all configured and managed with Lisp (Guix and Guile Scheme).
 
-[[https://codeberg.org/jjba23/iter-vitae][Iter Vitae]] - Iter Vitae: "Journey of Life" - the progression of one's life and career. My curriculum vitae / resume generator usign Guile Scheme and Tailwind CSS
+[[https://codeberg.org/jjba23/iter-vitae][Iter Vitae]] - Iter Vitae, "Journey of Life": the progression of a life and a career. My curriculum vitae / résumé generator, built with Guile Scheme and Tailwind CSS.
 
-[[https://codeberg.org/jjba23/byggsteg][byggsteg]] - Byggsteg is the free as in freedom CI/CD orchestrator written in Guile Scheme.
+[[https://codeberg.org/jjba23/byggsteg][Byggsteg]] - Byggsteg is the free-as-in-freedom CI/CD orchestrator written in Guile Scheme.
 
 [[https://codeberg.org/jjba23/lucidplan][LucidPlan]] - Free and open project management for everyone.
 
-[[https://codeberg.org/jjba23/wikimusic][WikiMusic]] - Free music knowledge encyclopaedia.
+[[https://codeberg.org/jjba23/wikimusic][WikiMusic]] - A free music-knowledge encyclopaedia.
 
-[[https://codeberg.org/jjba23/hygguile][hygguile]] - Cozy and professional user-interfaces for everyone with the power of Scheme.
+[[https://codeberg.org/jjba23/hygguile][hygguile]] - Cozy and professional user interfaces for everyone, with the power of Scheme.
 
 -----
 
 *** Scala projects
 
-[[https://codeberg.org/jjba23/zzspec][ZZSpec]] - a library that helps you write better tests leveraging ZIO and ZIO test, as well as testcontainers, black box and integration tests.
+[[https://codeberg.org/jjba23/zzspec][ZZSpec]] - A library that helps you write better tests by leveraging ZIO and ZIO Test, as well as testcontainers, black-box, and integration tests.
 
-[[https://codeberg.org/jjba23/dmtscala][DMTScala]] - a data model translator that can take Scala case classes and other data models and convert them to several programming languages.
+[[https://codeberg.org/jjba23/dmtscala][DMTScala]] - A data-model translator that can take Scala case classes and other data models and convert them to several programming languages.
 
 -----
 
-*** Emacs and ELisp packages
+*** Emacs and Elisp packages
 
-[[https://codeberg.org/jjba23/modusregel][modusregel]] - Clean and beautiful mode line for Emacs, with customization and performance in mind.
+[[https://codeberg.org/jjba23/modusregel][modusregel]] - A clean and beautiful mode line for Emacs, with customization and performance in mind.
 
 [[https://codeberg.org/jjba23/tekengrootte.el][tekengrootte.el]] - Proportionally sized face sizes for Emacs.
 
-[[https://codeberg.org/jjba23/welkomscherm.el][welkomscherm.el]] - Simple elegant welcome screen / dashboard for Emacs.
+[[https://codeberg.org/jjba23/welkomscherm.el][welkomscherm.el]] - A simple, elegant welcome screen / dashboard for Emacs.
 
 [[https://codeberg.org/jjba23/dagboek.el][dagboek.el]] - Effectively manage and create diary/journal entries.
 
@@ -55,9 +55,8 @@ Take a look around and feel free to explore the code and concepts behind them!
 
 *** Pages of mine
 
-[[https://codeberg.org/jjba23/jointhefreeworld][jointhefreeworld]] - My personal homepage, blogs, and “jointhefreeworld.org” movement website.
-
+[[https://codeberg.org/jjba23/jointhefreeworld][jointhefreeworld]] - My personal homepage, blog, and the “jointhefreeworld.org” movement website.
 
 *** Pages of my clients
 
-[[https://codeberg.org/jjba23/carvoeiro-water-fun][carvoeiro-water-fun]] - Boat and Kayak rental website as a Svelte SPA (Single-Page Application).
+[[https://codeberg.org/jjba23/carvoeiro-water-fun][carvoeiro-water-fun]] - A boat- and kayak-rental website built as a Svelte SPA (single-page application).

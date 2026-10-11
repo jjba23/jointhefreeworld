@@ -5,13 +5,17 @@
 #+language: en
 #+date: <2025-04-11 Fri>
 
-** Purpose
+* Purpose
 
 This Code of Conduct exists to foster an inclusive, respectful, and cooperative environment for all contributors and users of this free software project. Inspired by the ideals of the GNU Project, we strive to uphold freedom, equality, and community as guiding principles.
 
 We believe that collaboration in a community of mutual respect is essential to creating excellent free software.
 
-** Our Community Standards
+* Scope
+
+This Code of Conduct applies to every space where the project is discussed or developed: its source-code repositories, issue trackers, pull requests, mailing lists, chat rooms, and any online or in-person event held in the project's name. It also applies when someone is officially representing the project in public.
+
+* Our Community Standards
 
 We welcome everyone, regardless of:
 
@@ -26,7 +30,7 @@ We welcome everyone, regardless of:
 
 We value contributions from all individuals who support the principles of software freedom, user autonomy, and mutual respect.
 
-** Our Commitments
+* Our Commitments
 
 As contributors and maintainers of this project, we pledge to:
 
@@ -37,7 +41,7 @@ As contributors and maintainers of this project, we pledge to:
 - Avoid behavior that excludes, demeans, or harasses others.
 - Support and listen to marginalized voices in our communities.
 
-** Kind Communication
+* Kind Communication
 
 Inspired by the GNU Kind Communications Guidelines ([[https://www.gnu.org/philosophy/kind-communication.html][link]]), we encourage contributors to:
 
@@ -49,7 +53,7 @@ Inspired by the GNU Kind Communications Guidelines ([[https://www.gnu.org/philos
 
 Let us strive for communication that lifts others up rather than putting them down.
 
-** Unacceptable Behavior
+* Unacceptable Behavior
 
 The following behaviors are not acceptable:
 
@@ -59,19 +63,20 @@ The following behaviors are not acceptable:
 - Sustained disruption of discussion or community activities.
 - Any behavior that compromises the freedoms or dignity of others.
 
-** Reporting and Resolution
+* Reporting and Resolution
 
 If you experience or witness behavior that violates this Code of Conduct:
 
-- Please report it to the maintainers or a designated contact for the project.
+- Please report it to the maintainers by email at [[mailto:jjbigorra@gmail.com][jjbigorra@gmail.com]], or to another designated contact for the project.
 - All reports will be handled confidentially and with respect.
-- The project maintainers are committed to fair resolution and may take corrective actions if necessary, including warnings, temporary bans, or permanent exclusion from participation.
+- Reports made in good faith will never be punished, even if the facts turn out to differ from the initial description.
+- The project maintainers are committed to a fair resolution and may take corrective action if necessary, including warnings, temporary bans, or permanent exclusion from participation.
 
-** License of This Document
+* License of This Document
 
 This Code of Conduct is released under the Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0). You are welcome to adapt and reuse it for your own projects.
 
-** Thank You
+* Thank You
 
 Thank you for contributing to a respectful, inclusive, and freedom-respecting community.
 

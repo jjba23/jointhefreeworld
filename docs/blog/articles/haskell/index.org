@@ -2,13 +2,12 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
-<2024-04-20 za> [[/blog/articles/haskell/free-alacarte/index.html][Free à la Carte]]
+<2024-04-20 Sat> [[/blog/articles/haskell/free-alacarte/index.html][Free à la Carte]]
 
 <2022-10-10 Mon> [[/blog/articles/haskell/running-hoogle-locally/index.html][Running Hoogle locally]]
 
-<2022-09-12 Mon>- [[/blog/articles/haskell/type-safety-back-and-forth/index.html][Type safety back and forth]]
+<2022-09-12 Mon> - [[/blog/articles/haskell/type-safety-back-and-forth/index.html][Type safety back and forth]]
 
-<2022-09-10 Sat> [[/blog/articles/haskell/why-haskell-is-important/index.html][Why Haskell is important ?]]
+<2022-09-10 Sat> [[/blog/articles/haskell/why-haskell-is-important/index.html][Why is Haskell important?]]
 
-<2021-08-21 Sat> [[/blog/articles/haskell/haskell-in-production-at-foxdown-systems/index.html][Haskell in Production @ Foxdown Systems]]
-Haskell is the first programming language Foxdown reaches for when we build production software systems.
+<2021-08-21 Sat> [[/blog/articles/haskell/haskell-in-production-at-foxdown-systems/index.html][Haskell in Production @ Foxdown Systems]] - Haskell is the first programming language Foxdown reaches for when we build production software systems.

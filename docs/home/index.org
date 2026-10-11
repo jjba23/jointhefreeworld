@@ -6,44 +6,94 @@
 
 Hi, I'm Joe. Welcome to my node in the free world.
 
-/A space where engineering meets philosophy, driven by curiosity and an uncompromising quest for freedom./
+#+begin_export html
+<p class="jfw-tagline" data-jfw-typewriter="A space where engineering meets philosophy, driven by curiosity and an uncompromising quest for freedom."><em>A space where engineering meets philosophy, driven by curiosity and an uncompromising quest for freedom.</em></p>
+#+end_export
 
-*[[../blog/index.html][Visit my blog 📰]]*,  where I discuss  software and other kinds of engineering, my thoughts on life, and write some how-to's.
+*[[../blog/index.html][Visit my blog 📰]]*, where I write about software and other kinds of engineering, share my thoughts on life, and publish the occasional how-to.
 
-See [[https://codeberg.org/jjba23][all my programs and source code (lots of Lisp and FP) </>]] at Codeberg.
+See [[https://codeberg.org/jjba23][all my programs and source code (lots of Lisp and FP) </>]] on Codeberg.
 
 -----
 
-/jointhefreeworld/  is the name of my überprojekt, the ecosystem of free software I make and share with the world, and all my documents and adventures on all that..
+/jointhefreeworld/ is the name of my über-project: the ecosystem of free software I make and share with the world, together with my writing and adventures around it.
 
 It is also a non-recursive acronym:
 
-#+begin_quote
-Just One Interesting New Tweak, Hours Evaporate, Fiddling, Recompiling, and Emacs for almost Everything, Workflow is Optimal, Rice Looks Dope
-#+end_quote
+#+begin_export html
+<div class="jfw-acronym" data-jfw-acronym>
+  <p class="jfw-acronym-hint">Click the letters to spell it out, or use the button.</p>
+  <ol class="jfw-acronym-letters" aria-label="The jointhefreeworld acronym, spelled letter by letter">
+    <li><button type="button" class="jfw-letter" data-word="Just"><span class="jfw-letter-glyph">J</span><span class="jfw-letter-word">Just</span></button></li>
+    <li><button type="button" class="jfw-letter" data-word="One"><span class="jfw-letter-glyph">O</span><span class="jfw-letter-word">One</span></button></li>
+    <li><button type="button" class="jfw-letter" data-word="Interesting"><span class="jfw-letter-glyph">I</span><span class="jfw-letter-word">Interesting</span></button></li>
+    <li><button type="button" class="jfw-letter" data-word="New"><span class="jfw-letter-glyph">N</span><span class="jfw-letter-word">New</span></button></li>
+    <li><button type="button" class="jfw-letter" data-word="Tweak"><span class="jfw-letter-glyph">T</span><span class="jfw-letter-word">Tweak</span></button></li>
+    <li><button type="button" class="jfw-letter" data-word="Hours"><span class="jfw-letter-glyph">H</span><span class="jfw-letter-word">Hours</span></button></li>
+    <li><button type="button" class="jfw-letter" data-word="Evaporate"><span class="jfw-letter-glyph">E</span><span class="jfw-letter-word">Evaporate</span></button></li>
+    <li><button type="button" class="jfw-letter" data-word="Fiddling"><span class="jfw-letter-glyph">F</span><span class="jfw-letter-word">Fiddling</span></button></li>
+    <li><button type="button" class="jfw-letter" data-word="Recompiling"><span class="jfw-letter-glyph">R</span><span class="jfw-letter-word">Recompiling</span></button></li>
+    <li><button type="button" class="jfw-letter" data-word="Emacs"><span class="jfw-letter-glyph">E</span><span class="jfw-letter-word">Emacs</span></button></li>
+    <li><button type="button" class="jfw-letter" data-word="Everything"><span class="jfw-letter-glyph">E</span><span class="jfw-letter-word">Everything</span></button></li>
+    <li><button type="button" class="jfw-letter" data-word="Workflow"><span class="jfw-letter-glyph">W</span><span class="jfw-letter-word">Workflow</span></button></li>
+    <li><button type="button" class="jfw-letter" data-word="Optimal"><span class="jfw-letter-glyph">O</span><span class="jfw-letter-word">Optimal</span></button></li>
+    <li><button type="button" class="jfw-letter" data-word="Rice"><span class="jfw-letter-glyph">R</span><span class="jfw-letter-word">Rice</span></button></li>
+    <li><button type="button" class="jfw-letter" data-word="Looks"><span class="jfw-letter-glyph">L</span><span class="jfw-letter-word">Looks</span></button></li>
+    <li><button type="button" class="jfw-letter" data-word="Dope"><span class="jfw-letter-glyph">D</span><span class="jfw-letter-word">Dope</span></button></li>
+  </ol>
+  <p class="jfw-acronym-actions">
+    <button type="button" class="jfw-btn" data-action="expand">spell it out</button>
+    <button type="button" class="jfw-btn" data-action="collapse">collapse</button>
+  </p>
+  <p class="jfw-acronym-full" hidden>Just One Interesting New Tweak, Hours Evaporate, Fiddling, Recompiling, and Emacs for almost Everything, Workflow is Optimal, Rice Looks Dope</p>
+</div>
+#+end_export
 
-I release all my personal projects in a way that is free as in freedom and respecting of users and other hackers.
+I release all my personal projects in a way that is free as in freedom, and respectful of their users and of fellow hackers.
 
+-----
 
-------------
-
-I develop all kinds of tech solutions for day to day problems of me and of my clients. See [[file:../blog/articles/development/tech-radar/][The FREE stack - My Tech Radar]].
+I build all kinds of tech solutions for the day-to-day problems of my clients and of myself. See [[file:../blog/articles/development/tech-radar/][The FREE stack - My Tech Radar]].
 
 The jointhefreeworld project has an [[../blog/articles/personal/jointhefreeworld-code-of-conduct/index.html][inclusive and community-driven code of conduct]].
 
-For development convenience in the jointhefreeworld platform, we have  [[../platform/ports/index.html][an overview of reserved ports]] in a [[https://codeberg.org/jjba23/wolk-jjba][VPS / server]].
+For development convenience in the jointhefreeworld platform, we keep [[../platform/ports/index.html][an overview of reserved ports]] for a [[https://codeberg.org/jjba23/wolk-jjba][VPS / server]].
 
-I have a useful [[/blog/articles/personal/jointhefreeworld-documentation-style-guide/index.html][Style Guide for Documentation]]  as well that can help you write better documentation, manuals, tutorials and READMEs.
+I also maintain a [[/blog/articles/personal/jointhefreeworld-documentation-style-guide/index.html][style guide for documentation]] to help you write better documentation, manuals, tutorials, and READMEs.
 
-💼  For free and open source project management, check the [[https://lucidplan.jointhefreeworld.org][LucidPlan project]]. This is a good alternative to commercial project planning tools like Trello or Jira.
+💼 For free and open source project management, check the [[https://lucidplan.jointhefreeworld.org][LucidPlan project]], a good alternative to commercial planning tools like Trello or Jira.
 
-⚙️ For CI/CD with a Lisp/Scheme flavor, free as in freedom, check the [[https://byggsteg.jointhefreeworld.org][Byggsteg project]].  Let's set you up with a Lispy server infra for continuous integration that is easy and flexible.
+⚙️ For CI/CD with a Lisp/Scheme flavour, free as in freedom, check the [[https://byggsteg.jointhefreeworld.org][Byggsteg project]]. Let's get you set up with Lispy server infrastructure for continuous integration that is easy and flexible.
 
-🎻 If you play an instrument, want to learn music, or share musical knowledge, check the [[https://wikimusic.jointhefreeworld.org][WikiMusic project]].  This is a project dedicated to sharing musical knowledge and exploring music freely.
+🎻 If you play an instrument, want to learn music, or share musical knowledge, check the [[https://wikimusic.jointhefreeworld.org][WikiMusic project]], dedicated to sharing musical knowledge and exploring music freely.
 
-I also [[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][make videos]], about music, guitar 🎸 , Lisp, GNU Guix, Nix, Haskell and more..
+I also [[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][make videos]] about music, guitar 🎸, Lisp, GNU Guix, Nix, Haskell, and more.
 
-*[[../portfolio/index.html][Visit my portfolio]]* (work-in-progress 🚧) where I showcase my projects and software I build.
+*[[../portfolio/index.html][Visit my portfolio]]* (work-in-progress 🚧), where I showcase the projects and software I build.
+
+-----
+
+#+begin_export html
+<section class="jfw-repl" aria-labelledby="jfw-repl-title">
+  <h2 id="jfw-repl-title">⌨️ Try the free world REPL</h2>
+  <p class="jfw-repl-intro">A tiny Lisp playground that runs right here in your browser. Type an expression and press <kbd>RET</kbd>.</p>
+  <form class="jfw-repl-form" autocomplete="off">
+    <label class="jfw-repl-label" for="jfw-repl-input">(free)&gt;</label>
+    <input id="jfw-repl-input" class="jfw-repl-input" name="expr" type="text" spellcheck="false" autocapitalize="off" autocorrect="off" placeholder="(+ 1 2)" aria-describedby="jfw-repl-help"/>
+    <button type="submit" class="jfw-btn">eval</button>
+  </form>
+  <output class="jfw-repl-output" for="jfw-repl-input" aria-live="polite"></output>
+  <p id="jfw-repl-help" class="jfw-repl-examples">
+    <span class="jfw-repl-examples-label">Try:</span>
+    <button type="button" class="jfw-example">(+ 1 2)</button>
+    <button type="button" class="jfw-example">(* 6 7)</button>
+    <button type="button" class="jfw-example">(parens)</button>
+    <button type="button" class="jfw-example">(free-world)</button>
+    <button type="button" class="jfw-example">(help)</button>
+  </p>
+  <p class="jfw-easter-hint">Psst&hellip; type <code>free</code> anywhere on this page.</p>
+</section>
+#+end_export
 
 -----
 
@@ -51,21 +101,21 @@ I also [[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][make videos]]
 #+ATTR_HTML: :align center
 [[https://jointhefreeworld.org/static-assets/guile-show-hub/guile-show-hub-small.png]]
 
----------
+-----
 
 * 🕺🏻 About me
 
-- what's your name ? :: /Joe/ for short or /jjba23/ online.
-- passions ::  Software, Emacs, GNU/Linux, the amazing world of Free Software, Music and CrossFit.
-- λ λ λ ::  I usually develop in Scheme (Guile), Lisp, Haskell, Bash, Kotlin, Java,  Rust, Scala, Emacs Lisp, and more.
-- where from ? :: I live in Noord-Holland, The Netherlands 🇳🇱 I was born in Barcelona, Spain 🇪🇸
-- motto :: Fine words and insinuating appearance are seldom associated with true virtue.
+- What's your name? :: /Joe/ for short, or /jjba23/ online.
+- Passions :: software, Emacs, GNU/Linux, the amazing world of free software, music, and CrossFit.
+- λ λ λ :: I usually develop in Scheme (Guile), Lisp, Haskell, Bash, Kotlin, Java, Rust, Scala, Emacs Lisp, and more.
+- Where from? :: I live in Noord-Holland, the Netherlands 🇳🇱. I was born in Barcelona, Spain 🇪🇸.
+- Motto :: Fine words and insinuating appearance are seldom associated with true virtue.
 
 #+ATTR_ORG: :align center
 #+ATTR_HTML: :align center
 [[https://jointhefreeworld.org/static-assets/jointhefreeworld/avatar-joe-tiny.png]]
 
---------------
+-----
 
 * What some say about me
 
@@ -80,5 +130,5 @@ I've personally learned a lot from Josep, both technically and in terms of how t
 #+end_quote
 
 #+begin_quote
-Josep is a one man army. Is the youngest senior developer that I've met who can solve problems you don't even know you have. Always looks at the whole picture and finds the simplest solution for the most complicated task. He has a lot of patience, always the right answers. He is a technical person who would speak for days about technology, so... don't get him started, unless you have something to take notes.  ---- /Dan Andrei Dobos (Software Engineer), colleague/
+Josep is a one man army. He is the youngest senior developer that I've met who can solve problems you don't even know you have. He always looks at the whole picture and finds the simplest solution for the most complicated task. He has a lot of patience, and always the right answers. He is a technical person who would speak for days about technology, so... don't get him started, unless you have something to take notes with. ---- /Dan Andrei Dobos (Software Engineer), colleague/
 #+end_quote

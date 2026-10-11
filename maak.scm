@@ -49,7 +49,7 @@
   (remkdir-p "./public")
   ($ (list (format #f "CI=~a"
                    (if ci? "true" "false"))
-;;           "LC_ALL=en_US.UTF8"
+           ;; "LC_ALL=en_US.UTF8"
            "guix time-machine --channels=channels.scm --"
            "shell -m manifest.scm --"
            "emacs -Q --batch -l ./jointhefreeworld-site.el"
@@ -107,7 +107,23 @@
   ($ '("maak --list")))
 
 (define (lint-css)
+  "Lint and fix the CSS sources."
   ($ '("stylelint --fix strict --config .stylelintrc.yml" "static/css/*.css")))
+
+(define (lint-elisp)
+  "Load the build script in batch mode to catch load-time errors."
+  (time-machine-manifest-shell (list "emacs"
+                                "-Q"
+                                "--batch"
+                                "-l"
+                                "./jointhefreeworld-site.el"
+                                "--eval"
+                                "(message \"jointhefreeworld-site.el loaded successfully\")")))
+
+(define (lint)
+  "Run every project linter."
+  (lint-css)
+  (lint-elisp))
 
 (define (deploy)
   "Deploy the project."

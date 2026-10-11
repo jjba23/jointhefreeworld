@@ -81,21 +81,77 @@
 (use-package webfeeder
   :ensure t)
 
-(defvar yt-iframe-format
+(defconst jfw/video-iframe-format
   (concat "<div class=\"video\">"
           "  <iframe src=\"https://www.youtube.com/embed/%s\" allowfullscreen></iframe>"
-          "</div>"))
+          "</div>")
+  "HTML template used to embed a YouTube video by its VIDEO-ID.")
 
 (defun jfw/embed-video (video-id)
-  (format yt-iframe-format video-id))
+  "Return an HTML iframe embedding the YouTube video identified by VIDEO-ID."
+  (format jfw/video-iframe-format video-id))
 
 (setq user-full-name "Josep Bigorra")
 (setq user-mail-address "jjbigorra@gmail.com")
 
-(defvar jfw/site-url (if (string-equal (getenv "CI") "true")
-                         "https://jointhefreeworld.org"
-                       "http://localhost:50011")
-  "The URL for the site being generated.")
+(defconst jfw/site-url (if (string-equal (getenv "CI") "true")
+                           "https://jointhefreeworld.org"
+                         "http://localhost:50011")
+  "The absolute URL the generated site will be published under.")
+
+(defconst jfw/default-description
+  "Free software, engineering writing, and the jointhefreeworld ecosystem, by Josep Bigorra."
+  "Fallback meta description used for pages that do not define their own.")
+
+(defun jfw/page-description (description)
+  "Return the trimmed DESCRIPTION, or the default when it is empty or nil."
+  (if (and description (not (string-empty-p (string-trim description))))
+      (string-trim description)
+    jfw/default-description))
+
+(defconst jfw/font-assets-url
+  "https://jointhefreeworld.org/static-assets/fonts"
+  "Base URL of the self-hosted font files referenced by the stylesheet.")
+
+(defconst jfw/critical-fonts
+  '("LSANS.woff"                   ; Lucida Sans regular, used for body copy
+    "LSANSD.woff"                  ; Lucida Sans demi-bold, used for links
+    "LSANSI.woff")                 ; Lucida Sans italic, used above the fold
+  "Self-hosted font files used on first paint, preloaded to avoid a late swap.")
+
+(defun jfw/font-preloads ()
+  "Return preload link nodes for the critical font files.
+Fonts are always fetched in CORS mode, so each preload requests them
+anonymously; without ``crossorigin'' the preload would not match the
+stylesheet's own request and the font would be fetched twice."
+  (mapcar (lambda (file)
+            `(link (@ (rel "preload")
+                      (as "font")
+                      (type "font/woff")
+                      (crossorigin "anonymous")
+                      (href ,(concat jfw/font-assets-url "/" file)))))
+          jfw/critical-fonts))
+
+(defconst jfw/google-fonts-url
+  (concat "https://fonts.googleapis.com/css2?"
+          "family=Intel+One+Mono:ital,wght@0,300..700;1,300..700&"
+          "family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&"
+          "display=swap")
+  "Google Fonts stylesheet for the fallback and code typefaces.")
+
+(defconst jfw/theme-storage-key "jfw-theme"
+  "localStorage key shared by the inline theme script and the toggle.
+The toggle in `freeworld.js' reads the same key.")
+
+(defconst jfw/theme-init-script
+  (concat
+   "(function(){try{var t=localStorage.getItem(\"" jfw/theme-storage-key "\");"
+   "if(t===\"light\"||t===\"dark\"){document.documentElement.setAttribute(\"data-theme\",t);}}"
+   "catch(e){}document.documentElement.setAttribute(\"data-js\",\"on\");})();")
+  "Inline script that runs before first paint.
+It restores a stored theme choice and marks the document as JS-capable,
+which reveals the theme toggle. Keeping it inline avoids a flash of the
+wrong theme while the deferred scripts are still loading.")
 
 (org-link-set-parameters
  "yt"
@@ -110,32 +166,79 @@
      (jfw/embed-video path))))
 
 (defun jfw/site-header ()
+  "Return the shared site header as a list of sxml nodes."
   (list
-   `(div (@ (id "top")(class "site-title"))
+   `(div (@ (id "top") (class "site-title flex flex-wrap items-center gap-3"))
          (a (@ (class "border-b-none")
-               (href "https://jointhefreeworld.org"))(em "jointhefreeworld.org")))
+               (href "https://jointhefreeworld.org"))
+            (em "jointhefreeworld.org"))
+         (div (@ (class "theme-toggle")
+                 (role "radiogroup")
+                 (aria-label "Color theme")
+                 (data-jfw-theme-toggle "true"))
+              (input (@ (class "theme-toggle-input")
+                        (type "radio")
+                        (name "jfw-theme")
+                        (id "jfw-theme-light")
+                        (value "light")))
+              (label (@ (class "theme-toggle-option")
+                        (data-choice "light")
+                        (for "jfw-theme-light")
+                        (title "Light theme"))
+                     (span (@ (class "theme-toggle-icon")
+                              (aria-hidden "true"))
+                           "☀️")
+                     (span (@ (class "theme-toggle-label")) "light"))
+              (input (@ (class "theme-toggle-input")
+                        (type "radio")
+                        (name "jfw-theme")
+                        (id "jfw-theme-dark")
+                        (value "dark")))
+              (label (@ (class "theme-toggle-option")
+                        (data-choice "dark")
+                        (for "jfw-theme-dark")
+                        (title "Dark theme"))
+                     (span (@ (class "theme-toggle-icon")
+                              (aria-hidden "true"))
+                           "🌙")
+                     (span (@ (class "theme-toggle-label")) "dark"))
+              (input (@ (class "theme-toggle-input")
+                        (type "radio")
+                        (name "jfw-theme")
+                        (id "jfw-theme-system")
+                        (value "system")
+                        (checked "checked")))
+              (label (@ (class "theme-toggle-option")
+                        (data-choice "system")
+                        (for "jfw-theme-system")
+                        (title "Follow the system theme"))
+                     (span (@ (class "theme-toggle-icon")
+                              (aria-hidden "true"))
+                           "🖥️")
+                     (span (@ (class "theme-toggle-label")) "system"))))
    `(header (@ (class "site-header flex"))
             (div (@ (class "site-masthead"))
                  (div (@ (class "container"))
-                      (details (@ (open "true")(class "nav-details"))
+                      (details (@ (open "true") (class "nav-details"))
                                (summary "site navigation")
                                (nav (@ (class "nav"))
-                                    (a (@ (class "nav-link") (href "/")) "Home") " "
-                                    (a (@ (class "nav-link") (href "/blog/")) "Blog") " "
-                                    (a (@ (class "nav-link") (href "/joe-cv/")) "Joe's CV") " "
-                                    (a (@ (class "nav-link") (href "/documentation/")) "Docs") " "
-                                    (a (@ (class "nav-link") (href "https://codeberg.org/jjba23")) "Codeberg") " "
-                                    (a (@ (class "nav-link") (href "https://www.linkedin.com/in/josepjba/")) "LinkedIn") " "
-                                    )))))))
+                                    (a (@ (class "nav-link") (href "/")) "Home")
+                                    (a (@ (class "nav-link") (href "/blog/")) "Blog")
+                                    (a (@ (class "nav-link") (href "/joe-cv/")) "Joe's CV")
+                                    (a (@ (class "nav-link") (href "/documentation/")) "Docs")
+                                    (a (@ (class "nav-link") (href "https://codeberg.org/jjba23")) "Codeberg")
+                                    (a (@ (class "nav-link") (href "https://www.linkedin.com/in/josepjba/")) "LinkedIn"))))))))
 
 
 
 (defun jfw/site-footer ()
+  "Return the shared site footer as sxml."
   `((footer (@ (class "site-footer"))
             (div (@ (class "container"))
                  (div (@ (class "flex flex-col gap-3"))
                       (em (@(class "text-sm")) "Copyright © Josep Bigorra (jjba23 - jjbigorra@gmail.com)")
                       (em (@(class "text-sm")) "Licensed under the GNU AGPL v3 or newer")
+                      (em (@(class "text-sm")) ,(format "Site build: %s" (jfw/get-commit-hash)))
                       (div (@ (class "flex flex-row flex-wrap gap-3"))
                            (small
                             (a (@ (href "https://codeberg.org/jjba23/jointhefreeworld"))
@@ -147,6 +250,9 @@
                            ))))))
 
 (defun get-article-output-path (org-file pub-dir)
+  "Return the output directory for ORG-FILE under PUB-DIR.
+Index and 404 pages are published directly into PUB-DIR; every other
+page gets its own lowercased directory."
   (if (string-match-p "index\\.org$\\|404\\.org$" org-file)
       pub-dir
     (let ((article-dir (expand-file-name (downcase (file-name-base org-file)) pub-dir)))
@@ -154,14 +260,24 @@
         (make-directory article-dir t))
       (file-name-as-directory article-dir))))
 
-(defun jfw/get-commit-hash ()
-  "Get the short hash of the latest commit in the current repository."
-  (string-trim-right
-   (with-output-to-string
-     (with-current-buffer standard-output
-       (vc-git-command t nil nil "rev-parse" "--short" "HEAD")))))
+(defvar jfw/commit-hash-cache nil
+  "Cached short commit hash, so git is queried at most once per build.")
 
-(setq speculation-rules "
+(defun jfw/get-commit-hash ()
+  "Return the short hash of the latest commit, or \"unknown\".
+The result is cached for the duration of the build, and a repository-free
+or git-less environment degrades gracefully instead of aborting the
+publish."
+  (or jfw/commit-hash-cache
+      (setq jfw/commit-hash-cache
+            (condition-case nil
+                (string-trim
+                 (with-output-to-string
+                   (with-current-buffer standard-output
+                     (vc-git-command t nil nil "rev-parse" "--short" "HEAD"))))
+              (error "unknown")))))
+
+(defconst jfw/speculation-rules "
 {
   \"prerender\": [
     {
@@ -171,7 +287,8 @@
     }
   ]
 }
-")
+"
+  "Speculation Rules that let supporting browsers prerender followed links.")
 
 (cl-defun jfw/generate-page (title
                              content
@@ -180,6 +297,7 @@
                              (publish-date)
                              (content-reading-time)
                              (exclude-content-reading-time)
+                             (description)
                              (head-extra)
                              (pre-content)
                              (exclude-header)
@@ -189,56 +307,77 @@
    "<!DOCTYPE html>"
 
    (thread-last
-     (sxml-to-xml
-      `(html (@ (lang "en"))
-             (head
-              (meta (@ (charset "utf-8")))
-              (meta (@ (author "Josep Bigorra - jointhefreeworld")))
-              (meta (@ (name "viewport")
-                       (content "width=device-width, initial-scale=1, shrink-to-fit=no")))
-              (link (@ (rel "icon") (type "image/png") (href "/static/img/favicon.png")))
-              (link (@ (rel "alternate")
-                       (type "application/rss+xml")
-                       (title "Jointhefreeworld News Feed")
-                       (href "/rss.xml")))
-              (script (@(type "speculationrules"))
-                      "__SPECULATION_RULES_PLACEHOLDER__")
+    (sxml-to-xml
+     `(html (@ (lang "en"))             (head
+                                         (meta (@ (charset "utf-8")))
+                                         ;; Restored before paint to avoid a flash of the wrong theme;
+                                         ;; the placeholder is swapped for real JavaScript below.
+                                         (script "__THEME_INIT_PLACEHOLDER__")
+                                         (meta (@ (name "author") (content "Josep Bigorra - jointhefreeworld")))
+                                         (meta (@ (name "viewport")
+                                                  (content "width=device-width, initial-scale=1, shrink-to-fit=no")))
+                                         (meta (@ (name "description")
+                                                  (content ,(jfw/page-description description))))
+                                         (meta (@ (property "og:site_name") (content "jointhefreeworld")))
+                                         (meta (@ (property "og:type") (content "website")))
+                                         (meta (@ (property "og:title")
+                                                  (content ,(substring-no-properties (or title "")))))              (meta (@ (property "og:description") (content ,(jfw/page-description description))))
+                                         ;; Open the font connections early, then preload the faces that
+                                         ;; are visible on first paint.
+                                         (link (@ (rel "preconnect") (href "https://fonts.googleapis.com")))
+                                         (link (@ (rel "preconnect")
+                                                  (href "https://fonts.gstatic.com")
+                                                  (crossorigin "anonymous")))
+                                         ,@(jfw/font-preloads)
+                                         (link (@ (rel "icon") (type "image/png") (href "/static/img/favicon.png")))
+                                         (link (@ (rel "alternate")
+                                                  (type "application/rss+xml")
+                                                  (title "Jointhefreeworld News Feed")
+                                                  (href "/rss.xml")))
+                                         (script (@(type "speculationrules"))
+                                                 "__SPECULATION_RULES_PLACEHOLDER__")              ;; Analytics is non-blocking: it loads in parallel with the page
+                                         ;; and runs once the document has been parsed.
+                                         (script (@ (src ,(concat jfw/site-url "/static/js/symbanta.js")) (defer "true")) "")
+                                         (script (@ (src ,(concat jfw/site-url "/static/js/freeworld.js")) (defer "true")) "")
+                                         (link (@ (rel "stylesheet")
+                                                  (href ,(concat jfw/site-url "/static/css/jointhefreeworld.css"))))
+                                         (link (@ (rel "stylesheet") (href ,jfw/google-fonts-url)))
+                                         ,(when head-extra head-extra)
+                                         (title "__RAW_TITLE_PLACEHOLDER__ - jointhefreeworld"))
+            (body ,@(unless exclude-header
+                      (jfw/site-header))
+                  (div (@ (class "container flex flex-col items-center"))
+                       (h1 (@ (class "site-post-title"))
+                           "__RAW_TITLE_PLACEHOLDER__")
+                       ,(when (and (not exclude-content-reading-time) content-reading-time (not (equal "" content-reading-time)))
+                          `(em (@(class "site-post-meta"))
+                               ,(format "estimated reading time: %s %s"
+                                        content-reading-time
+                                        (if (= 1 content-reading-time) "minute" "minutes"))))
+                       ,(when (and publish-date (not (equal "" publish-date)))
+                          `(p (@ (class "site-post-meta")) ,(format "written on: %s" publish-date)))
+                       ,(if-let* ((video-id (plist-get info :video)))
+                            (jfw/embed-video video-id))
+                       ,(when pre-content pre-content)
+                       (div (@ (id "content")(class "content max-w-full"))
+                            "__RAW_CONTENT_PLACEHOLDER__"))
+                  ,@(unless exclude-footer
+                      (jfw/site-footer)))))
 
-              (script (@ (src ,(concat jfw/site-url "/static/js/symbanta.js"))) "")
-              (link (@ (rel "stylesheet") (href ,(concat jfw/site-url "/static/css/jointhefreeworld.css"))))
-              ,(when head-extra head-extra)
-              (title "__RAW_TITLE_PLACEHOLDER__ - jointhefreeworld"))
-             (body ,@(unless exclude-header
-                       (jfw/site-header))
-                   (div (@ (class "container flex flex-col items-center"))
-                        (h1 (@ (class "site-post-title"))
-                            "__RAW_TITLE_PLACEHOLDER__")
-                        ,(when (and (not exclude-content-reading-time) content-reading-time (not (equal "" content-reading-time)))
-                           `(em (@(class "site-post-meta")) ,(format "estimated reading time: %s minutes" content-reading-time)))
-                        ,(when (and publish-date (not (equal "" publish-date)))
-                           `(p (@ (class "site-post-meta")) ,(format "written on: %s" publish-date)))
-                        ,(if-let ((video-id (plist-get info :video)))
-                             (jfw/embed-video video-id))
-                        ,(when pre-content pre-content)
-                        (div (@ (id "content")(class "content max-w-full"))
-                             "__RAW_CONTENT_PLACEHOLDER__"))
-                   ,@(unless exclude-footer
-                       (jfw/site-footer)))))
-
-     ;; Pass the result sequentially through these string-replace calls
-     (string-replace "__RAW_TITLE_PLACEHOLDER__" (or title ""))
-     (string-replace "__SPECULATION_RULES_PLACEHOLDER__" (or speculation-rules ""))
-     (string-replace "__RAW_CONTENT_PLACEHOLDER__" (or content "")))))
+    ;; Pass the result sequentially through these string-replace calls
+    (string-replace "__RAW_TITLE_PLACEHOLDER__" (or title ""))
+    (string-replace "__SPECULATION_RULES_PLACEHOLDER__" (or jfw/speculation-rules ""))
+    (string-replace "__THEME_INIT_PLACEHOLDER__" (or jfw/theme-init-script ""))
+    (string-replace "__RAW_CONTENT_PLACEHOLDER__" (or content "")))))
 
 (defun estimate-reading-time (content)
-  "Calculate the estimated reading time of CONTENT in minutes."
-  (interactive)
+  "Calculate the estimated reading time of CONTENT in whole minutes.
+Always returns at least 1 so short pages never read as \"0 minutes\"."
   (let* ((word-list (split-string content "\\s-+" t)) ; Split by whitespace, remove empty strings
          (word-count (length word-list))
          (words-per-minute 130) ; Average reading speed
-         (estimated-minutes (/ (float word-count) words-per-minute))
-         (minutes (floor estimated-minutes)))
-    minutes))
+         (estimated-minutes (/ (float word-count) words-per-minute)))
+    (max 1 (floor estimated-minutes))))
 
 (defun is-exclude-content-reading-time-p (title)
   "Predicate that determines whether a page should show
@@ -251,12 +390,15 @@ estimated reading time based on its TITLE."
                   "Dev" "CI/CD" "Go" "FreeBSD" "Personal")))
 
 (defun jfw/org-html-template (contents info)
+  "Return the complete HTML document wrapping exported CONTENTS.
+INFO is the original Org export communication channel."
   (let* ((page-title (car (plist-get info :title))))
     (message (format "page title: %s" page-title))
     (jfw/generate-page (org-export-data (plist-get info :title) info)
                        contents
                        info
                        :publish-date (org-export-data (org-export-get-date info "%d/%m/%Y") info)
+                       :description (org-export-data (plist-get info :description) info)
                        :content-reading-time (estimate-reading-time contents)
                        :exclude-content-reading-time (is-exclude-content-reading-time-p page-title))))
 
@@ -277,7 +419,8 @@ estimated reading time based on its TITLE."
           (string-match-p "jpeg\\'" (org-element-property :raw-link link))
           (string-match-p "png\\'" (org-element-property :raw-link link))
           (string-match-p "webp\\'" (org-element-property :raw-link link)))
-      (format "<img loading=\"lazy\" %s src=\"%s\">"
+      (format "<img loading=\"lazy\" alt=\"%s\" %s src=\"%s\">"
+              (if (stringp contents) (org-html-encode-plain-text contents) "")
               img-style
               (org-element-property :raw-link link)))
      ((equal contents nil)
@@ -313,7 +456,7 @@ estimated reading time based on its TITLE."
      (when (and container (not (string= "" container)))
        (format "<%s%s>" container (if container-class (format " class=\"%s\"" container-class) "")))
      (if (not (org-export-low-level-p headline info))
-         (format "<h%d%s>%s&nbsp;<a id=\"%s\" class=\"anchor\" href=\"#%s\">#</a></h%d>%s"
+         (format "<h%d%s>%s&nbsp;<a id=\"%s\" class=\"anchor\" href=\"#%s\" aria-label=\"Link to this section\">#</a></h%d>%s"
                  level
                  (or attributes "")
                  text
@@ -341,10 +484,15 @@ estimated reading time based on its TITLE."
                                      (src-block . jfw/org-html-src-block)
                                      (headline . jfw/org-html-headline))
                                    :options-alist
-                                   '((:video "VIDEO" nil nil)))
+                                   '((:video "VIDEO" nil nil)
+                                     (:description "DESCRIPTION" nil nil)))
 
-(defun org-html-publish-to-html (plist filename pub-dir)
-  "Publish an org file to HTML, using the FILENAME as the output directory."
+(defun jfw/org-html-publish-to-html (plist filename pub-dir)
+  "Publish an org file to HTML under a pretty directory name.
+Unlike the built-in `org-html-publish-to-html', this places non-index
+pages in a lowercased directory derived from FILENAME, so every page
+keeps a stable, human-readable URL.  It is intentionally named with a
+`jfw/' prefix to avoid clobbering the built-in function."
   (let ((article-path (get-article-output-path filename pub-dir)))
     (cl-letf (((symbol-function 'org-export-output-file-name)
                (lambda (extension &optional subtreep pub-dir)
@@ -465,7 +613,7 @@ estimated reading time based on its TITLE."
         webfeeder-date-function #'jfw/rss-extract-date)
 
 (let ((common-props '(:base-extension "org"
-                                      :publishing-function org-html-publish-to-html
+                                      :publishing-function jfw/org-html-publish-to-html
                                       :with-title t
                                       :recursive t
                                       :with-timestamps t)))
@@ -492,24 +640,27 @@ estimated reading time based on its TITLE."
            ,@common-props))))
 
 (defun jfw/publish ()
-  "Publish the entire site."
+  "Publish the entire site, then rebuild the RSS feed.
+The RSS step is reported but not fatal, so a single feed problem never
+leaves the published HTML half-written."
   (interactive)
   (org-publish-all t)
-  (ignore-errors
-    ;; Temporarily force Emacs to use the standard English/POSIX locale
-    ;; so webfeeder generates RFC-compliant pubDates (e.g., "Sat", "May")
-    (let ((system-time-locale "C"))
-      (webfeeder-build "rss.xml"
-                       "./public"
-                       jfw/site-url
-                       (let ((default-directory (expand-file-name "./public/")))
-                         (remove "news/index.html"
-                                 (directory-files-recursively "blog/articles"
-                                                              ".*\\.html$")))
-                       :builder 'webfeeder-make-rss
-                       :title "jointhefreeworld news"
-                       :description "News and Insights from the jointhefreeworld and jjba23 projects!"
-                       :author "Josep Bigorra"))))
+  (condition-case err
+      ;; Temporarily force Emacs to use the standard English/POSIX locale
+      ;; so webfeeder generates RFC-compliant pubDates (e.g., "Sat", "May")
+      (let ((system-time-locale "C"))
+        (webfeeder-build "rss.xml"
+                         "./public"
+                         jfw/site-url
+                         (let ((default-directory (expand-file-name "./public/")))
+                           (remove "news/index.html"
+                                   (directory-files-recursively "blog/articles"
+                                                                ".*\\.html$")))
+                         :builder 'webfeeder-make-rss
+                         :title "jointhefreeworld news"
+                         :description "News and Insights from the jointhefreeworld and jjba23 projects!"
+                         :author "Josep Bigorra"))
+    (error (message "RSS feed build failed: %S" err))))
 
 (provide 'jointhefreeworld-site)
 

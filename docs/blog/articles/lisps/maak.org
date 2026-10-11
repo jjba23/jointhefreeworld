@@ -1,4 +1,4 @@
-#+title: Maak: The power of Lisp that powers your trusty command runner and the enlightments
+#+title: Maak: The power of Lisp that powers your trusty command runner and the enlightenments
 #+author: Josep Bigorra
 #+email: jjbigorra@gmail.com
 #+language: en

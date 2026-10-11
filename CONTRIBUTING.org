@@ -1,0 +1,88 @@
+#+title: Contributing to jointhefreeworld
+#+author: Josep Bigorra
+#+email: jjbigorra@gmail.com
+#+language: en
+
+Thank you for wanting to contribute to jointhefreeworld! This guide explains how to set up the project, the conventions we follow, and how to send a change.
+
+Before you begin, please read the project's [[https://jointhefreeworld.org/blog/articles/personal/jointhefreeworld-code-of-conduct/index.html][Code of Conduct]] and [[https://jointhefreeworld.org/blog/articles/personal/jointhefreeworld-ai-policy/index.html][AI Policy]]. By taking part, you agree to follow both.
+
+* Ways to contribute
+
+You do not need to write code to help:
+
+- Report a bug or a broken link by opening an issue.
+- Suggest a documentation improvement, or fix a typo.
+- Improve the accessibility, performance, or SEO of the generated site.
+- Refactor or extend the build tooling.
+- Share the project with someone who might find it useful.
+
+* Setting up a development environment
+
+You will need:
+
+- *GNU Guix* (recommended, for a reproducible environment)
+- *Emacs 29.1 or newer*
+- *Git*
+
+Enter the project's environment and start the hot-reloading dev server:
+
+#+begin_src sh
+  guix shell -m manifest.scm
+  maak dev
+#+end_src
+
+This watches the Org, Emacs Lisp, Scheme, and CSS sources and rebuilds the site on every change. The result is served from ~./public~ on port 50011.
+
+To build once without a server, run ~maak build~.
+
+* Style and conventions
+
+** Scheme and Lisp
+
+Follow the rules collected in the project's [[https://jointhefreeworld.org/blog/articles/lisps/scheme-and-lisp-style-guide/index.html][Scheme & Lisp Style Guide]]. In short: short lines, clear names, and no trailing whitespace. Run ~maak fmt~ to format Scheme and Emacs Lisp sources before you commit.
+
+** Emacs Lisp
+
+Every public function gets a docstring. Prefer ~defconst~ for values that never change during a build, and keep the build script easy to read, since it is also documentation.
+
+** Documentation and prose
+
+Follow the project's [[https://jointhefreeworld.org/blog/articles/personal/jointhefreeworld-documentation-style-guide/index.html][documentation style guide]]. Write in clear, plain English, address the reader as "you", use "GNU/Linux" rather than just "Linux", and always test any code you show.
+
+** CSS and JavaScript
+
+Run ~maak lint-css~ before committing stylesheet changes. In JavaScript, prefer plain ES modules or a small self-contained script, avoid adding dependencies, and respect ~prefers-reduced-motion~ for any animation.
+
+* Commit messages
+
+Write commits in the [[https://www.conventionalcommits.org/][Conventional Commits]] style, matching the existing history:
+
+#+begin_src
+  feat: Add a new feature
+  fix: Correct a bug
+  docs: Change documentation only
+  chore: Routine maintenance
+#+end_src
+
+Keep the subject line short, use the imperative mood ("Add", not "Added"), and explain *why* the change is useful in the body when it is not obvious from the subject.
+
+* Sending a change
+
+1. Fork the repository on [[https://codeberg.org/jjba23/jointhefreeworld][Codeberg]] and create a branch for your work.
+2. Make your change, then build the site and check that it still renders correctly.
+3. Run ~maak fmt~ and ~maak lint-css~ where relevant.
+4. Open a pull request describing what you changed and why.
+
+Please keep pull requests focused: one topic per request is much easier to review than several unrelated changes bundled together.
+
+* Licensing of contributions
+
+By contributing, you agree that your contribution is licensed under the same terms as the project:
+
+- Source code: GNU Affero General Public License v3 or newer (AGPL-3.0-or-later).
+- Documentation and prose: GNU Free Documentation License v1.3 or newer (GFDL-1.3-or-later).
+
+* Questions
+
+If anything here is unclear, or you would like to discuss an idea before writing code, email me at [[mailto:jjbigorra@gmail.com][jjbigorra@gmail.com]]. I am always happy to help.
