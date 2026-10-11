@@ -109,20 +109,30 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
      preference by default; the [data-theme] rules below can override it. */
   color-scheme: light dark;
 
-  /* Colors */
-  --color-primary: #111111;
-  --color-hover: #da6197;
-  --color-background-light: rgba(251, 243, 218, 0.1);
-  --color-background-medium: rgba(251, 243, 218, 0.2);
-  --color-text-code: #111111;
-  --color-text-emphasis: #222222;
-  --color-hr: rgba(120, 120, 120, 0.5);
-  --color-code-background: rgba(243, 239, 227, 0.3);
-  --color-border: rgba(165, 93, 116, 0.3);
-  --color-header-1: #1b2a41;
-  --color-header-2: #3b597b;
-  --color-header-3: #a55d74;
-  --color-secondary: oklch(0.528 0.1036 251.54);
+  /* Frosted glass. One blur scale for every theme. */
+  --blur-sm: 8px;
+  --blur-md: 16px;
+  --blur-saturate: 170%;
+
+  /* Colors — a cozy pumpkin and terracotta palette on warm paper. */
+  --color-primary: #2f2621;
+  --color-hover: #c96a44;
+  --color-on-accent: #1a1009;
+  --color-background-medium: rgba(255, 255, 255, 0.5);
+  --color-surface: rgba(255, 255, 255, 0.6);
+  --color-page-base: #faf3e8;
+  --color-glow-1: rgba(228, 150, 92, 0.28);
+  --color-glow-2: rgba(196, 112, 78, 0.18);
+  --color-glow-3: rgba(232, 196, 140, 0.22);
+  --color-text-code: #2a211b;
+  --color-text-emphasis: #1d1611;
+  --color-hr: rgba(140, 110, 90, 0.3);
+  --color-code-background: rgba(255, 255, 255, 0.5);
+  --color-border: rgba(164, 82, 47, 0.24);
+  --color-header-1: #4a2f22;
+  --color-header-2: #a8541f;
+  --color-header-3: #7d5a3c;
+  --color-secondary: #a4522f;
 
   /* Font Families */
   --font-family-body: "Lucida Sans", "Plus Jakarta Sans", sans-serif;
@@ -160,18 +170,18 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --border-radius-lg: 1.3em;
 
   /* Shadows */
-  --box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px;
+  --box-shadow: rgba(96, 62, 40, 0.12) 0px 4px 6px -1px, rgba(96, 62, 40, 0.08) 0px 2px 4px -2px;
 
   /* Max Widths */
   --max-width-text: 80ch;
   --max-width-masthead: 76ch;
   --max-width-pre: 128ch;
 
-  /* Catppuccin Latte (Light Mode) Syntax Highlighting */
-  --color-syntax-string: #40a02b;
-  --color-syntax-builtin: #1e66f5;
-  --color-syntax-keyword: #8839ef;
-  --color-syntax-comment: #7c7f93;
+  /* Syntax highlighting: warm and low-chroma, to match the terracotta. */
+  --color-syntax-string: #5f7d45;
+  --color-syntax-builtin: #3c6e8f;
+  --color-syntax-keyword: #a8541f;
+  --color-syntax-comment: #8a7a6a;
 }
 
 :root[data-theme="light"] {
@@ -182,50 +192,62 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
    Keep this palette in sync with the system-preference block below. */
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --color-primary: #e4e4e7;
-  --color-hover: #f48fb1;
-  --color-background-light: #18181b;
-  --color-background-medium: #27272a;
-  --color-text-code: #f8f8f2;
+  --color-primary: #f0e6dc;
+  --color-hover: #e08c3c;
+  --color-on-accent: #1d1206;
+  --color-background-medium: rgba(46, 34, 27, 0.5);
+  --color-surface: rgba(46, 34, 27, 0.62);
+  --color-page-base: #171210;
+  --color-glow-1: rgba(232, 150, 90, 0.2);
+  --color-glow-2: rgba(196, 110, 74, 0.16);
+  --color-glow-3: rgba(150, 120, 90, 0.14);
+  --color-text-code: #f7efe7;
   --color-text-emphasis: #ffffff;
-  --color-hr: rgba(255, 255, 255, 0.15);
-  --color-code-background: rgba(12, 12, 12, 0.6);
-  --color-border: rgba(218, 97, 151, 0.4);
-  --color-header-1: #fbf3da;
-  --color-header-2: #da6197;
-  --color-header-3: #a4bcdb;
-  --color-secondary: oklch(0.75 0.1 251.54);
+  --color-hr: rgba(255, 255, 255, 0.14);
+  --color-code-background: rgba(30, 22, 17, 0.5);
+  --color-border: rgba(214, 130, 80, 0.3);
+  --color-header-1: #f6d9b8;
+  --color-header-2: #e79a52;
+  --color-header-3: #c9a884;
+  --color-secondary: #e9a06a;
+  --box-shadow: rgba(0, 0, 0, 0.5) 0px 6px 18px -6px, rgba(0, 0, 0, 0.32) 0px 2px 8px -4px;
 
-  /* Catppuccin Mocha (Dark Mode) Syntax Highlighting */
-  --color-syntax-string: #a6e3a1;
-  --color-syntax-builtin: #89b4fa;
-  --color-syntax-keyword: #cba6f7;
-  --color-syntax-comment: #6c7086;
+  /* Syntax highlighting: warm and low-chroma, to match the terracotta. */
+  --color-syntax-string: #b9c07a;
+  --color-syntax-builtin: #8fb3c7;
+  --color-syntax-keyword: #e79a52;
+  --color-syntax-comment: #93857a;
 }
 
 /* Fall back to the system preference when the visitor has not chosen a
    theme. The :not() guard keeps an explicit light choice winning here. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --color-primary: #e4e4e7;
-    --color-hover: #f48fb1;
-    --color-background-light: #18181b;
-    --color-background-medium: #27272a;
-    --color-text-code: #f8f8f2;
+    --color-primary: #f0e6dc;
+    --color-hover: #e08c3c;
+    --color-on-accent: #1d1206;
+    --color-background-medium: rgba(46, 34, 27, 0.5);
+    --color-surface: rgba(46, 34, 27, 0.62);
+    --color-page-base: #171210;
+    --color-glow-1: rgba(232, 150, 90, 0.2);
+    --color-glow-2: rgba(196, 110, 74, 0.16);
+    --color-glow-3: rgba(150, 120, 90, 0.14);
+    --color-text-code: #f7efe7;
     --color-text-emphasis: #ffffff;
-    --color-hr: rgba(255, 255, 255, 0.15);
-    --color-code-background: rgba(12, 12, 12, 0.6);
-    --color-border: rgba(218, 97, 151, 0.4);
-    --color-header-1: #fbf3da;
-    --color-header-2: #da6197;
-    --color-header-3: #a4bcdb;
-    --color-secondary: oklch(0.75 0.1 251.54);
+    --color-hr: rgba(255, 255, 255, 0.14);
+    --color-code-background: rgba(30, 22, 17, 0.5);
+    --color-border: rgba(214, 130, 80, 0.3);
+    --color-header-1: #f6d9b8;
+    --color-header-2: #e79a52;
+    --color-header-3: #c9a884;
+    --color-secondary: #e9a06a;
+    --box-shadow: rgba(0, 0, 0, 0.5) 0px 6px 18px -6px, rgba(0, 0, 0, 0.32) 0px 2px 8px -4px;
 
-    /* Catppuccin Mocha (Dark Mode) Syntax Highlighting */
-    --color-syntax-string: #a6e3a1;
-    --color-syntax-builtin: #89b4fa;
-    --color-syntax-keyword: #cba6f7;
-    --color-syntax-comment: #6c7086;
+    /* Syntax highlighting: warm and low-chroma, to match the terracotta. */
+    --color-syntax-string: #b9c07a;
+    --color-syntax-builtin: #8fb3c7;
+    --color-syntax-keyword: #e79a52;
+    --color-syntax-comment: #93857a;
   }
 }
 
@@ -252,7 +274,12 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
 
 html {
   scroll-behavior: smooth;
-  background: var(--color-background-light);
+  background-color: var(--color-page-base);
+  background-image: radial-gradient(60rem 40rem at 10% -10%, var(--color-glow-1), transparent 62%),
+    radial-gradient(52rem 38rem at 92% 2%, var(--color-glow-2), transparent 60%),
+    radial-gradient(64rem 46rem at 50% 112%, var(--color-glow-3), transparent 62%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   color: var(--color-primary);
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -366,6 +393,8 @@ pre {
   font-style: normal;
   box-shadow: var(--box-shadow);
   max-width: var(--max-width-pre);
+  -webkit-backdrop-filter: blur(var(--blur-sm)) saturate(var(--blur-saturate));
+  backdrop-filter: blur(var(--blur-sm)) saturate(var(--blur-saturate));
 }
 
 blockquote {
@@ -379,6 +408,8 @@ blockquote {
   font-size: var(--text-sm);
   box-shadow: var(--box-shadow);
   max-width: var(--max-width-pre);
+  -webkit-backdrop-filter: blur(var(--blur-sm)) saturate(var(--blur-saturate));
+  backdrop-filter: blur(var(--blur-sm)) saturate(var(--blur-saturate));
 }
 
 /* org specific */
@@ -440,6 +471,31 @@ blockquote {
   padding: 0 var(--spacing-md);
 }
 
+/* The navigation floats above the page like a macOS toolbar: sticky and
+   translucent, blurring whatever scrolls underneath it. */
+.site-header {
+  position: sticky;
+  top: var(--spacing-md);
+  z-index: 50;
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--box-shadow);
+  -webkit-backdrop-filter: blur(var(--blur-md)) saturate(var(--blur-saturate));
+  backdrop-filter: blur(var(--blur-md)) saturate(var(--blur-saturate));
+}
+
+/* On a phone the navigation wraps to several rows, so pinning it would eat
+   too much of the screen. Let it scroll away, but keep the frosted look. */
+@media only screen and (max-width: 600px) {
+  .site-header {
+    position: static;
+    background: var(--color-background-medium);
+  }
+}
+
 /* Theme chooser: light, dark, or follow the operating system. It stays
    hidden until the inline script marks the document as JS-capable, so it is
    never a dead control for visitors without JavaScript. */
@@ -487,7 +543,7 @@ blockquote {
 
 .theme-toggle-option:hover {
   background: var(--color-hover);
-  color: var(--color-text-emphasis);
+  color: var(--color-on-accent);
 }
 
 .theme-toggle-input:focus-visible + .theme-toggle-option {
@@ -502,7 +558,7 @@ blockquote {
 :root[data-theme="dark"] .theme-toggle-option[data-choice="dark"],
 :root:not([data-theme]) .theme-toggle-option[data-choice="system"] {
   background: var(--color-hover);
-  color: var(--color-text-emphasis);
+  color: var(--color-on-accent);
   border-color: var(--color-hover);
 }
 
@@ -528,8 +584,12 @@ summary {
 
 .nav-details { width: 100%; }
 
+/* The article card is translucent but not blurred: nothing passes behind it
+   (its backdrop is the page's own gradient), and blurring a card this tall
+   would cost paint time for no visible gain. Blur is reserved for surfaces
+   that content actually scrolls behind, like the header below. */
 .content {
-  background-color: var(--color-background-medium);
+  background-color: var(--color-surface);
   padding: var(--spacing-xl);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--box-shadow);
@@ -637,7 +697,7 @@ ul.categories li a {
 
 ul.categories li a:hover {
   background: var(--color-hover);
-  color: var(--color-text-emphasis);
+  color: var(--color-on-accent);
   border-color: var(--color-hover);
   transform: translateY(-1px);
 }
@@ -667,7 +727,7 @@ ul.categories li a:hover {
 .jfw-example:hover,
 .jfw-example:focus-visible {
   background: var(--color-hover);
-  color: var(--color-text-emphasis);
+  color: var(--color-on-accent);
   transform: translateY(-1px);
 }
 
@@ -675,13 +735,15 @@ ul.categories li a:hover {
 
 .jfw-acronym,
 .jfw-repl {
-  background: var(--color-background-medium);
+  background: var(--color-surface);
   border: 2px solid var(--color-border);
   border-radius: var(--border-radius-base);
   box-shadow: var(--box-shadow);
   padding: var(--spacing-lg);
   max-width: var(--max-width-pre);
   margin: var(--spacing-lg) 0;
+  -webkit-backdrop-filter: blur(var(--blur-md)) saturate(var(--blur-saturate));
+  backdrop-filter: blur(var(--blur-md)) saturate(var(--blur-saturate));
 }
 
 .jfw-acronym-hint {

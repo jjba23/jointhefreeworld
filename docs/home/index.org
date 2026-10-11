@@ -51,28 +51,6 @@ It is also a non-recursive acronym:
 
 I release all my personal projects in a way that is free as in freedom, and respectful of their users and of fellow hackers.
 
------
-
-I build all kinds of tech solutions for the day-to-day problems of my clients and of myself. See [[file:../blog/articles/development/tech-radar/][The FREE stack - My Tech Radar]].
-
-The jointhefreeworld project has an [[../blog/articles/personal/jointhefreeworld-code-of-conduct/index.html][inclusive and community-driven code of conduct]].
-
-For development convenience in the jointhefreeworld platform, we keep [[../platform/ports/index.html][an overview of reserved ports]] for a [[https://codeberg.org/jjba23/wolk-jjba][VPS / server]].
-
-I also maintain a [[/blog/articles/personal/jointhefreeworld-documentation-style-guide/index.html][style guide for documentation]] to help you write better documentation, manuals, tutorials, and READMEs.
-
-💼 For free and open source project management, check the [[https://lucidplan.jointhefreeworld.org][LucidPlan project]], a good alternative to commercial planning tools like Trello or Jira.
-
-⚙️ For CI/CD with a Lisp/Scheme flavour, free as in freedom, check the [[https://byggsteg.jointhefreeworld.org][Byggsteg project]]. Let's get you set up with Lispy server infrastructure for continuous integration that is easy and flexible.
-
-🎻 If you play an instrument, want to learn music, or share musical knowledge, check the [[https://wikimusic.jointhefreeworld.org][WikiMusic project]], dedicated to sharing musical knowledge and exploring music freely.
-
-I also [[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][make videos]] about music, guitar 🎸, Lisp, GNU Guix, Nix, Haskell, and more.
-
-*[[../portfolio/index.html][Visit my portfolio]]* (work-in-progress 🚧), where I showcase the projects and software I build.
-
------
-
 #+begin_export html
 <section class="jfw-repl" aria-labelledby="jfw-repl-title">
   <h2 id="jfw-repl-title">⌨️ Try the free world REPL</h2>
@@ -94,6 +72,26 @@ I also [[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][make videos]]
   <p class="jfw-easter-hint">Psst&hellip; type <code>free</code> anywhere on this page.</p>
 </section>
 #+end_export
+
+-----
+
+I build all kinds of tech solutions for the day-to-day problems of my clients and of myself. See [[file:../blog/articles/development/tech-radar/][The FREE stack - My Tech Radar]].
+
+The jointhefreeworld project has an [[../blog/articles/personal/jointhefreeworld-code-of-conduct/index.html][inclusive and community-driven code of conduct]].
+
+For development convenience in the jointhefreeworld platform, we keep [[../platform/ports/index.html][an overview of reserved ports]] for a [[https://codeberg.org/jjba23/wolk-jjba][VPS / server]].
+
+I also maintain a [[/blog/articles/personal/jointhefreeworld-documentation-style-guide/index.html][style guide for documentation]] to help you write better documentation, manuals, tutorials, and READMEs.
+
+💼 For free and open source project management, check the [[https://lucidplan.jointhefreeworld.org][LucidPlan project]], a good alternative to commercial planning tools like Trello or Jira.
+
+⚙️ For CI/CD with a Lisp/Scheme flavour, free as in freedom, check the [[https://byggsteg.jointhefreeworld.org][Byggsteg project]]. Let's get you set up with Lispy server infrastructure for continuous integration that is easy and flexible.
+
+🎻 If you play an instrument, want to learn music, or share musical knowledge, check the [[https://wikimusic.jointhefreeworld.org][WikiMusic project]], dedicated to sharing musical knowledge and exploring music freely.
+
+I also [[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][make videos]] about music, guitar 🎸, Lisp, GNU Guix, Nix, Haskell, and more.
+
+*[[../portfolio/index.html][Visit my portfolio]]* (work-in-progress 🚧), where I showcase the projects and software I build.
 
 -----
 
@@ -120,15 +118,9 @@ I also [[https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA][make videos]]
 * What some say about me
 
 #+begin_quote
-I really enjoyed working with Josep in the Payments team at Vandebron.
-
-He is one of those engineers who can look at a problem from many different angles. He has a lot of experience with Kotlin and Spring, but what really stands out is his engineering mindset and the way he thinks things through before jumping to a solution.
-
-He is also great at switching between the bigger picture and the small details, while keeping focus on what actually matters. On top of being a very strong engineer, Josep is a great team player. He explains complex topics clearly to any audience and is always happy to help the team.
-
-I've personally learned a lot from Josep, both technically and in terms of how to approach problems and think like an engineer. I'd happily recommend him to any engineering team! ---- /Andrei Karabovich (Software Engineer), colleague/
+I really enjoyed working with Josep in the Payments team at Vandebron. He can look at a problem from many different angles, and what stands out most is his engineering mindset: he thinks things through before jumping to a solution. He moves easily between the bigger picture and the small details, explains complex topics clearly to any audience, and is a great team player. I've learned a lot from him, both technically and in how to approach problems. I'd happily recommend him to any engineering team! ---- /Andrei Karabovich (Software Engineer), colleague/
 #+end_quote
 
 #+begin_quote
-Josep is a one man army. He is the youngest senior developer that I've met who can solve problems you don't even know you have. He always looks at the whole picture and finds the simplest solution for the most complicated task. He has a lot of patience, and always the right answers. He is a technical person who would speak for days about technology, so... don't get him started, unless you have something to take notes with. ---- /Dan Andrei Dobos (Software Engineer), colleague/
+Josep is a one man army: the youngest senior developer I've met, and he can solve problems you don't even know you have. He always looks at the whole picture and finds the simplest solution for the most complicated task. He would speak for days about technology, so... don't get him started, unless you have something to take notes with. ---- /Dan Andrei Dobos (Software Engineer), colleague/
 #+end_quote
