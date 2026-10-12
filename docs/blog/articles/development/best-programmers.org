@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2025-04-11 Fri>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: I have met a lot of developers in my life. Lately, I asked myself: "What does it take to be one of the best? What do they all have in common?"
 
 Original [[https://endler.dev/2025/best-programmers/][article by Matthias Endler]]
 

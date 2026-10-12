@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2026-06-20 Sat>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: This style guide will help you write better documentation, manuals, tutorials and READMEs
 
 #+begin_quote
 Based largely on comments by Ron Hale-Evans, Robert J. Chassell, and Richard M. Stallman.

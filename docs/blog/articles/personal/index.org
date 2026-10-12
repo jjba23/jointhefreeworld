@@ -2,8 +2,5 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
-<2026-06-21 Sat> [[/blog/articles/personal/jointhefreeworld-documentation-style-guide/index.html][jointhefreeworld - A Style Guide for Documentation]] - This style guide will help you write better documentation, manuals, tutorials and READMEs.
-
-<2025-10-19 Sun> [[/blog/articles/personal/josep-astrology-by-metsatron/index.html][Mètsàtron's astral analysis of Joe's being]] - My brother from another mother, ⁨Mètsàtron Sucurí Jibōia⁩ did some astral and digital readings about me (Joe).
-
-<2024-06-17 Mon> [[/blog/articles/personal/brief-aan-mijzelf/index.html][Brief aan Mijzelf - Letter to myself]] - Jij en ik weten dat levend zijn pieken en dalen betekent.
+#+begin_listing category
+#+end_listing

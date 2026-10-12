@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2025-04-11 Fri>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: Why choose for this paren-heavy form of lambda calculus? Lisp is a language that was designed to be used as a tool for thinking about problems, and that is the fun part of programming.
 
 Original [[https://funcall.blogspot.com/2025/04/why-i-program-in-lisp.html][article by Joe Marshall]]
 

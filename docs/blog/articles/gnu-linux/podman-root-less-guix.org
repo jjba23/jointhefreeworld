@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2024-12-09 ma>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: By leveraging Podman, a daemonless container engine, we can achieve rootless containerization, enhancing security and flexibility with Guix.
 
 Note: There is a better way to go about this, Guix now contains ~rootless-podman-service-type~ which will take care of it all pretty much for you. This article is thus outdated, and explains how we did things before that!
 

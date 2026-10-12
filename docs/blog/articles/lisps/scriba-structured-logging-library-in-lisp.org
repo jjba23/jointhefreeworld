@@ -3,6 +3,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2026-06-03 Wed>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: Scriba is a structured logging library for GNU Guile that prioritizes flexibility and observability.  It provides modular log routing, formatting, and filtering, allowing developers to generate human-readable console logs during development and machine-readable JSON logs for production environments.
 
 /A structured logging framework for Guile Scheme/
 

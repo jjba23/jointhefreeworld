@@ -3,6 +3,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2024-12-04 wo>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: Are you editing YAML files and would like to use JSON schemas for YAML in Emacs?
 #+options: toc:nil num:nil
 
 Are you someone that enjoys Emacs and the amazing built-in package Eglot, which enables Emacs to provide intelligent completions and error reporting, linting, and more with language servers ?

@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2025-06-26 do>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: "Why bother with Scheme/Lisp?" is a classic question, with countless valid answers. While I can't list them all exhaustively, I will try to explain my motivation.
 
 I want to start by thanking the great NalaGinrut that wrote an article on this topic, which I adapted to explain my experience with Scheme and Lisps.
 

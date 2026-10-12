@@ -4,6 +4,7 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2021-08-21 Sat>
+#+DESCRIPTION: Haskell is the first programming language Foxdown reaches for when we build production software systems.
 
 Haskell is the first programming language we reach for when we build production software systems. This likely seems unusual to anyone who only has a passing familiarity with the language. Haskell has a reputation for being an advanced language with a steep learning curve. It is also often thought of as a research language with limited practical utility.
 

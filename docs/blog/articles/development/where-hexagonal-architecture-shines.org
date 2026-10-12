@@ -4,6 +4,7 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2026-10-12 ma>
+#+HIGHLIGHT: yes
 #+description: Ports and adapters pays where the domain is the complicated part. Here is how it looks in Kotlin with Spring, in Guile Scheme and in Haskell, and when MVC, KISS and CQRS are the better answer.
 #+keywords: hexagonal architecture, ports and adapters, domain-driven design, Kotlin, Spring, Guile Scheme, Haskell, MVC, GNU Artanis, SXML, CQRS, repository pattern
 

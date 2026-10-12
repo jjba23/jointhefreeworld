@@ -21,82 +21,13 @@ On their own pages, outside the blog: the [[/code-of-conduct/][Code of Conduct]]
 
 *** 📜 Highlighted articles
 
-<2026-10-12 Mon> [[/blog/articles/development/where-hexagonal-architecture-shines/index.html][Where hexagonal architecture shines, and what to reach for instead]] - Ports and adapters pays where the domain is the complicated part. How it looks in Kotlin with Spring, in Guile Scheme and in Haskell, and when MVC, KISS or CQRS is the better answer.
+#+begin_listing highlighted
+#+end_listing
 
-<2026-09-24 Thu> [[/blog/articles/lisps/parsing-expression-grammar-lisp-org-convert-to-html/index.html][Parsing Expression Grammar in Lisp for Org to HTML]] - Converting Org to HTML with (ice-9 peg) in Guile: OrgWebAlchemy
+*** 🔗 Elsewhere
 
-<2026-08-28 Fri> [[/blog/articles/gnu-linux/quest-for-eternal-dock/index.html][Quest for the eternal Dock]] - How embedding a Lisp engine created an infinitely extensible program for your daily usage and workflow improvement, Guile Scheme + C + GTK4 built the dock Wayland was waiting for, after many failed prototypes and effort.
-
-<2026-07-20 Mon> [[/blog/articles/emacs/emacs-eglot-scala-kotlin/index.html][Emacs Eglot for Scala and Kotlin (JVM)]] - Enjoy Emacs and its built-in language server (LSP) superpowers, for JVM languages. Let's walk through basic language setups, specialized workspace configuration handling, and dive deep into some advanced JSON-RPC and advice-based workarounds for *Scala (Metals)* and *Kotlin* that make development truly seamless from Emacs and liberate you from IntelliJ ☺️.
-
-<2026-07-14 Tue> [[/blog/articles/lisps/maak/index.html][Maak: The power of Lisp that powers your trusty command runner and the enlightenments]] - /The infinitely extensible command runner, control plane and project automator à la Make (Guile Scheme - Lisp)/
-
-<2026-06-30 Tue> [[/blog/articles/emacs/build-emacs-from-source/index.html][Hacking Freedom: Compiling GNU Emacs from Source]] - By compiling GNU Emacs directly from the upstream Savannah repositories, you unlock the absolute bleeding edge of the extensible, self-documenting operating system disguised as a text editor.
-
-<2026-06-21 Sat> [[/blog/articles/personal/jointhefreeworld-documentation-style-guide/index.html][jointhefreeworld - A Style Guide for Documentation]] - This style guide will help you write better documentation, manuals, tutorials and READMEs
-
-<2026-06-03 Wed> [[/blog/articles/lisps/scriba-structured-logging-library-in-lisp/index.html][Scriba v0.3.3 - Structured Logging in Lisp]] - Scriba is a structured logging library for GNU Guile that prioritizes flexibility and observability.  It provides modular log routing, formatting, and filtering, allowing developers to generate human-readable console logs during development and machine-readable JSON logs for production environments.
-
-<2026-06-01 Mon> [[/blog/articles/development/agile-manifesto/index.html][Agile Manifesto]] - We are uncovering better ways of developing software by doing it and helping others do it. This document should help refresh you on what *Agile* truly is about.
-
-<2026-04-28 Tue> [[/blog/articles/lisps/why-i-still-reach-for-scheme-instead-of-haskell/index.html][Why I still reach for Scheme and Lisps instead of Haskell]] - Scheme (and Lisp) lets you express complex systems and problem domains in simpler terms than any other language can. For all its brilliance, Haskell resists most of the attempts people make to just *hack* and write useful code /quickly/.
-
-<2026-04-10 Fri> [[/blog/articles/lisps/functional-repository-pattern-in-scheme-with-macros/index.html][Functional repository pattern in Scheme?]] - Decoupling and abstracting the data layer in Lisp. Implementing the Repository Pattern with Hygienic Macros in Scheme.
-
-<2026-02-03 Tue> [[/blog/articles/development/dont-reward-the-best-firefighter/index.html][Don't Reward the Best Firefighter]] - For every loud firefighter, there's an invisible *fire preventer.* This is the engineer who spends a month refactoring a messy legacy service that no one else wants to touch.
-
-<2025-12-05 Fri> [[/blog/articles/development/most-technical-problems-are-people-problems/index.html][Most Technical Problems are People Problems]] - You cannot clean up technical debt without first addressing the people, process, and politics that created it.
-
-<2025-11-14 Fri> [[/blog/articles/rust/simple-guix-emacs-rust-development-environment/index.html][Simple Rust Guix Emacs development environment]] - A minimal, declarative setup for productive Rust hacking with Emacs and Guix.
-
-<2025-10-27 Mon> [[/blog/articles/development/hexagon-of-doom/index.html][Hexagon of Doom - The Cost of Over-Abstraction and Indirection]] - Let me explain why I think Ports&Adapter / Hexagonal architecture introduces *net harm* to software projects.
-
-<2025-10-19 Sun> [[/blog/articles/personal/josep-astrology-by-metsatron/index.html][Mètsàtron's astral analysis of Joe's being]] - My brother from another mother, ⁨Mètsàtron Sucurí Jibōia⁩ did some astral and digital readings about me (Joe).
-
-<2025-09-15 Mon> [[/blog/articles/development/simple-markdown-cheatsheet/index.html][Simple Markdown Cheatsheet]] - Markdown is a simple, lightweight markup language used for formatting plain text. It's designed to be easy to read and write, and it can be converted into HTML, PDF, LaTEX and many other formats.
-
-<2025-06-26 Thu> [[/blog/articles/lisps/scheme-and-lisps-are-great-for-production/index.html][Scheme and Lisps are Great for production]] - "Why bother with Scheme/Lisp?" is a classic question, with countless valid answers. While I can't list them all exhaustively, I will try to explain my motivation.
-
-<2025-04-11 Fri> [[/blog/articles/development/best-programmers/index.html][The Best Programmers I Know]] - I have met a lot of developers in my life. Lately, I asked myself: "What does it take to be one of the best? What do they all have in common?"
-
-<2025-04-11 Fri> [[/blog/articles/lisps/why-i-program-in-lisp/index.html][Why I program in Lisp?]] - Why choose for this paren-heavy form of lambda calculus? Lisp is a language that was designed to be used as a tool for thinking about problems, and that is the fun part of programming.
-
-<2025-03-04 Tue> [[/blog/articles/gnu-linux/sway-guix-fully-lisp-configuration/index.html][Moving from Sway to Hyprland - Archived SwayFX config]] - After using Sway as my daily Wayland compositor for quite some time, I recently made the switch to Hyprland. The decision wasn't made lightly, as Sway, especially with the SwayFX fork, served me well.
-
-<2025-02-17 Mon> [[/blog/articles/gnu-linux/conky-wayland-guix/index.html][Building Conky with Wayland Support on GNU Guix]] - Since I use GNU Guix and run a Wayland-based environment (Sway), I wanted to get Conky building with Wayland support.
-
-<2025-02-04 Tue> [[/blog/articles/gnu-linux/legendary-lisp-laptop/index.html][Legendary Lisp Laptop - Framework]] - A modern Lisp machine built on a Framework laptop.
-
-<2025-01-11 Sat> [[/blog/articles/gnu-linux/gnu-guix-virtual-machine-image-aarch64/index.html][GNU Guix Virtual Machine on AArch64/ARM64]] - The Guix ISO installer didn't work for me on aarch64. Making a qcow2 VM image or doing a manual install did work.
-
-<2024-12-27 Fri> [[/blog/articles/lisps/embracing-the-eternal-sexp-wisdom-of-the-gnu/index.html][Embracing the eternal Sexp wisdom with the GNU]] - I have recently reached new heights in declarative configurations of operating systems, programs and my workflow ⚙️ and development.
-
-<2024-12-18 Wed> [[/blog/articles/lisps/scheme-and-lisp-style-guide/index.html][Scheme & Lisp Style Guide]] - Riastradh's Lisp Style Rules for some really clean Scheme, Lisp and Guile code.
-
-<2024-12-09 Mon> [[/blog/articles/gnu-linux/podman-root-less-guix/index.html][Podman root-less setup on GNU Guix system for easy containers under the Shepherd's system]] - By leveraging Podman, a daemonless container engine, we can achieve rootless containerization, enhancing security and flexibility with Guix.
-
-<2024-12-04 Wed> [[/blog/articles/emacs/yaml-schemas-in-emacs-eglot/index.html][YAML Schemas in Emacs with Eglot]] - Are you editing YAML files and would like to use JSON schemas for YAML in Emacs?
+Kept by hand, because these are not articles of this blog.
 
 <2024-12-03 Tue> [[https://guix.gnu.org/blog/2018/multi-dimensional-transactions-and-rollbacks-oh-my/][How Guix enables multi-dimensional rollbacks and more reproducibility!]]
 
 <2024-12-02 Mon> - [[https://artanis.dev/blog/why-to-port-to-artanis.html][Why port web Scheme applications to Artanis?]]
-
-<2024-08-13 Tue> [[/blog/articles/emacs/emacs-registers/index.html][Emacs registers - a godsend for your day job]] - Ever had to work on very long files in projects you are not familiar with, and felt lost without an anchor point? Enter Emacs and its register system, which lets you "bookmark" locations in a file (buffer) and jump back to them, and much, much more!
-
-<2024-06-18 Tue> [[/blog/articles/development/tech-radar/index.html][The FREE stack - My Tech Radar]] - Tech changes fast. But it’s becoming an ever-more critical component of success.
-
-<2024-06-17 Mon> [[/blog/articles/personal/brief-aan-mijzelf/index.html][Brief aan Mijzelf - Letter to myself]] - Jij en ik weten dat levend zijn pieken en dalen betekent.
-
-<2024-04-20 Sat> [[/blog/articles/haskell/free-alacarte/index.html][Free à la Carte]] - Modeling effects with free monads in a simple and composable way with Haskell. Checkout my custom library and how to use it.
-
-<2024-02-27 Tue> [[/blog/articles/development/sql-select-all/index.html][Why SQL SELECT * is a bad idea]] - Doing a ~SELECT *~ may seem like a time-saver, but it's actually setting you up for problems in the long run, especially when the database schema changes.
-
-<2024-02-26 Mon> [[/blog/articles/development/black-box-testing/index.html][Black Box Testing in modern Software]] - Testing software at a high level means freedom of implementation and refactoring, while maintaining guarantees of correctness.
-
-<2023-11-02 Thu> [[/blog/articles/gnu-linux/openvpn3-on-nixos-with-web-based-saml/index.html][OpenVPN 3 on NixOS with Web-based SAML]] - Learn how to install and configure the OpenVPN 3 client on NixOS, in a reproducible way.
-
-<2023-08-25 Fri> [[/blog/articles/gnu-linux/windows-11-bootable-usb-from-gnu-linux/index.html][Bootable Windows 11 USB from GNU Linux]] - procedure for creating a bootable USB flash drive with Windows 11. The same process should also work with any HDD/SSD connected to your system.
-
-<2023-08-18 Fri> [[/blog/articles/gnu-linux/openvpn3-on-voidlinux/index.html][OpenVPN3 on Void Linux]] - Learn how to build OpenVPN 3 from source code and install it on Void Linux, for SAML VPN auth.
-
-<2023-04-28 Fri> [[/blog/articles/emacs/emacs-for-absolute-begginners/index.html][Emacs for absolute beginners]] - In this article, I'm going to give you exactly what you need to get started using Emacs and understand the basic concepts and key bindings of the editor.

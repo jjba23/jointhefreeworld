@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2025-03-04 di>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: After using Sway as my daily Wayland compositor for quite some time, I recently made the switch to Hyprland. The decision wasn't made lightly, as Sway, especially with the SwayFX fork, served me well.
 
 After using Sway as my daily Wayland compositor for quite some time, I recently made the switch to Hyprland. The decision wasn't made lightly, as Sway, especially with the SwayFX fork, served me well. However, Hyprland's growing community and advanced feature set made it an attractive choice.
 

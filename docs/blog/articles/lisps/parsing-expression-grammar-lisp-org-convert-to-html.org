@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2026-09-24 Thu>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: Converting Org to HTML with (ice-9 peg) in Guile: OrgWebAlchemy
 
 Hi everyone. In this blog post I want to take you in an adventure of parsing Org mode with Parsing Expression Grammars (PEG) in Guile Scheme ~(ice-9 peg)~ and converting to HTML (via SXML): OrgWebAlchemy.
 

@@ -46,7 +46,7 @@ The Emacs packages the build installs are =use-package=, =esxml= for building HT
 
 Publishing the site happens in four stages, in this order:
 
-1. *Export.* =org-publish-all= walks the projects in =org-publish-project-alist= and exports every Org file below =./docs= to HTML below =./public=, drawing each blog article's social card while that article is in front of it. The export is forced, so every page is written again rather than skipped as unchanged.
+1. *Export.* =org-publish-all= walks the projects in =org-publish-project-alist= and exports every Org file below =./docs= to HTML below =./public=, drawing each blog article's social card while that article is in front of it and writing the blog's index pages out of the articles they list. The export is forced, so every page is written again rather than skipped as unchanged.
 2. *Wrap.* Each exported page passes through a template that adds the document head, the shared header and footer, the metadata and the structured data.
 3. *Feed.* The blog articles are collected into =./public/rss.xml=.
 4. *Copy.* The contents of =./static= are copied beside the generated pages, together with =robots.txt= and =sitemap.xml=.
@@ -134,6 +134,7 @@ A page's [[https://orgmode.org/manual/Export-Settings.html][export keywords]] ar
 | =#+ROBOTS:=      | The robots directives, replacing the indexable default.                                                |
 | =#+OG_IMAGE:=    | The social card image, replacing the one the page would otherwise have.                                |
 | =#+OG_LABEL:=    | The label a generated card carries, for a page whose category is not the word that describes it. The category is the default. |
+| =#+HIGHLIGHT:=   | Puts the article on the blog's front page. The value is read as a yes unless it is =no=, so a post can say why it is highlighted instead of only that it is. |
 | =#+REDIRECT:=    | The destination of a forwarding page: adds a refresh, claims the destination as canonical, and asks crawlers not to index the stub. |
 
 Only two page scripts exist today. Ask for =repl= to place the browser Lisp on a page, and for =radar= to draw the tech radar. A name the build does not recognise is reported in the build log rather than silently ignored, which is the intended way to catch a typo.
@@ -174,11 +175,31 @@ A blog article lives under =docs/blog/articles/= in the directory of its categor
 To add one:
 
 1. Create =docs/blog/articles/<category>/<name>.org=. The file name becomes the URL, so make it descriptive and lowercased.
-2. Start the file with =#+title:=, =#+date:= and, when the article deserves one, =#+description:= and =#+keywords:=.
-3. Set =#+author:= to the name that should appear in the feed and beside the entry on the category index.
-4. Build the site, and confirm the page appears at the URL you expect.
+2. Start the file with =#+title:=, =#+date:= and, when the article deserves one, =#+description:= and =#+keywords:=. The description is the line the listings and a shared link show, so it is worth writing rather than leaving to the opening paragraph.
+3. Set =#+author:= to the name that should appear in the feed.
+4. Add =#+HIGHLIGHT: yes= if the article belongs on the blog's front page. Its category page lists it either way.
+5. Build the site, and confirm the page appears at the URL you expect.
 
-Two consequences of the layout are easy to forget. The category index page is a hand-written Org file, =docs/blog/articles/<category>/index.org=, so a new article does not appear in any listing until you add it there. And the feed is built from every published article under =blog/articles=, with a short exclusion list for pages that are not news; a new article joins the feed automatically, which is usually what you want and occasionally is not.
+The listings of the blog are generated during the build, so an article registers itself in its category by existing, and nothing has to be added to a second file. The front page is the one exception that stays a choice, and it is a single keyword in the article; =** Blog listings= below explains both.
+
+** Blog listings
+
+The front page's highlights and every category's list of articles are written during the build, out of the articles themselves. An index page says which listing it shows, and the build fills it in:
+
+#+begin_src org
+  #+begin_listing highlighted
+  #+end_listing
+#+end_src
+
+=highlighted= is the front page's selection: the articles that set =#+HIGHLIGHT:=. =category= is every article of the category the page belongs to, which is how a new article reaches its own category page without anybody adding it. Entries come out newest first, by date, and by title when two articles share a date, so the same sources always give the same page. An entry is the article's date, its title and its =#+DESCRIPTION:=, and nothing else.
+
+Three things are worth knowing before editing an index page:
+
+- The date, the title and the summary are read from the article, so a listing cannot show a title that has been rewritten, or forget an article that has been added. Change the article, never the listing.
+- A page that only forwards readers elsewhere is not an article and is left out, which is what keeps the two moved policies out of the category they used to live in.
+- The blog index and two category pages keep a short =🔗 Elsewhere= list by hand. Those entries are posts on other sites, and no article carries them.
+
+The build reports how many articles it listed, and an index page that asks for a listing the build does not know is reported by name rather than left blank.
 
 ** The tech radar
 
@@ -369,7 +390,8 @@ One consequence of the build's design is worth knowing before you test a change:
 #+begin_example
   docs/                     the Org sources, one directory per publish project
     home/                   the landing page and the 404 page
-    blog/                   the blog index, its article categories and their indexes
+    blog/                   the blog index, the article categories and their indexes,
+                            whose listings the build writes from the articles
     documentation/          the documentation landing page
     platform/               platform notes, such as the reserved ports
     policies/               the code of conduct and the AI policy

@@ -3,6 +3,8 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 #+date: <2024-06-17 ma>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: Jij en ik weten dat levend zijn pieken en dalen betekent.
 #+language: nl
 
 

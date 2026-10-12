@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2026-06-01 Mon>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: We are uncovering better ways of developing software by doing it and helping others do it. This document should help refresh you on what Agile truly is about.
 
 We are uncovering better ways of developing software by doing it and helping others do it. Find [[https://agilemanifesto.org/][the original manifesto here]].
 

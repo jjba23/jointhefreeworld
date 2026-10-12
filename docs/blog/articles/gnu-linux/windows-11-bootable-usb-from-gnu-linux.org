@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2023-08-25 Fri>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: procedure for creating a bootable USB flash drive with Windows 11. The same process should also work with any HDD/SSD connected to your system.
 
 Below is the procedure for creating a bootable USB flash drive with Windows 11. The same process should also work with any HDD/SSD connected to your system.
 

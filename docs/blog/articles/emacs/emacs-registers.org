@@ -3,6 +3,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2024-08-13 Tue>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: Ever had to work on very long files in projects you are not familiar with, and felt lost without an anchor point? Enter Emacs and its register system, which lets you "bookmark" locations in a file (buffer) and jump back to them, and much, much more!
 
 Ever had to work very long files, in projects that you are not familiar with, and felt very lost, without an anchor point?
 

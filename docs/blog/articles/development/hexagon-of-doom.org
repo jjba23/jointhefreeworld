@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2025-10-27 ma>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: Let me explain why I think Ports&Adapter / Hexagonal architecture introduces net harm to software projects.
 
 /Disclaimer: This article reflects personal experiences and gripes within specific team environments. Your mileage may vary, but the warning against premature or redundant abstraction stands./
 

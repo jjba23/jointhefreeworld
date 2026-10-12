@@ -3,6 +3,8 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 #+date: <2025-02-04 di>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: A modern Lisp machine built on a Framework laptop.
 #+language: en
 
 For the past month or so, I've been running Guix system on my Framework laptop, turning it into what I like to call a modern Lisp machine.

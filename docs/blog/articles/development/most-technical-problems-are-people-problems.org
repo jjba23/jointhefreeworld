@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2025-12-05 ma>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: You cannot clean up technical debt without first addressing the people, process, and politics that created it.
 
 I have worked at several companies doing Software Engineering and I feel like I've seen the best and the worst. From aging systems containing millions of lines of untested code, built on frameworks past their expiry date, to repulsive code and deployment constructs that stemmed from disagreements, bad communication, and terrible processes, I've seen it all, ticking technical time bombs, and all, but one specific case really illustrated the cultural rot for me.
 

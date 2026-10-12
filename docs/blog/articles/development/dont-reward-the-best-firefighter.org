@@ -4,7 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2026-02-03 di>
-#+description: For every loud firefighter, there's an invisible *fire preventer.* This is the engineer who spends a month refactoring a messy legacy service that no one else wants to touch.
+#+HIGHLIGHT: yes
+#+description: For every loud firefighter, there's an invisible fire preventer. This is the engineer who spends a month refactoring a messy legacy service that no one else wants to touch.
 #+keywords: development, software, engineer, dev, engineering, corporate, company, culture, reward, promotion
 #+html_head: <meta property="og:image" content="https://jointhefreeworld.org/static-assets/blog/img/software-firefighter.png" />
 

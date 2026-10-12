@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2026-04-10 Fri>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: Decoupling and abstracting the data layer in Lisp. Implementing the Repository Pattern with Hygienic Macros in Scheme.
 
 /Implementing the Repository Pattern with Hygienic Macros in Scheme/
 

@@ -3,6 +3,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2026-07-20 Mon>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: Enjoy Emacs and its built-in language server (LSP) superpowers, for JVM languages. Let's walk through basic language setups, specialized workspace configuration handling, and dive deep into some advanced JSON-RPC and advice-based workarounds for Scala (Metals) and Kotlin that make development truly seamless from Emacs and liberate you from IntelliJ ☺️.
 
 When Emacs 29 made =eglot= the built-in, default Language Server Protocol (LSP) client, many of us rejoiced.
 

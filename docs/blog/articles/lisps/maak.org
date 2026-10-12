@@ -3,6 +3,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2026-07-14 Tue>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: The infinitely extensible command runner, control plane and project automator à la Make (Guile Scheme - Lisp)
 
 
 /The infinitely extensible command runner, control plane and project automator à la Make (Guile Scheme - Lisp)/

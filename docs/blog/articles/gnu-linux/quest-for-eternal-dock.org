@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2026-08-28 Fri>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: How embedding a Lisp engine created an infinitely extensible program for your daily usage and workflow improvement, Guile Scheme + C + GTK4 built the dock Wayland was waiting for, after many failed prototypes and effort.
 
 * lambdock: quest for the eternal dock
 

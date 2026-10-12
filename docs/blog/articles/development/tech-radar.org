@@ -4,6 +4,7 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2025-10-27 ma>
+#+HIGHLIGHT: yes
 #+description: The FREE stack as a tech radar: what I adopt, trial, assess and deprecate across languages, frameworks, data, tools, platforms and practice.
 #+keywords: tech radar, free software, Guile Scheme, Lisp, GNU Guix, Emacs, Rust, SQLite, PostgreSQL
 #+SCRIPTS: radar

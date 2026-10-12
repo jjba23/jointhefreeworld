@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2021-02-27 Tue>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: Doing a SELECT * may seem like a time-saver, but it's actually setting you up for problems in the long run, especially when the database schema changes.
 
 There are some anti-patterns one should avoid when writing SQL queries. Sometimes these may seem like a shortcut, but in reality this can lead to bugs, problems, and brittle applications.
 

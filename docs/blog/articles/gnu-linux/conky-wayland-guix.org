@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2025-02-17 Mon>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: Since I use GNU Guix and run a Wayland-based environment (Sway), I wanted to get Conky building with Wayland support.
 
 Conky is a lightweight system monitor that can display system statistics on the desktop. While it was originally built for X11, recent versions have added experimental Wayland support. Since I use GNU Guix and run a Wayland-based environment (Sway), I wanted to get Conky building with Wayland support. This post explains how I achieved that.
 

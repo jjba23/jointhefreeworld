@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2024-04-20 Sat>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: Modeling effects with free monads in a simple and composable way with Haskell. Checkout my custom library and how to use it.
 
 
 Free monads based on  from intuitions from the Data types à la Carte paper. Combine functors and make embedded DSLs in Haskell.

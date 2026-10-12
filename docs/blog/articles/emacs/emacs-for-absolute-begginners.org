@@ -3,6 +3,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2023-04-28 Fri>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: In this article, I'm going to give you exactly what you need to get started using Emacs and understand the basic concepts and key bindings of the editor.
 
 In this article, I'm going to give you exactly what you need to get started using Emacs and understand the basic concepts and key bindings of the editor. I know this article might seem long, but I promise you will come out with a plethora of knowledge about Emacs.
 

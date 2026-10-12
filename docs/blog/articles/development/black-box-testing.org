@@ -3,6 +3,8 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 #+date: <2024-02-26 do>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: Testing software at a high level means freedom of implementation and refactoring, while maintaining guarantees of correctness.
 #+language: en
 
 Testing software at a high level means freedom of implementation and refactoring, while maintaining guarantees of correctness. This is something all good engineers love 💘

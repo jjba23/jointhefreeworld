@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2023-11-02 Thu>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: Learn how to install and configure the OpenVPN 3 client on NixOS, in a reproducible way.
 
 
 * OpenVPN 3 on NixOS with Web-based SAML

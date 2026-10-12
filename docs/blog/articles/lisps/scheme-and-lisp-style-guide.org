@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2024-12-18 wo>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: Riastradh's Lisp Style Rules for some really clean Scheme, Lisp and Guile code.
 
 Riastradh's Lisp Style Rules                          
 

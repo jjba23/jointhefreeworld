@@ -2,16 +2,5 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
-<2021-12-02 Thu> [[/blog/articles/freebsd/rcd-scripting/index.html][rc.d scripting]]
-
-<2021-09-17 Fri> [[/blog/articles/freebsd/pkg-or-ports/index.html][pkg or ports ?]]
-
-<2021-08-31 Tue> [[/blog/articles/freebsd/updating-freebsd-in-iocage/index.html][Updating FreeBSD in iocage]]
-
-<2021-08-31 Tue> [[/blog/articles/freebsd/practical-rcd-scripting-and-go/index.html][Practical rc.d scripting and Go]]
-
-<2020-11-19 Thu> [[/blog/articles/freebsd/jails-with-a-loopback-ip/index.html][Jails with a loopback IP]]
-
-<2020-11-19 Thu> [[/blog/articles/freebsd/root-on-zfs-with-partitions/index.html][Root on ZFS with partitions]]
-
-<2020-09-19 Sat> [[/blog/articles/freebsd/running-postgresql-on-freebsd/index.html][Running PostgreSQL on FreeBSD]]
+#+begin_listing category
+#+end_listing

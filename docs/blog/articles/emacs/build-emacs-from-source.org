@@ -3,6 +3,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2026-06-30 Tue>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: By compiling GNU Emacs directly from the upstream Savannah repositories, you unlock the absolute bleeding edge of the extensible, self-documenting operating system disguised as a text editor.
 
 By compiling GNU Emacs directly from the upstream Savannah repositories, you unlock the absolute bleeding edge of the extensible, self-documenting operating system disguised as a text editor.
 

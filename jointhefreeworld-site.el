@@ -438,6 +438,18 @@ tags — never double-encode an ampersand or an accent."
       (concat (string-trim (substring cut 0 (or (string-match " [^ ]*\\'" cut) limit)))
               "…"))))
 
+(defconst jfw/html-escapes
+  '((?& . "&amp;") (?< . "&lt;") (?> . "&gt;") (?\" . "&quot;") (?\' . "&#39;"))
+  "The characters HTML reserves, and the entities that replace them.")
+
+(defun jfw/escape-html (text)
+  "Return TEXT with the characters HTML reserves replaced by entities."
+  (when text
+    (replace-regexp-in-string
+     "[&<>\"']"
+     (lambda (match) (cdr (assq (string-to-char match) jfw/html-escapes)))
+     text t t)))
+
 (defconst jfw/section-labels
   '(("ci" . "CI/CD") ("development" . "Dev") ("gnu-linux" . "GNU/Linux")
     ("freebsd" . "FreeBSD") ("lisps" . "Lisps") ("emacs" . "Emacs")
@@ -451,14 +463,16 @@ article:section meta tag, the structured data and the breadcrumbs.")
   (or (cdr (assoc slug jfw/section-labels))
       (capitalize (replace-regexp-in-string "-" " " slug))))
 
-(defun jfw/page-path (info)
-  "Return the site-relative URL of the page being exported.
+(defun jfw/file-page-path (file)
+  "Return the site-relative URL that the Org source FILE answers at.
 The path mirrors what `jfw/org-html-publish-to-html' writes: the docs/home
 project lands at the root, every other project keeps its own
 directory, and a non-index file gets a lowercase directory of its own.
 This is the one place that knows the URL layout, so the canonical link,
-the social card and the structured data all agree by construction."
-  (let* ((input (plist-get info :input-file))
+the social card, the blog listings and the structured data all agree by
+construction.  FILE may be nil, which answers for a page exported
+without one."
+  (let* ((input file)
          (docs-root (file-name-as-directory (expand-file-name "docs/" jfw/project-root)))
          (rel (if input (file-relative-name input docs-root) "index.org"))
          (project (car (split-string rel "/")))
@@ -471,6 +485,10 @@ the social card and the structured data all agree by construction."
      ((string= base "404") "/404.html")
      ((string= base "index") (concat root (or dir "")))
      (t (concat root (or dir "") (downcase base) "/")))))
+
+(defun jfw/page-path (info)
+  "Return the site-relative URL of the page being exported."
+  (jfw/file-page-path (plist-get info :input-file)))
 
 (defvar jfw/url-prefix-cache (make-hash-table :test #'equal)
   "Cache of publish project directory to the URL prefix it writes.")
@@ -518,12 +536,211 @@ stops at that directory instead of repeating its own title."
   "Return non-nil when PATH is a single blog article."
   (string-match-p "\\`/blog/articles/[^/]+/[^/]+/\\'" path))
 
-(defun jfw/section-label (path)
-  "Return the human name of the blog category PATH belongs to, if any."
+(defun jfw/section-slug (path)
+  "Return the blog category PATH belongs to, spelled as its directory is."
   (let ((parts (split-string (string-trim path "/" "/") "/" t)))
     (when (and (equal (car parts) "blog") (equal (cadr parts) "articles"))
-      (when-let* ((category (nth 2 parts)))
-        (jfw/humanize category)))))
+      (nth 2 parts))))
+
+(defun jfw/section-label (path)
+  "Return the human name of the blog category PATH belongs to, if any."
+  (when-let* ((category (jfw/section-slug path)))
+    (jfw/humanize category)))
+
+;;; ---------------------------------------------------------------------
+;;; Blog listings
+;;; ---------------------------------------------------------------------
+;; A list of articles is a copy of them, and a copy drifts: the index
+;; pages used to carry one of their own, so an article was written into
+;; two places, or into one and forgotten in the other.  The entries are
+;; now written out of the articles themselves, and an index page only
+;; says which listing it shows.
+
+(defconst jfw/articles-directory "docs/blog/articles"
+  "Directory of the blog article sources, one directory per category.")
+
+(defconst jfw/highlight-keyword "HIGHLIGHT"
+  "Keyword that puts an article on the blog's front page.
+Its value is read as a yes unless `jfw/highlight-off' names it, so a
+post can say why it is highlighted rather than only that it is.")
+
+(defconst jfw/highlight-off '("no" "nil" "false" "0")
+  "Values of #+HIGHLIGHT: that mean an article is not highlighted.")
+
+(defconst jfw/listings '("highlighted" "category")
+  "The listings an index page may ask for.
+`highlighted' is the front page's selection, and `category' is every
+article of the category the page itself belongs to.")
+
+(defvar jfw/blog-articles-cache nil
+  "What the listings show about every article, collected once per build.")
+
+(defvar jfw/listing-entries-written 0)
+(defvar jfw/listing-pages-written 0)
+
+(defun jfw/org-keyword (file name)
+  "Return the value of the #+NAME: keyword in FILE, or nil when it has none.
+A keyword present without a value gives an empty string rather than nil,
+so \"present\" and \"absent\" stay different answers.  The file is read as
+text rather than parsed as Org: a keyword is metadata, and parsing a
+whole document to find one buys nothing."
+  (when (and file (file-exists-p file))
+    (with-temp-buffer
+      (insert-file-contents file)
+      (goto-char (point-min))
+      (when (re-search-forward (format "^#\\+%s:[ \t]*\\(.*\\)$" (regexp-quote name)) nil t)
+        (string-trim (match-string 1))))))
+
+(defun jfw/article-files ()
+  "Return the absolute file name of every published blog article.
+An article is an Org file in a category directory; the category index
+and anything else beside it is a page, not an article."
+  (let ((root (expand-file-name jfw/articles-directory jfw/project-root))
+        (files '()))
+    (dolist (category (directory-files root t "\\`[^.]"))
+      (when (file-directory-p category)
+        (dolist (file (directory-files category t "\\.org\\'"))
+          (unless (string= (file-name-nondirectory file) "index.org")
+            (push file files)))))
+    (sort files #'string<)))
+
+(defun jfw/date-parts (date)
+  "Return (YEAR MONTH DAY) as numbers, from an Org DATE value, or nil.
+The date is read out of whatever surrounds it, so both a bare date and
+the <date day> of a timestamp are understood."
+  (when (and date (string-match "\\([0-9]\\{4\\}\\)-\\([0-9]\\{2\\}\\)-\\([0-9]\\{2\\}\\)" date))
+    (list (string-to-number (match-string 1 date))
+          (string-to-number (match-string 2 date))
+          (string-to-number (match-string 3 date)))))
+
+(defun jfw/date-sort-key (date)
+  "Return an article's DATE as a number that sorts it, or nil.
+Reading the digits rather than parsing a timestamp keeps an article with
+an unreadable date out of the way instead of failing the build over it."
+  (when-let* ((parts (jfw/date-parts date)))
+    (string-to-number (format "%04d%02d%02d" (nth 0 parts) (nth 1 parts) (nth 2 parts)))))
+
+(defun jfw/date-display (date)
+  "Return an article's DATE the way an index page shows it.
+The day name follows the build machine's locale, which is what Org does
+with a timestamp in a paragraph, so a generated entry and a written one
+read the same.  A date the build cannot read is passed through as it is."
+  (when date
+    (if-let* ((parts (jfw/date-parts date)))
+        (format "%04d-%02d-%02d %s"
+                (nth 0 parts) (nth 1 parts) (nth 2 parts)
+                (format-time-string "%a" (encode-time 0 0 0 (nth 2 parts) (nth 1 parts) (nth 0 parts))))
+      date)))
+
+(defun jfw/article-metadata (file)
+  "Return what a listing shows about the article in FILE, or nil.
+A page that only forwards readers elsewhere is not an article: it is a
+stub, and listing it would send them through a redirection."
+  (unless (jfw/org-keyword file "redirect")
+    (let* ((title (jfw/org-keyword file "title"))
+           (date (jfw/org-keyword file "date"))
+           (highlight (jfw/org-keyword file jfw/highlight-keyword))
+           (category (file-name-nondirectory (directory-file-name (file-name-directory file)))))
+      (list
+       :file file
+       :title (and title (jfw/plain-text title))
+       :date date
+       :date-key (jfw/date-sort-key date)
+       :date-display (jfw/date-display date)
+       :description (jfw/plain-text (jfw/org-keyword file "description"))
+       :category category
+       :url (jfw/file-page-path file)
+       :highlight (and highlight (not (member (downcase highlight) jfw/highlight-off)))))))
+
+(defun jfw/blog-articles ()
+  "Return what the listings show about every blog article, newest first.
+Two articles written on the same day are ordered by title, so that the
+pages are the same on every build."
+  (or jfw/blog-articles-cache
+      (setq jfw/blog-articles-cache
+            (sort (delq nil (mapcar #'jfw/article-metadata (jfw/article-files)))
+                  (lambda (a b)
+                    (let ((key-a (plist-get a :date-key))
+                          (key-b (plist-get b :date-key)))
+                      (cond
+                       ((and key-a key-b (not (= key-a key-b))) (> key-a key-b))
+                       ((and key-a (not key-b)) t)
+                       ((and key-b (not key-a)) nil)
+                       (t (string-lessp (or (plist-get a :title) "")
+                                        (or (plist-get b :title) ""))))))))))
+
+(defun jfw/listing-articles (kind path)
+  "Return the articles that the listing KIND shows on the page at PATH.
+A listing the build does not know is reported rather than guessed at,
+which is how a typo in an index page is found."
+  (pcase (downcase (or kind ""))
+    ("highlighted" (cl-remove-if-not (lambda (article) (plist-get article :highlight))
+                                     (jfw/blog-articles)))
+    ("category" (when-let* ((category (jfw/section-slug path)))
+                  (cl-remove-if-not (lambda (article) (equal (plist-get article :category) category))
+                                    (jfw/blog-articles))))
+    (_ (message "listing: %s asks for a listing this build does not know: %s"
+                (or path "a page")
+                (mapconcat #'identity jfw/listings " or "))
+       nil)))
+
+(defun jfw/listing-entry-html (article)
+  "Return ARTICLE as the paragraph an index page shows it in.
+The markup is the one Org writes for an entry somebody typed — a
+timestamp span, a link and the summary — so a generated page reads like
+the page it replaces."
+  (concat
+   "<p>\n"
+   (when-let* ((date (plist-get article :date-display)))
+     (format "<span class=\"timestamp-wrapper\"><span class=\"timestamp\">&lt;%s&gt; </span></span> "
+             (jfw/escape-html date)))
+   (format "<a href=\"%s\">%s</a>"
+           (jfw/escape-html (plist-get article :url))
+           (jfw/escape-html (or (plist-get article :title) "")))
+   (let ((description (plist-get article :description)))
+     (if (and description (not (string-empty-p description)))
+         (format " - %s" (jfw/escape-html description))
+       ""))
+   "\n</p>\n"))
+
+(defun jfw/listing-html (kind path)
+  "Return the listing KIND as HTML for the page at PATH, or nil.
+Nil means there is nothing to write, which is a fair answer for a
+category nobody has written in yet."
+  (when-let* ((articles (jfw/listing-articles kind path)))
+    (cl-incf jfw/listing-pages-written)
+    (cl-incf jfw/listing-entries-written (length articles))
+    (mapconcat #'jfw/listing-entry-html articles "")))
+
+(defun jfw/org-html-special-block (special-block contents info)
+  "Export SPECIAL-BLOCK, or write a blog listing when it asks for one.
+An index page declares which listing it shows:
+
+  #+begin_listing highlighted
+  #+end_listing
+
+and the build fills it with the articles it finds, so the page cannot
+list an article that no longer exists, nor forget one that does."
+  (let ((type (org-element-property :type special-block)))
+    (if (and type (string-equal (downcase type) "listing"))
+        (or (jfw/listing-html (or (org-element-property :parameters special-block)
+                                  (org-element-property :value special-block))
+                              (jfw/page-path info))
+            "")
+      (org-html-special-block special-block contents info))))
+
+(defun jfw/report-listings ()
+  "Report what the listings found, once, at the end of a build."
+  (let ((articles (jfw/blog-articles)))
+    (message "blog listings: %d articles, %d highlighted, %d entries on %d pages"
+             (length articles)
+             (length (cl-remove-if-not (lambda (article) (plist-get article :highlight)) articles))
+             jfw/listing-entries-written
+             jfw/listing-pages-written)
+    (dolist (article articles)
+      (unless (plist-get article :date-key)
+        (message "blog listing: %s has no readable #+DATE:, so it is listed last"
+                 (file-name-nondirectory (plist-get article :file)))))))
 
 ;;; ---------------------------------------------------------------------
 ;;; Social cards
@@ -1376,6 +1593,7 @@ INFO is the original Org export communication channel."
                                    '((template . jfw/org-html-template)
                                      (link . jfw/org-html-link)
                                      (src-block . jfw/org-html-src-block)
+                                     (special-block . jfw/org-html-special-block)
                                      (headline . jfw/org-html-headline))
                                    :options-alist
                                    '((:video "VIDEO" nil nil)
@@ -1566,6 +1784,7 @@ The RSS step is reported but not fatal, so a single feed problem never
 leaves the published HTML half-written."
   (interactive)
   (org-publish-all t)
+  (jfw/report-listings)
   (jfw/report-og-cards)
   (condition-case err
       ;; Temporarily force Emacs to use the standard English/POSIX locale

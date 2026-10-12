@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2021-12-21 Tue>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: The Guix ISO installer didn't work for me on aarch64. Making a qcow2 VM image or doing a manual install did work.
 
 
 One day, I decided on a whim to try Guix in a VM on a M3 Mac.

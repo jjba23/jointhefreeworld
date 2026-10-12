@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2026-04-28 Tue>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: Scheme (and Lisp) lets you express complex systems and problem domains in simpler terms than any other language can. For all its brilliance, Haskell resists most of the attempts people make to just hack and write useful code quickly.
 
 There is a persistent tension in software engineering between the beautiful, mathematically pure ideal of a program, and the messy, pragmatic reality of just getting things done. Over my career, I've explored the depths of both extremes in an attempt to find my personal sweet spot for hacking.
 

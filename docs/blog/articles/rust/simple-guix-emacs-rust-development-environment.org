@@ -4,6 +4,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2025-11-14 vr>
+#+HIGHLIGHT: yes
+#+DESCRIPTION: A minimal, declarative setup for productive Rust hacking with Emacs and Guix.
 
 /A minimal, declarative setup for productive Rust hacking on Emacs + Guix/
 

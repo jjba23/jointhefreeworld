@@ -2,4 +2,5 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 
-<2021-01-16 Sat> [[/blog/articles/ci/shared-libraries-with-jenkins/index.html][Shared Libraries with Jenkins and Unit Tests]]
+#+begin_listing category
+#+end_listing
