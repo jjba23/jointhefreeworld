@@ -3,6 +3,7 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 #+language: en
+#+REPL: true
 
 Hi, I'm Joe. Welcome to my node in the free world.
 
@@ -54,9 +55,9 @@ I release all my personal projects in a way that is free as in freedom, and resp
 #+begin_export html
 <section class="jfw-repl" aria-labelledby="jfw-repl-title">
   <h2 id="jfw-repl-title">⌨️ Try the free world REPL</h2>
-  <p class="jfw-repl-intro">A tiny Lisp playground that runs right here in your browser. Type an expression and press <kbd>RET</kbd>.</p>
+  <p class="jfw-repl-intro">A small <strong>Lisp (Guile Scheme)</strong> that runs right here in your browser: a reader, proper tail calls, closures, vectors and <span data-jfw-repl-count>around a hundred</span> primitives, all in <a href="/static/js/guile-repl.js">one file of plain JavaScript</a> (LLM co-authored btw) and none of it leaves your device. Type an expression and press <kbd>RET</kbd>.</p>
   <form class="jfw-repl-form" autocomplete="off">
-    <label class="jfw-repl-label" for="jfw-repl-input">(free)&gt;</label>
+    <label class="jfw-repl-label" for="jfw-repl-input">scheme@(free-world)&gt;</label>
     <input id="jfw-repl-input" class="jfw-repl-input" name="expr" type="text" spellcheck="false" autocapitalize="off" autocorrect="off" placeholder="(+ 1 2)" aria-describedby="jfw-repl-help"/>
     <button type="submit" class="jfw-btn">eval</button>
   </form>
@@ -64,11 +65,20 @@ I release all my personal projects in a way that is free as in freedom, and resp
   <p id="jfw-repl-help" class="jfw-repl-examples">
     <span class="jfw-repl-examples-label">Try:</span>
     <button type="button" class="jfw-example">(+ 1 2)</button>
-    <button type="button" class="jfw-example">(* 6 7)</button>
-    <button type="button" class="jfw-example">(parens)</button>
+    <button type="button" class="jfw-example">(define (square x) (* x x))</button>
+    <button type="button" class="jfw-example">(map square '(1 2 3))</button>
+    <button type="button" class="jfw-example">(display "hello, free world")</button>
     <button type="button" class="jfw-example">(free-world)</button>
-    <button type="button" class="jfw-example">(help)</button>
+    <button type="button" class="jfw-example">,help</button>
   </p>
+  <details class="jfw-repl-reference" data-jfw-repl-reference>
+    <summary class="jfw-repl-reference-summary">📖 What's available? Expand the procedure reference</summary>
+    <p class="jfw-ref-note">Assembled from the interpreter's own list of primitives, so it cannot drift from what the prompt accepts. Click any entry to drop its example into the prompt, then press <kbd>RET</kbd> to run it. Guile's own manual goes further: <a href="https://www.gnu.org/software/guile/manual/">the GNU Guile reference</a>.</p>
+    <div class="jfw-repl-reference-body" data-jfw-repl-reference-body>
+      <p class="jfw-ref-note">This list is assembled by JavaScript; with scripting off it stays empty, and so does the prompt.</p>
+    </div>
+    <p class="jfw-ref-note"><strong>Not modelled:</strong> macros, modules, ports, exceptions and <code>values</code> — ask for one of those and the REPL says so instead of guessing. Numbers are exact integers or inexact doubles, so <code>(/ 1 3)</code> gives <code>0.3333333333333333</code> where Guile gives the exact <code>1/3</code>. Everything else here was checked against GNU Guile 3.0.11, which is one command away: <code>guix shell guile -- guile</code>.</p>
+  </details>
   <p class="jfw-easter-hint">Psst&hellip; type <code>free</code> anywhere on this page.</p>
 </section>
 #+end_export

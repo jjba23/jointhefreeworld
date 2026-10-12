@@ -153,6 +153,13 @@ It restores a stored theme choice and marks the document as JS-capable,
 which reveals the theme toggle. Keeping it inline avoids a flash of the
 wrong theme while the deferred scripts are still loading.")
 
+(defconst jfw/repl-scripts
+  `(script (@ (src ,(concat jfw/site-url "/static/js/guile-repl.js")) (defer "true")) "")
+  "The Guile Scheme REPL of the home page, for pages that ask for it.
+It is a small interpreter in its own right, so only a page with a REPL
+placed on it — one declaring #+REPL: — pays for downloading it.  See
+`jfw/org-html-template'.")
+
 (org-link-set-parameters
  "yt"
  :follow
@@ -400,7 +407,10 @@ INFO is the original Org export communication channel."
                        :publish-date (org-export-data (org-export-get-date info "%d/%m/%Y") info)
                        :description (org-export-data (plist-get info :description) info)
                        :content-reading-time (estimate-reading-time contents)
-                       :exclude-content-reading-time (is-exclude-content-reading-time-p page-title))))
+                       :exclude-content-reading-time (is-exclude-content-reading-time-p page-title)
+                       ;; Pages that place a REPL ask for the interpreter with
+                       ;; #+REPL:; nothing else downloads it.
+                       :head-extra (when (plist-get info :repl) jfw/repl-scripts))))
 
 (defun jfw/org-html-link (link contents info)
   "Removes file extension and changes the path into lowercase file:// links."
@@ -485,6 +495,7 @@ INFO is the original Org export communication channel."
                                      (headline . jfw/org-html-headline))
                                    :options-alist
                                    '((:video "VIDEO" nil nil)
+                                     (:repl "REPL" nil nil)
                                      (:description "DESCRIPTION" nil nil)))
 
 (defun jfw/org-html-publish-to-html (plist filename pub-dir)

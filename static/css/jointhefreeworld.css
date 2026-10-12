@@ -181,7 +181,9 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --color-syntax-string: #5f7d45;
   --color-syntax-builtin: #3c6e8f;
   --color-syntax-keyword: #a8541f;
-  --color-syntax-comment: #8a7a6a;
+  /* Darker than it looks like it needs to be: comments are small text, and
+     this clears 4.5:1 on frosted panels as well as on plain paper. */
+  --color-syntax-comment: #6f6355;
 }
 
 :root[data-theme="light"] {
@@ -216,7 +218,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --color-syntax-string: #b9c07a;
   --color-syntax-builtin: #8fb3c7;
   --color-syntax-keyword: #e79a52;
-  --color-syntax-comment: #93857a;
+  --color-syntax-comment: #a89a8d;
 }
 
 /* Fall back to the system preference when the visitor has not chosen a
@@ -247,7 +249,7 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
     --color-syntax-string: #b9c07a;
     --color-syntax-builtin: #8fb3c7;
     --color-syntax-keyword: #e79a52;
-    --color-syntax-comment: #93857a;
+    --color-syntax-comment: #a89a8d;
   }
 }
 
@@ -817,6 +819,11 @@ ul.categories li a:hover {
   color: var(--color-syntax-keyword);
 }
 
+/* Shown while a form is still open and the REPL waits for the rest. */
+.jfw-repl-label.is-continuation {
+  color: var(--color-syntax-comment);
+}
+
 .jfw-repl-input {
   flex: 1 1 16rem;
   font-family: var(--font-family-code);
@@ -836,7 +843,7 @@ ul.categories li a:hover {
 .jfw-repl-output {
   display: block;
   margin-top: var(--spacing-md);
-  max-height: 11rem;
+  max-height: 14rem;
   overflow-y: auto;
   font-family: var(--font-family-code);
   font-size: var(--text-sm);
@@ -846,6 +853,11 @@ ul.categories li a:hover {
 .jfw-repl-line {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+}
+
+/* What `display' wrote, as opposed to a value the REPL printed. */
+.jfw-repl-text {
+  color: var(--color-text-code);
 }
 
 .jfw-repl-echo {
@@ -876,6 +888,96 @@ ul.categories li a:hover {
 
 .jfw-repl-examples-label {
   font-size: var(--text-sm);
+}
+
+/* Expandable procedure reference, built from the interpreter's registry. */
+
+.jfw-repl-reference {
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-hr);
+}
+
+.jfw-repl-reference-summary {
+  padding: var(--spacing-xs) 0;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-header-2);
+  cursor: pointer;
+}
+
+.jfw-repl-reference-summary:focus-visible {
+  outline: 2px solid var(--color-hover);
+  outline-offset: 2px;
+}
+
+.jfw-repl-reference-body {
+  display: grid;
+  /* min() keeps the column narrower than the card on a phone, instead of
+     overflowing it with a 17rem minimum. */
+  grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr));
+  gap: var(--spacing-lg);
+  max-height: 30rem;
+  margin-top: var(--spacing-md);
+  padding-right: var(--spacing-sm);
+  overflow-y: auto;
+}
+
+.jfw-ref-note {
+  margin: var(--spacing-sm) 0;
+  font-size: var(--text-sm);
+}
+
+.jfw-ref-group-title {
+  margin: 0 0 var(--spacing-sm);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-header-3);
+}
+
+.jfw-ref-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Every entry is a button: clicking one fills the prompt with its example. */
+.jfw-ref-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-family: var(--font-family-code);
+  font-size: var(--text-xs);
+  text-align: left;
+  color: var(--color-text-code);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--border-radius-base);
+  cursor: pointer;
+}
+
+.jfw-ref-item:hover,
+.jfw-ref-item:focus-visible {
+  background: var(--color-code-background);
+  border-color: var(--color-border);
+  color: var(--color-hover);
+}
+
+.jfw-ref-usage {
+  color: var(--color-syntax-keyword);
+  overflow-wrap: anywhere;
+}
+
+.jfw-ref-doc {
+  font-family: var(--font-family-body);
+  font-size: var(--text-xs);
+  color: var(--color-syntax-comment);
 }
 
 .jfw-easter-hint {
