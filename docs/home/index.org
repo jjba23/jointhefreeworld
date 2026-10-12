@@ -3,7 +3,7 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 #+language: en
-#+REPL: true
+#+SCRIPTS: repl
 
 Hi, I'm Joe. Welcome to my node in the free world.
 
@@ -87,7 +87,7 @@ I release all my personal projects in a way that is free as in freedom, and resp
 
 I build all kinds of tech solutions for the day-to-day problems of my clients and of myself. See [[file:../blog/articles/development/tech-radar/][The FREE stack - My Tech Radar]].
 
-The jointhefreeworld project has an [[../blog/articles/personal/jointhefreeworld-code-of-conduct/index.html][inclusive and community-driven code of conduct]].
+The jointhefreeworld project has an [[/code-of-conduct/][inclusive and community-driven code of conduct]], and an [[/ai-policy/][AI policy that keeps a human in the loop]].
 
 For development convenience in the jointhefreeworld platform, we keep [[../platform/ports/index.html][an overview of reserved ports]] for a [[https://codeberg.org/jjba23/wolk-jjba][VPS / server]].
 

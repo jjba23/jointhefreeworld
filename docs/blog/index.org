@@ -17,7 +17,11 @@
 - [[/blog/articles/go/][Go]]
 - [[/blog/articles/freebsd/][FreeBSD]]
 
+On their own pages, outside the blog: the [[/code-of-conduct/][Code of Conduct]] and the [[/ai-policy/][AI Policy]].
+
 *** 📜 Highlighted articles
+
+<2026-10-12 Mon> [[/blog/articles/development/where-hexagonal-architecture-shines/index.html][Where hexagonal architecture shines, and what to reach for instead]] - Ports and adapters pays where the domain is the complicated part. How it looks in Kotlin with Spring, in Guile Scheme and in Haskell, and when MVC, KISS or CQRS is the better answer.
 
 <2026-09-24 Thu> [[/blog/articles/lisps/parsing-expression-grammar-lisp-org-convert-to-html/index.html][Parsing Expression Grammar in Lisp for Org to HTML]] - Converting Org to HTML with (ice-9 peg) in Guile: OrgWebAlchemy
 
@@ -34,8 +38,6 @@
 <2026-06-03 Wed> [[/blog/articles/lisps/scriba-structured-logging-library-in-lisp/index.html][Scriba v0.3.3 - Structured Logging in Lisp]] - Scriba is a structured logging library for GNU Guile that prioritizes flexibility and observability.  It provides modular log routing, formatting, and filtering, allowing developers to generate human-readable console logs during development and machine-readable JSON logs for production environments.
 
 <2026-06-01 Mon> [[/blog/articles/development/agile-manifesto/index.html][Agile Manifesto]] - We are uncovering better ways of developing software by doing it and helping others do it. This document should help refresh you on what *Agile* truly is about.
-
-<2026-05-30 Sat> [[/blog/articles/personal/jointhefreeworld-ai-policy/index.html][jointhefreeworld - AI Policy]] - This AI policy establishes safe guardrails for the *jointhefreeworld* project. It outlines our preferred workflows, defines the boundaries of acceptable AI tool usage, and explains the reasoning behind these choices.
 
 <2026-04-28 Tue> [[/blog/articles/lisps/why-i-still-reach-for-scheme-instead-of-haskell/index.html][Why I still reach for Scheme and Lisps instead of Haskell]] - Scheme (and Lisp) lets you express complex systems and problem domains in simpler terms than any other language can. For all its brilliance, Haskell resists most of the attempts people make to just *hack* and write useful code /quickly/.
 
@@ -56,8 +58,6 @@
 <2025-06-26 Thu> [[/blog/articles/lisps/scheme-and-lisps-are-great-for-production/index.html][Scheme and Lisps are Great for production]] - "Why bother with Scheme/Lisp?" is a classic question, with countless valid answers. While I can't list them all exhaustively, I will try to explain my motivation.
 
 <2025-04-11 Fri> [[/blog/articles/development/best-programmers/index.html][The Best Programmers I Know]] - I have met a lot of developers in my life. Lately, I asked myself: "What does it take to be one of the best? What do they all have in common?"
-
-<2025-04-11 Fri> [[/blog/articles/personal/jointhefreeworld-code-of-conduct/index.html][jointhefreeworld - Code of Conduct]] - This Code of Conduct exists to foster an inclusive, respectful, and cooperative environment for all contributors and users of jointhefreeworld free software project.
 
 <2025-04-11 Fri> [[/blog/articles/lisps/why-i-program-in-lisp/index.html][Why I program in Lisp?]] - Why choose for this paren-heavy form of lambda calculus? Lisp is a language that was designed to be used as a tool for thinking about problems, and that is the fun part of programming.
 

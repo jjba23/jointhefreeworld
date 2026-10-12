@@ -3,6 +3,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 
+<2026-10-12 Mon> [[/blog/articles/development/where-hexagonal-architecture-shines/index.html][Where hexagonal architecture shines, and what to reach for instead]] - Ports and adapters pays where the domain is the complicated part. How it looks in Kotlin with Spring, in Guile Scheme and in Haskell, and when MVC, KISS or CQRS is the better answer.
+
 <2026-06-01 Mon> [[/blog/articles/development/agile-manifesto/index.html][Agile Manifesto]] - We are uncovering better ways of developing software by doing it and helping others do it. This document should help refresh you on what *Agile* truly is about.
 
 <2026-02-03 Tue> [[/blog/articles/development/dont-reward-the-best-firefighter/index.html][Don't Reward the Best Firefighter]] - For every loud firefighter, there's an invisible *fire preventer.* This is the engineer who spends a month refactoring a messy legacy service that no one else wants to touch.

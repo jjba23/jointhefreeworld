@@ -194,62 +194,68 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
    Keep this palette in sync with the system-preference block below. */
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --color-primary: #f0e6dc;
-  --color-hover: #e08c3c;
-  --color-on-accent: #1d1206;
-  --color-background-medium: rgba(46, 34, 27, 0.5);
-  --color-surface: rgba(46, 34, 27, 0.62);
-  --color-page-base: #171210;
-  --color-glow-1: rgba(232, 150, 90, 0.2);
-  --color-glow-2: rgba(196, 110, 74, 0.16);
-  --color-glow-3: rgba(150, 120, 90, 0.14);
-  --color-text-code: #f7efe7;
-  --color-text-emphasis: #ffffff;
-  --color-hr: rgba(255, 255, 255, 0.14);
-  --color-code-background: rgba(30, 22, 17, 0.5);
-  --color-border: rgba(214, 130, 80, 0.3);
-  --color-header-1: #f6d9b8;
-  --color-header-2: #e79a52;
-  --color-header-3: #c9a884;
-  --color-secondary: #e9a06a;
-  --box-shadow: rgba(0, 0, 0, 0.5) 0px 6px 18px -6px, rgba(0, 0, 0, 0.32) 0px 2px 8px -4px;
+  /* Darker and calmer than the light palette's twin: near-black espresso,
+     weaker glows, and accents pulled back in saturation so long reading
+     sessions are not a light show. */
+  --blur-saturate: 130%;
+  --color-primary: #e8ded4;
+  --color-hover: #c98246;
+  --color-on-accent: #16100c;
+  --color-background-medium: rgba(32, 25, 21, 0.5);
+  --color-surface: rgba(34, 26, 21, 0.68);
+  --color-page-base: #0e0a09;
+  --color-glow-1: rgba(198, 132, 84, 0.12);
+  --color-glow-2: rgba(160, 100, 70, 0.09);
+  --color-glow-3: rgba(120, 100, 82, 0.08);
+  --color-text-code: #ece3da;
+  --color-text-emphasis: #fdfaf7;
+  --color-hr: rgba(255, 255, 255, 0.1);
+  --color-code-background: rgba(20, 15, 12, 0.55);
+  --color-border: rgba(178, 112, 70, 0.26);
+  --color-header-1: #e6d3bd;
+  --color-header-2: #d4914e;
+  --color-header-3: #b39c86;
+  --color-secondary: #d59a6d;
+  --box-shadow: rgba(0, 0, 0, 0.55) 0px 6px 18px -6px, rgba(0, 0, 0, 0.35) 0px 2px 8px -4px;
 
   /* Syntax highlighting: warm and low-chroma, to match the terracotta. */
-  --color-syntax-string: #b9c07a;
-  --color-syntax-builtin: #8fb3c7;
-  --color-syntax-keyword: #e79a52;
-  --color-syntax-comment: #a89a8d;
+  --color-syntax-string: #9aa46f;
+  --color-syntax-builtin: #7fa2b6;
+  --color-syntax-keyword: #d4914e;
+  --color-syntax-comment: #9a8d81;
 }
 
 /* Fall back to the system preference when the visitor has not chosen a
    theme. The :not() guard keeps an explicit light choice winning here. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --color-primary: #f0e6dc;
-    --color-hover: #e08c3c;
-    --color-on-accent: #1d1206;
-    --color-background-medium: rgba(46, 34, 27, 0.5);
-    --color-surface: rgba(46, 34, 27, 0.62);
-    --color-page-base: #171210;
-    --color-glow-1: rgba(232, 150, 90, 0.2);
-    --color-glow-2: rgba(196, 110, 74, 0.16);
-    --color-glow-3: rgba(150, 120, 90, 0.14);
-    --color-text-code: #f7efe7;
-    --color-text-emphasis: #ffffff;
-    --color-hr: rgba(255, 255, 255, 0.14);
-    --color-code-background: rgba(30, 22, 17, 0.5);
-    --color-border: rgba(214, 130, 80, 0.3);
-    --color-header-1: #f6d9b8;
-    --color-header-2: #e79a52;
-    --color-header-3: #c9a884;
-    --color-secondary: #e9a06a;
-    --box-shadow: rgba(0, 0, 0, 0.5) 0px 6px 18px -6px, rgba(0, 0, 0, 0.32) 0px 2px 8px -4px;
+    /* Keep in sync with the [data-theme="dark"] block above. */
+    --blur-saturate: 130%;
+    --color-primary: #e8ded4;
+    --color-hover: #c98246;
+    --color-on-accent: #16100c;
+    --color-background-medium: rgba(32, 25, 21, 0.5);
+    --color-surface: rgba(34, 26, 21, 0.68);
+    --color-page-base: #0e0a09;
+    --color-glow-1: rgba(198, 132, 84, 0.12);
+    --color-glow-2: rgba(160, 100, 70, 0.09);
+    --color-glow-3: rgba(120, 100, 82, 0.08);
+    --color-text-code: #ece3da;
+    --color-text-emphasis: #fdfaf7;
+    --color-hr: rgba(255, 255, 255, 0.1);
+    --color-code-background: rgba(20, 15, 12, 0.55);
+    --color-border: rgba(178, 112, 70, 0.26);
+    --color-header-1: #e6d3bd;
+    --color-header-2: #d4914e;
+    --color-header-3: #b39c86;
+    --color-secondary: #d59a6d;
+    --box-shadow: rgba(0, 0, 0, 0.55) 0px 6px 18px -6px, rgba(0, 0, 0, 0.35) 0px 2px 8px -4px;
 
     /* Syntax highlighting: warm and low-chroma, to match the terracotta. */
-    --color-syntax-string: #b9c07a;
-    --color-syntax-builtin: #8fb3c7;
-    --color-syntax-keyword: #e79a52;
-    --color-syntax-comment: #a89a8d;
+    --color-syntax-string: #9aa46f;
+    --color-syntax-builtin: #7fa2b6;
+    --color-syntax-keyword: #d4914e;
+    --color-syntax-comment: #9a8d81;
   }
 }
 
@@ -430,23 +436,72 @@ blockquote {
   color: var(--color-text-emphasis);
 }
 
+/* The navigation entries are small buttons, not headings.
+
+   Nine destinations at body size and body leading read as a wall of text
+   rather than as something to press, so each one wears the same shape as
+   the theme chooser beside it: a bordered chip that fills with the accent
+   when you point at it, and stays filled on the section you are in. The
+   line-height is set here because the bar otherwise inherits the body's
+   generous one and the chips grow back into blocks. */
 .nav-link {
+  display: inline-flex;
+  align-items: center;
   padding: var(--spacing-xs) var(--spacing-md);
   font-style: normal;
-  font-weight: var(--font-weight-normal);
-  font-size: var(--text-md);
+  font-weight: var(--font-weight-medium);
+  /* One step below the theme chooser's own size, which is what this comes
+     out as once the masthead's larger base size is taken into account, so
+     the two rows of chips match. */
+  font-size: var(--text-xs);
+  line-height: 1.5;
   text-decoration: none;
-  border-bottom: none;
+  background: var(--color-background-medium);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-base);
+  transition: background 0.15s ease-in-out, border-color 0.15s ease-in-out,
+    color 0.15s ease-in-out;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+  color: var(--color-on-accent);
+  background: var(--color-hover);
+  border-color: var(--color-hover);
+}
+
+.nav-link:focus-visible {
+  outline: 2px solid var(--color-hover);
+  outline-offset: 1px;
+}
+
+/* Where the visitor currently is, told apart from a hover by weight as well
+   as by colour, so it survives a colour-blind eye and a monochrome print. */
+.nav-link[aria-current="page"] {
+  color: var(--color-on-accent);
+  background: var(--color-hover);
+  border-color: var(--color-hover);
+  font-weight: var(--font-weight-bold);
 }
 
 .nav {
   display: flex;
   flex-direction: row;
-  gap: 8px;
+  gap: var(--spacing-sm);
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+  margin: 0;
+  padding: 0;
   list-style: none;
+}
+
+/* A phone has no room for nine chips at full padding; the labels stay, the
+   breathing room goes. */
+@media only screen and (max-width: 600px) {
+  .nav-link {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
 }
 
 .flex { display: flex; }
@@ -1024,5 +1079,515 @@ ul.categories li a:hover {
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation: none;
+  }
+
+  .jfw-radar-target {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------- */
+/* Tech radar: an SVG drawn by tech-radar.js from the article's own     */
+/* quadrants, rings and entries, so the picture cannot drift from the   */
+/* text. Every colour here is a theme token, so both themes carry it.   */
+/* ------------------------------------------------------------------- */
+
+.jfw-radar {
+  display: grid;
+  /* The picture is the point of the page, so it takes the room; the legend
+     and its controls sit beside it. */
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: var(--spacing-lg);
+  align-items: start;
+  margin: var(--spacing-lg) 0;
+}
+
+/* The explanation of the missing picture is only for visitors without
+   scripting; everyone else gets the radar itself. */
+.jfw-radar-nojs {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-syntax-comment);
+}
+
+html[data-js="on"] .jfw-radar-nojs {
+  display: none;
+}
+
+.jfw-radar-canvas {
+  position: relative;
+  width: 100%;
+}
+
+.jfw-radar-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Opposite wedges share a tint so the four sectors read apart even where a
+   blip sits close to a boundary. The tint is the rule colour rather than a
+   surface: a surface is white in the light theme and near-black in the dark
+   one, which would make the alternation invisible in one of them. */
+.jfw-radar-wedge {
+  fill: var(--color-hr);
+  fill-opacity: 0.3;
+}
+
+.jfw-radar-wedge-1,
+.jfw-radar-wedge-3 {
+  fill-opacity: 0.75;
+}
+
+.jfw-radar-ring-edge {
+  fill: none;
+  stroke: var(--color-border);
+  stroke-width: 1.5;
+}
+
+.jfw-radar-ring-label {
+  font-family: var(--font-family-code);
+  font-size: 20px;
+  font-weight: var(--font-weight-normal);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  fill: var(--color-header-3);
+  opacity: 0.55;
+  /* A blip can land on a ring name; a thin knock-out of the page base keeps
+     the name readable underneath it without making it any darker. */
+  paint-order: stroke;
+  stroke: var(--color-page-base);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+.jfw-radar-blip {
+  cursor: pointer;
+  transition: opacity 180ms ease;
+}
+
+.jfw-radar-blip:focus-visible {
+  outline: none;
+}
+
+/* The blip's real target: invisible, but painted, so the whole disc takes
+   the pointer and a visitor does not have to hit a nine-unit dot. */
+.jfw-radar-hit {
+  fill: transparent;
+  pointer-events: all;
+}
+
+.jfw-radar-dot {
+  fill: var(--color-secondary);
+  stroke: var(--color-page-base);
+  stroke-width: 3;
+  transition: transform 140ms ease, stroke 140ms ease;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.jfw-radar-blip-adopt .jfw-radar-dot {
+  fill: var(--color-hover);
+}
+
+.jfw-radar-blip-trial .jfw-radar-dot {
+  fill: var(--color-secondary);
+}
+
+.jfw-radar-blip-assess .jfw-radar-dot {
+  fill: var(--color-header-3);
+}
+
+.jfw-radar-blip-deprecate .jfw-radar-dot {
+  fill: var(--color-syntax-comment);
+}
+
+/* A blip that moved this revision says so without a legend of its own:
+   a solid halo for in, a faded dashed dot for out, a dashed halo for new. */
+.jfw-radar-moved-in .jfw-radar-dot {
+  stroke: var(--color-hover);
+  stroke-width: 5;
+}
+
+.jfw-radar-moved-out {
+  opacity: 0.6;
+}
+
+.jfw-radar-moved-out .jfw-radar-dot {
+  stroke-dasharray: 5 4;
+}
+
+.jfw-radar-moved-new .jfw-radar-dot {
+  stroke-width: 5;
+  stroke-dasharray: 3 3;
+}
+
+/* The halo is painted under the glyphs, so a label stays legible over a
+   wedge, a ring edge and a neighbouring blip alike. */
+.jfw-radar-blip-label {
+  font-family: var(--font-family-body);
+  /* A blip sits inside a link, and links are demi-bold on this site; the
+     names on the picture are not links to shout about, so they are drawn at
+     the regular weight of the family, in the muted ink rather than the
+     reading ink of the page. */
+  font-weight: var(--font-weight-normal);
+  font-size: 21px;
+  fill: var(--color-header-3);
+  opacity: 0;
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: var(--color-page-base);
+  stroke-width: 6;
+  stroke-linejoin: round;
+  transition: opacity 140ms ease;
+}
+
+/* Reading every name at once needs room, so the legend steps below the
+   radar and the labels shrink to fit the wider frame. */
+.jfw-radar-labels-on {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.jfw-radar-labels-on .jfw-radar-blip-label {
+  font-size: 18px;
+  opacity: 1;
+}
+
+/* With every blip named, one ring name per ring is orientation enough; the
+   other five would be folded under the names they sit between. */
+.jfw-radar-labels-on .jfw-radar-ring-label:not([data-jfw-radar-ring-name="first"]) {
+  display: none;
+}
+
+/* A label whose blip has been filtered out stays out of the way, even while
+   the rest are named. */
+.jfw-radar-dimmed .jfw-radar-blip-label {
+  opacity: 0;
+}
+
+/* Nothing on the radar animates for visitors who asked for less motion. */
+.jfw-radar-reduced-motion .jfw-radar-blip,
+.jfw-radar-reduced-motion .jfw-radar-dot,
+.jfw-radar-reduced-motion .jfw-radar-blip-label {
+  transition: none;
+}
+
+/* Labels that would land on top of one already shown step aside, and come
+   back the moment their own blip is hovered or focused. */
+.jfw-radar-label-cramped {
+  display: none;
+}
+
+/* Hovering the entry in the catalogue names the blip it belongs to, and a
+   name that stepped aside for want of room comes back for it. */
+.jfw-radar-blip-lit .jfw-radar-blip-label {
+  display: inline;
+  opacity: 1;
+}
+
+.jfw-radar-blip-lit .jfw-radar-dot {
+  transform: scale(1.55);
+}
+
+/* The blip a keyboard visitor is standing on. The ring is drawn on the
+   blip's own hit disc, so marking a blip never moves a single dot. */
+.jfw-radar-blip-cursor .jfw-radar-hit {
+  stroke: var(--color-hover);
+  stroke-width: 2.5;
+}
+
+.jfw-radar-blip-cursor .jfw-radar-blip-label {
+  display: inline;
+  opacity: 1;
+  fill: var(--color-hover);
+}
+
+.jfw-radar-blip-cursor .jfw-radar-dot {
+  transform: scale(1.55);
+}
+
+.jfw-radar-blip:hover .jfw-radar-blip-label,
+.jfw-radar-blip:focus-visible .jfw-radar-blip-label {
+  display: inline;
+  opacity: 1;
+}
+
+.jfw-radar-blip:hover .jfw-radar-dot,
+.jfw-radar-blip:focus-visible .jfw-radar-dot {
+  transform: scale(1.55);
+}
+
+
+.jfw-radar-dimmed {
+  opacity: 0.12;
+}
+
+/* An entry the visitor is pointing at wins over a filter of its own: the
+   question "which blip is this?" is the one being asked. These rules come
+   after both the cramped-label and the filtered verdicts on purpose. */
+.jfw-radar-blip-lit,
+.jfw-radar-blip-lit.jfw-radar-dimmed {
+  opacity: 1;
+}
+
+.jfw-radar-tooltip {
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  /* Without an intrinsic width, an absolutely positioned box shrinks to the
+     space left of the edge it was placed against, which wraps a short note
+     into a narrow column on the right-hand side of the radar. */
+  width: max-content;
+  max-width: min(22rem, 100%);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--text-sm);
+  background-color: var(--color-page-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-base);
+  box-shadow: var(--box-shadow);
+  transform: translate(-50%, calc(-100% - 18px));
+  pointer-events: none;
+}
+
+.jfw-radar-tooltip[hidden] {
+  display: none;
+}
+
+.jfw-radar-tooltip-left {
+  transform: translate(-100%, calc(-100% - 18px));
+}
+
+/* Near the top of the radar the tooltip would leave the frame, so it is
+   turned around and hung underneath the blip instead. */
+.jfw-radar-tooltip-below {
+  transform: translate(-50%, 22px);
+}
+
+.jfw-radar-tooltip-where,
+.jfw-radar-tooltip-note,
+.jfw-radar-tooltip-more {
+  font-size: var(--text-xs);
+  color: var(--color-syntax-comment);
+}
+
+.jfw-radar-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.jfw-radar-panel-title {
+  margin: var(--spacing-sm) 0 0;
+  font-family: var(--font-family-code);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-header-3);
+}
+
+.jfw-radar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.jfw-radar-legend-button {
+  display: inline-flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-family: var(--font-family-code);
+  font-size: var(--text-xs);
+  color: var(--color-primary);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.jfw-radar-legend-button::before {
+  content: "";
+  width: 0.6em;
+  height: 0.6em;
+  background-color: currentcolor;
+  border-radius: 50%;
+}
+
+.jfw-radar-ring-adopt::before {
+  background-color: var(--color-hover);
+}
+
+.jfw-radar-ring-trial::before {
+  background-color: var(--color-secondary);
+}
+
+.jfw-radar-ring-assess::before {
+  background-color: var(--color-header-3);
+}
+
+.jfw-radar-ring-deprecate::before {
+  background-color: var(--color-syntax-comment);
+}
+
+.jfw-radar-legend-button:hover {
+  color: var(--color-hover);
+}
+
+.jfw-radar-legend-button[aria-pressed="true"] {
+  color: var(--color-on-accent);
+  background-color: var(--color-hover);
+  border-color: var(--color-hover);
+}
+
+.jfw-radar-legend-button:focus-visible {
+  outline: 2px solid var(--color-hover);
+  outline-offset: 2px;
+}
+
+.jfw-radar-legend-count {
+  opacity: 0.75;
+}
+
+/* A layer's chip carries the tint of its own wedge, so the legend and the
+   picture need no further explanation to be read together. */
+.jfw-radar-legend-quadrants .jfw-radar-legend-button::before {
+  background-color: var(--color-hr);
+}
+
+.jfw-radar-legend-quadrants li:nth-child(2n) .jfw-radar-legend-button::before {
+  opacity: 1;
+}
+
+.jfw-radar-actions {
+  margin: var(--spacing-sm) 0;
+}
+
+.jfw-radar-hint {
+  font-size: var(--text-sm);
+  color: var(--color-syntax-comment);
+}
+
+/* ------------------------------------------------------------------- */
+/* The catalogue: the same radar in prose, one layer per fold. The folding */
+/* is done by tech-radar.js, so without scripting every entry stays open.  */
+/* ------------------------------------------------------------------- */
+
+.jfw-radar-catalogue {
+  margin: var(--spacing-lg) 0;
+  border-top: 1px solid var(--color-hr);
+}
+
+.jfw-radar-catalogue-summary {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: baseline;
+  padding: var(--spacing-sm) var(--spacing-md);
+  cursor: pointer;
+  list-style: none;
+  border-radius: var(--border-radius-base);
+}
+
+/* The default disclosure triangle is a different size and side on every
+   engine; the chevron below is drawn from the marker's own box instead. */
+.jfw-radar-catalogue-summary::-webkit-details-marker {
+  display: none;
+}
+
+/* The marker is a pair of borders rather than a character: neither of the
+   site's typefaces carries a triangle, and a missing glyph would leave the
+   fold with no affordance at all. */
+.jfw-radar-catalogue-summary::after {
+  content: "";
+  align-self: center;
+  width: 0;
+  height: 0;
+  margin-left: auto;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 7px solid var(--color-syntax-comment);
+}
+
+.jfw-radar-catalogue-summary h2 {
+  margin: 0;
+  padding-top: 0;
+}
+
+.jfw-radar-catalogue-summary:hover::after,
+.jfw-radar-catalogue-summary:hover h2 {
+  color: var(--color-hover);
+}
+
+.jfw-radar-catalogue-summary:hover::after {
+  border-left-color: var(--color-hover);
+  border-top-color: var(--color-hover);
+}
+
+/* The open marker overrides the closed one, so it comes after it. */
+.jfw-radar-catalogue[open] > .jfw-radar-catalogue-summary::after {
+  border-left-width: 0;
+  border-top: 7px solid var(--color-syntax-comment);
+  border-bottom-width: 0;
+  border-right: 5px solid transparent;
+}
+
+.jfw-radar-catalogue-summary:focus-visible {
+  outline: 2px solid var(--color-hover);
+  outline-offset: 2px;
+}
+
+.jfw-radar-catalogue-count {
+  font-family: var(--font-family-code);
+  font-size: var(--text-xs);
+  color: var(--color-syntax-comment);
+}
+
+/* An entry the visitor has filtered out of the picture steps back here too,
+   rather than contradicting the radar above it. */
+.jfw-radar-entry-muted {
+  opacity: 0.35;
+}
+
+/* A short wash over the entry a blip points at, so following one does not
+   leave the reader hunting for where the jump landed. */
+.jfw-radar-target {
+  animation: jfw-radar-flash 2.4s ease-out 1;
+  border-radius: var(--border-radius-base);
+}
+
+@keyframes jfw-radar-flash {
+  0%,
+  30% {
+    background-color: var(--color-code-background);
+  }
+
+  100% {
+    background-color: transparent;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .jfw-radar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The picture is only a few hundred pixels across here, where a ring name
+     is a smudge and five of them are five smudges; the legend below the
+     picture carries the same names, with their counts. */
+  .jfw-radar-ring-label {
+    display: none;
+  }
+
+  /* A name on the picture is read on its own at this size, one at a time,
+     so it can afford to be legible. */
+  .jfw-radar-blip-label {
+    font-size: 34px;
+    stroke-width: 9;
   }
 }

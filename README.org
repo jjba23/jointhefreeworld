@@ -1,141 +1,464 @@
 #+title: jointhefreeworld
+#+subtitle: a static web-site built from Org mode with GNU Emacs
 #+author: Josep Bigorra
 #+email: jjbigorra@gmail.com
 #+language: en
+#+options: num:nil toc:2
 
 [[https://jointhefreeworld.org/ggg/dist/emacs-lisp.svg]]  [[https://jointhefreeworld.org/ggg/dist/maak.svg]]  [[https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg]]  [[https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg]]  [[https://jointhefreeworld.org/ggg/dist/jointhefreeworld-org.svg]]
 
-My personal homepage, blog, and /join the free world/ movement website.
+This repository is my personal homepage, blog, and the /join the free world/ movement web-site. It is also the program that builds and publishes them.
 
-Visit it at [[https://jointhefreeworld.org][jointhefreeworld.org]].
+Visit the result at [[https://jointhefreeworld.org][jointhefreeworld.org]].
 
-If you like my work, please support me by [[https://bmc.link/jjbigorra][buying me a cup of coffee ☕]] so I can keep going with plenty of motivation.
+You are reading the manual for the software. The web-site itself is the artifact it produces.
 
--------------
+If you like my work, please support me by [[https://bmc.link/jjbigorra][buying me a cup of coffee ☕]], so I can keep going with plenty of motivation.
 
-* How does this work?
+* What this project is
 
-I write all of my documentation and blog posts in Org mode, from within Emacs, and I also use Emacs to generate the HTML from those files, which I then host online.
+Everything here is free software. The sources are Org mode files, and the build is a single Emacs Lisp program that exports those files into a static web-site.
 
-This repository is an Emacs Lisp tool that builds and publishes [[https://jointhefreeworld.org][jointhefreeworld.org]] using Org-mode publishing. It relies on a custom HTML export backend to turn Org files into a fully styled static site, with a few dynamic touches on the home page.
+A static web-site is a directory of finished HTML, CSS, JavaScript and image files. A web server hands those files to a browser without running any program of its own, so there is no database to administer, no server-side language to keep patched, and no page that can fail to render because a daemon is down. The price is that anything dynamic happens in the browser instead.
 
-- *Custom HTML export* :: A derived ~site-html~ backend generates every page with a shared header, footer, and layout.
-- *Multi-project publishing* :: Content is organized into several projects (home, blog, documentation, platform, portfolio) through ~org-publish-project-alist~.
-- *RSS feed generation* :: The ~webfeeder~ package builds an RSS feed from the published blog articles.
-- *Extras* :: A tiny dependency-free script (~static/js/freeworld.js~) adds an interactive acronym, a browser-side Lisp REPL, and an easter egg to the home page.
+That trade is deliberate here, and its consequences shape the whole design:
 
--------------
+- *Org is the source of truth.* You write prose, headings, lists, tables and code blocks in Org mode, and the exporter turns them into HTML. There is no second copy of the content in a template language.
+- *The build is one file.* =jointhefreeworld-site.el= holds the export backend, the shared page layout, the metadata, the feed and the task entry point. The build script is also its own documentation: every function carries a docstring explaining why it exists.
+- *Nothing reaches the reader that a page did not ask for.* The REPL and the tech radar are large JavaScript programs, and a page downloads them only when it names them.
+- *Pages degrade gracefully.* Both page scripts render their content in the Org source as well, so a reader without JavaScript still gets every fact the dynamic view shows.
 
-* Using
+This README explains what you need, how the build works, how to write a page, how to work on the stylesheet and the scripts, how the site is deployed, and which traps to avoid. It assumes you can open a terminal, and it explains the conventions as it introduces them.
 
-You will need:
+* What you need
 
-- *Emacs 29.1 or newer*
-- *Git* (for version control and for the build hash shown in the footer)
+- *GNU Emacs 29.1 or newer.* Older releases lack parts of the publishing API the build relies on.
+- *Git.* The build reads the repository for two things: the short commit hash printed in the footer, and the date each Org file was last changed, which becomes the page's modification date. Without a repository, the build continues and prints =unknown= instead.
+- *Network access on the first build.* The build installs its Emacs packages into =./.packages=, a directory of its own rather than your =~/.emacs.d/elpa=.
+- *GNU Guix and Maak, optionally.* The task runner described below drives development, linting and deployment. You can publish the site with plain Emacs and skip all of it.
+- *Node.js, for stylesheet work only.* The CSS linter is a Node program.
+- *Two extra Guix packages, for one task only.* Regenerating the site-wide social card by hand needs Inkscape and pngquant; nothing else touches them.
+- *A rasteriser and a font, declared in the manifest.* The per-article social cards are drawn during the build by =rsvg-convert= from librsvg, using the DejaVu fonts; both are in =manifest.scm=, so the build's own environment has what a card needs. A build outside it still succeeds: those pages keep the site-wide card and the log says so once.
 
-The script at ~./jointhefreeworld-site.el~ sets up a local ~.packages~ directory and installs the packages it needs from MELPA and MELPA Stable: ~esxml~, ~htmlize~, ~webfeeder~, and the language major modes (~haskell-mode~, ~rust-mode~, ~kotlin-mode~) used to fontify code blocks.
+The Emacs packages the build installs are =use-package=, =esxml= for building HTML out of s-expressions, =htmlize= for colouring source blocks, =webfeeder= for the RSS feed, and the major modes =haskell-mode=, =rust-mode= and =kotlin-mode=, which fontify code blocks written in those languages. All of them come from MELPA and MELPA Stable, except =use-package=, which is built in.
 
-Publish the entire site with:
+* How the build works
+
+Publishing the site happens in four stages, in this order:
+
+1. *Export.* =org-publish-all= walks the projects in =org-publish-project-alist= and exports every Org file below =./docs= to HTML below =./public=, drawing each blog article's social card while that article is in front of it. The export is forced, so every page is written again rather than skipped as unchanged.
+2. *Wrap.* Each exported page passes through a template that adds the document head, the shared header and footer, the metadata and the structured data.
+3. *Feed.* The blog articles are collected into =./public/rss.xml=.
+4. *Copy.* The contents of =./static= are copied beside the generated pages, together with =robots.txt= and =sitemap.xml=.
+
+The export stage is worth understanding first, because it decides where every URL lives.
+
+** The publish projects
+
+A publish project pairs a directory of Org files with a directory of HTML output. Editing the table in =jointhefreeworld-site.el= moves the pages and their canonical URLs together, because the build reads the URL prefix back out of this same table.
+
+| Project                     | Org sources           | Output             | URL prefix       |
+|-----------------------------+-----------------------+--------------------+------------------|
+| =jointhefreeworld:main=     | =./docs/home/=        | =./public/=        | =/=              |
+| =jointhefreeworld:blog=     | =./docs/blog/=        | =./public/blog/=   | =/blog/=         |
+| =jointhefreeworld:documentation= | =./docs/documentation/= | =./public/documentation/= | =/documentation/= |
+| =jointhefreeworld:platform= | =./docs/platform/=    | =./public/platform/= | =/platform/=     |
+| =jointhefreeworld:portfolio= | =./docs/portfolio/=  | =./public/portfolio/= | =/portfolio/=    |
+| =jointhefreeworld:policies= | =./docs/policies/=    | =./public/=        | =/=              |
+
+Every project shares the same properties: Org files only, recursive traversal, a forced export, and the site's own publishing function, which is what gives each page its directory-shaped URL.
+
+The policies project is the one exception to the directory rule. The code of conduct and the AI policy are site-wide documents rather than blog posts, so they publish at the top level, as =/code-of-conduct/= and =/ai-policy/=. Their former blog addresses still exist as forwarding pages.
+
+** The URL layout
+
+A URL should be short enough to say out loud and stable enough to cite. The build gives every page a directory of its own, and a small convention turns the file name into that directory:
+
+| Org file                            | Published as          | Reached at          |
+|-------------------------------------+-----------------------+---------------------|
+| =docs/home/index.org=               | =public/index.html=   | =/=                 |
+| =docs/blog/index.org=               | =public/blog/index.html= | =/blog/=         |
+| =docs/blog/articles/lisps/index.org= | =.../lisps/index.html= | =/blog/articles/lisps/= |
+| =docs/blog/articles/emacs/emacs-registers.org= | =.../emacs-registers/index.html= | =/blog/articles/emacs/emacs-registers/= |
+| =docs/home/404.org=                 | =public/404.html=     | the server's not-found page |
+
+Three rules follow from that table, and you must know them before you name a file:
+
+- An =index.org= file answers at its own directory, so =docs/blog/index.org= is =/blog/= and not =/blog/index/=. A page that is the front door of a directory is always called =index.org=.
+- Any other file becomes a lowercased directory named after the file, and inside it the page is =index.html=. The file =Emacs-Registers.org= would answer at =/emacs-registers/=. Write your file names the way you want them to appear in the address bar, because the case you choose here does not reach the URL.
+- =404.org= is the one file published as a plain HTML file rather than a directory, because web servers look for that exact name.
+
+Links between your Org files are rewritten to match: a link to =foo.org= becomes a link to =/foo/=, with the extension and the capital letters gone. You can therefore cross-reference pages by their file names and let the build produce the addresses.
+
+*** Why the URL is not the file path
+
+The mapping is not a mirror of the source tree, and that is intentional. A reader never sees =docs/=, never types an =.html= extension, and never learns whether a page lives in a file or a directory. Moving a page between projects changes one table entry, and every canonical URL, social card and feed entry follows it.
+
+** What every page gets
+
+Whatever the content, the wrapper adds the same furniture. Knowing what is automatic keeps you from repeating it in the Org file:
+
+- The document head: character set, viewport, author, the meta description, robots directives, the canonical URL, the complete Open Graph and Twitter card, preloads for the fonts used on first paint, favicon, the RSS link, the speculation rules, and the JSON-LD block. The metadata section later in this manual describes each of them.
+- The site header, with the navigation bar and the theme chooser.
+- The page title as a first-level heading, an estimated reading time of at least one minute at a reading speed of 130 words per minute, and the date when the page sets one. The reading estimate is left off the landing and index pages, where it would mean nothing.
+- The content itself, inside the container the stylesheet expects.
+- The site footer: copyright, licence, the short commit hash of the build, and links to the source code, the feed, the tech radar, the two policies and the top of the page.
+- The scripts the page asked for, and nothing else.
+
+Two more touches are worth naming because you will see them in a browser. The theme is restored before the first paint by a tiny inline script, so a reader who chose the dark theme never sees a flash of the light one. And supporting browsers may prerender the page behind a link you point at, which makes navigation feel instantaneous.
+
+** The header and the navigation
+
+The bar's links come from one table in the build script, =jfw/nav-links=, which pairs each label with either a site-relative path or an absolute URL. The entry it marks as current is the longest site-relative link the page sits under, so an article marks its own section rather than the whole blog, and the marker is =aria-current="page"= rather than a colour alone, so it survives a reader who cannot see the difference.
+
+Editing that table is the whole of editing the navigation. A page that no entry covers, such as the portfolio, leaves the bar unmarked.
+
+The footer is written by =jfw/site-footer=, and lists the copyright, the licence, the commit hash of the build, and links to the source code, the feed, the tech radar and the two policies.
+
+* Writing content
+
+** Keywords a page may set
+
+A page's [[https://orgmode.org/manual/Export-Settings.html][export keywords]] are the page's settings, and the build reads the following ones. All of them are optional; only the title is worth setting on every page.
+
+| Keyword          | What it changes                                                                                      |
+|------------------+------------------------------------------------------------------------------------------------------|
+| =#+TITLE:=       | The page title, used in the browser tab, the heading, the card and the feed.                          |
+| =#+DESCRIPTION:= | The meta description and the card summary.                                                            |
+| =#+KEYWORDS:=    | Comma-separated keywords for the meta tag, the article tags and the structured data.                  |
+| =#+DATE:=        | The publication date, shown as /written on/ and reported to crawlers and the feed.                    |
+| =#+AUTHOR:=      | The author, and the name shown in the feed and beside each entry on an index page.                     |
+| =#+SCRIPTS:=     | The page scripts to load. Names are separated by commas or spaces.                                     |
+| =#+VIDEO:=       | The identifier of a video to embed at the top of the content.                                          |
+| =#+CANONICAL:=   | The canonical URL, when it differs from the page's own address.                                        |
+| =#+ROBOTS:=      | The robots directives, replacing the indexable default.                                                |
+| =#+OG_IMAGE:=    | The social card image, replacing the one the page would otherwise have.                                |
+| =#+OG_LABEL:=    | The label a generated card carries, for a page whose category is not the word that describes it. The category is the default. |
+| =#+REDIRECT:=    | The destination of a forwarding page: adds a refresh, claims the destination as canonical, and asks crawlers not to index the stub. |
+
+Only two page scripts exist today. Ask for =repl= to place the browser Lisp on a page, and for =radar= to draw the tech radar. A name the build does not recognise is reported in the build log rather than silently ignored, which is the intended way to catch a typo.
+
+** Headings, anchors and containers
+
+Every heading becomes an HTML heading element carrying a small =#= anchor link, so any section of a page can be linked to. The anchor's identifier is derived from the heading text: lowercase, spaces turned into hyphens, punctuation dropped.
+
+Two situations call for a property on the heading:
+
+- =:CUSTOM_ID:= sets the identifier explicitly. You need it whenever a heading repeats on a page, because the derived names would collide. The tech radar needs one per ring per layer for exactly this reason.
+- =:HTML_CONTAINER:=, with =:HTML_CONTAINER_CLASS:=, wraps the heading and its subtree in an element of your choosing. The radar's layers are sections produced this way, and the radar script finds them by class.
+
+A heading that names a property block looks as follows:
+
+#+begin_example
+,* 🧬 Languages
+:PROPERTIES:
+:HTML_CONTAINER: section
+:HTML_CONTAINER_CLASS: jfw-radar-quadrant
+:CUSTOM_ID: languages
+:END:
+
+,** ✅ Adopt
+:PROPERTIES:
+:CUSTOM_ID: languages-adopt
+:END:
+
+- Guile Scheme and Lisps in general
+#+end_example
+
+The leading commas are Org's way of writing a heading inside an example. Org removes them when it renders the example, and you must not remove them from this document: without them the example would end at its first line and the rest of it would become headings of this README.
+
+** Adding a blog article
+
+A blog article lives under =docs/blog/articles/= in the directory of its category, and the category is part of its URL. The categories in use are =ci=, =development=, =emacs=, =freebsd=, =gnu-linux=, =go=, =haskell=, =lisps=, =personal= and =rust=.
+
+To add one:
+
+1. Create =docs/blog/articles/<category>/<name>.org=. The file name becomes the URL, so make it descriptive and lowercased.
+2. Start the file with =#+title:=, =#+date:= and, when the article deserves one, =#+description:= and =#+keywords:=.
+3. Set =#+author:= to the name that should appear in the feed and beside the entry on the category index.
+4. Build the site, and confirm the page appears at the URL you expect.
+
+Two consequences of the layout are easy to forget. The category index page is a hand-written Org file, =docs/blog/articles/<category>/index.org=, so a new article does not appear in any listing until you add it there. And the feed is built from every published article under =blog/articles=, with a short exclusion list for pages that are not news; a new article joins the feed automatically, which is usually what you want and occasionally is not.
+
+** The tech radar
+
+The tech radar on the FREE stack page, =docs/blog/articles/development/tech-radar.org=, is a JavaScript view of an ordinary Org document. Nothing about the source is special except its shape, and the script reads the document itself, so the Org file remains the only place the entries live.
+
+- Each *layer* is a first-level heading with =:HTML_CONTAINER: section= and =:HTML_CONTAINER_CLASS: jfw-radar-quadrant=.
+- Each *ring* is a second-level heading under a layer. Only the four names =Adopt=, =Trial=, =Assess= and =Deprecate= are known; the leading emoji is ignored.
+- Each *blip* is a list item under a ring. Its text is the technology, an optional link makes it clickable, and a note after a dash explains why it sits there.
+- A parenthesised word says what changed since the previous revision: =(new)=, =(moved in)= or =(moved out)=. The radar reads it and draws the entry accordingly.
+
+Rings and layers keep their order from the source, and the page carries the full list below the drawing, so a reader whose browser does not run the script loses the picture and none of the content. If a page has no layers, the script does nothing at all.
+
+** The browser Lisp
+
+The home page carries a small Lisp interpreter written in plain JavaScript, =static/js/guile-repl.js=. To place a REPL on a page, set =#+SCRIPTS: repl= and include the markup the script looks for. The REPL section of =docs/home/index.org= is the reference: a section with the class =jfw-repl= containing a form, an input, an output element and the procedure reference.
+
+The interpreter is a real one, with a reader, proper tail calls, closures, vectors and roughly a hundred primitives. Everything it evaluates runs in the browser tab and never reaches the server, which is both a privacy property and the reason a mistake in a session cannot damage anything but that session.
+
+* Look and feel
+
+The whole design lives in one stylesheet, =static/css/jointhefreeworld.css=, and it is organised around custom properties rather than repeated literals. Reading its =:root= block is the fastest way to learn what the site can look like.
+
+** Design tokens
+
+| Group         | Examples                                                | Used for                              |
+|---------------+---------------------------------------------------------+---------------------------------------|
+| Colour        | =--color-primary=, =--color-hover=, =--color-page-base= | Text, accents, the paper underneath   |
+| Type          | =--font-family-body=, =--text-sm=, =--text-xl=          | Families and one size scale           |
+| Spacing       | =--spacing-sm= through =--spacing-xxxl=                 | Gaps, padding, line heights           |
+| Shape         | =--border-radius-base=, =--box-shadow=                  | Rounded corners and depth             |
+| Measure       | =--max-width-text=, =--max-width-pre=                   | Line length for prose and code        |
+| Frosting      | =--blur-sm=, =--blur-md=, =--blur-saturate=             | The translucent panels                |
+
+Change a token and every rule that uses it changes with it. If you find yourself writing the same colour twice, the token you wanted is probably missing.
+
+** Themes
+
+The site follows the reader's system preference by default and lets them override it, in either direction, with the chooser in the header. Three states exist: /system/, /light/ and /dark/, and the choice is remembered in the browser's local storage under a single key shared by the inline script and the chooser.
+
+The dark palette is not the light one inverted. It is deliberately darker and calmer, with weaker glows and accents pulled back in saturation, because long reading sessions deserve less of a light show. When you edit one of the two palettes, edit its twin in the system-preference block as well; the comment beside each reminds you.
+
+** Accessibility commitments
+
+These are not aspirations; the stylesheet and the build enforce them, and a change that breaks one is a regression:
+
+- Colour contrast. Body text and link text clear the WCAG AA thresholds in both themes.
+- Focus. Interactive elements take a visible focus ring, and the header's current page is announced rather than only coloured.
+- Motion. The one animation, the parenthesis on the home page, stops when the reader asks for reduced motion.
+- Structure. The document declares its language, the theme chooser is a group of labelled controls, headings nest properly, and the radar and the REPL expose their content as ordinary markup as well.
+
+** Working on the stylesheet
+
+Run the linter before you commit:
+
+#+begin_src sh
+  maak lint-css
+#+end_src
+
+It runs stylelint with =--fix= over =static/css/*.css=, using the rules in =.stylelintrc.yml=. The rule set is strict on purpose and checks, among other things, that no property, at-rule, pseudo-class or media feature is misspelled, that no declaration block repeats a property, that no selector is duplicated, and that specificity never descends within a rule block. A failure is a real defect, so fix the cause rather than disabling the rule.
+
+The stylesheet uses a single breakpoint at 600 pixels of width for the small-screen adjustments. Prefer a token change to a new breakpoint; the site is meant to read as one design at every size.
+
+* Client-side JavaScript
+
+Four scripts ship with the site. They are plain, dependency-free JavaScript, and each has one job.
+
+| Script                       | Loaded                        | What it does                                        |
+|------------------------------+-------------------------------+-----------------------------------------------------|
+| =static/js/freeworld.js=     | Every page                    | The theme chooser, and the home page's touches: the typewriter tagline, the interactive acronym, the easter egg |
+| =static/js/symbanta.js=      | Every page                    | First-party analytics: page views, heartbeats and visibility changes |
+| =static/js/guile-repl.js=    | Pages asking =#+SCRIPTS: repl= | The browser Lisp                                      |
+| =static/js/tech-radar.js=    | Pages asking =#+SCRIPTS: radar= | The radar drawing, its legend and its keyboard-accessible controls |
+
+Keep this property in mind when you add behaviour: a page downloads a script only if it asks for it, and a page that asks for nothing downloads only the two site-wide scripts.
+
+** Analytics and privacy
+
+The analytics script is first-party and deliberately modest. It registers three kinds of event: a page view, a heartbeat while the page stays visible, and a visibility change. Each event carries the page's own URL, the referrer, the browser's user-agent and language, the screen size, and a session identifier.
+
+That identifier is generated in the browser and kept in the browser tab's session storage, so it is gone when the tab closes, and it is not a cookie, not shared between tabs, and not tied to any account. The script reports to the endpoint named in its =data-endpoint= attribute, defaulting to the project's own API host; it sends events with the browser's beacon API and falls back to a background request, and it fails silently when the network is unavailable. Removing the script tag from the page template switches the whole thing off.
+
+* Metadata, feeds and crawlers
+
+** Canonical URLs, robots and social cards
+
+Every page declares one canonical URL, and the same string is used for the Open Graph and Twitter card, so a page never tells a search engine and a social platform different stories about where it lives. A forwarding page points its canonical URL at its destination and asks crawlers not to index the stub, which is how the two moved policies keep their old addresses working without competing with their new ones.
+
+Every blog article gets a card of its own, composed while that article is being exported out of its title and its category, and written to =./public/og/<category>/<slug>.png=. The article's =og:image= and =twitter:image= point at it, so a shared link shows the article's own title rather than the site's tagline.
+
+The cards are generated rather than drawn by hand for the same reason they can be trusted: a title is edited far more often than a card is redrawn, and a card that still shows the old title is a small lie about the page. The SVG the card was drawn from is kept beside its PNG, so a card can be read without a rasteriser, and a card whose SVG comes out identical is neither redrawn nor rewritten — an unchanged article costs a string comparison. Every card is the same size and uses the same design, so the set of them reads as one blog.
+
+Only the blog articles get a card. An index, a landing page, a policy or a documentation page keeps =static/img/share-default.png=, which is the right description of a page whose subject is a whole section. That raster is the one image here that is not generated by the build; regenerate it from the SVG beside it when the design changes, rather than editing the raster:
+
+#+begin_src sh
+  maak share-card
+#+end_src
+
+That task exports the SVG with Inkscape and compresses the result with pngquant, both of which you must have available. It concerns the site-wide card only.
+
+The type on a generated card is measured with the glyph advances of DejaVu Sans, which are declared in the build script because Emacs cannot measure a font in a batch build. Those advances decide how a title wraps and at which size it is set, so a title is laid out the way the rasteriser will draw it: no card overflows its own frame, and none is shrunk past legibility — a title that no size can hold is cut at a word boundary and marked with an ellipsis. Because a card is drawn during the build and not by a step of its own, a missing =rsvg-convert= does not fail the build: it reports how many cards it could not draw, and those pages keep the site-wide card rather than pointing a crawler at a file that is not there.
+
+** Structured data
+
+Each page embeds a JSON-LD graph that names the site and its author, then describes the page itself: a blog posting with its publication and modification dates for an article, a plain web page everywhere else, and a breadcrumb trail in both cases. The modification date is the author date of the last commit that touched the Org file, so it stays true without you maintaining it, and in a checkout without Git the field is left out rather than invented.
+
+** The feed
+
+=./public/rss.xml= is rebuilt on every publish from the published blog articles, with the title, the author, the description and the date of each one. The build forces a POSIX locale for this step so that the dates come out in the format the feed specification requires, which is one of those details that only shows up in someone else's feed reader.
+
+A failure here is reported in the build log and does not abort the publish. The feed is a convenience, and half-published HTML would be worse than a stale feed.
+
+** robots.txt and sitemap.xml
+
+Both files are static and live in =static/=, copied into the output on every build. The robots file allows every crawler and points it at the sitemap. The sitemap lists the site's public addresses, including the sibling projects served from the same host, so it is maintained by hand and worth a look when you add a top-level page.
+
+* Building the site
+
+The whole publish is one command:
 
 #+begin_src sh
   emacs -Q --batch -l ./jointhefreeworld-site.el --funcall jfw/publish
 #+end_src
 
--------------
-
-* Development
-
-The build is driven by [[https://codeberg.org/jjba23/maak][Maak]], a Make-like task runner written in Guile Scheme. Install GNU Guix and Maak, then use the tasks defined in ~maak.scm~:
+With Maak installed, the same work is wrapped with the housekeeping the project expects:
 
 #+begin_src sh
-  maak dev               # hot-reloading dev server (watchexec + darkhttpd)
-  maak build             # one-off production build of ./public
-  maak build-and-serve   # build, then serve ./public on port 50011
-  maak fmt               # format Scheme and Emacs Lisp sources
-  maak lint-css          # run stylelint over the stylesheet
-  maak deploy            # build for CI and copy ./public to the deploy dir
+  maak build
 #+end_src
 
-The ~dev~ (alias ~hr~) task watches Org, Emacs Lisp, Scheme, and CSS files, and rebuilds the site whenever one of them changes.
+That task does three things the bare command does not:
 
-* Configuration
+- It deletes =./.org-cache=, the directory where Emacs records what it last exported, so a build starts from a known state instead of from whatever the previous one left behind.
+- It empties =./public= before the export, so a file that no longer has a source cannot survive in the output.
+- It copies =./static=, =robots.txt= and =sitemap.xml= beside the generated pages afterwards.
 
-The ~org-publish-project-alist~ variable defines the published projects (home, blog, documentation, platform, portfolio). Adjust those entries to match your own directory layout.
+The batch invocation is not incidental. =maak build= runs Emacs through =guix time-machine= against the pinned channels in =channels.scm= and the manifest in =manifest.scm=, which is what makes the build reproducible. The tooling matters less than the property, though: the exporter itself is Emacs's own Org publishing machinery, so a build on any Emacs 29.1 or newer produces the same site.
 
-Customize the look and feel by editing functions such as ~jfw/site-header~, ~jfw/site-footer~, and ~jfw/generate-page~.
+** Where the output goes
 
--------------
+Everything is written below =./public=, which is generated and ignored by Git. Never edit a file there; the next build overwrites it.
+
+#+begin_example
+  public/
+    index.html                  the landing page
+    404.html                    the not-found page
+    rss.xml                     the feed
+    robots.txt sitemap.xml      copied from static/
+    blog/ documentation/ platform/ portfolio/   one directory per project
+    code-of-conduct/ ai-policy/ the two site-wide policies
+    og/                         one social card per blog article, beside the SVG it came from
+    static/                     copied from ./static
+#+end_example
+
+** Local preview
+
+To build and serve the result on the local port, run:
+
+#+begin_src sh
+  maak build-and-serve
+#+end_src
+
+The server is darkhttpd, serving =./public= on port 50011. The task first kills anything already listening on that port, so a stale server from an earlier session cannot shadow your build.
+
+One consequence of the build's design is worth knowing before you test a change: because the development server reads straight from =./public= and the site's absolute URLs point at =http://localhost:50011=, every link, card and canonical URL in a development build addresses your own machine.
+
+* Day-to-day work with Maak
+
+[[https://codeberg.org/jjba23/maak][Maak]] is a command runner in Guile Scheme: a /Make/ with Lisp inside, pronounced to rhyme with the English word it descends from. Its tasks for this project are declared in =maak.scm=.
+
+| Task                  | What it does                                                                 |
+|-----------------------+------------------------------------------------------------------------------+
+| =maak dev=            | Watches Org, Emacs Lisp, Scheme and CSS files and reruns the build and the server on every change |
+| =maak hr=             | An alias for =dev=                                                             |
+| =maak build=          | One production build into =./public=                                           |
+| =maak serve=          | Serves the existing =./public= on port 50011                                   |
+| =maak build-and-serve= | Builds, then serves                                                           |
+| =maak fmt=            | Formats the Scheme and Emacs Lisp sources                                      |
+| =maak lint-css=       | Runs stylelint with fixes over the stylesheet                                  |
+| =maak lint-elisp=     | Loads the build script in batch mode, to catch a load-time error early         |
+| =maak lint=           | Runs both linters                                                              |
+| =maak share-card=     | Regenerates the site-wide social card from its SVG                             |
+| =maak deploy=         | Builds for production and copies the result to the deployment directory        |
+
+=maak fmt= runs =guix style= over the Scheme files and indents the Emacs Lisp files, removing tabs and trailing whitespace. Run it before committing; it is the reason the sources look uniform.
+
+* Repository layout
+
+#+begin_example
+  docs/                     the Org sources, one directory per publish project
+    home/                   the landing page and the 404 page
+    blog/                   the blog index, its article categories and their indexes
+    documentation/          the documentation landing page
+    platform/               platform notes, such as the reserved ports
+    policies/               the code of conduct and the AI policy
+    portfolio/              the portfolio page
+  static/                   everything copied verbatim into the output
+    css/jointhefreeworld.css  the only stylesheet
+    js/                     the four scripts described above
+    img/                    favicon, and the site-wide social card with its SVG source
+    robots.txt sitemap.xml  crawler files
+  jointhefreeworld-site.el  the build: export backend, layout, metadata, feed, entry point
+  maak.scm                  the task runner
+  manifest.scm channels.scm the Guix packages and the pinned channels
+  batch-indent.el           the indentation helper used by the formatting task
+  .stylelintrc.yml          the stylesheet rules
+  .woodpecker/byggsteg.yaml the continuous integration configuration
+  .gitignore                ignores the build outputs: .org-cache/, .packages/, public/
+#+end_example
+
+* Deployment
+
+Deployment is a copy. The site is served from =/srv/http/jointhefreeworld.org= by a static web server, and publishing means replacing the files there with a fresh build.
+
+The build that runs for the live site differs in exactly one way: the =CI= environment variable. The build script chooses the absolute URL it writes into canonical links, cards and the feed based on it, using the real host when =CI=true= and the local address otherwise. That is why a development build's absolute URLs point at your own machine and a deployed build's do not.
+
+=maak deploy= performs the copy in a careful order. It builds with =CI=true=, then removes the previously published =index.html=, =blog=, =portfolio=, =documentation/index.html= and =og= from the deployment directory before copying the new output over it. Those deletions exist so that pages and cards you removed from the sources do not linger on the server: a card is generated from the articles that exist today, so last year's card for a deleted article is exactly the kind of file that would survive a plain copy.
+
+On [[https://codeberg.org/jjba23/jointhefreeworld][Codeberg]], a push to the =trunk= branch triggers continuous integration. The pipeline asks Byggsteg, the Guile Scheme build orchestrator, for a token, submits a job naming the =maak-deploy= task, and polls its status. The heavy work happens on the build host, not on the forge.
+
+* Things that bite, and how to avoid them
+
+** A page did not change after a build
+
+The export is forced, so every page is written again on every build rather than skipped as unchanged; a page you did not touch simply comes out the same. What a build does remember is the cards: an article whose card SVG comes out identical keeps the PNG an earlier build drew, and an article whose title changed has its card redrawn and rasterised in that same build. If a build looks stale anyway, remove =./.org-cache= and build again, which is what =maak build= does for you.
+
+** The wrong typeface is showing
+
+The body and heading families are Lucida Sans first and Plus Jakarta Sans second, so the site keeps its character when Lucida is absent. The Lucida files are proprietary, are not distributed with this repository, and are served from =/static-assets/fonts= on the site's own host; the fallback is fetched from a font service. If the Lucida files are missing you get the fallback face, and nothing else breaks.
+
+** A page asked for a script and nothing happened
+
+Script names are matched exactly, and an unknown name is reported in the build log as =#+SCRIPTS: unknown script=. Read the log rather than the page: a typo is silent in the browser by design, so that a page never depends on a script that was not loaded.
+
+** Analytics stopped reporting
+
+The script validates its own configuration rather than trusting it: a missing or nonsensical heartbeat interval falls back to a default, and the session identifier is generated without assuming a secure context, so that a development server serving plain HTTP still works. If you change the payload, keep both behaviours, and remember that the script reports nothing and logs nothing when the endpoint refuses it.
+
+** The feed is stale or missing
+
+A feed failure is logged and swallowed on purpose. Look at the build output for =RSS feed build failed=, and check that the excluded pages are still where the build expects them.
+
+** Something looks wrong in the footer
+
+The footer prints the commit hash of the build, and the hash comes from the working tree at the moment of publishing. A footer that reads =unknown= means the build ran outside a Git repository, not that the build failed.
+
+* Reproducible builds with GNU Guix
+
+A build should never fail because it worked on your machine. Guix gives this project a declarative environment rather than a list of instructions that depend on what happens to be installed.
+
+Enter the development environment with the pinned channels, then work as usual:
+
+#+begin_src sh
+  guix time-machine --channels=channels.scm -- shell -m manifest.scm
+  maak dev
+#+end_src
+
+Four properties make this worth the trouble:
+
+- *Pinned inputs.* =channels.scm= names one commit of Guix, so the environment is the same for everyone who asks for it.
+- *Declared packages.* =manifest.scm= lists exactly what the build needs: Emacs without a window system, the development server, the file watcher and Texinfo.
+- *Time travel.* =guix time-machine= can rebuild the exact environment of any point in the repository's history, which is how a build from a year ago can still be diagnosed.
+- *Nothing global.* No part of the project installs into your profile or writes outside the repository, apart from the package directory the build creates for itself.
 
 * Contributing
 
-Contributions of every kind are welcome: bug reports, documentation fixes, refactors, and new features. Please read [[file:CONTRIBUTING.org][CONTRIBUTING.org]] before you start, and note that this project follows the [[https://jointhefreeworld.org/blog/articles/personal/jointhefreeworld-code-of-conduct/index.html][Code of Conduct]] and the [[https://jointhefreeworld.org/blog/articles/personal/jointhefreeworld-ai-policy/index.html][AI Policy]].
+Contributions of every kind are welcome: bug reports, documentation fixes, refactors, and new features. Please read [[file:CONTRIBUTING.org][CONTRIBUTING.org]] before you start, and note that this project follows the [[https://jointhefreeworld.org/code-of-conduct/][Code of Conduct]] and the [[https://jointhefreeworld.org/ai-policy/][AI Policy]].
 
-Contributing to free software is a uniquely beautiful act: it embodies generosity, collaboration, and empowerment. You are invited to join the jointhefreeworld project, and encouraged to take part in any way you like—report a bug, suggest an improvement, brainstorm with me, or help make the tooling more modular and flexible. Feel free to email me at <jjbigorra@gmail.com> to chat, discuss, or share feedback.
+Contributing to free software is a uniquely beautiful act: it embodies generosity, collaboration and empowerment. You are invited to join the jointhefreeworld project, and encouraged to take part in any way you like. Report a bug, suggest an improvement, brainstorm with me, or help make the tooling more modular and flexible. Feel free to email me at <jjbigorra@gmail.com> to chat, discuss, or share feedback.
 
-The backlog and Kanban board for jointhefreeworld live at https://lucidplan.jointhefreeworld.org/tickets/jointhefreeworld
-
--------------
-
-* Project structure
-
-#+begin_src
-  docs/home/            the landing page
-  docs/blog/            the blog and its category indexes
-  docs/documentation/   the docs landing page
-  docs/platform/        platform notes (e.g. reserved ports)
-  docs/portfolio/       the portfolio page
-  static/css/           the stylesheet
-  static/js/            symbanta.js (analytics) and freeworld.js (home-page extras)
-  jointhefreeworld-site.el   the build script
-  maak.scm              the task runner
-#+end_src
-
--------------
+The backlog and Kanban board for jointhefreeworld live at https://lucidplan.jointhefreeworld.org/tickets/jointhefreeworld.
 
 * Licensing
 
-jointhefreeworld and all of its source code are free software, licensed under the GNU Affero General Public License v3 (or newer, at your convenience).
+jointhefreeworld and all of its source code are free software, licensed under the GNU Affero General Public License v3 or newer, at your convenience.
 
 https://www.gnu.org/licenses/agpl-3.0.html
 
-The articles, blogs, documentation, and examples shipped with jointhefreeworld—including this document—are licensed under the GNU Free Documentation License v1.3 (or newer, at your convenience).
+The articles, blog posts, documentation and examples shipped with jointhefreeworld, including this document, are licensed under the GNU Free Documentation License v1.3 or newer, at your convenience.
 
 https://www.gnu.org/licenses/fdl-1.3.html
-
--------------
-
-* AI policy
-
-This project adheres to the [[https://jointhefreeworld.org/blog/articles/personal/jointhefreeworld-ai-policy/index.html][jointhefreeworld AI policy]].
-
-Our core principle is simple: *AI should assist human creativity and problem-solving, never replace human reasoning.*
-
-Tools such as large language models (LLMs) and interactive chatbots can be useful for reviewing, refactoring small functions, or acting as a sounding board, but they should be used in moderation.
-
-We require a human in the loop for all contributions. The use of autonomous AI agents to generate and submit pull requests to this project is strictly prohibited.
-
--------------
-
-* Code of conduct
-
-This project adheres to the jointhefreeworld code of conduct. Find it here:
-
-https://jointhefreeworld.org/blog/articles/personal/jointhefreeworld-code-of-conduct/index.html
-
-In short, we foster an inclusive, respectful, and cooperative environment for all contributors and users of this free software project. Inspired by the ideals of the GNU Project, we strive to uphold freedom, equality, and community as guiding principles. We believe that collaboration in a community of mutual respect is the foundation of excellent free software.
-
--------------
-
-* Acknowledgements
-
-- *David Wilson* – His excellent tutorials (and [[https://systemcrafters.net][systemcrafters.net]]) provided much inspiration.
-- *The Emacs community* – For the powerful tools and continuous improvements that make a project like this possible.
-
------
-
-[[https://jointhefreeworld.org/static-assets/jointhefreeworld/jointhefreeworld-small.png]]
-
--------
 
 ** On Lucida fonts
 
@@ -143,20 +466,30 @@ Lucida fonts are proprietary typefaces originally developed by Bigelow & Holmes.
 
 You may use these font files under the principles of fair use, or for local development and non-commercial purposes, provided it is not for profit and no proper commercial licence is required by law. Users and contributors are solely responsible for ensuring that their usage complies with the applicable software licensing terms and intellectual property rights.
 
---------
+* AI policy
 
-* On reproducibility: why GNU Guix?
+This project adheres to the [[https://jointhefreeworld.org/ai-policy/][jointhefreeworld AI policy]].
 
-A build should never fail because "it worked on my machine". Reliable software development demands explicit, bit-for-bit reproducibility and a functional approach to package management and system deployment.
+Our core principle is simple: *AI should assist human creativity and problem-solving, never replace human reasoning.*
 
-#+BEGIN_EXPORT html
-<a href="https://guix.gnu.org/">
-  <img src="https://jointhefreeworld.org/ggg/dist/gnu-guix.svg" alt="GNU Guix logo" style="max-width: 250px; width: 100%; height: auto;" />
-</a>
-#+END_EXPORT
+Tools such as large language models and interactive chatbots can be useful for reviewing, refactoring small functions, or acting as a sounding board, but they should be used in moderation.
 
-- *Declarative build graphs* :: Packages are pure functions of their inputs, with no implicit system state.
-- *Programmable with Guile* :: Full system and package configurations written in [[https://www.gnu.org/software/guile/][Guile Scheme]], rather than rigid DSLs or static files.
-- *Time travel* :: Rebuild the exact system state from any point in Git history using ~guix time-machine~.
-- *Atomic operations* :: Upgrade or roll back environments instantly, without leaving orphaned dependencies or broken states.
-- *Unified tooling* :: A single tool manages development shells, isolated containers, package builds, and full system configurations.
+We require a human in the loop for all contributions. The use of autonomous AI agents to generate and submit pull requests to this project is strictly prohibited.
+
+* Code of conduct
+
+This project adheres to the jointhefreeworld code of conduct.
+
+https://jointhefreeworld.org/code-of-conduct/
+
+In short, we foster an inclusive, respectful and cooperative environment for all contributors and users of this free software project. Inspired by the ideals of the GNU Project, we strive to uphold freedom, equality and community as guiding principles. We believe that collaboration in a community of mutual respect is the foundation of excellent free software.
+
+* Acknowledgements
+
+- *David Wilson* – His excellent tutorials, and [[https://systemcrafters.net][systemcrafters.net]], provided much inspiration for this build.
+- *The Emacs community* – For the powerful tools and continuous improvements that make a project like this possible.
+- *Ron Hale-Evans, Robert J. Chassell and Richard M. Stallman* – For the writing on documentation style that shapes how this project explains itself.
+
+-----
+
+[[https://jointhefreeworld.org/static-assets/jointhefreeworld/jointhefreeworld-small.png]]

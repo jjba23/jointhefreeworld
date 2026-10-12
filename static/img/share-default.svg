@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="jointhefreeworld — free software, engineering writing and the FREE stack, by Josep Bigorra">
+  <title>jointhefreeworld — social sharing card</title>
+  <desc>The jointhefreeworld wordmark and tagline on the site's dark espresso background, with a terracotta glow and a pair of parentheses echoing an S-expression.</desc>
+  <defs>
+    <radialGradient id="glow" cx="0.84" cy="0.16" r="0.75">
+      <stop offset="0" stop-color="#d4914e" stop-opacity="0.34"/>
+      <stop offset="0.5" stop-color="#8a5a3c" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#0e0a09" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="rule" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#d4914e"/>
+      <stop offset="1" stop-color="#d4914e" stop-opacity="0"/>
+    </linearGradient>
+    <style>
+      .eyebrow { font: 700 26px "DejaVu Sans", "Bitstream Vera Sans", "Liberation Sans", sans-serif; letter-spacing: 6px; fill: #d4914e; }
+      .headline { font: 700 62px "DejaVu Sans", "Bitstream Vera Sans", "Liberation Sans", sans-serif; fill: #f2e8de; }
+      .foot { font: 400 25px "DejaVu Sans", "Bitstream Vera Sans", "Liberation Sans", sans-serif; fill: #b39c86; }
+      .lisp { font: 400 30px "DejaVu Sans Mono", "Bitstream Vera Sans Mono", monospace; fill: #c9a884; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="630" fill="#0e0a09"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect x="24" y="24" width="1152" height="582" rx="20" fill="none" stroke="#3a2a20" stroke-width="2"/>
+
+  <g fill="none" stroke="#d4914e" stroke-opacity="0.5" stroke-width="8" stroke-linecap="round">
+    <path d="M 1046 178 C 984 246 984 384 1046 452"/>
+    <path d="M 1120 178 C 1182 246 1182 384 1120 452"/>
+  </g>
+  <text class="lisp" x="1083" y="330" text-anchor="middle" transform="rotate(90 1083 330)" opacity="0.8">(λ (free world))</text>
+
+  <text class="eyebrow" x="90" y="152">JOINTHEFREEWORLD.ORG</text>
+
+  <text class="headline" x="90" y="252">Free software,</text>
+  <text class="headline" x="90" y="322">engineering writing,</text>
+  <text class="headline" x="90" y="392">and the FREE stack.</text>
+
+  <rect x="90" y="438" width="420" height="5" rx="2.5" fill="url(#rule)"/>
+
+  <text class="foot" x="90" y="536">Lisp, GNU Guix and the free world</text>
+  <text class="foot" x="90" y="572">Josep Bigorra (jjba23) · GNU AGPL v3 or newer</text>
+</svg>

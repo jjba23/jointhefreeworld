@@ -4,80 +4,14 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2025-04-11 Fri>
+#+description: This page has moved out of the blog to /code-of-conduct/.
+#+CANONICAL: /code-of-conduct/
+#+REDIRECT: /code-of-conduct/
+#+ROBOTS: noindex, follow
 
-* Purpose
+The Code of Conduct now lives on its own page, outside the blog:
+[[/code-of-conduct/][jointhefreeworld - Code of Conduct]].
 
-This Code of Conduct exists to foster an inclusive, respectful, and cooperative environment for all contributors and users of this free software project. Inspired by the ideals of the GNU Project, we strive to uphold freedom, equality, and community as guiding principles.
-
-We believe that collaboration in a community of mutual respect is essential to creating excellent free software.
-
-* Scope
-
-This Code of Conduct applies to every space where the project is discussed or developed: its source-code repositories, issue trackers, pull requests, mailing lists, chat rooms, and any online or in-person event held in the project's name. It also applies when someone is officially representing the project in public.
-
-* Our Community Standards
-
-We welcome everyone, regardless of:
-
-- Gender identity or expression
-- Race, ethnicity, or national origin
-- Religion or lack thereof
-- Sexual orientation
-- Language, dialect, or accent
-- Disability or age
-- Experience level, education, or background
-- Economic or social status
-
-We value contributions from all individuals who support the principles of software freedom, user autonomy, and mutual respect.
-
-* Our Commitments
-
-As contributors and maintainers of this project, we pledge to:
-
-- Create a welcoming environment for all people.
-- Respect individual freedoms and differences.
-- Encourage thoughtful discussion and peaceful resolution of disagreements.
-- Uphold the rights of users and contributors to share, study, modify, and distribute software freely, as described in the [[https://www.gnu.org/philosophy/free-sw.html][Free Software Definition]].
-- Avoid behavior that excludes, demeans, or harasses others.
-- Support and listen to marginalized voices in our communities.
-
-* Kind Communication
-
-Inspired by the GNU Kind Communications Guidelines ([[https://www.gnu.org/philosophy/kind-communication.html][link]]), we encourage contributors to:
-
-- Be kind and welcoming in all interactions.
-- Assume good intent; remember that English is not everyone's first language, and cultural norms differ.
-- When correcting others, do so politely and constructively.
-- Try to help others learn instead of criticizing harshly.
-- Avoid sarcasm, flame wars, and personal insults.
-
-Let us strive for communication that lifts others up rather than putting them down.
-
-* Unacceptable Behavior
-
-The following behaviors are not acceptable:
-
-- Harassment, intimidation, or discrimination of any kind.
-- Dismissive, demeaning, or derogatory comments.
-- Personal attacks or threats.
-- Sustained disruption of discussion or community activities.
-- Any behavior that compromises the freedoms or dignity of others.
-
-* Reporting and Resolution
-
-If you experience or witness behavior that violates this Code of Conduct:
-
-- Please report it to the maintainers by email at [[mailto:jjbigorra@gmail.com][jjbigorra@gmail.com]], or to another designated contact for the project.
-- All reports will be handled confidentially and with respect.
-- Reports made in good faith will never be punished, even if the facts turn out to differ from the initial description.
-- The project maintainers are committed to a fair resolution and may take corrective action if necessary, including warnings, temporary bans, or permanent exclusion from participation.
-
-* License of This Document
-
-This Code of Conduct is released under the Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0). You are welcome to adapt and reuse it for your own projects.
-
-* Thank You
-
-Thank you for contributing to a respectful, inclusive, and freedom-respecting community.
-
-Let’s build a better world together — one that respects people’s rights, promotes cooperation, and champions freedom.
+Old links keep working — you will be forwarded automatically — and this
+page claims the new address as its canonical URL, so search engines
+consolidate the two instead of splitting the credit between them.

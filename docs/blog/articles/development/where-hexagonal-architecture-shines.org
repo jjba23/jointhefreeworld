@@ -1,0 +1,326 @@
+#+title: Where hexagonal architecture shines, and what to reach for instead
+#+options: num:nil toc:nil
+#+author: Josep Jesus Bigorra Algaba
+#+email: jjbigorra@gmail.com
+#+language: en
+#+date: <2026-10-12 ma>
+#+description: Ports and adapters pays where the domain is the complicated part. Here is how it looks in Kotlin with Spring, in Guile Scheme and in Haskell, and when MVC, KISS and CQRS are the better answer.
+#+keywords: hexagonal architecture, ports and adapters, domain-driven design, Kotlin, Spring, Guile Scheme, Haskell, MVC, GNU Artanis, SXML, CQRS, repository pattern
+
+Ports and adapters, also called /hexagonal architecture/, is the pattern I reach for when a system has rules worth protecting, and the pattern I refuse when it has none. This article is the map between those two cases.
+
+If you have read [[/blog/articles/development/hexagon-of-doom/index.html][Hexagon of Doom]], you know the other half of the argument: on a small service with a thin domain, the hexagon is pure indirection, and the indirection costs more than the boundary buys. On the tech radar, ports and adapters now sits in *Adopt*, with exactly that qualification in its note: the boundary earns its keep wherever the domain is the complicated part.
+
+Both statements are true at once, and the whole skill is telling which one describes the code in front of you. Read "hexagonal" as a shortening of "hex-a-GO-nal", and "ports and adapters" as plain English: the domain declares what it needs, and the outside world supplies it.
+
+* The one thing the pattern actually requires
+
+A *port* is an interface, owned by the domain, written in the domain's own words. A *adapter* is the code outside the domain that satisfies it: a database, an HTTP client, a clock, a message queue, a filesystem. That is the entire pattern. Folders, layers and names like =infrastructure/ports/out/= are decoration on top of one rule:
+
+#+begin_quote
+The domain must not depend on the world. The world depends on the domain.
+#+end_quote
+
+Everything the pattern buys follows from that rule, and nothing else does. The tests you gain are free of I/O because the domain never asked for I/O; the swap you gain is cheap because a swap is one function call in one place; the framework upgrade that does not touch your rules is quiet for the same reason.
+
+The deeper benefit, and the one people forget to mention, is *thinking*: a port is a sentence about what the domain needs. Writing that sentence out loud is often worth more than the code underneath it, because it forces you to notice that a "payment service" was really a price lookup plus a ledger entry.
+
+* Four questions that decide it
+
+Before you draw a hexagon, answer these. They are the same questions I use on the radar, and they are honest about the answer "no".
+
+| Question                                        | If the answer is yes                       | If the answer is no                        |
+|-------------------------------------------------+--------------------------------------------+--------------------------------------------|
+| Is the domain the complicated part?              | the boundary protects something worth it   | you are protecting an empty room           |
+| Will there be more than one adapter, for real?   | the seam pays on the second adapter        | you built a seam for one implementation    |
+| Must the rules run without I/O?                  | the port is the only way to test them      | the test will hit the database anyway      |
+| Will the domain outlive this framework?          | the boundary is the insurance, and cheap   | the framework is the system, and you know it |
+
+The last one is the question I care about most, and the one that is hardest to answer honestly on a Monday morning. A rule about how invoices are priced will outlive any framework you name. A controller that validates a form will not.
+
+* Kotlin and Spring: the pattern as the framework intended
+
+Kotlin is a lovely language for ports, because an interface with one method is a sentence, and Spring already does dependency injection well. The port is an interface; the domain service takes one as a constructor parameter; the adapter wears the annotation.
+
+#+begin_src kotlin
+typealias Sku = String
+typealias Cents = Int
+
+data class Line(val sku: Sku, val quantity: Int)
+
+// The port: the domain's own interface, in the domain's own words.
+interface Catalogue {
+    fun priceOf(sku: Sku): Cents
+}
+
+// The rule, in the only place it is allowed to live.
+class QuoteService(private val catalogue: Catalogue) {
+    fun total(lines: List<Line>): Cents =
+        lines.sumOf { line -> catalogue.priceOf(line.sku) * line.quantity }
+}
+#+end_src
+
+The adapter is the only Spring-aware part, and it should be the only part that imports the framework at all:
+
+#+begin_src kotlin
+@Repository
+class JdbcCatalogue(private val jdbc: JdbcTemplate) : Catalogue {
+    override fun priceOf(sku: Sku): Cents =
+        jdbc.queryForObject(
+            "select price from product where sku = ?", Int::class.java, sku,
+        ) ?: error("unknown sku: $sku")
+}
+#+end_src
+
+Two things are worth saying about this. First, Kotlin's own tools are enough to express the port: an interface, a class, a function type. Where the port has exactly one method, a function type is often better than an interface, because a lambda is the cheapest adapter in the world.
+
+Second, and this is the *tell* I look for in a review: if an annotation from the framework appears inside the domain, there is no hexagon, whatever the folder names say. A =@Transactional= on a domain method, a =@Entity= on an aggregate, a =@Component= on a service that holds a rule: each one welds the domain to Spring, and the boundary you paid for is gone. Spring's convenience is not the same thing as an architecture.
+
+** Where Spring's own DI is already enough
+
+Spring wires your objects, and that is genuinely most of what a small application needs. If the "domain" is a controller calling two repositories and assembling a response, ports add a second indirection on top of the container, and the container was already the seam. That is the Hexagon of Doom case, in Kotlin, and it is more common than anyone admits.
+
+* Guile Scheme: the same shape with none of the ceremony
+
+In Scheme you do not need a container to invert a dependency. A port is a record of procedures, the composition root is a function, and the wiring happens in one place that a human being can read in ten seconds. Here is the same shop domain, with the module boundary carrying the architecture:
+
+#+begin_src scheme
+;;; The domain, and the port it declares.  Nothing here knows that a
+;;; database, a web server or a clock exists.
+(define-module (shop domain pricing)
+  #:declarative? #t
+  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-9)
+  #:export (make-catalogue catalogue? catalogue-price quote-total))
+
+;;; A catalogue is not a class: it is a record holding one procedure,
+;;; from a SKU to a price in cents.  This is the port.
+(define-record-type <catalogue>
+  (make-catalogue price-of) catalogue?
+  (price-of catalogue-price-of))
+
+(define (catalogue-price catalogue sku)
+  ((catalogue-price-of catalogue) sku))
+
+;;; The rule of the domain, in the only place it is allowed to live.
+(define (quote-total catalogue lines)
+  "Return the total in cents of LINES, a list of (SKU . QUANTITY)."
+  (fold (lambda (line total)
+          (+ total (* (catalogue-price catalogue (car line)) (cdr line))))
+        0
+        lines))
+#+end_src
+
+An adapter is a function that returns one of those records, and it is impossible to tell a clever adapter from a boring one:
+
+#+begin_src scheme
+(define-module (shop adapters catalogue)
+  #:declarative? #t
+  #:use-module (shop domain pricing)
+  #:export (fixed-catalogue alist-catalogue))
+
+;;; For tests and for the REPL: prices known in advance.
+(define (fixed-catalogue prices)
+  (make-catalogue (lambda (sku)
+                    (or (assoc-ref prices sku)
+                        (error "unknown sku" sku)))))
+
+;;; For development: a price list held in memory.
+(define (alist-catalogue rows)
+  (make-catalogue (lambda (sku)
+                    (or (assoc-ref rows sku)
+                        (error "unknown sku" sku)))))
+#+end_src
+
+The composition root names the adapter, and it is the only place that does:
+
+#+begin_src scheme
+(define (main)
+  (let ((catalogue (alist-catalogue '(("tea" . 650) ("pot" . 2400)))))
+    (format #t "total: ~a cents~%"
+            (quote-total catalogue '(("tea" . 2) ("pot" . 1))))))
+#+end_src
+
+Running it shows the arithmetic, and nothing else:
+
+#+begin_example
+total: 3700 cents
+#+end_example
+
+And the test needs no mocking framework, because a catalogue that returns fixed prices *is* a catalogue:
+
+#+begin_src scheme
+(define (test-quote-total)
+  (let ((catalogue (fixed-catalogue '(("tea" . 100) ("pot" . 500)))))
+    (unless (= 700 (quote-total catalogue '(("tea" . 2) ("pot" . 1))))
+      (error "quote-total is wrong")))
+  (display "quote-total: ok\n"))
+#+end_src
+
+#+begin_example
+quote-total: ok
+#+end_example
+
+This is why I keep coming back to Lisp for this pattern. The indirection tax that makes the hexagon expensive in Java-shaped code does not exist here: a port is data, an adapter is a closure, and the REPL lets you replace the adapter while the system runs and ask the domain what it thinks. LucidPlan and Byggsteg both put the data layer behind exactly this kind of seam, and I [[/blog/articles/lisps/functional-repository-pattern-in-scheme-with-macros/index.html][wrote about the repository eDSL]] that makes the SQLite adapter one =define-repo-method= long.
+
+The one discipline Lisp demands is the discipline no compiler will give you: nothing stops you from calling =sqlite3= inside the domain module. The protection is your module header, and a reviewer who reads it.
+
+* Haskell: the port is a value, and the types keep the promise
+
+Haskell gives you the same record-of-functions port, except the compiler now checks the sentence you wrote:
+
+#+begin_src haskell
+type Sku = String
+type Cents = Integer
+
+-- The port: a record of functions.  Nothing about a database here.
+data Catalogue m = Catalogue { priceOf :: Sku -> m Cents }
+
+-- The rule, and the only place it is allowed to live.
+quoteTotal :: Monad m => Catalogue m -> [(Sku, Int)] -> m Cents
+quoteTotal catalogue lines =
+  sum <$> traverse (\(sku, qty) -> (* qty) <$> priceOf catalogue sku) lines
+#+end_src
+
+Now look at the type of =quoteTotal=. It says the function needs a catalogue and a monad, and it says nothing about a database handle, a connection pool or a logger, because it does not have one. In a language where effects are visible in the type, that is not a comment about your intent: it is a fact about the program.
+
+The usual alternative is a type class (=class Catalogue m where priceOf :: Sku -> m Cents=), which reads even better at the call site and is how a lot of production Haskell is written. It has one trap worth naming: a type class with a single instance for the whole program quietly says "everything in this monad may talk to the database", and blessing all of =IO= is not the same as handing one component the capability it needs. When I want the boundary to be real, I pass the record.
+
+* Domain-driven design is the part that actually pays
+
+If you remember one thing from this article, remember this: the abstraction that pays for itself is almost never the architecture, it is the *model*. Ubiquitous language, aggregates with real invariants, a repository that behaves like a collection of domain objects, domain events where the business already speaks in events. Do that well and the ports fall out almost as a side effect, because a good model has an obvious boundary.
+
+The Repository pattern deserves its own paragraph here, because it is my favourite and the most misused. A repository is not a DAO with a nicer name. It exists so that the domain can say "give me the aggregate with this identity, save this aggregate, forget it" and stay ignorant of SQL, of tables and of the shape of rows. The scheme repository eDSL I linked above does precisely this: one record per repository, one procedure per operation, and the concrete implementation living in a module the domain never imports.
+
+The failure mode is DDD vocabulary without DDD discipline: folders named =domain/=, entities that are bags of setters, an "aggregate" with no invariant, a "value object" that is a =String=. That is ceremony, and ceremony is what makes people write articles called Hexagon of Doom. If your model is anemic, no boundary will save it: anemic models are exactly the case where the hexagon has nothing to protect and the indirection is pure cost.
+
+* The tiny microservice: here, KISS wins
+
+A service that receives a request, validates it, calls two other services and writes one row does not have a domain. It has a *flow*. Drawing a hexagon around a flow costs you four files per change, a debugging session that crosses three layers, and an onboarding document nobody reads. I have written that code, and I have deleted it again.
+
+The signs that you are in this case, all at once:
+
+- the rules fit in one function, and that function is under twenty lines;
+- there is exactly one adapter per port, and there will be exactly one for the foreseeable future;
+- the tests are about wiring, not about behaviour;
+- a change to a business rule touches the port, the adapter and the wiring before it touches the rule.
+
+When you see that, collapse the layers. Keep the naming good, keep the validation at the edge where the untrusted data is, and give the domain to the framework's own mechanisms. The whole point of KISS is not to be lazy; it is to spend your complexity budget on the part of the system that is genuinely hard.
+
+* MVC still wins where the application is a conversation about pages
+
+Now the part I find myself defending most often, because MVC has become unfashionable while quietly remaining the best fit for a large class of programs: content sites, admin tools, internal CRUD applications, anything where the user's interaction is "ask for a page, get a page".
+
+MVC and hexagonal are not rivals. Look at MVC honestly and you find the same dependency arrows: the controller is an adapter for the transport, the view is an adapter for presentation, and the model is the domain. The difference is the *cut*: MVC slices the system by the request lifecycle, which is exactly the axis along which a page-serving application is understood.
+
+My favourite implementation of that cut is [[https://artanis.dev/][GNU Artanis]] with SXML and the repository pattern, and this is the stack I reach for by default:
+
+- *The route is the controller.* Artanis hands the handler a request context, and the handler asks the repository for the model it needs.
+- *The view is data.* SXML is a list, so a page is a value. Artanis renders either a template file or an S-expression through the same =tpl->html=, which means a view can be a function, a fragment or a file, and there is no template language to learn beyond parentheses.
+- *The repository is the door to the database.* The SQLite implementation stays in its own module, behind the same eDSL as the rest of my projects.
+
+A route in that shape is short enough to read out loud:
+
+#+begin_src scheme
+;; The route is the controller.  tpl->html takes either a template file
+;; or an S-expression, and here the view is a value.
+(get "/jobs/:id"
+  (lambda (rc)
+    (let ((job (job-repo-find rc (params rc "id"))))
+      (tpl->html `(section (@ (class "job"))
+                           (h1 ,(job-ref job))
+                           (pre ,(job-command job)))))))
+#+end_src
+
+Rendering is the same primitive Guile ships, which is why I can show you the output instead of promising it:
+
+#+begin_src scheme
+(use-modules (sxml simple))
+(sxml->xml `(section (@ (class "order"))
+                     (h2 "order-1")
+                     (p "total: " ,total " cents")))
+#+end_src
+
+#+begin_example
+<section class="order"><h2>order-1</h2><p>total: 1300 cents</p></section>
+#+end_example
+
+Why this still beats a browser application with a client-side framework for such a site:
+
+- *One source of truth for state.* There is no client-side copy of the model to synchronize, so there is no class of bug where the two copies disagree.
+- *The browser does what it is good at.* Links, forms, back button, bookmarks, printing and a page that works when the JavaScript does not arrive.
+- *The whole stack is one language and one process.* A stack trace goes from the route to the SQL without crossing a serialization boundary, and the same repository code serves the views and the jobs.
+- *HTML is data.* SXML means the view can be composed, tested and refactored like any other function, without a template engine that cannot be debugged.
+
+MVC fails when the interaction becomes a *conversation about state* rather than a request for a page: a drag-and-drop editor, a live dashboard, a collaborative document. There the client is the application, and pretending otherwise is how you end up with a page reload per keystroke. Know which of the two you are building, and pick accordingly: that is the whole decision.
+
+* CQRS, when it is interesting
+
+Command Query Responsibility Segregation, pronounced in full whenever you have to justify it, is the idea that writing and reading are different jobs, and that the write side should record *facts* while the read side derives whatever shape the reader wants.
+
+I like to show it in its smallest honest form, with no framework at all:
+
+#+begin_src scheme
+;;; The write side records facts.  It does not maintain a table, and it
+;;; does not know what anybody will read.
+(define (record-order-placed log order total)
+  "Return LOG with one more fact: ORDER was placed for TOTAL cents."
+  (cons `(order-placed ,order ,total) log))
+
+(define (record-order-refunded log order amount)
+  "Return LOG with one more fact: AMOUNT cents were refunded on ORDER."
+  (cons `(order-refunded ,order ,amount) log))
+
+;;; The read side is a fold over the facts.  It holds no state of its
+;;; own, so it can be thrown away and rebuilt whenever you ask.
+(define (order-summary log)
+  (fold (lambda (event summary)
+          (cond
+           ((and (pair? event) (eq? 'order-placed (car event)))
+            (put-summary summary (cadr event) (caddr event)))
+           ((and (pair? event) (eq? 'order-refunded (car event)))
+            (put-summary summary (cadr event) (- (caddr event))))
+           (else summary)))
+        '()
+        (reverse log)))
+#+end_src
+
+Three facts in, one derived summary out:
+
+#+begin_example
+facts in the log: 3
+read model: ((order-2 . 3700) (order-1 . 500))
+#+end_example
+
+That is CQRS in twenty lines: the write side appends facts, the read side folds them. The interesting part is not the code, it is the *freedom*: a new question about orders is a new fold over the same facts, without touching the write model or migrating anything.
+
+CQRS earns its keep when at least one of these is true:
+
+- the read side needs several shapes of the same data, and each shape would otherwise be a query with six joins;
+- reads and writes have different load profiles, so they want to scale apart;
+- the history matters as much as the current state, for audit, for replay, or for the business itself;
+- the same facts feed more than one consumer: a screen, a report, a search index, an email digest.
+
+It becomes a bill you cannot pay when there is one read shape, one table and one transaction, because now you own two models and the eventual consistency between them, and the only thing you bought is typing. The tell is a projection that exists to reproduce a =SELECT= you could have written in an afternoon.
+
+** The two gotchas
+
+Two failures I have seen more than once, so you can recognize them earlier than I did:
+
+- *Two models, one transaction, no story.* CQRS is not free consistency. If your projection must be updated in the same transaction as the write, you have not separated anything; you have renamed it.
+- *Events as a data dump.* A fact should be written in the language of the business: "order placed", "refund issued". An event that carries a whole table row is a change log wearing a domain's clothes, and it will break the first time you refactor the schema.
+
+* Choosing, in one table
+
+| Situation                                             | Reach for                                     | Because                                              |
+|-------------------------------------------------------+-----------------------------------------------+------------------------------------------------------|
+| Rules are the hard part, several adapters are real     | ports and adapters                            | the boundary protects the expensive part              |
+| A flow: validate, call two services, write a row       | the framework, plainly                        | there is no domain to protect                         |
+| Pages asked for by a user, database behind them        | MVC, a repository, server-rendered views      | the request lifecycle is the natural cut              |
+| Several read shapes over the same facts                | CQRS, with a projection                       | each question becomes a fold, not a migration         |
+| A model you cannot explain to a colleague              | domain-driven design, before any architecture | the model is the abstraction that pays                |
+| A framework you might leave in two years               | a port at that seam, and only there           | insurance is cheap when it is bought in one place     |
+
+The rows are not exclusive. My own projects use MVC at the edge, repositories for the data layer, ports where a real second implementation exists, and a fold wherever history is more useful than state. The radar entry and this table say the same thing, and they will keep saying it: match the pattern to the complexity you actually have, and be honest about which part of your system is complicated.
+
+If you take one habit away from all of this, take [[/blog/articles/lisps/functional-repository-pattern-in-scheme-with-macros/index.html][the repository as a seam]] and the question "what would I have to change to satisfy this port a second time?". If the answer is "one file", you have an architecture. If the answer is "everything", you have a folder structure.

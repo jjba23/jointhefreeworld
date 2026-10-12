@@ -125,6 +125,17 @@
   (lint-css)
   (lint-elisp))
 
+(define (share-card)
+  "Rasterise the social sharing card from its SVG source."
+  ;; The SVG is the source of truth and the PNG is what social platforms
+  ;; fetch, so the two are kept in step by regenerating rather than editing.
+  ;; Both tools come from Guix: `guix shell inkscape pngquant -- maak
+  ;; share-card`.
+  ($ '("inkscape --export-type=png --export-width=1200 --export-height=630"
+       "--export-filename=/tmp/jfw-share-default.png static/img/share-default.svg"))
+  ($ '("pngquant --quality=70-95 --speed 1 --strip --force"
+       "--output static/img/share-default.png /tmp/jfw-share-default.png")))
+
 (define (deploy)
   "Deploy the project."
   (build #:ci? #t)
@@ -132,5 +143,9 @@
   (delete-file-recursively (~ "~a/blog" deploy-dir))
   (delete-file-recursively (~ "~a/portfolio" deploy-dir))
   (delete-file-recursively (~ "~a/documentation/index.html" deploy-dir))
+  ;; The social cards are generated from the articles that exist today, so
+  ;; the directory goes the same way as the pages: a card for a deleted
+  ;; article must not survive its article.
+  (delete-file-recursively (~ "~a/og" deploy-dir))
   ($ (list "cp -rfv public/*"
            (~ "~a/" deploy-dir))))

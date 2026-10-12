@@ -5,7 +5,7 @@
 
 Thank you for wanting to contribute to jointhefreeworld! This guide explains how to set up the project, the conventions we follow, and how to send a change.
 
-Before you begin, please read the project's [[https://jointhefreeworld.org/blog/articles/personal/jointhefreeworld-code-of-conduct/index.html][Code of Conduct]] and [[https://jointhefreeworld.org/blog/articles/personal/jointhefreeworld-ai-policy/index.html][AI Policy]]. By taking part, you agree to follow both.
+Before you begin, please read the project's [[https://jointhefreeworld.org/code-of-conduct/][Code of Conduct]] and [[https://jointhefreeworld.org/ai-policy/][AI Policy]]. By taking part, you agree to follow both.
 
 * Ways to contribute
 

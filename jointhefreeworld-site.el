@@ -60,6 +60,7 @@
 (require 'ox-publish)
 (require 'subr-x)
 (require 'cl-lib)
+(require 'json)                          ; JSON-LD structured data
 
 ;; Install other dependencies
 (use-package esxml
@@ -94,6 +95,15 @@
 (setq user-full-name "Josep Bigorra")
 (setq user-mail-address "jjbigorra@gmail.com")
 
+(defconst jfw/project-root
+  (file-name-as-directory
+   (file-name-directory
+    (or load-file-name buffer-file-name (expand-file-name "jointhefreeworld-site.el"))))
+  "Absolute directory holding this build script and the project it builds.
+Resolved once, while the file loads: during an export `default-directory'
+is the directory of whichever Org file is being published, so it cannot
+be used to find the project's own manifests, sources or output.")
+
 (defconst jfw/site-url (if (string-equal (getenv "CI") "true")
                            "https://jointhefreeworld.org"
                          "http://localhost:50011")
@@ -103,11 +113,19 @@
   "Free software, engineering writing, and the jointhefreeworld ecosystem, by Josep Bigorra."
   "Fallback meta description used for pages that do not define their own.")
 
-(defun jfw/page-description (description)
-  "Return the trimmed DESCRIPTION, or the default when it is empty or nil."
-  (if (and description (not (string-empty-p (string-trim description))))
-      (string-trim description)
-    jfw/default-description))
+(defun jfw/page-description (description &optional content path)
+  "Return the meta description of a page, as plain text.
+An explicit #+DESCRIPTION: wins.  Failing that, a blog article lends its
+own opening prose, so a shared link says something specific about that
+article instead of repeating the site tagline; every other page keeps
+the site default."
+  (let ((explicit (and description (string-trim description))))
+    (cond
+     ((and explicit (not (string-empty-p explicit))) explicit)
+     ((and content path (jfw/article-path-p path)
+           (> (length (jfw/plain-text content)) 60))
+      (jfw/bound-words (jfw/plain-text content) 158))
+     (t jfw/default-description))))
 
 (defconst jfw/font-assets-url
   "https://jointhefreeworld.org/static-assets/fonts"
@@ -155,10 +173,32 @@ wrong theme while the deferred scripts are still loading.")
 
 (defconst jfw/repl-scripts
   `(script (@ (src ,(concat jfw/site-url "/static/js/guile-repl.js")) (defer "true")) "")
-  "The Guile Scheme REPL of the home page, for pages that ask for it.
+  "The Guile Scheme REPL, for pages that ask for it with #+SCRIPTS: repl.
 It is a small interpreter in its own right, so only a page with a REPL
-placed on it — one declaring #+REPL: — pays for downloading it.  See
-`jfw/org-html-template'.")
+placed on it pays for downloading it.")
+
+(defconst jfw/radar-scripts
+  `(script (@ (src ,(concat jfw/site-url "/static/js/tech-radar.js")) (defer "true")) "")
+  "The interactive tech radar, for pages that ask for #+SCRIPTS: radar.")
+
+(defconst jfw/page-script-alist
+  `(("repl" . ,jfw/repl-scripts)
+    ("radar" . ,jfw/radar-scripts))
+  "Maps the names used in #+SCRIPTS: to the script nodes they load.
+Adding a page script means adding one entry here and asking for it from
+the Org file, so no page ever downloads a script it does not use.")
+
+(defun jfw/page-scripts (info)
+  "Return the script nodes requested by the page's #+SCRIPTS: keyword.
+Names are comma or space separated, and an unknown name is reported
+during the build instead of silently doing nothing."
+  (let* ((requested (plist-get info :scripts))
+         (names (when (and requested (not (string-empty-p (string-trim requested))))
+                  (split-string (string-trim requested) "[, ]+" t))))
+    (delq nil (mapcar (lambda (name)
+                        (or (cdr (assoc (downcase name) jfw/page-script-alist))
+                            (progn (message "#+SCRIPTS: unknown script %s" name) nil)))
+                      names))))
 
 (org-link-set-parameters
  "yt"
@@ -172,8 +212,50 @@ placed on it — one declaring #+REPL: — pays for downloading it.  See
    (when (eq backend 'html)
      (jfw/embed-video path))))
 
-(defun jfw/site-header ()
-  "Return the shared site header as a list of sxml nodes."
+(defconst jfw/nav-links
+  '(("/" . "Home")
+    ("/blog/" . "Blog")
+    ("/blog/articles/development/tech-radar/" . "Tech Radar")
+    ("/joe-cv/" . "Joe's CV")
+    ("/documentation/" . "Docs")
+    ("/code-of-conduct/" . "Code of Conduct")
+    ("/ai-policy/" . "AI Policy")
+    ("https://codeberg.org/jjba23" . "Codeberg")
+    ("https://www.linkedin.com/in/josepjba/" . "LinkedIn"))
+  "The site navigation, in order: a site-relative path or an absolute URL,
+paired with its label.")
+
+(defun jfw/nav-current (current)
+  "Return the nav href that best describes the page at CURRENT.
+The longest site-relative link the page sits under wins, so an article
+marks its own section instead of the whole of /blog/; a link to the root
+only ever matches the root itself."
+  (when current
+    (let ((best nil))
+      (dolist (link jfw/nav-links best)
+        (let ((href (car link)))
+          (when (and (string-prefix-p "/" href)
+                     (or (string= href current)
+                         (and (not (string= href "/"))
+                              (string-prefix-p href current))))
+            (when (or (null best) (> (length href) (length best)))
+              (setq best href))))))))
+
+(defun jfw/nav-items (current)
+  "Return the navigation links as sxml, marking the entry matching CURRENT."
+  (mapcar (lambda (link)
+            (let ((href (car link))
+                  (label (cdr link)))
+              `(a (@ (class "nav-link")
+                     (href ,href)
+                     ,@(when (equal href current) '((aria-current "page"))))
+                  ,label)))
+          jfw/nav-links))
+
+(defun jfw/site-header (&optional current)
+  "Return the shared site header as a list of sxml nodes.
+CURRENT is the site-relative path of the page being published; the nav
+entry the visitor is standing on is the one told `aria-current'."
   (list
    `(div (@ (id "top") (class "site-title flex flex-wrap items-center gap-3"))
          (a (@ (class "border-b-none")
@@ -229,12 +311,7 @@ placed on it — one declaring #+REPL: — pays for downloading it.  See
                       (details (@ (open "true") (class "nav-details"))
                                (summary "site navigation")
                                (nav (@ (class "nav"))
-                                    (a (@ (class "nav-link") (href "/")) "Home")
-                                    (a (@ (class "nav-link") (href "/blog/")) "Blog")
-                                    (a (@ (class "nav-link") (href "/joe-cv/")) "Joe's CV")
-                                    (a (@ (class "nav-link") (href "/documentation/")) "Docs")
-                                    (a (@ (class "nav-link") (href "https://codeberg.org/jjba23")) "Codeberg")
-                                    (a (@ (class "nav-link") (href "https://www.linkedin.com/in/josepjba/")) "LinkedIn"))))))))
+                                    ,@(jfw/nav-items (jfw/nav-current current)))))))))
 
 
 
@@ -252,6 +329,12 @@ placed on it — one declaring #+REPL: — pays for downloading it.  See
                                "🔗 source code on Codeberg"))
                            (small
                             (a (@(href ,(string-join (list jfw/site-url "rss.xml") "/"))) "🗞️ RSS feed"))
+                           (small
+                            (a (@ (href "/blog/articles/development/tech-radar/")) "🧭 the FREE stack tech radar"))
+                           (small
+                            (a (@ (href "/code-of-conduct/")) "🤝 code of conduct"))
+                           (small
+                            (a (@ (href "/ai-policy/")) "🤖 AI policy"))
                            (small
                             (a (@(href "#top")) "⬆️ back to the top"))
                            ))))))
@@ -297,6 +380,719 @@ publish."
 "
   "Speculation Rules that let supporting browsers prerender followed links.")
 
+;;; ---------------------------------------------------------------------
+;;; Page metadata: canonical URLs, social cards, robots and JSON-LD
+;;; ---------------------------------------------------------------------
+;; Every page gets a canonical URL, a complete Open Graph and Twitter
+;; card, and a JSON-LD description of itself, so that shared links render
+;; richly and search engines can tell the pages apart without guessing.
+
+(defconst jfw/og-image "/static/img/share-default.png"
+  "Site-wide social sharing card, used when a page sets no #+OG_IMAGE:.")
+
+(defconst jfw/og-image-width "1200")
+(defconst jfw/og-image-height "630")
+
+(defconst jfw/og-image-alt
+  "jointhefreeworld — free software, engineering writing and the FREE stack, by Josep Bigorra"
+  "Alt text describing the default social sharing card.")
+
+(defconst jfw/robots-indexable
+  "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+  "Robots directives for pages that should be indexed in full.")
+
+(defconst jfw/robots-stub "noindex, follow"
+  "Robots directives for pages that only forward to their new home.")
+
+(defconst jfw/html-entities
+  '(("amp" . "&") ("lt" . "<") ("gt" . ">") ("quot" . "\"")
+    ("apos" . "'") ("nbsp" . " ") ("hellip" . "…") ("mdash" . "—")
+    ("ndash" . "–") ("lsquo" . "‘") ("rsquo" . "’") ("ldquo" . "“")
+    ("rdquo" . "”") ("times" . "×") ("copy" . "©"))
+  "Named HTML entities decoded when turning exported HTML back to text.")
+
+(defun jfw/decode-html-entity (match)
+  "Return the character named by the entity in MATCH, or MATCH itself."
+  (or (cdr (assoc (match-string 1 match) jfw/html-entities)) match))
+
+(defun jfw/plain-text (html)
+  "Return HTML with its tags stripped, entities decoded and space collapsed.
+The result is plain text, so the consumers that re-escape it — the meta
+tags — never double-encode an ampersand or an accent."
+  (when html
+    (let* ((text (replace-regexp-in-string "<[^>]*>" " " html))
+           (text (replace-regexp-in-string "&\\([a-zA-Z]+\\);" #'jfw/decode-html-entity text t))
+           (text (replace-regexp-in-string "&#\\([0-9]+\\);"
+                                           (lambda (m) (string (string-to-number (match-string 1 m))))
+                                           text t)))
+      ;; Export data carries face properties, and an attribute writer
+      ;; prints those along with the text, so drop them here.
+      (substring-no-properties
+       (string-trim (replace-regexp-in-string "[[:space:]]+" " " text))))))
+
+(defun jfw/bound-words (text limit)
+  "Return TEXT shortened to at most LIMIT characters, at a word boundary."
+  (if (<= (length text) limit)
+      text
+    (let ((cut (substring text 0 limit)))
+      (concat (string-trim (substring cut 0 (or (string-match " [^ ]*\\'" cut) limit)))
+              "…"))))
+
+(defconst jfw/section-labels
+  '(("ci" . "CI/CD") ("development" . "Dev") ("gnu-linux" . "GNU/Linux")
+    ("freebsd" . "FreeBSD") ("lisps" . "Lisps") ("emacs" . "Emacs")
+    ("haskell" . "Haskell") ("rust" . "Rust") ("go" . "Go")
+    ("personal" . "Personal"))
+  "Human names for the blog's category directories, shared by the
+article:section meta tag, the structured data and the breadcrumbs.")
+
+(defun jfw/humanize (slug)
+  "Return SLUG turned into a human-readable label."
+  (or (cdr (assoc slug jfw/section-labels))
+      (capitalize (replace-regexp-in-string "-" " " slug))))
+
+(defun jfw/page-path (info)
+  "Return the site-relative URL of the page being exported.
+The path mirrors what `jfw/org-html-publish-to-html' writes: the docs/home
+project lands at the root, every other project keeps its own
+directory, and a non-index file gets a lowercase directory of its own.
+This is the one place that knows the URL layout, so the canonical link,
+the social card and the structured data all agree by construction."
+  (let* ((input (plist-get info :input-file))
+         (docs-root (file-name-as-directory (expand-file-name "docs/" jfw/project-root)))
+         (rel (if input (file-relative-name input docs-root) "index.org"))
+         (project (car (split-string rel "/")))
+         (prefix (jfw/project-url-prefix (concat project "/")))
+         (rest (string-remove-prefix (concat project "/") rel))
+         (base (file-name-base rest))
+         (dir (file-name-directory rest))
+         (root (if (string-empty-p prefix) "/" (concat "/" prefix "/"))))
+    (cond
+     ((string= base "404") "/404.html")
+     ((string= base "index") (concat root (or dir "")))
+     (t (concat root (or dir "") (downcase base) "/")))))
+
+(defvar jfw/url-prefix-cache (make-hash-table :test #'equal)
+  "Cache of publish project directory to the URL prefix it writes.")
+
+(defun jfw/project-url-prefix (project-dir)
+  "Return the URL prefix that the publish project PROJECT-DIR writes to.
+It is read back from `org-publish-project-alist' itself, so a project
+that is moved in the build is also moved in its canonical URLs and
+social cards without a second place to keep in sync."
+  (or (gethash project-dir jfw/url-prefix-cache)
+      (puthash project-dir
+               (let* ((cwd jfw/project-root)
+                      (docs-root (file-name-as-directory (expand-file-name "docs/" cwd)))
+                      (public-root (file-name-as-directory (expand-file-name "public/" cwd)))
+                      (base-dir (file-name-as-directory (expand-file-name project-dir docs-root))))
+                 (catch 'found
+                   (dolist (project org-publish-project-alist)
+                     (let* ((plist (cdr project))
+                            (project-base (when (plist-get plist :base-directory)
+                                            (file-name-as-directory
+                                             (expand-file-name (plist-get plist :base-directory) cwd))))
+                            (publish-dir (when (plist-get plist :publishing-directory)
+                                           (file-name-as-directory
+                                            (expand-file-name (plist-get plist :publishing-directory) cwd)))))
+                       (when (and project-base publish-dir (equal project-base base-dir))
+                         (let ((prefix (string-trim (file-relative-name publish-dir public-root) "/" "/")))
+                           (throw 'found (if (equal prefix ".") "" prefix))))))
+                   ""))
+               jfw/url-prefix-cache)))
+
+(defun jfw/page-index-p (info)
+  "Return non-nil when the page being exported is a directory index.
+Such a page is reached by its directory name alone, so its breadcrumb
+stops at that directory instead of repeating its own title."
+  (let ((base (file-name-base (or (plist-get info :input-file) "index.org"))))
+    (or (string= base "index") (string= base "404"))))
+
+(defun jfw/absolute-url (path)
+  "Return PATH as an absolute URL, leaving an already absolute one alone."
+  (if (or (string-prefix-p "http://" path) (string-prefix-p "https://" path))
+      path
+    (concat jfw/site-url path)))
+
+(defun jfw/article-path-p (path)
+  "Return non-nil when PATH is a single blog article."
+  (string-match-p "\\`/blog/articles/[^/]+/[^/]+/\\'" path))
+
+(defun jfw/section-label (path)
+  "Return the human name of the blog category PATH belongs to, if any."
+  (let ((parts (split-string (string-trim path "/" "/") "/" t)))
+    (when (and (equal (car parts) "blog") (equal (cadr parts) "articles"))
+      (when-let* ((category (nth 2 parts)))
+        (jfw/humanize category)))))
+
+;;; ---------------------------------------------------------------------
+;;; Social cards
+;;; ---------------------------------------------------------------------
+;; A shared link should say what it is about before anybody clicks it.
+;; Every blog article therefore gets a card of its own, composed from its
+;; own title and its own category while the site is exported, and
+;; rasterised, because the social platforms do not render SVG.
+
+(defconst jfw/og-cards-directory "og"
+  "Directory below ./public holding the generated social cards.
+It is deliberately not ./public/static, which the build owns as a copy
+of ./static and would overwrite.")
+
+(defconst jfw/og-rasterizer "rsvg-convert"
+  "Program that turns a card's SVG into the PNG the platforms fetch.
+It comes from librsvg, which manifest.scm provides.  When it is absent
+the build says so once and the articles keep the site-wide card, so a
+checkout without the tool still publishes a site with no broken image.")
+
+(defconst jfw/og-card-font-family
+  "'DejaVu Sans', 'Bitstream Vera Sans', 'Liberation Sans', sans-serif"
+  "Family stack of the cards, all of them freely available.
+The text is rasterised by whoever runs the build, so a proprietary face
+would make the card depend on what happens to be installed there.")
+
+(defconst jfw/og-card-mono-family
+  "'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', monospace"
+  "Monospaced stack, used for the parenthesis ornament.")
+
+(defconst jfw/og-card-colours
+  '(("background" . "#0e0a09")
+    ("glow" . "#d4914e")
+    ("frame" . "#3a2a20")
+    ("ink" . "#f2e8de")
+    ("accent" . "#d4914e")
+    ("faded" . "#b39c86"))
+  "Card palette, shared with the stylesheet's design tokens.
+An alist of names to colours, because the SVG builder reads them by name
+and a typo in a colour should be a missing value rather than a silence.")
+
+(defconst jfw/og-card-text-width 880
+  "Widest a title line may be, in pixels, on a 1200 pixel card.")
+
+(defconst jfw/og-card-title-sizes '(62 54 46 40 34)
+  "Title sizes to try, largest first, until the title fits its lines.
+A title too long for the largest size steps down rather than shrinking
+past legibility, which is what a card in a timeline needs.")
+
+(defconst jfw/og-card-title-band '(240 . 520)
+  "Vertical band the title is centred in, between its label and the footer.
+A title is centred rather than dropped from a fixed baseline so that one
+line and four lines both look deliberate on the card.")
+
+(defconst jfw/og-card-footer-rule-y 520
+  "Y of the rule above the footer, anchored near the frame's bottom edge.")
+
+(defconst jfw/og-card-footer-baseline 568
+  "Baseline of the footer line, shared by every card.")
+
+(defconst jfw/og-card-title-lines '(3 4 5 6 6)
+  "How many lines each size in `jfw/og-card-title-sizes' may use.
+The budget is vertical as well as horizontal: a line is 1.14 sizes tall
+and the block is centred on a band of about three hundred pixels, so
+three lines at the largest size leave air above and below, while four
+lines at that size would touch the label and the footer rule.")
+
+(defconst jfw/og-card-escapes
+  '((?& . "&amp;") (?< . "&lt;") (?> . "&gt;") (?\" . "&quot;") (?\' . "&apos;"))
+  "Characters that must not reach the SVG as themselves.")
+
+(defun jfw/og-card-colour (name)
+  "Return the card colour called NAME."
+  (or (cdr (assoc name jfw/og-card-colours))
+      (error "no such card colour: %s" name)))
+
+(defun jfw/og-card-escape (text)
+  "Return TEXT with the characters XML reserves replaced by entities."
+  (replace-regexp-in-string
+   "[&<>\"']"
+   (lambda (match) (cdr (assq (string-to-char match) jfw/og-card-escapes)))
+   text t t))
+
+(defun jfw/og-card-text (text)
+  "Return TEXT as a card can draw it.
+HTML is stripped, pictographs are dropped, and runs of whitespace are
+collapsed.  A card is rasterised with freely available fonts, and those
+do not carry the emoji an Org title is allowed to use; a drawn box would
+be worse than a missing glyph."
+  (let ((text (jfw/plain-text (or text ""))))
+    (setq text (replace-regexp-in-string
+                "[\u2190-\u2BFF\U0001F000-\U0001FAFF]" "" text t))
+    (string-trim (replace-regexp-in-string "[[:space:]]+" " " text))))
+
+(defconst jfw/og-card-glyph-widths
+  ;; DejaVu Sans Bold advances, in units of 1/1000 em: printable ASCII
+  ;; first (32..126), then Latin-1 (160..255).  They come from the font
+  ;; that manifest.scm installs, which is the face the rasteriser draws
+  ;; the cards with.  Emacs cannot measure text from a batch build, and an
+  ;; average glyph width guessed generously enough to be safe made the
+  ;; wrapping ragged, while one guessed tightly let cards overflow their
+  ;; own frame, so the metrics travel with the build script instead.
+  [    348  456  521  838  696 1002  872  306  457  457  523  838  380  415  380  365
+    696  696  696  696  696  696  696  696  696  696  400  400  838  838  838  580
+   1000  774  762  734  830  683  683  821  837  372  372  775  637  995  837  850
+    733  850  770  720  682  812  774 1103  771  724  725  457  365  457  838  500
+    500  675  716  593  716  678  435  716  712  343  343  665  343 1042  712  687
+    716  716  493  595  478  712  652  924  645  652  582  712  365  712  838  348
+    456  696  696  636  696  365  500  500 1000  564  646  838  415 1000  500  500
+    838  438  438  500  736  636  380  500  438  564  646 1035 1035 1035  580  774
+    774  774  774  774  774 1085  734  683  683  683  683  372  372  372  372  838
+    837  850  850  850  850  850  838  850  812  812  812  812  724  738  719  675
+    675  675  675  675  675 1048  593  678  678  678  678  343  343  343  343  687
+    712  687  687  687  687  687  838  687  712  712  712  712  652  716  652]
+  "Advances of the card's title face, in units of 1/1000 em.")
+
+(defconst jfw/og-card-fallback-width 620
+  "Advance assumed for a character the width table does not cover.")
+
+(defun jfw/og-card-char-width (char)
+  "Return the advance of CHAR in the card's title face, in 1/1000 em."
+  (cond
+   ((and (>= char 32) (<= char 126))
+    (aref jfw/og-card-glyph-widths (- char 32)))
+   ((and (>= char 160) (<= char 255))
+    (aref jfw/og-card-glyph-widths (+ 95 (- char 160))))
+   (t jfw/og-card-fallback-width)))
+
+(defun jfw/og-card-estimate (text size)
+  "Return the width in pixels of TEXT set at SIZE in the title face.
+The sum of the declared advances, so a line is measured the way the
+rasteriser will draw it rather than estimated from a guess."
+  (let ((units (apply #'+ 0 (mapcar #'jfw/og-card-char-width
+                                    (string-to-list text)))))
+    (/ (* (float units) size) 1000.0)))
+
+(defun jfw/og-card-wrap (text size width)
+  "Return TEXT as a list of lines no wider than WIDTH at SIZE.
+A single word too long for WIDTH keeps a line to itself."
+  (let ((lines '())
+        (line ""))
+    (dolist (word (split-string text "[ \t\n]+" t))
+      (let ((candidate (if (string-empty-p line) word (concat line " " word))))
+        (if (or (string-empty-p line) (<= (jfw/og-card-estimate candidate size) width))
+            (setq line candidate)
+          (push line lines)
+          (setq line word))))
+    (unless (string-empty-p line)
+      (push line lines))
+    (nreverse lines)))
+
+(defun jfw/og-card-break-sets (from up-to count)
+  "Return every sorted list of COUNT break positions in [FROM, UP-TO).
+A break position i means \"start a new line after word i\", so a title of
+n words has n-1 gaps and a list of COUNT of them is COUNT+1 lines."
+  (cond
+   ((zerop count) (list nil))
+   ((> count (- up-to from)) nil)
+   (t (cl-loop for position from from to (- up-to count)
+               append (mapcar (lambda (rest) (cons position rest))
+                              (jfw/og-card-break-sets (1+ position) up-to (1- count)))))))
+
+(defun jfw/og-card-ranges (breaks word-count)
+  "Return the (FROM . TO) word ranges that BREAKS divide WORD-COUNT words into."
+  (let ((ranges '())
+        (start 0))
+    (dolist (break breaks)
+      (push (cons start (1+ break)) ranges)
+      (setq start (1+ break)))
+    (push (cons start word-count) ranges)
+    (nreverse ranges)))
+
+(defun jfw/og-card-balance (text size limit)
+  "Return TEXT at SIZE wrapped into balanced lines, or nil when it will not fit.
+Balanced is decided by search rather than by a greedy pass: the splits
+that fit the card are all measured, and the one whose lines differ least
+in width wins, with the fewest lines preferred.  Greedy wrapping fills
+the first lines to the brim and leaves a stub at the end, which on a card
+with room for three lines is what makes a title look like a mistake."
+  (let* ((words (split-string text "[ \t\n]+" t))
+         (n (length words))
+         (space (jfw/og-card-estimate " " size))
+         (widths (mapcar (lambda (word) (jfw/og-card-estimate word size)) words)))
+    (cl-block balanced
+      ;; Fewest lines wins, so the counts are tried in order and the first
+      ;; one that fits anything is the one whose candidates are compared.
+      (cl-loop for count from 0 below (min limit n)
+               do (let ((candidates
+                         (cl-loop for breaks in (jfw/og-card-break-sets 0 (1- n) count)
+                                  for ranges = (jfw/og-card-ranges breaks n)
+                                  for widths-of-lines
+                                  = (mapcar (lambda (range)
+                                              (+ (cl-reduce #'+ (cl-subseq widths (car range) (cdr range)))
+                                                 (* space (- (cdr range) (car range) 1))))
+                                            ranges)
+                                  when (cl-every (lambda (width)
+                                                   (<= width jfw/og-card-text-width))
+                                                 widths-of-lines)
+                                  collect (let ((mean (/ (cl-reduce #'+ widths-of-lines)
+                                                         (float (length widths-of-lines)))))
+                                            (cons (cl-reduce #'+ (mapcar (lambda (width)
+                                                                           (expt (- width mean) 2))
+                                                                         widths-of-lines))
+                                                  (mapcar (lambda (range)
+                                                            (mapconcat #'identity
+                                                                       (cl-subseq words (car range) (cdr range))
+                                                                       " "))
+                                                          ranges))))))
+                    (when candidates
+                      (cl-return-from balanced
+                        (cdr (car (sort candidates (lambda (a b) (< (car a) (car b)))))))))))))
+
+(defun jfw/og-card-title-layout (title)
+  "Return (SIZE . LINES) laying TITLE out on a card.
+The largest size whose allowed number of lines is enough wins.  A title
+that no size can hold keeps the smallest size and says so with an
+ellipsis rather than shrinking past legibility."
+  (let ((sizes jfw/og-card-title-sizes)
+        (limits jfw/og-card-title-lines)
+        layout)
+    (while (and sizes (not layout))
+      (let* ((size (car sizes))
+             (strict (jfw/og-card-wrap title size jfw/og-card-text-width))
+             (lines (when (<= (length strict) (car limits))
+                      (or (jfw/og-card-balance title size (car limits)) strict))))
+        (if lines
+            (setq layout (cons size lines))
+          (setq sizes (cdr sizes)
+                limits (cdr limits)))))
+    (or layout
+        (let* ((size (car (last jfw/og-card-title-sizes)))
+               (lines (jfw/og-card-wrap title size jfw/og-card-text-width))
+               (kept (cl-subseq lines 0 (car (last jfw/og-card-title-lines)))))
+          (setcar (last kept)
+                  (concat (string-trim-right (car (last kept)) "[.,;:] ") "…"))
+          (cons size kept)))))
+
+(defun jfw/og-card-title-svg (layout)
+  "Return the title's SVG lines for LAYOUT, a (SIZE . LINES) pair.
+The block is centred on `jfw/og-card-title-band'.  A line whose measured
+width would reach past the text width is clamped with `textLength', which
+can only happen for a word the wrap could not break."
+  (let* ((size (car layout))
+         (lines (cdr layout))
+         (line-height (round (* size 1.14)))
+         ;; Centre the whole block on the band, using a rough ascender and
+         ;; descender: what a reader sees is the ink, not the baselines.
+         (centre (/ (+ (car jfw/og-card-title-band) (cdr jfw/og-card-title-band)) 2.0))
+         (first-baseline
+          (round (- centre (/ (- (* (1- (length lines)) line-height)
+                                 (* 0.53 size))
+                              2.0)))))
+    (cl-loop for line in lines
+             for index from 0
+             concat
+             (let ((width (jfw/og-card-estimate line size))
+                   (y (+ first-baseline (* index line-height))))
+               (format "  <text class=\"title\" x=\"90\" y=\"%d\"%s>%s</text>\n"
+                       y
+                       (if (> width jfw/og-card-text-width)
+                           (format " textLength=\"%d\" lengthAdjust=\"spacingAndGlyphs\""
+                                   jfw/og-card-text-width)
+                         "")
+                       (jfw/og-card-escape line))))))
+
+(defun jfw/og-card-svg (title label)
+  "Return the SVG source of the card for TITLE in LABEL.
+TITLE is the article's title and LABEL the category it belongs to: the
+label is what makes two cards about the same subject distinguishable at
+a glance in a timeline."
+  (let* ((title (jfw/og-card-text title))
+         (label (upcase (jfw/og-card-text label)))
+         (layout (jfw/og-card-title-layout title))
+         (title-svg (jfw/og-card-title-svg layout))
+         (aria (format "jointhefreeworld.org — %s, in %s" title (jfw/og-card-text label))))
+    (concat
+     "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1200\" height=\"630\" "
+     "viewBox=\"0 0 1200 630\" role=\"img\" aria-label=\"" (jfw/og-card-escape aria) "\">\n"
+     "  <title>" (jfw/og-card-escape title) "</title>\n"
+     "  <desc>" (jfw/og-card-escape (format "%s, in the %s section of jointhefreeworld.org" title label)) "</desc>\n"
+     "  <defs>\n"
+     "    <radialGradient id=\"glow\" cx=\"0.84\" cy=\"0.16\" r=\"0.75\">\n"
+     "      <stop offset=\"0\" stop-color=\"" (jfw/og-card-colour "glow") "\" stop-opacity=\"0.34\"/>\n"
+     "      <stop offset=\"0.5\" stop-color=\"#8a5a3c\" stop-opacity=\"0.12\"/>\n"
+     "      <stop offset=\"1\" stop-color=\"" (jfw/og-card-colour "background") "\" stop-opacity=\"0\"/>\n"
+     "    </radialGradient>\n"
+     "    <linearGradient id=\"rule\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"0\">\n"
+     "      <stop offset=\"0\" stop-color=\"" (jfw/og-card-colour "accent") "\"/>\n"
+     "      <stop offset=\"1\" stop-color=\"" (jfw/og-card-colour "accent") "\" stop-opacity=\"0\"/>\n"
+     "    </linearGradient>\n"
+     "    <style>\n"
+     "      .eyebrow { font: 700 24px " jfw/og-card-font-family "; letter-spacing: 5px; fill: " (jfw/og-card-colour "faded") "; }\n"
+     "      .label { font: 700 30px " jfw/og-card-font-family "; letter-spacing: 6px; fill: " (jfw/og-card-colour "accent") "; }\n"
+     "      .title { font: 700 " (number-to-string (car layout)) "px " jfw/og-card-font-family "; fill: " (jfw/og-card-colour "ink") "; }\n"
+     "      .foot { font: 400 25px " jfw/og-card-font-family "; fill: " (jfw/og-card-colour "faded") "; }\n"
+     "      .lisp { font: 400 30px " jfw/og-card-mono-family "; fill: \"#c9a884\"; }\n"
+     "    </style>\n"
+     "  </defs>\n"
+     "\n"
+     "  <rect width=\"1200\" height=\"630\" fill=\"" (jfw/og-card-colour "background") "\"/>\n"
+     "  <rect width=\"1200\" height=\"630\" fill=\"url(#glow)\"/>\n"
+     "  <rect x=\"24\" y=\"24\" width=\"1152\" height=\"582\" rx=\"20\" fill=\"none\" stroke=\""
+     (jfw/og-card-colour "frame") "\" stroke-width=\"2\"/>\n"
+     "\n"
+     "  <g fill=\"none\" stroke=\"" (jfw/og-card-colour "accent")
+     "\" stroke-opacity=\"0.5\" stroke-width=\"8\" stroke-linecap=\"round\">\n"
+     "    <path d=\"M 1046 178 C 984 246 984 384 1046 452\"/>\n"
+     "    <path d=\"M 1120 178 C 1182 246 1182 384 1120 452\"/>\n"
+     "  </g>\n"
+     "  <text class=\"lisp\" x=\"1083\" y=\"330\" text-anchor=\"middle\" transform=\"rotate(90 1083 330)\" opacity=\"0.8\">(λ (free world))</text>\n"
+     "\n"
+     "  <text class=\"eyebrow\" x=\"90\" y=\"134\">JOINTHEFREEWORLD.ORG</text>\n"
+     "  <text class=\"label\" x=\"90\" y=\"196\">" (jfw/og-card-escape label) "</text>\n"
+     "  <rect x=\"90\" y=\"222\" width=\"240\" height=\"5\" rx=\"2.5\" fill=\"url(#rule)\"/>\n"
+     "\n"
+     title-svg
+     "\n"
+     "  <rect x=\"90\" y=\"" (number-to-string jfw/og-card-footer-rule-y)
+     "\" width=\"420\" height=\"5\" rx=\"2.5\" fill=\"url(#rule)\"/>\n"
+     "  <text class=\"foot\" x=\"90\" y=\"" (number-to-string jfw/og-card-footer-baseline)
+     "\">Josep Bigorra (jjba23) · GNU AGPL v3 or newer</text>\n"
+     "</svg>\n")))
+
+(defun jfw/og-card-file (path extension)
+  "Return the absolute file name of the card for PATH with EXTENSION.
+The path of a card mirrors the address of its article: the category
+becomes a directory and the file name becomes the card's name, so a card
+is where a reader would look for it."
+  (when-let* ((parts (jfw/og-card-parts path)))
+    (expand-file-name (concat jfw/og-cards-directory "/" (car parts) "/" (cdr parts) "." extension)
+                      (expand-file-name "public/" jfw/project-root))))
+
+(defun jfw/og-card-parts (path)
+  "Return (CATEGORY . SLUG) for the article at PATH, or nil.
+Only blog articles get a card of their own; every other page keeps the
+site-wide card, which is a fair description of a landing or index page."
+  (when (jfw/article-path-p path)
+    (let ((parts (split-string (string-trim path "/" "/") "/" t)))
+      (when (and (nth 2 parts) (nth 3 parts))
+        (cons (nth 2 parts) (nth 3 parts))))))
+
+(defun jfw/og-card-url (path)
+  "Return the site-relative URL of the card of the article at PATH."
+  (when-let* ((parts (jfw/og-card-parts path)))
+    (concat "/" jfw/og-cards-directory "/" (car parts) "/" (cdr parts) ".png")))
+
+(defun jfw/og-card-write (file content)
+  "Write CONTENT to FILE, and return non-nil when the file changed.
+Rewriting an identical file would leave the PNG looking older than its
+source for no reason, and would rasterise the same card again on every
+build.  The comparison is the cache."
+  (let* ((coding-system-for-read 'utf-8)
+         (existing (when (file-exists-p file)
+                     (with-temp-buffer (insert-file-contents file) (buffer-string)))))
+    (unless (equal existing content)
+      (make-directory (file-name-directory file) t)
+      (let ((coding-system-for-write 'utf-8))
+        (with-temp-file file (insert content)))
+      t)))
+
+(defvar jfw/og-card-rasterizer-cache 'unknown
+  "Memoised answer to \"which program rasterises the cards?\".
+The answer cannot change during a build, and looking it up once keeps a
+build with sixty-nine articles to sixty-nine file tests.")
+
+(defun jfw/og-card-rasterizer-program ()
+  "Return the card rasteriser's executable, or nil when it is absent."
+  (when (eq jfw/og-card-rasterizer-cache 'unknown)
+    (setq jfw/og-card-rasterizer-cache
+          (or (executable-find jfw/og-rasterizer) 'missing)))
+  (unless (eq jfw/og-card-rasterizer-cache 'missing)
+    jfw/og-card-rasterizer-cache))
+
+(defvar jfw/og-cards-rasterised 0)
+(defvar jfw/og-cards-up-to-date 0)
+(defvar jfw/og-cards-without-rasterizer 0)
+
+(defun jfw/og-card-rasterize (svg png)
+  "Render the SVG at SVG into the PNG at PNG, and return non-nil on success.
+The rasteriser's own complaints are captured rather than left to pollute
+the build log, and a failure is reported once per card with the article's
+name, because a card that quietly does not exist is a card that quietly
+does not work."
+  (when-let* ((program (jfw/og-card-rasterizer-program)))
+    (let ((log (generate-new-buffer " *jfw rsvg-convert*")))
+      (unwind-protect
+          (let ((status (call-process program nil log nil
+                                      "--format" "png"
+                                      "--width" "1200"
+                                      "--height" "630"
+                                      "--output" png svg)))
+            (if (and (numberp status) (zerop status) (file-exists-p png))
+                (progn (cl-incf jfw/og-cards-rasterised) t)
+              (message "social card: %s could not rasterise %s: %s"
+                       program (file-name-nondirectory svg)
+                       (string-trim (with-current-buffer log (buffer-string))))
+              nil))
+        (kill-buffer log)))))
+
+(defun jfw/og-card (path title &optional label)
+  "Generate the social card of the page at PATH and return its URL.
+TITLE is the page's title and LABEL the category or ring it belongs to.
+The card is written below ./public when its content changed, and a
+rasteriser turns it into the PNG that platforms fetch.
+
+Two situations return nil, and both leave the page with the site-wide
+card rather than pointing a crawler at a file that is not there: a page
+that is not an article, and an article whose PNG could not be produced."
+  (when-let* ((svg (jfw/og-card-file path "svg"))
+              (png (jfw/og-card-file path "png"))
+              (url (jfw/og-card-url path)))
+    (let ((changed (jfw/og-card-write
+                    svg (jfw/og-card-svg title (or label (jfw/section-label path) "journal")))))
+      (cond
+       ;; The card's own drawing is the cache: an article whose title and
+       ;; category did not change keeps the PNG an earlier build drew.
+       ((and (not changed) (file-exists-p png) (not (file-newer-than-file-p svg png)))
+        (cl-incf jfw/og-cards-up-to-date)
+        url)
+       ((jfw/og-card-rasterize svg png) url)
+       (t
+        ;; Either the rasteriser is missing or it failed on this card, and
+        ;; in both cases the page is better off with the site-wide card
+        ;; than with a link to a file that is not there.
+        (cl-incf jfw/og-cards-without-rasterizer)
+        nil)))))
+
+(defun jfw/report-og-cards ()
+  "Report how the cards fared, once, at the end of a build."
+  (message "social cards: %d rasterised, %d already current%s"
+           jfw/og-cards-rasterised
+           jfw/og-cards-up-to-date
+           (if (> jfw/og-cards-without-rasterizer 0)
+               (format ", %d left to the site-wide card because %s is not installed"
+                       jfw/og-cards-without-rasterizer jfw/og-rasterizer)
+             ".")))
+
+(defun jfw/iso-date (info)
+  "Return the page's date as an ISO 8601 day, or nil when it has none."
+  (let ((date (org-export-data (org-export-get-date info "%Y-%m-%d") info)))
+    (when (and date (string-match-p "\\`[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}\\'" date))
+      date)))
+
+(defvar jfw/git-date-cache (make-hash-table :test #'equal)
+  "Cache of source file to the ISO date of the commit that last changed it.")
+
+(defun jfw/git-file-date (file)
+  "Return the ISO 8601 author date of the last commit touching FILE.
+This is the honest answer to \"when was this article last updated?\",
+which a checkout timestamp cannot give.  Unlike the file mtime it is
+reproducible across clones, and a tarball without git simply yields nil
+so the page omits the field instead of inventing one."
+  (when (and file (file-exists-p file))
+    (or (gethash file jfw/git-date-cache)
+        (puthash file
+                 (condition-case nil
+                     (let ((out (string-trim
+                                 (with-output-to-string
+                                   (with-current-buffer standard-output
+                                     (vc-git-command t nil nil "log" "-1" "--format=%aI" "--" file))))))
+                       (when (string-match-p "\\`[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}" out) out))
+                   (error nil))
+                 jfw/git-date-cache))))
+
+(defun jfw/keyword-list (info)
+  "Return the page's #+keywords: as a list of trimmed strings."
+  (let ((keywords (plist-get info :keywords)))
+    (when (and keywords (stringp keywords) (not (string-empty-p (string-trim keywords))))
+      (delq nil (mapcar (lambda (word)
+                          (let ((word (string-trim word)))
+                            (unless (string-empty-p word) word)))
+                        (split-string keywords ","))))))
+
+(defun jfw/breadcrumb-steps (path title index-p)
+  "Return the breadcrumb steps from the site root to the page.
+Each step is (LABEL . URL); the last one carries no URL because it is
+the page the reader is already on.  Pure implementation details such as
+the \"articles\" level are left out of the trail."
+  (let* ((parts (split-string (string-trim path "/" "/") "/" t))
+         (dirs (if index-p parts (butlast parts)))
+         (steps (list (cons "Home" "/")))
+         (accum ""))
+    (dolist (dir dirs)
+      (setq accum (concat accum "/" dir))
+      (unless (member dir '("articles" "index"))
+        (setq steps (append steps (list (cons (jfw/humanize dir) (concat accum "/")))))))
+    (if (or index-p (null parts))
+        steps
+      (append steps (list (cons (jfw/plain-text title) nil))))))
+
+(defun jfw/json-ld-script (json)
+  "Return JSON-LD JSON that is safe to inline inside a script element.
+A literal < cannot end a script element on its own, but a title holding
+\"</script>\" could, so every < becomes \\u003c: still valid JSON, and it
+reads back as the same character once parsed."
+  (when json
+    (replace-regexp-in-string "<" "\\u003c" json t t)))
+
+(cl-defun jfw/json-ld (&key title description url path index-p image
+                          published modified keywords section)
+  "Return a JSON-LD document describing the page, as a JSON string.
+The graph names the site and its author on every page, then describes
+the page itself — a BlogPosting with its dates for an article, a plain
+WebPage anywhere else — and closes with a breadcrumb trail."
+  (let* ((site (concat jfw/site-url "/"))
+         (person `(("@type" . "Person")
+                   ("@id" . ,(concat site "#person"))
+                   ("name" . "Josep Bigorra")
+                   ("alternateName" . "jjba23")
+                   ("email" . "mailto:jjbigorra@gmail.com")
+                   ("url" . ,site)
+                   ("sameAs" . ("https://codeberg.org/jjba23"
+                                "https://www.linkedin.com/in/josepjba/"
+                                "https://www.youtube.com/channel/UCdIkk-5jPA2HaAEB5a5X6XA"))))
+         (website `(("@type" . "WebSite")
+                    ("@id" . ,(concat site "#website"))
+                    ("url" . ,site)
+                    ("name" . "jointhefreeworld")
+                    ("description" . ,jfw/default-description)
+                    ("inLanguage" . "en")
+                    ("publisher" . (("@id" . ,(concat site "#person"))))))
+         (image-node `(("@type" . "ImageObject")
+                       ("url" . ,image)
+                       ("width" . ,(string-to-number jfw/og-image-width))
+                       ("height" . ,(string-to-number jfw/og-image-height))))
+         (author-ref (list (cons "@id" (concat site "#person"))))
+         (site-ref (list (cons "@id" (concat site "#website"))))
+         (page-node
+          (if (jfw/article-path-p path)
+              (append
+               `(("@type" . "BlogPosting")
+                 ("@id" . ,(concat url "#article"))
+                 ("headline" . ,title)
+                 ("description" . ,description)
+                 ("url" . ,url)
+                 ("mainEntityOfPage" . (("@type" . "WebPage") ("@id" . ,url)))
+                 ("image" . ,image-node)
+                 ("inLanguage" . "en")
+                 ("author" . ,author-ref)
+                 ("publisher" . ,author-ref)
+                 ("isPartOf" . ,site-ref))
+               (when section (list (cons "articleSection" section)))
+               (when published (list (cons "datePublished" published)))
+               (when modified (list (cons "dateModified" modified)))
+               (when keywords (list (cons "keywords" keywords))))
+            `(("@type" . "WebPage")
+              ("@id" . ,(concat url "#webpage"))
+              ("url" . ,url)
+              ("name" . ,title)
+              ("description" . ,description)
+              ("inLanguage" . "en")
+              ("primaryImageOfPage" . ,image-node)
+              ("isPartOf" . ,site-ref))))
+         (breadcrumb
+          `(("@type" . "BreadcrumbList")
+            ("itemListElement"
+             . ,(cl-loop for (label . step-url) in (jfw/breadcrumb-steps path title index-p)
+                         for position from 1
+                         collect (if step-url
+                                     `(("@type" . "ListItem")
+                                       ("position" . ,position)
+                                       ("name" . ,label)
+                                       ("item" . ,(jfw/absolute-url step-url)))
+                                   `(("@type" . "ListItem")
+                                     ("position" . ,position)
+                                     ("name" . ,label))))))))
+    (json-encode `(("@context" . "https://schema.org")
+                   ("@graph" . ,(list website person page-node breadcrumb))))))
+
 (cl-defun jfw/generate-page (title
                              content
                              info
@@ -307,75 +1103,148 @@ publish."
                              (description)
                              (head-extra)
                              (pre-content)
+                             (share-image)
+                             (share-image-alt)
                              (exclude-header)
                              (exclude-footer))
-  (concat
-   "\n"
-   "<!DOCTYPE html>"
+  (let* ((path (jfw/page-path info))
+         (index-p (jfw/page-index-p info))
+         (redirect (plist-get info :redirect))
+         ;; A page that forwards readers elsewhere claims the destination
+         ;; as its canonical URL, so search engines consolidate both.
+         (canonical (jfw/absolute-url (or redirect (plist-get info :canonical) path)))
+         (description-text (jfw/page-description description content path))
+         (plain-title (jfw/plain-text (or title "")))
+         (iso-date (jfw/iso-date info))
+         (modified (jfw/git-file-date (plist-get info :input-file)))
+         (keywords (jfw/keyword-list info))
+         (section (jfw/section-label path))
+         (og-type (if (jfw/article-path-p path) "article" "website"))
+         ;; A page's own #+OG_IMAGE: wins, then the card generated for it,
+         ;; and only then the site-wide card.
+         (share-card (jfw/absolute-url (or (plist-get info :og-image) share-image jfw/og-image)))
+         (share-alt (or share-image-alt jfw/og-image-alt))
+         (robots (or (plist-get info :robots)
+                     (if redirect jfw/robots-stub jfw/robots-indexable)))
+         (json-ld (jfw/json-ld :title plain-title :description description-text
+                               :url canonical :path path :index-p index-p
+                               :image share-card :published iso-date
+                               :modified modified :keywords keywords :section section)))
+    (concat
+     "\n"
+     "<!DOCTYPE html>"
 
-   (thread-last
-    (sxml-to-xml
-     `(html (@ (lang "en"))             (head
-                                         (meta (@ (charset "utf-8")))
-                                         ;; Restored before paint to avoid a flash of the wrong theme;
-                                         ;; the placeholder is swapped for real JavaScript below.
-                                         (script "__THEME_INIT_PLACEHOLDER__")
-                                         (meta (@ (name "author") (content "Josep Bigorra - jointhefreeworld")))
-                                         (meta (@ (name "viewport")
-                                                  (content "width=device-width, initial-scale=1, shrink-to-fit=no")))
-                                         (meta (@ (name "description")
-                                                  (content ,(jfw/page-description description))))
-                                         (meta (@ (property "og:site_name") (content "jointhefreeworld")))
-                                         (meta (@ (property "og:type") (content "website")))
-                                         (meta (@ (property "og:title")
-                                                  (content ,(substring-no-properties (or title "")))))              (meta (@ (property "og:description") (content ,(jfw/page-description description))))
-                                         ;; Open the font connections early, then preload the faces that
-                                         ;; are visible on first paint.
-                                         (link (@ (rel "preconnect") (href "https://fonts.googleapis.com")))
-                                         (link (@ (rel "preconnect")
-                                                  (href "https://fonts.gstatic.com")
-                                                  (crossorigin "anonymous")))
-                                         ,@(jfw/font-preloads)
-                                         (link (@ (rel "icon") (type "image/png") (href "/static/img/favicon.png")))
-                                         (link (@ (rel "alternate")
-                                                  (type "application/rss+xml")
-                                                  (title "Jointhefreeworld News Feed")
-                                                  (href "/rss.xml")))
-                                         (script (@(type "speculationrules"))
-                                                 "__SPECULATION_RULES_PLACEHOLDER__")              ;; Analytics is non-blocking: it loads in parallel with the page
-                                         ;; and runs once the document has been parsed.
-                                         (script (@ (src ,(concat jfw/site-url "/static/js/symbanta.js")) (defer "true")) "")
-                                         (script (@ (src ,(concat jfw/site-url "/static/js/freeworld.js")) (defer "true")) "")
-                                         (link (@ (rel "stylesheet")
-                                                  (href ,(concat jfw/site-url "/static/css/jointhefreeworld.css"))))
-                                         (link (@ (rel "stylesheet") (href ,jfw/google-fonts-url)))
-                                         ,(when head-extra head-extra)
-                                         (title "__RAW_TITLE_PLACEHOLDER__ - jointhefreeworld"))
-            (body ,@(unless exclude-header
-                      (jfw/site-header))
-                  (div (@ (class "container flex flex-col items-center"))
-                       (h1 (@ (class "site-post-title"))
-                           "__RAW_TITLE_PLACEHOLDER__")
-                       ,(when (and (not exclude-content-reading-time) content-reading-time (not (equal "" content-reading-time)))
-                          `(em (@(class "site-post-meta"))
-                               ,(format "estimated reading time: %s %s"
-                                        content-reading-time
-                                        (if (= 1 content-reading-time) "minute" "minutes"))))
-                       ,(when (and publish-date (not (equal "" publish-date)))
-                          `(p (@ (class "site-post-meta")) ,(format "written on: %s" publish-date)))
-                       ,(if-let* ((video-id (plist-get info :video)))
-                            (jfw/embed-video video-id))
-                       ,(when pre-content pre-content)
-                       (div (@ (id "content")(class "content max-w-full"))
-                            "__RAW_CONTENT_PLACEHOLDER__"))
-                  ,@(unless exclude-footer
-                      (jfw/site-footer)))))
+     (thread-last
+      (sxml-to-xml
+       `(html (@ (lang "en"))             (head
+                                           (meta (@ (charset "utf-8")))
+                                           ;; Restored before paint to avoid a flash of the wrong theme;
+                                           ;; the placeholder is swapped for real JavaScript below.
+                                           (script "__THEME_INIT_PLACEHOLDER__")
+                                           (meta (@ (name "author") (content "Josep Bigorra - jointhefreeworld")))
+                                           (meta (@ (name "viewport")
+                                                    (content "width=device-width, initial-scale=1, shrink-to-fit=no")))
+                                           (meta (@ (name "description") (content ,description-text)))
+                                           (meta (@ (name "robots") (content ,robots)))
+                                           ,@(when keywords
+                                               `((meta (@ (name "keywords")
+                                                          (content ,(string-join keywords ", "))))))
+                                           ;; The canonical link and og:url are the same string, so a
+                                           ;; page never tells crawlers and card renderers different
+                                           ;; stories about where it lives.
+                                           (link (@ (rel "canonical") (href ,canonical)))
+                                           ,@(when redirect
+                                               `((meta (@ (http-equiv "refresh")
+                                                          (content ,(concat "0; url=" redirect))))))
+                                           (meta (@ (property "og:site_name") (content "jointhefreeworld")))
+                                           (meta (@ (property "og:type") (content ,og-type)))
+                                           (meta (@ (property "og:title") (content ,plain-title)))
+                                           (meta (@ (property "og:description") (content ,description-text)))
+                                           (meta (@ (property "og:url") (content ,canonical)))
+                                           (meta (@ (property "og:locale") (content "en")))
+                                           (meta (@ (property "og:image") (content ,share-card)))
+                                           (meta (@ (property "og:image:secure_url") (content ,share-card)))
+                                           (meta (@ (property "og:image:type") (content "image/png")))
+                                           (meta (@ (property "og:image:width") (content ,jfw/og-image-width)))
+                                           (meta (@ (property "og:image:height") (content ,jfw/og-image-height)))
+                                           (meta (@ (property "og:image:alt") (content ,share-alt)))
+                                           ,@(when (equal og-type "article")
+                                               (append
+						(when iso-date
+                                                  `((meta (@ (property "article:published_time")
+                                                             (content ,iso-date)))))
+						(when modified
+                                                  `((meta (@ (property "article:modified_time")
+                                                             (content ,modified)))))
+						`((meta (@ (property "article:author")
+                                                           (content "Josep Bigorra"))))
+						(when section
+                                                  `((meta (@ (property "article:section")
+                                                             (content ,section)))))
+						(mapcar (lambda (tag)
+                                                          `(meta (@ (property "article:tag")
+                                                                    (content ,tag))))
+							keywords)))
+                                           (meta (@ (name "twitter:card") (content "summary_large_image")))
+                                           (meta (@ (name "twitter:title") (content ,plain-title)))
+                                           (meta (@ (name "twitter:description") (content ,description-text)))
+                                           (meta (@ (name "twitter:image") (content ,share-card)))
+                                           (meta (@ (name "twitter:image:alt") (content ,share-alt)))
+                                           ;; Open the font connections early, then preload the faces that
+                                           ;; are visible on first paint.
+                                           (link (@ (rel "preconnect") (href "https://fonts.googleapis.com")))
+                                           (link (@ (rel "preconnect")
+                                                    (href "https://fonts.gstatic.com")
+                                                    (crossorigin "anonymous")))
+                                           ,@(jfw/font-preloads)
+                                           (link (@ (rel "icon") (type "image/png") (href "/static/img/favicon.png")))
+                                           (link (@ (rel "alternate")
+                                                    (type "application/rss+xml")
+                                                    (title "Jointhefreeworld News Feed")
+                                                    (href "/rss.xml")))
+                                           (script (@(type "speculationrules"))
+                                                   "__SPECULATION_RULES_PLACEHOLDER__")              ;; Analytics is non-blocking: it loads in parallel with the page
+                                           ;; and runs once the document has been parsed.
+                                           (script (@ (src ,(concat jfw/site-url "/static/js/symbanta.js")) (defer "true")) "")
+                                           (script (@ (src ,(concat jfw/site-url "/static/js/freeworld.js")) (defer "true")) "")
+                                           (link (@ (rel "stylesheet")
+                                                    (href ,(concat jfw/site-url "/static/css/jointhefreeworld.css"))))
+                                           (link (@ (rel "stylesheet") (href ,jfw/google-fonts-url)))
+                                           ,@(when head-extra head-extra)
+                                           (title "__RAW_TITLE_PLACEHOLDER__ - jointhefreeworld")
+                                           ;; The structured data travels through a placeholder because
+                                           ;; sxml-to-xml would escape its quotes into oblivion.
+                                           (script (@ (type "application/ld+json"))
+                                                   "__JSON_LD_PLACEHOLDER__"))
+              (body ,@(unless exclude-header
+                        ;; The bar marks the section the page belongs to.
+			(jfw/site-header (jfw/page-path info)))
+                    (div (@ (class "container flex flex-col items-center"))
+			 (h1 (@ (class "site-post-title"))
+                             "__RAW_TITLE_PLACEHOLDER__")
+			 ,(when (and (not exclude-content-reading-time) content-reading-time (not (equal "" content-reading-time)))
+                            `(em (@(class "site-post-meta"))
+				 ,(format "estimated reading time: %s %s"
+                                          content-reading-time
+                                          (if (= 1 content-reading-time) "minute" "minutes"))))
+			 ,(when (and publish-date (not (equal "" publish-date)))
+                            `(p (@ (class "site-post-meta"))
+				"written on: "
+				(time (@ (datetime ,(or iso-date ""))) ,publish-date)))
+			 ,(if-let* ((video-id (plist-get info :video)))
+                              (jfw/embed-video video-id))
+			 ,(when pre-content pre-content)
+			 (div (@ (id "content")(class "content max-w-full"))
+                              "__RAW_CONTENT_PLACEHOLDER__"))
+                    ,@(unless exclude-footer
+			(jfw/site-footer)))))
 
-    ;; Pass the result sequentially through these string-replace calls
-    (string-replace "__RAW_TITLE_PLACEHOLDER__" (or title ""))
-    (string-replace "__SPECULATION_RULES_PLACEHOLDER__" (or jfw/speculation-rules ""))
-    (string-replace "__THEME_INIT_PLACEHOLDER__" (or jfw/theme-init-script ""))
-    (string-replace "__RAW_CONTENT_PLACEHOLDER__" (or content "")))))
+      ;; Pass the result sequentially through these string-replace calls
+      (string-replace "__RAW_TITLE_PLACEHOLDER__" (or title ""))
+      (string-replace "__SPECULATION_RULES_PLACEHOLDER__" (or jfw/speculation-rules ""))
+      (string-replace "__THEME_INIT_PLACEHOLDER__" (or jfw/theme-init-script ""))
+      (string-replace "__JSON_LD_PLACEHOLDER__" (or (jfw/json-ld-script json-ld) ""))
+      (string-replace "__RAW_CONTENT_PLACEHOLDER__" (or content ""))))))
 
 (defun estimate-reading-time (content)
   "Calculate the estimated reading time of CONTENT in whole minutes.
@@ -399,7 +1268,14 @@ estimated reading time based on its TITLE."
 (defun jfw/org-html-template (contents info)
   "Return the complete HTML document wrapping exported CONTENTS.
 INFO is the original Org export communication channel."
-  (let* ((page-title (car (plist-get info :title))))
+  (let* ((page-title (car (plist-get info :title)))
+         (path (jfw/page-path info))
+         (plain-title (jfw/plain-text (org-export-data (plist-get info :title) info)))
+         (label (or (plist-get info :og-label) (jfw/section-label path)))
+         ;; An article's own card, generated while it is exported: the
+         ;; title on the card is the title the page already carries, so
+         ;; there is nothing extra to keep in step.
+         (card (jfw/og-card path plain-title label)))
     (message (format "page title: %s" page-title))
     (jfw/generate-page (org-export-data (plist-get info :title) info)
                        contents
@@ -408,9 +1284,13 @@ INFO is the original Org export communication channel."
                        :description (org-export-data (plist-get info :description) info)
                        :content-reading-time (estimate-reading-time contents)
                        :exclude-content-reading-time (is-exclude-content-reading-time-p page-title)
-                       ;; Pages that place a REPL ask for the interpreter with
-                       ;; #+REPL:; nothing else downloads it.
-                       :head-extra (when (plist-get info :repl) jfw/repl-scripts))))
+                       :share-image card
+                       :share-image-alt (when card
+                                          (format "Sharing card: %s — %s on jointhefreeworld.org"
+                                                  plain-title (or label "jointhefreeworld")))
+                       ;; Pages ask for the scripts they use with #+SCRIPTS:,
+                       ;; and download nothing else.
+                       :head-extra (jfw/page-scripts info))))
 
 (defun jfw/org-html-link (link contents info)
   "Removes file extension and changes the path into lowercase file:// links."
@@ -453,7 +1333,11 @@ INFO is the original Org export communication channel."
   (let* ((text (org-export-data (org-element-property :title headline) info))
          (level (org-export-get-relative-level headline info))
          (level (min 7 (when level (1+ level))))
-         (anchor-name (jfw/make-heading-anchor-name text))
+         ;; A heading may name its own anchor with :CUSTOM_ID:, which is the
+         ;; only way to keep ids unique on a page that repeats a heading
+         ;; (the radar's four rings under each of its six layers).
+         (anchor-name (or (org-element-property :CUSTOM_ID headline)
+                          (jfw/make-heading-anchor-name text)))
          (attributes (org-element-property :ATTR_HTML headline))
          (container (org-element-property :HTML_CONTAINER headline))
          (container-class (and container (org-element-property :HTML_CONTAINER_CLASS headline))))
@@ -495,8 +1379,19 @@ INFO is the original Org export communication channel."
                                      (headline . jfw/org-html-headline))
                                    :options-alist
                                    '((:video "VIDEO" nil nil)
-                                     (:repl "REPL" nil nil)
-                                     (:description "DESCRIPTION" nil nil)))
+                                     (:scripts "SCRIPTS" nil nil)
+                                     (:description "DESCRIPTION" nil nil)
+                                     (:keywords "KEYWORDS" nil nil)
+                                     ;; Per-page overrides for the metadata that
+                                     ;; `jfw/generate-page' otherwise derives.
+                                     (:canonical "CANONICAL" nil nil)
+                                     (:robots "ROBOTS" nil nil)
+                                     (:og-image "OG_IMAGE" nil nil)
+                                     ;; A page whose category is not the word
+                                     ;; that describes it names its own card
+                                     ;; label here.
+                                     (:og-label "OG_LABEL" nil nil)
+                                     (:redirect "REDIRECT" nil nil)))
 
 (defun jfw/org-html-publish-to-html (plist filename pub-dir)
   "Publish an org file to HTML under a pretty directory name.
@@ -648,7 +1543,22 @@ keeps a stable, human-readable URL.  It is intentionally named with a
           ("jointhefreeworld:portfolio"
            :base-directory "./docs/portfolio/"
            :publishing-directory "./public/portfolio"
+           ,@common-props)
+          ;; The project policies are site-wide documents rather than blog
+          ;; posts, so they publish at the top level: /code-of-conduct/ and
+          ;; /ai-policy/.  Their old blog URLs remain as forwarding stubs.
+          ("jointhefreeworld:policies"
+           :base-directory "./docs/policies/"
+           :publishing-directory "./public"
            ,@common-props))))
+
+(defconst jfw/rss-exclusions
+  '("news/index.html"
+    ;; The policy pages moved out of the blog; these two only forward
+    ;; readers to their new addresses, so they are not news.
+    "blog/articles/personal/jointhefreeworld-code-of-conduct/index.html"
+    "blog/articles/personal/jointhefreeworld-ai-policy/index.html")
+  "Published blog files deliberately left out of the RSS feed.")
 
 (defun jfw/publish ()
   "Publish the entire site, then rebuild the RSS feed.
@@ -656,6 +1566,7 @@ The RSS step is reported but not fatal, so a single feed problem never
 leaves the published HTML half-written."
   (interactive)
   (org-publish-all t)
+  (jfw/report-og-cards)
   (condition-case err
       ;; Temporarily force Emacs to use the standard English/POSIX locale
       ;; so webfeeder generates RFC-compliant pubDates (e.g., "Sat", "May")
@@ -664,9 +1575,9 @@ leaves the published HTML half-written."
                          "./public"
                          jfw/site-url
                          (let ((default-directory (expand-file-name "./public/")))
-                           (remove "news/index.html"
-                                   (directory-files-recursively "blog/articles"
-                                                                ".*\\.html$")))
+                           (cl-remove-if (lambda (file) (member file jfw/rss-exclusions))
+                                         (directory-files-recursively "blog/articles"
+                                                                      ".*\\.html$")))
                          :builder 'webfeeder-make-rss
                          :title "jointhefreeworld news"
                          :description "News and Insights from the jointhefreeworld and jjba23 projects!"

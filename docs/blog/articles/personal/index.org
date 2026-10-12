@@ -4,10 +4,6 @@
 
 <2026-06-21 Sat> [[/blog/articles/personal/jointhefreeworld-documentation-style-guide/index.html][jointhefreeworld - A Style Guide for Documentation]] - This style guide will help you write better documentation, manuals, tutorials and READMEs.
 
-<2026-05-30 Sat> [[/blog/articles/personal/jointhefreeworld-ai-policy/index.html][jointhefreeworld - AI Policy]] - This AI policy establishes safe guardrails for the *jointhefreeworld* project. It outlines our preferred workflows, defines the boundaries of acceptable AI tool usage, and explains the reasoning behind these choices.
-
 <2025-10-19 Sun> [[/blog/articles/personal/josep-astrology-by-metsatron/index.html][Mètsàtron's astral analysis of Joe's being]] - My brother from another mother, ⁨Mètsàtron Sucurí Jibōia⁩ did some astral and digital readings about me (Joe).
-
-<2025-04-11 Fri> [[/blog/articles/personal/jointhefreeworld-code-of-conduct/index.html][jointhefreeworld - Code of Conduct]] - This Code of Conduct exists to foster an inclusive, respectful, and cooperative environment for all contributors and users of jointhefreeworld free software project.
 
 <2024-06-17 Mon> [[/blog/articles/personal/brief-aan-mijzelf/index.html][Brief aan Mijzelf - Letter to myself]] - Jij en ik weten dat levend zijn pieken en dalen betekent.
