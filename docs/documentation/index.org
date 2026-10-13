@@ -12,6 +12,14 @@ You will find two kinds of reference here. *API documentation* is aimed at devel
 
 -------------
 
+** Project documentation
+
+- [[https://codeberg.org/jjba23/byggsteg/src/branch/trunk/README.org][Byggsteg documentation]] - Byggsteg is the CI/CD orchestrator written in Guile Scheme.
+- [[https://codeberg.org/jjba23/lucidplan/src/branch/trunk/README.org][LucidPlan documentation]] - LucidPlan is project management for everyone.
+- [[https://codeberg.org/jjba23/wikimusic/src/branch/trunk/README.org][WikiMusic documentation]] - WikiMusic is the musical knowledge encyclopaedia and content management system (CMS).
+
+-------------
+
 ** API documentation
 
 Each of these links points to the technical Guile Scheme API reference for one of the jointhefreeworld libraries:
@@ -30,9 +38,3 @@ Each of these links points to the technical Guile Scheme API reference for one o
 - [[https://jointhefreeworld.org/api-docs/orgwebalchemy/API.html][OrgWebAlchemy API documentation]] - the Guile Scheme API for the OrgWebAlchemy library.
 
 -----
-
-** User manuals
-
-- [[/manuals/byggsteg/index.html][Byggsteg manual]] - the English manual for Byggsteg, as a single HTML page containing all nodes. Byggsteg is the CI/CD orchestrator written in Guile Scheme.
-- [[/manuals/lucidplan/index.html][LucidPlan manual]] - the English manual for LucidPlan, as a single HTML page containing all nodes. LucidPlan is project management for everyone.
-- [[/manuals/wikimusic/index.html][WikiMusic manual]] - the English manual for WikiMusic, as a single HTML page containing all nodes. WikiMusic is the musical knowledge encyclopaedia and content management system (CMS).
