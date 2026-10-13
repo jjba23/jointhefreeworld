@@ -8,7 +8,7 @@ This is your guide to using and understanding the free software of the jointhefr
 
 Free software is all about giving you control: over the tools you use, how they work, and how you share them. Whether you are just starting out or trying to solve a tricky problem, this documentation is here to help.
 
-You will find two kinds of reference here. *API documentation* is aimed at developers who want to call a library directly. *User manuals* explain how to install, configure, and use a whole program.
+You will find two kinds of reference here. *API documentation* is aimed at developers who want to call a library directly. *Project documentation* explain how to install, configure, and use a whole program.
 
 -------------
 
