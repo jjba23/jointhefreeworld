@@ -147,22 +147,22 @@ Every heading becomes an HTML heading element carrying a small =#= anchor link, 
 
 Two situations call for a property on the heading:
 
-- =:CUSTOM_ID:= sets the identifier explicitly. You need it whenever a heading repeats on a page, because the derived names would collide. The tech radar needs one per ring per layer for exactly this reason.
-- =:HTML_CONTAINER:=, with =:HTML_CONTAINER_CLASS:=, wraps the heading and its subtree in an element of your choosing. The radar's layers are sections produced this way, and the radar script finds them by class.
+- =:CUSTOM_ID:= sets the identifier explicitly. You need it whenever a heading repeats on a page, because the derived names would collide. The tech radar needs one per layer per ring for exactly this reason.
+- =:HTML_CONTAINER:=, with =:HTML_CONTAINER_CLASS:=, wraps the heading and its subtree in an element of your choosing. The radar's rings are sections produced this way, and the radar script finds them by class.
 
 A heading that names a property block looks as follows:
 
 #+begin_example
-,* 🧬 Languages
+,* ✅ Adopt
 :PROPERTIES:
 :HTML_CONTAINER: section
-:HTML_CONTAINER_CLASS: jfw-radar-quadrant
-:CUSTOM_ID: languages
+:HTML_CONTAINER_CLASS: jfw-radar-ring
+:CUSTOM_ID: adopt
 :END:
 
-,** ✅ Adopt
+,** 🧬 Languages
 :PROPERTIES:
-:CUSTOM_ID: languages-adopt
+:CUSTOM_ID: adopt-languages
 :END:
 
 - Guile Scheme and Lisps in general
@@ -207,12 +207,14 @@ The build reports how many articles it listed, and an index page that asks for a
 
 The tech radar on the FREE stack page, =docs/blog/articles/development/tech-radar.org=, is a JavaScript view of an ordinary Org document. Nothing about the source is special except its shape, and the script reads the document itself, so the Org file remains the only place the entries live.
 
-- Each *layer* is a first-level heading with =:HTML_CONTAINER: section= and =:HTML_CONTAINER_CLASS: jfw-radar-quadrant=.
-- Each *ring* is a second-level heading under a layer. Only the four names =Adopt=, =Trial=, =Assess= and =Deprecate= are known; the leading emoji is ignored.
-- Each *blip* is a list item under a ring. Its text is the technology, an optional link makes it clickable, and a note after a dash explains why it sits there.
+The document leads with the rings, because that is the question a reader arrives with — /how much do you trust this?/ — and names the layers inside each one:
+
+- Each *ring* is a first-level heading with =:HTML_CONTAINER: section= and =:HTML_CONTAINER_CLASS: jfw-radar-ring=. Only the four names =Adopt=, =Trial=, =Assess= and =Deprecate= are known; the leading emoji is ignored.
+- Each *layer* is a second-level heading under a ring. A layer appears in every ring that has entries for it, and the first mention is what fixes its place on the picture, so the wedges read in the order =Adopt= introduces them.
+- Each *blip* is a list item under a layer. Its text is the technology, an optional link makes it clickable, and a note after a dash explains why it sits there.
 - A parenthesised word says what changed since the previous revision: =(new)=, =(moved in)= or =(moved out)=. The radar reads it and draws the entry accordingly.
 
-Rings and layers keep their order from the source, and the page carries the full list below the drawing, so a reader whose browser does not run the script loses the picture and none of the content. If a page has no layers, the script does nothing at all.
+The picture keeps its own shape whatever the document's order: a ring is still a band drawn from the middle outwards, a layer is still a wedge, and both are read from the headings rather than from a second copy of them. The full list below the drawing follows the document — the four rings, each folded away until it is asked for, with its layers inside it — so a reader whose browser does not run the script loses the picture and none of the content. If a page has no rings, the script does nothing at all.
 
 ** The browser Lisp
 
@@ -454,6 +456,7 @@ The suite needs no site build and writes nothing outside a temporary directory; 
 | Listings        | That a category lists its own articles, that an unknown listing is empty rather than guessed, and that an entry escapes the title it is given |
 | Social cards    | The wrap-and-balance arithmetic, that no line leaves the card, and that the SVG is well-formed XML |
 | Structured data | That an article is a BlogPosting with its dates and section, that any other page is a WebPage, and that a title cannot close the script element |
+| Tech radar      | That the article leads with the four rings in order, that each ring names layers from the known set, and that DeepSeek is trialled as a tool |
 | Template        | That a generated page carries the document head, the chrome, the footer and the content, and that no placeholder survives |
 
 Because the tests read the real content as well, they also catch a repository problem that has nothing to do with code: an article with no title, or with a date the build cannot read, fails the suite rather than the build log.

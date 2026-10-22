@@ -6,10 +6,10 @@
 #+date: <2025-10-27 ma>
 #+HIGHLIGHT: yes
 #+description: The FREE stack as a tech radar: what I adopt, trial, assess and deprecate across languages, frameworks, data, tools, platforms and practice.
-#+keywords: tech radar, free software, Guile Scheme, Lisp, GNU Guix, Emacs, Rust, SQLite, PostgreSQL
+#+keywords: tech radar, free software, Guile Scheme, Lisp, GNU Guix, Emacs, Rust, SQLite, PostgreSQL, DeepSeek
 #+SCRIPTS: radar
 
-The FREE stack, layer by layer, and how much I trust each piece of it today.
+The FREE stack, ring by ring — what I trust, and inside each ring, the layers it lands in.
 
 ------------------------
 
@@ -53,16 +53,16 @@ since the last revision; a note after a dash says why.
 - E — Extensible :: a stack built to scale into flexible, extensible systems.
 - E — Environment Control :: the whole lifecycle under my own control: no hidden telemetry, no paywalls, one-command self-hosting.
 
-* 🧬 Languages
+* ✅ Adopt
 :PROPERTIES:
 :HTML_CONTAINER: section
-:HTML_CONTAINER_CLASS: jfw-radar-quadrant
-:CUSTOM_ID: languages
+:HTML_CONTAINER_CLASS: jfw-radar-ring
+:CUSTOM_ID: adopt
 :END:
 
-** ✅ Adopt
+** 🧬 Languages
 :PROPERTIES:
-:CUSTOM_ID: languages-adopt
+:CUSTOM_ID: adopt-languages
 :END:
 
 - [[https://www.gnu.org/software/guile/][Guile Scheme]] and Lisps in general
@@ -70,42 +70,9 @@ since the last revision; a note after a dash says why.
 - JavaScript (vanilla)
 - [[https://www.rust-lang.org/][Rust]]
 
-** 🧪 Trial
+** 🎨 Frameworks & UI
 :PROPERTIES:
-:CUSTOM_ID: languages-trial
-:END:
-
-- Guile embedded in C and GTK4 (moved in) — the dock Wayland was waiting for, with a Lisp engine inside a native app
-
-** 🔍 Assess
-:PROPERTIES:
-:CUSTOM_ID: languages-assess
-:END:
-
-- [[https://spritely.institute/hoot/][Guile Hoot]] — Scheme compiled to WebAssembly
-- [[https://ziglang.org/][Zig]]
-- Hare
-
-** 🗑️ Deprecate
-:PROPERTIES:
-:CUSTOM_ID: languages-deprecate
-:END:
-
-- Haskell (moved out) — as beautiful and powerful as it is, it's simply too complex for 9/10 use-cases
-- Scala
-- Common Lisp — rather use Scheme if possible
-- TypeScript
-
-* 🎨 Frameworks & UI
-:PROPERTIES:
-:HTML_CONTAINER: section
-:HTML_CONTAINER_CLASS: jfw-radar-quadrant
-:CUSTOM_ID: frameworks
-:END:
-
-** ✅ Adopt
-:PROPERTIES:
-:CUSTOM_ID: frameworks-adopt
+:CUSTOM_ID: adopt-frameworks
 :END:
 
 - [[https://artanis.dev/][GNU Artanis]]
@@ -113,35 +80,9 @@ since the last revision; a note after a dash says why.
 - [[https://codeberg.org/jjba23/olive-css][Olive CSS]] for all serious web projects (utility class vanilla CSS)
 - [[https://codeberg.org/jjba23/hygguile][Hygguile UI components]] (batteries included Guile Scheme UI framework built on Olive CSS)
 
-** 🧪 Trial
+** 🗃️ Data & Storage
 :PROPERTIES:
-:CUSTOM_ID: frameworks-trial
-:END:
-
-** 🔍 Assess
-:PROPERTIES:
-:CUSTOM_ID: frameworks-assess
-:END:
-
-** 🗑️ Deprecate
-:PROPERTIES:
-:CUSTOM_ID: frameworks-deprecate
-:END:
-
-- Svelte
-- Servant (Haskell), API as a type
-- ZIO (Scala)
-
-* 🗃️ Data & Storage
-:PROPERTIES:
-:HTML_CONTAINER: section
-:HTML_CONTAINER_CLASS: jfw-radar-quadrant
-:CUSTOM_ID: data
-:END:
-
-** ✅ Adopt
-:PROPERTIES:
-:CUSTOM_ID: data-adopt
+:CUSTOM_ID: adopt-data
 :END:
 
 - SQLite
@@ -149,33 +90,9 @@ since the last revision; a note after a dash says why.
 - Plain SQL queries
 - Hetzner Storage Volumes with Cron-job based backups and rsync
 
-** 🧪 Trial
+** 🧰️ Tools & Environment
 :PROPERTIES:
-:CUSTOM_ID: data-trial
-:END:
-
-** 🔍 Assess
-:PROPERTIES:
-:CUSTOM_ID: data-assess
-:END:
-
-** 🗑️ Deprecate
-:PROPERTIES:
-:CUSTOM_ID: data-deprecate
-:END:
-
-- MySQL
-
-* 🧰️ Tools & Environment
-:PROPERTIES:
-:HTML_CONTAINER: section
-:HTML_CONTAINER_CLASS: jfw-radar-quadrant
-:CUSTOM_ID: tools
-:END:
-
-** ✅ Adopt
-:PROPERTIES:
-:CUSTOM_ID: tools-adopt
+:CUSTOM_ID: adopt-tools
 :END:
 
 - [[https://guix.gnu.org/][GNU Guix]]
@@ -188,76 +105,17 @@ since the last revision; a note after a dash says why.
 - Nix Flakes
 - Nix dev shells
 
-** 🧪 Trial
+** 🌐 Platforms & Delivery
 :PROPERTIES:
-:CUSTOM_ID: tools-trial
-:END:
-
-- Podman (moved in) — daemonless, root-less containers that stay under my own control
-- Hyprland (moved in) — the Wayland compositor I actually use daily, after SwayFX taught me compositor scripting
-
-** 🔍 Assess
-:PROPERTIES:
-:CUSTOM_ID: tools-assess
-:END:
-
-- Forgejo — a self-hosted forge for code I want to keep closer than Codeberg's public instance
-- Guix Home — one declarative description of the machine I actually work on
-
-** 🗑️ Deprecate
-:PROPERTIES:
-:CUSTOM_ID: tools-deprecate
-:END:
-
-- Jenkins (moved out) — shared-library pipelines and Groovy DSLs, traded away for a thinner agent
-
-* 🌐 Platforms & Delivery
-:PROPERTIES:
-:HTML_CONTAINER: section
-:HTML_CONTAINER_CLASS: jfw-radar-quadrant
-:CUSTOM_ID: platforms
-:END:
-
-** ✅ Adopt
-:PROPERTIES:
-:CUSTOM_ID: platforms-adopt
+:CUSTOM_ID: adopt-platforms
 :END:
 
 - Custom low-power green VPS (Hetzner)
 - Codeberg — free software's own forge, and the home of every project of mine
 
-** 🧪 Trial
+** ⚙️ Practice & Craft
 :PROPERTIES:
-:CUSTOM_ID: platforms-trial
-:END:
-
-- Self-hosted Woodpecker runners on the same VPS (moved in) — CI that never leaves infrastructure I control
-
-** 🔍 Assess
-:PROPERTIES:
-:CUSTOM_ID: platforms-assess
-:END:
-
-- Guix System images on AArch64 (moved in) — a machine I can describe, build and roll back, on hardware that is not x86
-- Guix System as the whole server, not just the toolchain
-
-** 🗑️ Deprecate
-:PROPERTIES:
-:CUSTOM_ID: platforms-deprecate
-:END:
-
-- Amazon AWS
-
-* ⚙️ Practice & Craft
-:PROPERTIES:
-:HTML_CONTAINER: section
-:HTML_CONTAINER_CLASS: jfw-radar-quadrant
-:CUSTOM_ID: practice
-:END:
-
-** ✅ Adopt
-:PROPERTIES:
-:CUSTOM_ID: practice-adopt
+:CUSTOM_ID: adopt-practice
 :END:
 
 - Authorization and Authentication with [[https://codeberg.org/jjba23/bewaking][Bewaking]] tokens as cookies
@@ -265,24 +123,128 @@ since the last revision; a note after a dash says why.
 - Guix dev shells
 - Hexagonal architecture / ports and adapters (moved in) — the boundary earns its keep wherever the domain is the complicated part; the Hexagon of Doom is the case where it is not
 
-** 🧪 Trial
+* 🧪 Trial
 :PROPERTIES:
-:CUSTOM_ID: practice-trial
+:HTML_CONTAINER: section
+:HTML_CONTAINER_CLASS: jfw-radar-ring
+:CUSTOM_ID: trial
+:END:
+
+** 🧬 Languages
+:PROPERTIES:
+:CUSTOM_ID: trial-languages
+:END:
+
+- Guile embedded in C and GTK4 (moved in) — the dock Wayland was waiting for, with a Lisp engine inside a native app
+
+** 🧰️ Tools & Environment
+:PROPERTIES:
+:CUSTOM_ID: trial-tools
+:END:
+
+- Podman (moved in) — daemonless, root-less containers that stay under my own control
+- Hyprland (moved in) — the Wayland compositor I actually use daily, after SwayFX taught me compositor scripting
+- [[https://www.deepseek.com/][DeepSeek]] (new) — an LLM I keep on a short leash: it drafts and reviews, a human decides, and nothing it writes ships unread
+
+** 🌐 Platforms & Delivery
+:PROPERTIES:
+:CUSTOM_ID: trial-platforms
+:END:
+
+- Self-hosted Woodpecker runners on the same VPS (moved in) — CI that never leaves infrastructure I control
+
+** ⚙️ Practice & Craft
+:PROPERTIES:
+:CUSTOM_ID: trial-practice
 :END:
 
 - Server-side rendering over client-side JavaScript (moved in) — pages that work before, and without, a megabyte of framework
 - This very site as a single Org tree (moved in) — prose, build script and metadata in one plain-text source
 - Parsing Expression Grammar in Scheme with ~(ice-9 peg)~ (moved in) — how OrgWebAlchemy turns Org into HTML without a parser generator
 
-** 🔍 Assess
+* 🔍 Assess
 :PROPERTIES:
-:CUSTOM_ID: practice-assess
+:HTML_CONTAINER: section
+:HTML_CONTAINER_CLASS: jfw-radar-ring
+:CUSTOM_ID: assess
+:END:
+
+** 🧬 Languages
+:PROPERTIES:
+:CUSTOM_ID: assess-languages
+:END:
+
+- [[https://spritely.institute/hoot/][Guile Hoot]] — Scheme compiled to WebAssembly
+- [[https://ziglang.org/][Zig]]
+- Hare
+
+** 🧰️ Tools & Environment
+:PROPERTIES:
+:CUSTOM_ID: assess-tools
+:END:
+
+- Forgejo — a self-hosted forge for code I want to keep closer than Codeberg's public instance
+- Guix Home — one declarative description of the machine I actually work on
+
+** 🌐 Platforms & Delivery
+:PROPERTIES:
+:CUSTOM_ID: assess-platforms
+:END:
+
+- Guix System images on AArch64 (moved in) — a machine I can describe, build and roll back, on hardware that is not x86
+- Guix System as the whole server, not just the toolchain
+
+** ⚙️ Practice & Craft
+:PROPERTIES:
+:CUSTOM_ID: assess-practice
 :END:
 
 - Property-based testing — describing the invariant instead of the example
 - Reproducible CI with `guix time-machine`
 
-** 🗑️ Deprecate
+* 🗑️ Deprecate
 :PROPERTIES:
-:CUSTOM_ID: practice-deprecate
+:HTML_CONTAINER: section
+:HTML_CONTAINER_CLASS: jfw-radar-ring
+:CUSTOM_ID: deprecate
 :END:
+
+** 🧬 Languages
+:PROPERTIES:
+:CUSTOM_ID: deprecate-languages
+:END:
+
+- Haskell (moved out) — as beautiful and powerful as it is, it's simply too complex for 9/10 use-cases
+- Scala
+- Common Lisp — rather use Scheme if possible
+- TypeScript
+
+** 🎨 Frameworks & UI
+:PROPERTIES:
+:CUSTOM_ID: deprecate-frameworks
+:END:
+
+- Svelte
+- Servant (Haskell), API as a type
+- ZIO (Scala)
+
+** 🗃️ Data & Storage
+:PROPERTIES:
+:CUSTOM_ID: deprecate-data
+:END:
+
+- MySQL
+
+** 🧰️ Tools & Environment
+:PROPERTIES:
+:CUSTOM_ID: deprecate-tools
+:END:
+
+- Jenkins (moved out) — shared-library pipelines and Groovy DSLs, traded away for a thinner agent
+
+** 🌐 Platforms & Delivery
+:PROPERTIES:
+:CUSTOM_ID: deprecate-platforms
+:END:
+
+- Amazon AWS

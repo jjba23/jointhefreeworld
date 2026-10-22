@@ -22,11 +22,18 @@
 /*
  * Draws the tech radar from the article it sits on.
  *
- * The Org source stays the only source of truth: each quadrant is a
- * `section.jfw-radar-quadrant`, each ring is the sub-heading under it, and
- * each blip is a list item. Nothing here hard-codes a technology, a ring
- * name or a count, so editing the article is what changes the radar — there
- * is no second data file to drift away from the prose.
+ * The Org source stays the only source of truth: each ring is a
+ * `section.jfw-radar-ring` whose heading names it, each layer is a
+ * sub-heading inside a ring, and each blip is a list item under a layer.
+ * The article leads with the rings — Adopt, Trial, Assess, Deprecate — and
+ * names the layers inside each one, because the question a reader arrives
+ * with is "how much do you trust this?" rather than "what kind of thing is
+ * it?" The picture keeps its own shape either way: a ring is still a band,
+ * a layer is still a wedge, and both are read from the document rather than
+ * from a second copy of it.
+ *
+ * Nothing here hard-codes a technology, a ring name or a count, so editing
+ * the article is what changes the radar.
  *
  * Loaded only on pages that ask for it with `#+SCRIPTS: radar`.
  */
@@ -118,12 +125,12 @@
     /**
      * Describe one list item: its label, its link, its note and how it moved.
      * @param {Element} item
-     * @param {string} quadrant
+     * @param {string} layer
      * @param {string} ring
      * @param {number} index
      * @returns {any}
      */
-    function readBlip(item, quadrant, ring, index) {
+    function readBlip(item, layer, ring, index) {
         const text = (item.textContent || "").replace(/\s+/g, " ").trim();
         /* A note trails the entry after an em dash; anything else stays put. */
         const parts = text.split(/\s*—\s*/, 2);
@@ -141,7 +148,7 @@
             note: note,
             movement: movement,
             href: link ? link.getAttribute("href") : null,
-            quadrant: quadrant,
+            layer: layer,
             ring: ring,
             index: index,
             element: item
@@ -149,52 +156,61 @@
     }
 
     /**
-     * Read every quadrant, ring and blip from the article.
-     * @returns {{ quadrants: any[], rings: any[], blips: any[] }}
+     * Read every ring, layer and blip from the article.
+     *
+     * The rings are the top-level sections, in the order the article gives
+     * them; the layers are the sub-headings inside them. A layer appears in
+     * several rings, so the first mention of a layer creates it and the rest
+     * are matched to it by name — which is also what fixes the order of the
+     * wedges, without the article having to state it twice.
+     * @returns {{ layers: any[], rings: any[], blips: any[] }}
      */
     function readRadar() {
         /** @type {any[]} */
-        const quadrants = [];
+        const layers = [];
+        /** @type {Map<string, any>} */
+        const layersByName = new Map();
         /** @type {any[]} */
         const rings = [];
         /** @type {any[]} */
         const blips = [];
         let blipIndex = 0;
 
-        document.querySelectorAll("section.jfw-radar-quadrant").forEach((section) => {
+        document.querySelectorAll("section.jfw-radar-ring").forEach((section) => {
             const name = headingText(section.querySelector("h2"));
             if (!name) return;
-            const quadrant = { label: name, slug: slugify(name), index: quadrants.length, count: 0, section: section, details: null };
-            quadrants.push(quadrant);
+            const ring = { label: name, slug: slugify(name), count: 0, section: section, details: null };
+            rings.push(ring);
 
             /* Walk in document order rather than over direct children: the
                exporter wraps each sub-heading's list in its own container
                div, so the lists are grandchildren of the section. */
             const walker = document.createTreeWalker(section, NodeFilter.SHOW_ELEMENT);
             /** @type {any} */
-            let currentRing = null;
+            let currentLayer = null;
             while (walker.nextNode()) {
                 const node = /** @type {Element} */ (walker.currentNode);
                 if (node.tagName === "H3") {
-                    const ringName = headingText(node);
-                    if (!ringName) continue;
-                    const slug = slugify(ringName);
-                    currentRing = rings.find((ring) => ring.slug === slug);
-                    if (!currentRing) {
-                        currentRing = { label: ringName, slug: slug, count: 0 };
-                        rings.push(currentRing);
+                    const layerName = headingText(node);
+                    if (!layerName) continue;
+                    const slug = slugify(layerName);
+                    currentLayer = layersByName.get(slug);
+                    if (!currentLayer) {
+                        currentLayer = { label: layerName, slug: slug, index: layers.length, count: 0 };
+                        layersByName.set(slug, currentLayer);
+                        layers.push(currentLayer);
                     }
                     continue;
                 }
-                if (node.tagName !== "UL" || !currentRing) continue;
+                if (node.tagName !== "UL" || !currentLayer) continue;
                 /* A nested list belongs to the entry above it, not to the
-                   ring, so it is left alone. */
+                   layer, so it is left alone. */
                 if (node.parentElement && node.parentElement.closest("li")) continue;
                 node.querySelectorAll(":scope > li").forEach((item) => {
-                    const blip = readBlip(item, quadrant, currentRing, blipIndex);
+                    const blip = readBlip(item, currentLayer, ring, blipIndex);
                     blipIndex += 1;
-                    currentRing.count += 1;
-                    quadrant.count += 1;
+                    currentLayer.count += 1;
+                    ring.count += 1;
                     blips.push(blip);
                 });
             }
@@ -208,11 +224,15 @@
             return (ia < 0 ? RING_ORDER.length : ia) - (ib < 0 ? RING_ORDER.length : ib);
         });
 
-        return { quadrants: quadrants, rings: rings, blips: blips };
+        return { layers: layers, rings: rings, blips: blips };
     }
 
     const radar = readRadar();
-    if (radar.blips.length === 0 || radar.quadrants.length === 0) return;
+    if (radar.blips.length === 0 || radar.layers.length === 0) return;
+    /* The picture was written when layers were the outer dimension; inside it
+       they are the wedges, and `quadrant` is the name the geometry, the CSS
+       and the legend all still use for them. */
+    const quadrants = radar.layers;
 
     /* ------------------------------------------------------------------ */
     /* Geometry                                                           */
@@ -248,7 +268,7 @@
         });
     })();
 
-    const sectorStep = 360 / radar.quadrants.length;
+    const sectorStep = 360 / quadrants.length;
     const sectorGap = Math.min(SECTOR_GAP_MAX, sectorStep * SECTOR_GAP_SHARE);
 
     /**
@@ -311,13 +331,13 @@
         /** @type {any[]} */
         const dots = [];
 
-        radar.quadrants.forEach((quadrant) => {
+        quadrants.forEach((quadrant) => {
             const start = quadrant.index * sectorStep + sectorGap;
             radar.rings.forEach((ring) => {
                 const band = ringBands[radar.rings.indexOf(ring)];
                 const width = band.outer - band.inner;
                 const siblings = radar.blips.filter((other) =>
-                    other.ring === ring && other.quadrant === quadrant);
+                    other.ring === ring && other.layer === quadrant);
                 siblings.forEach((blip, index) => {
                     dots.push({
                         blip: blip,
@@ -404,14 +424,14 @@
         role: "img",
         /* The page calls its sectors layers, so the picture does too. */
         "aria-label": "Tech radar: " + radar.blips.length + " technologies across "
-            + radar.quadrants.length + " layers and " + radar.rings.length
+            + quadrants.length + " layers and " + radar.rings.length
             + " rings. Each blip is a link to its entry; every layer and ring is"
             + " listed in full below."
     });
 
     /* Quadrant wedges and their names, drawn underneath everything else. */
     const wedgeLayer = svgElement("g", { class: "jfw-radar-quadrants" });
-    radar.quadrants.forEach((quadrant) => {
+    quadrants.forEach((quadrant) => {
         const start = quadrant.index * sectorStep + sectorGap;
         const end = (quadrant.index + 1) * sectorStep - sectorGap;
         wedgeLayer.appendChild(svgElement("path", {
@@ -427,7 +447,7 @@
         ringLayer.appendChild(svgElement("circle", {
             cx: CENTER, cy: CENTER, r: outer, class: "jfw-radar-ring-edge"
         }));
-        radar.quadrants.forEach((quadrant) => {
+        quadrants.forEach((quadrant) => {
             const middle = (ringBands[ringIndex].inner + outer) / 2;
             /* Twelve degrees into the wedge, so the label sits near the gap
                rather than on top of the blips in the middle of the band. */
@@ -463,9 +483,9 @@
             href: "#" + itemId,
             "data-ring-order": String(radar.rings.indexOf(blip.ring)),
             class: "jfw-radar-blip jfw-radar-blip-" + blip.ring.slug
-                + " jfw-radar-blip-quadrant-" + (blip.quadrant.index % 4) + movementClass,
+                + " jfw-radar-blip-quadrant-" + (blip.layer.index % 4) + movementClass,
             "aria-label": blip.label + " — " + blip.ring.label + " ring, "
-                + blip.quadrant.label + (blip.movement ? ", " + blip.movement.hint : "")
+                + blip.layer.label + (blip.movement ? ", " + blip.movement.hint : "")
         });
         /* A dot nine units across is a hard thing to point at, and the name
            beside it is only there while the pointer is already on the blip.
@@ -574,7 +594,7 @@
         tooltip.appendChild(title);
         const where = document.createElement("span");
         where.className = "jfw-radar-tooltip-where";
-        where.textContent = blip.quadrant.label + " · " + blip.ring.label + " ring"
+        where.textContent = blip.layer.label + " · " + blip.ring.label + " ring"
             + (blip.movement ? " · " + blip.movement.hint : "");
         tooltip.appendChild(where);
         if (blip.note) {
@@ -663,7 +683,7 @@
         blip.group.addEventListener("click", () => {
             /* The catalogue folds away, so the entry a blip points at has to
                be revealed before the jump can land on it. */
-            if (blip.quadrant.details) blip.quadrant.details.open = true;
+            if (blip.ring.details) blip.ring.details.open = true;
             blip.element.classList.add("jfw-radar-target");
             window.setTimeout(() => blip.element.classList.remove("jfw-radar-target"), 2400);
         });
@@ -740,17 +760,20 @@
         radar.blips.forEach((blip) => {
             const match = !isolation
                 || (isolation.kind === "ring" && blip.ring === isolation.value)
-                || (isolation.kind === "quadrant" && blip.quadrant === isolation.value);
+                || (isolation.kind === "quadrant" && blip.layer === isolation.value);
             blip.group.classList.toggle("jfw-radar-dimmed", !match);
             /* The catalogue below is the same radar in another shape, so it
                dims the same way rather than leaving the reader to reconcile
                two disagreeing views. */
             blip.element.classList.toggle("jfw-radar-entry-muted", !match);
         });
-        /* Isolating a layer in the picture opens that layer's catalogue, as
-           the entries it highlights are otherwise folded away. */
-        if (isolation && isolation.kind === "quadrant" && value.details) {
-            value.details.open = true;
+        /* Isolating something in the picture opens the folds it highlights,
+           which would otherwise stay shut: the ring itself, or every ring
+           that holds the layer. */
+        if (isolation && isolation.kind === "ring" && isolation.value.details) {
+            isolation.value.details.open = true;
+        } else if (isolation && isolation.kind === "quadrant") {
+            revealRings((blip) => blip.layer === isolation.value);
         }
         container.querySelectorAll("[data-jfw-radar-filter]").forEach((button) => {
             const on = isolation
@@ -794,45 +817,75 @@
     }
 
     fillLegend(legend, "ring", radar.rings);
-    fillLegend(quadrantLegend, "quadrant", radar.quadrants);
+    fillLegend(quadrantLegend, "quadrant", quadrants);
 
     /* ------------------------------------------------------------------ */
     /* Fold the catalogue away                                             */
     /* ------------------------------------------------------------------ */
 
     /**
-     * Put one layer's entries behind a summary.
+     * Put one ring's entries behind a summary.
      *
-     * The page should open on the radar, not on six screens of lists, but the
+     * The page should open on the radar, not on four rings of lists, but the
      * entries are what the blips point at and what a reader without
      * JavaScript gets in full. So the folding happens here, at run time: the
      * markup keeps every entry, this script only hides them behind a control
-     * that opens on demand.
-     * @param {any} quadrant
+     * that opens on demand. The fold follows the article, which leads with
+     * the rings, so a reader who opens `Trial` finds its layers inside.
+     * @param {any} ring
      */
-    function foldCatalogue(quadrant) {
-        const section = quadrant.section;
+    function foldCatalogue(ring) {
+        const section = ring.section;
         const heading = section.querySelector("h2");
         if (!heading) return;
         const details = document.createElement("details");
         details.className = "jfw-radar-catalogue";
         const summary = document.createElement("summary");
         summary.className = "jfw-radar-catalogue-summary";
-        /* The heading itself moves into the summary, so the layer keeps its
+        /* The heading itself moves into the summary, so the ring keeps its
            own place in the document outline while being the control that
            opens it. */
         summary.appendChild(heading);
         const count = document.createElement("span");
         count.className = "jfw-radar-catalogue-count";
-        count.textContent = quadrant.count + (quadrant.count === 1 ? " entry" : " entries");
+        count.textContent = ring.count + (ring.count === 1 ? " entry" : " entries");
         summary.appendChild(count);
         details.appendChild(summary);
         Array.from(section.childNodes).forEach((node) => details.appendChild(node));
         section.appendChild(details);
-        quadrant.details = details;
+        ring.details = details;
     }
 
-    radar.quadrants.forEach(foldCatalogue);
+    radar.rings.forEach(foldCatalogue);
+
+    /** Open whichever rings hold an entry matching PREDICATE. */
+    function revealRings(predicate) {
+        radar.rings.forEach((ring) => {
+            if (!ring.details) return;
+            if (radar.blips.some((blip) => blip.ring === ring && predicate(blip))) {
+                ring.details.open = true;
+            }
+        });
+    }
+
+    /* A link can point at an entry inside a folded ring — from the rail, from
+       a blip, or from another page — so the fold is opened before the jump
+       would land on something hidden. */
+    function revealTarget(hash) {
+        if (!hash || hash.length < 2) return;
+        const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+        if (!target) return;
+        const blip = radar.blips.find((candidate) => candidate.element === target
+            || candidate.element.contains(target));
+        if (!blip || !blip.ring.details) return;
+        blip.ring.details.open = true;
+    }
+
+    window.addEventListener("hashchange", () => revealTarget(window.location.hash));
+    document.querySelectorAll(".article-rail-link").forEach((link) => {
+        link.addEventListener("click", () => revealTarget(link.getAttribute("href")));
+    });
+    revealTarget(window.location.hash);
 
     if (labelsButton) {
         labelsButton.addEventListener("click", () => {

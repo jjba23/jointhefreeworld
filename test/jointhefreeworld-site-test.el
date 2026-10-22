@@ -33,6 +33,7 @@
 ;; - The social cards' layout arithmetic and the well-formedness of their
 ;;   SVG.
 ;; - The structured data, the theme colours and the per-page script list.
+;; - The tech radar article's outline, which is the radar's own data.
 ;; - A smoke test of the page template, so that a broken s-expression in the
 ;;   document chrome is a failing test instead of a blank page.
 ;;
@@ -50,6 +51,7 @@
 (require 'ert)
 (require 'cl-lib)
 (require 'json)
+(require 'org-element)
 (require 'ox-html)
 
 (defconst jfw-test/root
@@ -718,6 +720,93 @@ pixels tall, so the shape of this one element is worth a test of its own."
   ;; An index page stops at its own directory, with a URL on every step.
   (dolist (step (jfw/breadcrumb-steps "/blog/articles/emacs/" "Emacs" t))
     (should (cdr step))))
+
+;;; ---------------------------------------------------------------------
+;;; The tech radar's source of truth
+;;; ---------------------------------------------------------------------
+
+;; `tech-radar.js' draws the radar from the article rather than from a list
+;; of its own, so the article's outline *is* the radar's data. These tests
+;; state the contract the script reads it by: the rings are the sections, in
+;; the order they are written, and the layers are the sub-headings inside
+;; them. Nothing below repeats a count or a technology list — those are the
+;; article's to change — only the shape the drawing depends on.
+
+(defconst jfw-test/radar-file
+  (expand-file-name "docs/blog/articles/development/tech-radar.org" jfw-test/root)
+  "The tech radar article, the only source of the radar's content.")
+
+(defun jfw-test/radar-headlines ()
+  "Return every headline of the radar article, in document order."
+  (with-temp-buffer
+    (insert-file-contents jfw-test/radar-file)
+    (org-mode)
+    (org-element-map (org-element-parse-buffer) 'headline #'identity)))
+
+(defun jfw-test/heading-name (headline)
+  "Return HEADLINE's text without the emoji it opens with: \"✅ Adopt\" -> \"Adopt\".
+The class is spelled out in ASCII on purpose: `[:alnum:]' is answered by
+the buffer's syntax table, which gives the variation selector in \"🗑️\" word
+syntax, so it would survive the strip."
+  (let ((title (org-element-interpret-data (org-element-property :title headline))))
+    (substring-no-properties
+     (string-trim (replace-regexp-in-string "\\`[^A-Za-z0-9]+" "" title)))))
+
+(defun jfw-test/radar-rings ()
+  "Return the radar article's ring headlines, in the order they are written.
+A ring is the section that asks for `section' containers carrying the
+`jfw-radar-ring' class, which is exactly what the drawing script looks for
+on the published page."
+  (cl-remove-if-not
+   (lambda (headline)
+     (equal "jfw-radar-ring" (org-element-property :HTML_CONTAINER_CLASS headline)))
+   (jfw-test/radar-headlines)))
+
+(defun jfw-test/radar-layers (ring)
+  "Return the layer headlines inside RING, in the order they are written."
+  (org-element-map (org-element-contents ring) 'headline #'identity))
+
+(ert-deftest jfw-test/radar-leads-with-the-rings ()
+  "The radar is organised ring first: Adopt, Trial, Assess, Deprecate.
+The drawing puts these bands from the middle outwards in the order the
+article gives them, so this order is the radar's rather than a detail of a
+heading."
+  (should (equal (mapcar #'jfw-test/heading-name (jfw-test/radar-rings))
+                 '("Adopt" "Trial" "Assess" "Deprecate"))))
+
+(ert-deftest jfw-test/radar-layers-sit-inside-every-ring ()
+  "Every ring names the layers it lands in, and only the known layer names.
+A layer becomes a wedge of the picture, so a ring that invented a seventh
+layer name would widen the radar without anything saying so; a ring with no
+layers at all would be a band with nothing to say."
+  (let ((known '("Languages" "Frameworks & UI" "Data & Storage"
+                 "Tools & Environment" "Platforms & Delivery" "Practice & Craft")))
+    (should (jfw-test/radar-rings))
+    (dolist (ring (jfw-test/radar-rings))
+      (let ((layers (mapcar #'jfw-test/heading-name (jfw-test/radar-layers ring))))
+        (should (equal (length (cl-delete-if-not
+                                (lambda (layer) (member layer known))
+                                layers))
+                       (length layers)))
+        (should layers)))))
+
+(ert-deftest jfw-test/radar-trials-deepseek-as-a-tool ()
+  "DeepSeek is trialled as a tool, and described as one on a short leash.
+The entry earns its place by where it sits: an assistant that drafts and
+reviews while a human decides belongs in Trial, not in Adopt."
+  (let* ((rings (jfw-test/radar-rings))
+         (trial (cl-find "Trial" rings
+                         :test #'equal :key #'jfw-test/heading-name))
+         (tools (and trial (cl-find "Tools & Environment" (jfw-test/radar-layers trial)
+                                    :test #'equal :key #'jfw-test/heading-name)))
+         (text (and tools (org-element-interpret-data (org-element-contents tools)))))
+    (should trial)
+    (should tools)
+    (when (stringp text)
+      (should (string-match-p "DeepSeek" text))
+      (should (string-match-p "deepseek\\.com" text))
+      ;; Marked as what it is in this revision, not quietly folded in.
+      (should (string-match-p "(new)" text)))))
 
 (provide 'jointhefreeworld-site-test)
 
