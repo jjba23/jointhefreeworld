@@ -589,5 +589,3 @@ In short, we foster an inclusive, respectful and cooperative environment for all
 - *Ron Hale-Evans, Robert J. Chassell and Richard M. Stallman* – For the writing on documentation style that shapes how this project explains itself.
 
 -----
-
-[[https://jointhefreeworld.org/static-assets/jointhefreeworld/jointhefreeworld-small.png]]
