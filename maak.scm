@@ -125,6 +125,25 @@
   (lint-css)
   (lint-elisp))
 
+(define (test)
+  "Run the ERT test suite for the build script."
+  ;; The tests load jointhefreeworld-site.el itself rather than a copy of its
+  ;; rules, so a run also proves that the script still loads.  They run in
+  ;; the same pinned environment as the build, which is what makes a failure
+  ;; mean a defect rather than a missing package.
+  (time-machine-manifest-shell (list "emacs"
+                                     "-Q"
+                                     "--batch"
+                                     "-l"
+                                     "./test/jointhefreeworld-site-test.el"
+                                     "-f"
+                                     "ert-run-tests-batch-and-exit")))
+
+(define (check)
+  "Run every check the project has: the linters, then the tests."
+  (lint)
+  (test))
+
 (define (share-card)
   "Rasterise the social sharing card from its SVG source."
   ;; The SVG is the source of truth and the PNG is what social platforms

@@ -171,6 +171,28 @@ It restores a stored theme choice and marks the document as JS-capable,
 which reveals the theme toggle. Keeping it inline avoids a flash of the
 wrong theme while the deferred scripts are still loading.")
 
+(defconst jfw/theme-colors
+  '(("light" . "#faf3e8")
+    ("dark" . "#18181b"))
+  "The paper of the page, per colour scheme, as the browser wants it.
+These mirror `--color-page-base' in the two palettes of the stylesheet.  A
+value here and a value there that disagree would show as a strip of the
+wrong colour above the page, so the pair is worth keeping in step.")
+
+(defun jfw/theme-color-metas ()
+  "Return the meta nodes that tint the browser's own chrome.
+Each scheme gets a tag of its own and the browser picks the one that
+matches the operating system, because a title bar is painted before any
+script has run and cannot wait for the stored choice.  A visitor who
+overrides the theme in the page itself keeps the system's tint in the
+browser chrome, which is the closest thing to being right that the
+standard allows."
+  (mapcar (lambda (pair)
+            `(meta (@ (name "theme-color")
+                      (content ,(cdr pair))
+                      (media ,(format "(prefers-color-scheme: %s)" (car pair))))))
+          jfw/theme-colors))
+
 (defconst jfw/repl-scripts
   `(script (@ (src ,(concat jfw/site-url "/static/js/guile-repl.js")) (defer "true")) "")
   "The Guile Scheme REPL, for pages that ask for it with #+SCRIPTS: repl.
@@ -225,6 +247,26 @@ during the build instead of silently doing nothing."
   "The site navigation, in order: a site-relative path or an absolute URL,
 paired with its label.")
 
+(defconst jfw/nav-primary-paths
+  '("/" "/blog/" "/blog/articles/development/tech-radar/"
+    "/joe-cv/" "/documentation/")
+  "The navigation entries that stay on the bar; the rest fold under `more'.
+A bar that names five places is read; a bar that names nine is scanned.
+The five are where a reader goes next, the four are where a reader goes
+once — a policy, a source host, a professional profile — so they cost one
+click behind a disclosure rather than a row of the bar on every page.")
+
+(defun jfw/nav-groups ()
+  "Return the navigation as (PRIMARY . SECONDARY), each in its own order.
+Every entry appears in exactly one of the two lists, which is what keeps a
+new link from silently going missing when it is added to the table."
+  (let (primary secondary)
+    (dolist (link jfw/nav-links)
+      (if (member (car link) jfw/nav-primary-paths)
+          (push link primary)
+        (push link secondary)))
+    (cons (nreverse primary) (nreverse secondary))))
+
 (defun jfw/nav-current (current)
   "Return the nav href that best describes the page at CURRENT.
 The longest site-relative link the page sits under wins, so an article
@@ -241,8 +283,10 @@ only ever matches the root itself."
             (when (or (null best) (> (length href) (length best)))
               (setq best href))))))))
 
-(defun jfw/nav-items (current)
-  "Return the navigation links as sxml, marking the entry matching CURRENT."
+(defun jfw/nav-items (current &optional links)
+  "Return LINKS as sxml, marking the entry that matches CURRENT.
+LINKS defaults to the whole navigation; the bar passes its own groups so
+that the same marking rules apply on both sides of the `more' disclosure."
   (mapcar (lambda (link)
             (let ((href (car link))
                   (label (cdr link)))
@@ -250,94 +294,97 @@ only ever matches the root itself."
                      (href ,href)
                      ,@(when (equal href current) '((aria-current "page"))))
                   ,label)))
-          jfw/nav-links))
+          (or links jfw/nav-links)))
+
+(defun jfw/theme-toggle ()
+  "Return the light / dark / follow-the-system chooser as sxml.
+The three radios are the real controls and their labels are the buttons, so
+native keyboard behaviour and screen readers both work without a script;
+the stylesheet shows the label of the chosen one and the icon of all three,
+which is what keeps the bar to a single line."
+  `(div (@ (class "theme-toggle")
+           (role "radiogroup")
+           (aria-label "Color theme")
+           (data-jfw-theme-toggle "true"))
+        ,@(cl-loop
+           for (value icon title label) in '(("light" "☀️" "Light theme" "light")
+                                             ("dark" "🌙" "Dark theme" "dark")
+                                             ("system" "🖥️" "Follow the system theme" "system"))
+           for checked = (equal value "system")
+           append
+           (list
+            `(input (@ (class "theme-toggle-input")
+                       (type "radio")
+                       (name "jfw-theme")
+                       (id ,(concat "jfw-theme-" value))
+                       (value ,value)
+                       ,@(when checked '((checked "checked")))))
+            `(label (@ (class "theme-toggle-option")
+                       (data-choice ,value)
+                       (for ,(concat "jfw-theme-" value))
+                       (title ,title))
+                    (span (@ (class "theme-toggle-icon") (aria-hidden "true")) ,icon)
+                    (span (@ (class "theme-toggle-label")) ,label))))))
 
 (defun jfw/site-header (&optional current)
-  "Return the shared site header as a list of sxml nodes.
+  "Return the shared site header as sxml.
 CURRENT is the site-relative path of the page being published; the nav
-entry the visitor is standing on is the one told `aria-current'."
-  (list
-   `(div (@ (id "top") (class "site-title flex flex-wrap items-center gap-3"))
-         (a (@ (class "border-b-none")
-               (href "https://jointhefreeworld.org"))
-            (em "jointhefreeworld.org"))
-         (div (@ (class "theme-toggle")
-                 (role "radiogroup")
-                 (aria-label "Color theme")
-                 (data-jfw-theme-toggle "true"))
-              (input (@ (class "theme-toggle-input")
-                        (type "radio")
-                        (name "jfw-theme")
-                        (id "jfw-theme-light")
-                        (value "light")))
-              (label (@ (class "theme-toggle-option")
-                        (data-choice "light")
-                        (for "jfw-theme-light")
-                        (title "Light theme"))
-                     (span (@ (class "theme-toggle-icon")
-                              (aria-hidden "true"))
-                           "☀️")
-                     (span (@ (class "theme-toggle-label")) "light"))
-              (input (@ (class "theme-toggle-input")
-                        (type "radio")
-                        (name "jfw-theme")
-                        (id "jfw-theme-dark")
-                        (value "dark")))
-              (label (@ (class "theme-toggle-option")
-                        (data-choice "dark")
-                        (for "jfw-theme-dark")
-                        (title "Dark theme"))
-                     (span (@ (class "theme-toggle-icon")
-                              (aria-hidden "true"))
-                           "🌙")
-                     (span (@ (class "theme-toggle-label")) "dark"))
-              (input (@ (class "theme-toggle-input")
-                        (type "radio")
-                        (name "jfw-theme")
-                        (id "jfw-theme-system")
-                        (value "system")
-                        (checked "checked")))
-              (label (@ (class "theme-toggle-option")
-                        (data-choice "system")
-                        (for "jfw-theme-system")
-                        (title "Follow the system theme"))
-                     (span (@ (class "theme-toggle-icon")
-                              (aria-hidden "true"))
-                           "🖥️")
-                     (span (@ (class "theme-toggle-label")) "system"))))
-   `(header (@ (class "site-header flex"))
-            (div (@ (class "site-masthead"))
-                 (div (@ (class "container"))
-                      (details (@ (open "true") (class "nav-details"))
-                               (summary "site navigation")
-                               (nav (@ (class "nav"))
-                                    ,@(jfw/nav-items (jfw/nav-current current)))))))))
+entry the visitor is standing on is the one told `aria-current'.
+
+One bar, three parts: where you are, where you can go, and how the site
+looks. The wordmark is a link home rather than a decoration, the five
+places a reader goes next stay on the bar, and the four they go once wait
+behind a disclosure that opens with a real click because it is a real
+`details' element."
+  (let* ((groups (jfw/nav-groups))
+         (primary (car groups))
+         (secondary (cdr groups))
+         (nav-current (jfw/nav-current current)))
+    ;; A list, because the template splices the shared furniture into the
+    ;; body: a bare node would be spliced apart into its own tag and
+    ;; attributes.
+    (list
+     `(header (@ (class "site-header") (id "top"))
+              (div (@ (class "toolbelt"))
+                   (a (@ (class "site-mark") (href "/"))
+                      (span (@ (class "site-mark-glyph") (aria-hidden "true")) "λ")
+                      (span (@ (class "site-mark-name")) "jointhefreeworld"))
+                   (nav (@ (class "nav nav-primary") (aria-label "Site"))
+                        ,@(jfw/nav-items nav-current primary))
+                   ,@(when secondary
+                       `((details (@ (class "nav-more") (data-jfw-nav-more "true"))
+                                  (summary (@ (class "nav-more-summary")) "more")
+                                  (div (@ (class "nav-more-panel"))
+                                       (nav (@ (class "nav nav-secondary")
+                                               (aria-label "More of the site"))
+                                            ,@(jfw/nav-items nav-current secondary))))))
+                   ,(jfw/theme-toggle))))))
+
 
 
 
 (defun jfw/site-footer ()
-  "Return the shared site footer as sxml."
+  "Return the shared site footer as sxml.
+Two columns on a wide screen, one on a phone: the left says what this is
+and who made it, the right is the list of places that are about the site
+rather than in it."
   `((footer (@ (class "site-footer"))
-            (div (@ (class "container"))
-                 (div (@ (class "flex flex-col gap-3"))
-                      (em (@(class "text-sm")) "Copyright © Josep Bigorra (jjba23 - jjbigorra@gmail.com)")
-                      (em (@(class "text-sm")) "Licensed under the GNU AGPL v3 or newer")
-                      (em (@(class "text-sm")) ,(format "Site build: %s" (jfw/get-commit-hash)))
-                      (div (@ (class "flex flex-row flex-wrap gap-3"))
-                           (small
-                            (a (@ (href "https://codeberg.org/jjba23/jointhefreeworld"))
-                               "🔗 source code on Codeberg"))
-                           (small
-                            (a (@(href ,(string-join (list jfw/site-url "rss.xml") "/"))) "🗞️ RSS feed"))
-                           (small
-                            (a (@ (href "/blog/articles/development/tech-radar/")) "🧭 the FREE stack tech radar"))
-                           (small
-                            (a (@ (href "/code-of-conduct/")) "🤝 code of conduct"))
-                           (small
-                            (a (@ (href "/ai-policy/")) "🤖 AI policy"))
-                           (small
-                            (a (@(href "#top")) "⬆️ back to the top"))
-                           ))))))
+            (div (@ (class "footer-inner"))
+                 (div (@ (class "footer-identity"))
+                      (p (@ (class "footer-mark")) "jointhefreeworld")
+                      (em "Copyright © Josep Bigorra (jjba23 - jjbigorra@gmail.com)")
+                      (em "Licensed under the GNU AGPL v3 or newer")
+                      (em ,(format "Site build: %s" (jfw/get-commit-hash))))
+                 (div (@ (class "footer-links"))
+                      (a (@ (href "https://codeberg.org/jjba23/jointhefreeworld"))
+                         "🔗 source code on Codeberg")
+                      (a (@ (href ,(string-join (list jfw/site-url "rss.xml") "/")))
+                         "🗞️ RSS feed")
+                      (a (@ (href "/blog/articles/development/tech-radar/"))
+                         "🧭 the FREE stack tech radar")
+                      (a (@ (href "/code-of-conduct/")) "🤝 code of conduct")
+                      (a (@ (href "/ai-policy/")) "🤖 AI policy")
+                      (a (@ (href "#top")) "⬆️ back to the top"))))))
 
 (defun get-article-output-path (org-file pub-dir)
   "Return the output directory for ORG-FILE under PUB-DIR.
@@ -546,6 +593,131 @@ stops at that directory instead of repeating its own title."
   "Return the human name of the blog category PATH belongs to, if any."
   (when-let* ((category (jfw/section-slug path)))
     (jfw/humanize category)))
+
+(defconst jfw/page-kickers
+  '(("blog" . "Blog")
+    ("documentation" . "Docs")
+    ("portfolio" . "Portfolio")
+    ("platform" . "Platform")
+    ("joe-cv" . "CV")
+    ("code-of-conduct" . "Code of Conduct")
+    ("ai-policy" . "AI Policy")
+    ("404" . "Nothing here"))
+  "Names for the parts of the site that are not a blog category.
+The kicker above a title is the site's own word for a section, so it is a
+table rather than a guess at what a directory name meant.")
+
+(defun jfw/page-kicker (path)
+  "Return the word that names the part of the site PATH belongs to.
+This is the small line above a page's title: the section the page sits in,
+in the site's own words rather than in the words of its directory."
+  (or (jfw/section-label path)
+      (let ((head (car (split-string (string-trim path "/" "/") "/" t))))
+        (cond
+         ((null head) "jointhefreeworld")
+         ((assoc (file-name-sans-extension head) jfw/page-kickers)
+          (cdr (assoc (file-name-sans-extension head) jfw/page-kickers)))
+         (t (jfw/humanize head))))))
+
+(defconst jfw/rail-minimum-headings 3
+  "How many headings a page needs before a rail is worth building.
+Two entries in a list the reader can see at a glance is furniture; a page
+long enough to get lost in is the one that earns a map.")
+
+(defun jfw/dom-attributes (node)
+  "Return the attribute alist of the parsed NODE, or nil when it has none.
+A libxml node is (TAG ATTRIBUTES CHILD...), and a node with no attributes
+carries its first child where the attributes would be, so the two cases are
+told apart by looking at the shape rather than at the position."
+  (let ((second (car-safe (cdr node))))
+    (and (consp second) (consp (car second)) second)))
+
+(defun jfw/heading-entry (node)
+  "Return (ID . TEXT) for the heading NODE, or nil when it cannot be linked.
+An exported heading carries its identifier on the anchor link beside its
+text, and occasionally on the heading itself; either will do, and a heading
+with neither is one nobody could link to anyway."
+  (let* ((anchor (car (dom-by-class (list node) "anchor")))
+         (id (or (and anchor (dom-attr anchor 'id))
+                 (dom-attr node 'id)))
+         (text (when id
+                 (string-trim
+                  (replace-regexp-in-string
+                   "[\u00A0[:space:]]+" " "
+                   (dom-texts node))))))
+    (when (and text (not (string-empty-p text)))
+      ;; The heading carries its own \"#\" link, and that glyph is not part
+      ;; of the name a reader wants to read.
+      (cons id (string-trim (replace-regexp-in-string "#\\s-*\\'" "" text))))))
+
+(defun jfw/heading-entries (node hidden)
+  "Return (LEVEL . (ID . TEXT)) for every heading under NODE, in order.
+HIDDEN is non-nil inside a disclosure that is closed: a heading behind a
+closed disclosure is not on the page as far as the reader is concerned, so
+it is left out of the rail."
+  (when (consp node)
+    (let* ((tag (car node))
+           (attributes (jfw/dom-attributes node))
+           (children (if attributes (cddr node) (cdr node)))
+           (hidden (or hidden
+                       (and (eq tag 'details)
+                            (not (assq 'open attributes)))))
+           (entry (and (memq tag '(h2 h3))
+                       (not hidden)
+                       (jfw/heading-entry node))))
+      (append
+       (when entry (list (cons tag entry)))
+       (cl-mapcan (lambda (child) (jfw/heading-entries child hidden))
+                  children)))))
+
+(defun jfw/page-rail (content)
+  "Return the rail for CONTENT as sxml, or nil when the page is too short.
+The rail is written while the page is exported, out of the page's own h2 and
+h3 headings, so that a reader without scripting gets it too and the layout
+does not change under a page that is still loading. It is the one part of
+the page that used to need a script and no longer does; what the script adds
+is the mark that follows the reader down it."
+  (when (and content (fboundp 'libxml-parse-html-region))
+    (let ((headings
+           (with-temp-buffer
+             (insert content)
+             (jfw/heading-entries
+              (libxml-parse-html-region (point-min) (point-max))
+              nil))))
+      (when (>= (length headings) jfw/rail-minimum-headings)
+        (list
+         `(aside (@ (class "article-rail"))
+                 (p (@ (class "article-rail-title")) "on this page")
+                 (ol (@ (class "article-rail-list"))
+                     ,@(cl-loop for (level . entry) in headings
+                                for (id . text) = entry
+                                collect
+                                `(li (@ (class ,(if (eq level 'h3)
+                                                    "article-rail-item is-sub"
+                                                  "article-rail-item")))
+                                     (a (@ (class "article-rail-link")
+                                           (href ,(concat "#" id)))
+                                        ,text))))))))))
+
+(defun jfw/page-meta (&optional publish-date iso-date reading-time)
+  "Return the annotation line under a page's title, as sxml, or nil.
+A page shows the date it was written and how long it takes to read; a page
+with neither shows no line at all rather than an empty one.  The two are
+separated by a middle dot, because a line of prose punctuation in a
+monospaced voice is punctuation only."
+  (let ((bits '()))
+    (when (and publish-date (not (equal publish-date "")))
+      (push `(time (@ (datetime ,(or iso-date ""))) ,publish-date) bits))
+    (when (and reading-time (not (equal reading-time "")))
+      (push (format "%s %s" reading-time
+                    (if (equal (format "%s" reading-time) "1") "minute" "minutes"))
+            bits))
+    (when bits
+      (let ((bits (nreverse bits)))
+        `((p (@ (class "page-meta"))
+             ,@(cl-loop for bit in bits
+                        for first = t then nil
+                        append (if first (list bit) (list " · " bit)))))))))
 
 ;;; ---------------------------------------------------------------------
 ;;; Blog listings
@@ -1346,7 +1518,12 @@ WebPage anywhere else — and closes with a breadcrumb trail."
          (json-ld (jfw/json-ld :title plain-title :description description-text
                                :url canonical :path path :index-p index-p
                                :image share-card :published iso-date
-                               :modified modified :keywords keywords :section section)))
+                               :modified modified :keywords keywords :section section))
+         ;; The rail is written here, from the page that is about to be
+         ;; published, rather than by a script in the browser: it is content,
+         ;; and content that needs a script to appear is content half the
+         ;; readers do not get.
+         (rail (jfw/page-rail content)))
     (concat
      "\n"
      "<!DOCTYPE html>"
@@ -1363,6 +1540,8 @@ WebPage anywhere else — and closes with a breadcrumb trail."
                                                     (content "width=device-width, initial-scale=1, shrink-to-fit=no")))
                                            (meta (@ (name "description") (content ,description-text)))
                                            (meta (@ (name "robots") (content ,robots)))
+                                           ;; The browser's own chrome, tinted to the paper.
+                                           ,@(jfw/theme-color-metas)
                                            ,@(when keywords
                                                `((meta (@ (name "keywords")
                                                           (content ,(string-join keywords ", "))))))
@@ -1433,28 +1612,55 @@ WebPage anywhere else — and closes with a breadcrumb trail."
                                            ;; sxml-to-xml would escape its quotes into oblivion.
                                            (script (@ (type "application/ld+json"))
                                                    "__JSON_LD_PLACEHOLDER__"))
-              (body ,@(unless exclude-header
-                        ;; The bar marks the section the page belongs to.
-			(jfw/site-header (jfw/page-path info)))
-                    (div (@ (class "container flex flex-col items-center"))
-			 (h1 (@ (class "site-post-title"))
-                             "__RAW_TITLE_PLACEHOLDER__")
-			 ,(when (and (not exclude-content-reading-time) content-reading-time (not (equal "" content-reading-time)))
-                            `(em (@(class "site-post-meta"))
-				 ,(format "estimated reading time: %s %s"
-                                          content-reading-time
-                                          (if (= 1 content-reading-time) "minute" "minutes"))))
-			 ,(when (and publish-date (not (equal "" publish-date)))
-                            `(p (@ (class "site-post-meta"))
-				"written on: "
-				(time (@ (datetime ,(or iso-date ""))) ,publish-date)))
-			 ,(if-let* ((video-id (plist-get info :video)))
-                              (jfw/embed-video video-id))
-			 ,(when pre-content pre-content)
-			 (div (@ (id "content")(class "content max-w-full"))
-                              "__RAW_CONTENT_PLACEHOLDER__"))
-                    ,@(unless exclude-footer
-			(jfw/site-footer)))))
+              (body
+               ;; The two pieces of chrome the reader meets first. The skip
+               ;; link is a real link, so it works with scripting off, and it
+               ;; is the first thing Tab reaches. The progress line is drawn
+               ;; from a custom property that freeworld.js writes, so with
+               ;; scripting off it simply never grows.
+               (a (@ (class "jfw-skip-link") (href "#content")) "skip to the content")
+               ;; The empty string is the element's content, and it is what
+               ;; makes the serialiser write a closing tag: without it the
+               ;; progress line would be emitted as a lone opening tag and
+               ;; every element after it would nest inside it.
+               (div (@ (class "jfw-progress")
+                       (data-jfw-progress "true")
+                       (aria-hidden "true"))
+                    "")
+               ,@(unless exclude-header
+                   ;; One bar: the wordmark, the nav, and the theme chooser.
+                   (jfw/site-header (jfw/page-path info)))
+               (main (@ (class "page"))
+                     ;; The hero. A page says which part of the site it
+                     ;; belongs to, what it is called and when it was
+                     ;; written, before a single paragraph asks for the
+                     ;; reader's attention.
+                     (div (@ (class "page-hero"))
+                          (p (@ (class "page-kicker")) ,(jfw/page-kicker path))
+                          (h1 (@ (class "site-post-title"))
+                              "__RAW_TITLE_PLACEHOLDER__")
+                          ,@(jfw/page-meta publish-date iso-date
+                                           (unless exclude-content-reading-time
+                                             content-reading-time)))
+                     ,(if-let* ((video-id (plist-get info :video)))
+                          (jfw/embed-video video-id))
+                     ,(when pre-content pre-content)
+                     ;; The body: the sheet the article is printed on, and
+                     ;; beside it the rail of the page's own headings, which
+                     ;; the build wrote a moment ago. When the build found
+                     ;; fewer than three headings there is no rail, and the
+                     ;; grid is one column, so no page carries a gutter for
+                     ;; nothing.
+                     (div (@ (class ,(if rail "page-body has-rail" "page-body")))
+                          ;; `tabindex' is -1 so that the skip link can move
+                          ;; focus here: a reader who takes it lands at the
+                          ;; top of the article and the next Tab continues
+                          ;; inside it.
+                          (div (@ (id "content") (class "content") (tabindex "-1"))
+                               "__RAW_CONTENT_PLACEHOLDER__")
+                          ,@rail))
+               ,@(unless exclude-footer
+                   (jfw/site-footer)))))
 
       ;; Pass the result sequentially through these string-replace calls
       (string-replace "__RAW_TITLE_PLACEHOLDER__" (or title ""))

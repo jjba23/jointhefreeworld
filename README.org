@@ -99,9 +99,9 @@ The mapping is not a mirror of the source tree, and that is intentional. A reade
 Whatever the content, the wrapper adds the same furniture. Knowing what is automatic keeps you from repeating it in the Org file:
 
 - The document head: character set, viewport, author, the meta description, robots directives, the canonical URL, the complete Open Graph and Twitter card, preloads for the fonts used on first paint, favicon, the RSS link, the speculation rules, and the JSON-LD block. The metadata section later in this manual describes each of them.
-- The site header, with the navigation bar and the theme chooser.
-- The page title as a first-level heading, an estimated reading time of at least one minute at a reading speed of 130 words per minute, and the date when the page sets one. The reading estimate is left off the landing and index pages, where it would mean nothing.
-- The content itself, inside the container the stylesheet expects.
+- The bar at the top: the wordmark, the five places on it, the four behind =more=, and the theme chooser.
+- The hero: a monospaced line naming the part of the site the page belongs to, the page title as a first-level heading, and beneath it the date the page was written and an estimated reading time of at least one minute at a reading speed of 130 words per minute. The reading estimate and the date are left off the landing and index pages, where they would mean nothing.
+- The content itself, in a sheet of glass, with a rail beside it on a wide screen that the script fills with the page's own headings.
 - The site footer: copyright, licence, the short commit hash of the build, and links to the source code, the feed, the tech radar, the two policies and the top of the page.
 - The scripts the page asked for, and nothing else.
 
@@ -109,11 +109,13 @@ Two more touches are worth naming because you will see them in a browser. The th
 
 ** The header and the navigation
 
-The bar's links come from one table in the build script, =jfw/nav-links=, which pairs each label with either a site-relative path or an absolute URL. The entry it marks as current is the longest site-relative link the page sits under, so an article marks its own section rather than the whole blog, and the marker is =aria-current="page"= rather than a colour alone, so it survives a reader who cannot see the difference.
+The bar's links come from one table in the build script, =jfw/nav-links=, which pairs each label with either a site-relative path or an absolute URL. A second table, =jfw/nav-primary-paths=, says which of them stay on the bar: five places a reader goes next are worth naming, and the four they go once — the two policies, the source host, the professional profile — wait behind a =more= disclosure that is a real =details= element, so it opens with no script at all.
 
-Editing that table is the whole of editing the navigation. A page that no entry covers, such as the portfolio, leaves the bar unmarked.
+The entry the build marks as current is the longest site-relative link the page sits under, so an article marks its own section rather than the whole blog, and the marker is a dot of gold plus =aria-current="page"= rather than a colour alone, so it survives a reader who cannot see the difference.
 
-The footer is written by =jfw/site-footer=, and lists the copyright, the licence, the commit hash of the build, and links to the source code, the feed, the tech radar and the two policies.
+Adding a link means adding one entry to =jfw/nav-links= and, unless it belongs behind =more=, one path to =jfw/nav-primary-paths=; the tests check that every link ends up in exactly one of the two groups, so a link cannot go missing between them. A page that no entry covers, such as the portfolio, leaves the bar unmarked.
+
+The footer is written by =jfw/site-footer=: what the site is and who made it on the left, the places that are about the site rather than in it on the right, and the commit hash of the build underneath.
 
 * Writing content
 
@@ -227,28 +229,71 @@ The whole design lives in one stylesheet, =static/css/jointhefreeworld.css=, and
 | Group         | Examples                                                | Used for                              |
 |---------------+---------------------------------------------------------+---------------------------------------|
 | Colour        | =--color-primary=, =--color-hover=, =--color-page-base= | Text, accents, the paper underneath   |
+| Gold          | =--color-gold=                                          | The hairline under a title, the reading progress line, the caret |
 | Type          | =--font-family-body=, =--text-sm=, =--text-xl=          | Families and one size scale           |
 | Spacing       | =--spacing-sm= through =--spacing-xxxl=                 | Gaps, padding, line heights           |
-| Shape         | =--border-radius-base=, =--box-shadow=                  | Rounded corners and depth             |
-| Measure       | =--max-width-text=, =--max-width-pre=                   | Line length for prose and code        |
-| Frosting      | =--blur-sm=, =--blur-md=, =--blur-saturate=             | The translucent panels                |
+| Shape         | =--border-radius-base=, =--box-shadow=, =--box-shadow-lift= | Rounded corners and two depths of shadow |
+| Measure       | =--max-width-text=, =--max-width-pre=, =--max-width-page= | Line length for prose and code, and the width the window stops growing at |
+| Frosting      | =--blur-sm=, =--blur-md=, =--blur-lg=, =--blur-saturate= | The translucent panels                |
+| Glass         | =--glass-edge=, =--glass-hairline=, =--glass-sheen=, =--glass-brightness= | The lit edge, the thin border and the corner sheen that make a pane of glass rather than a faded rectangle |
+| Motion        | =--duration-1= to =--duration-3=, =--ease-glide=, =--ease-spring=, =--ease-settle= | How long a transition takes, and how it settles |
+| Paper         | =--grain-tile=                                          | The noise tile under the whole page   |
 
 Change a token and every rule that uses it changes with it. If you find yourself writing the same colour twice, the token you wanted is probably missing.
+
+** Glass and depth
+
+The design is one sheet of frosted glass laid over warm paper, and three rules keep it coherent:
+
+- *Blur is spent where content actually moves under a surface.* The sticky toolbar, the code blocks and the floating copy button blur their backdrop, because something scrolls behind them and the blur is visible. The article card is translucent but not blurred: its backdrop is the fixed light of the page, so a blur there would cost a repaint on every scroll frame and show nothing.
+- *Every pane shares the same three cues.* A lit top edge and a shadowed bottom edge (=--glass-edge=), a thin border that is brighter than the surface (=--glass-hairline=), and a sheen that fades in from the corner nearest the light (=--glass-sheen=). Together they read as thickness; a translucency on its own reads as a faded rectangle.
+- *Depth is two shadows, not one.* A tight contact shadow says the pane touches the page, and a wide ambient one says it floats above it. =--box-shadow-lift= is the same pair, pushed further, for a pane the pointer is on.
+
+The page also carries a grain tile, drawn as an inline SVG and attached to the background of =html= rather than laid over the content, so text stays crisp at any zoom.
+
+** The shape of a page
+
+Every page is the same four things, top to bottom, and the Org file only ever writes the third:
+
+1. *A bar.* One thin pill of glass, pinned to the top: the wordmark on the left, the five places a reader goes next, the four they go once behind =more=, and the theme chooser at the far end where a status item lives. Everything else scrolls underneath it and is blurred by it.
+2. *A hero.* A monospaced line naming the part of the site the page is in, the title set as a headline and left-aligned rather than centred, the date and the reading time as a stamp, and a rule of gold that fades out to the right. The hero sits on the paper, not inside the sheet, which is what gives a page a front matter instead of a paragraph that happens to be bigger.
+3. *A body.* The article in a sheet of glass, and beside it the rail. The rail takes a column only above 1100 pixels and only once the script has filled it, so a page with two headings, or a reader without scripting, gets the whole width for its text.
+4. *A footer.* Two columns: what the site is and who made it, then the places that are about the site rather than in it.
+
+The document also keeps two measures on purpose: prose stops at 80 characters and code blocks run to 128, so a wide screen gives its extra room to the code rather than to a line of text that gets harder to read the longer it is.
 
 ** Themes
 
 The site follows the reader's system preference by default and lets them override it, in either direction, with the chooser in the header. Three states exist: /system/, /light/ and /dark/, and the choice is remembered in the browser's local storage under a single key shared by the inline script and the chooser.
 
-The dark palette is not the light one inverted. It is deliberately darker and calmer, with weaker glows and accents pulled back in saturation, because long reading sessions deserve less of a light show. When you edit one of the two palettes, edit its twin in the system-preference block as well; the comment beside each reminds you.
+The two palettes are not each other's inverse, and they are not the same idea twice:
+
+- *Light is warm paper.* Cream newsprint, terracotta links, a pumpkin glow: a printed page with a lamp near it.
+- *Dark is graphite.* The neutrals are the greys a Mac uses for its windows, panels and separators — a near-black page, panels a step lighter, hairlines of white at about a tenth of an opacity — and the warmth is spent only where it carries meaning: a link, the place the reader is, the rule under a title, a keyword in a code block. That restraint is the whole trick: orange reads as an accent on grey and as a wash on brown.
+
+Surfaces get lighter as they get closer to the reader, which is the one rule that makes a stack of dark panes read as depth rather than as a flat field. When you edit one of the two palettes, edit its twin in the system-preference block as well; the comment beside each reminds you, and the build's =theme-color= values must agree with both.
 
 ** Accessibility commitments
 
 These are not aspirations; the stylesheet and the build enforce them, and a change that breaks one is a regression:
 
 - Colour contrast. Body text and link text clear the WCAG AA thresholds in both themes.
-- Focus. Interactive elements take a visible focus ring, and the header's current page is announced rather than only coloured.
-- Motion. The one animation, the parenthesis on the home page, stops when the reader asks for reduced motion.
+- Focus. Interactive elements take a visible focus ring, and the header's current page is announced rather than only coloured. The first thing Tab reaches is a link past the toolbar.
+- Motion. The parenthesis rain, the caret after the tagline, the scroll reveal and the theme cross-fade all stop when the reader asks for reduced motion, and the reveal is written so that a reader who asks for less motion is never shown a hidden section in the first place.
+- Transparency. A reader who asks their system for more contrast gets opaque paper instead of glass.
 - Structure. The document declares its language, the theme chooser is a group of labelled controls, headings nest properly, and the radar and the REPL expose their content as ordinary markup as well.
+
+** The chrome around the page
+
+Five small pieces of furniture sit around the page. One is written by the build; the other four are drawn by =freeworld.js= and the stylesheet, and are inert until the script runs, so a reader without JavaScript loses none of the content:
+
+- *The rail.* The page's own =h2= and =h3= headings, as a list to jump by, beside the sheet on a screen wide enough to afford the column. It is written by the build rather than by a script, so it is part of what a reader receives; a heading inside a closed disclosure is left out of it; and what the script adds is the mark that follows the reader down it. The build gives it a column only when it has at least three entries, which is why a short page has no empty gutter.
+- *The reading progress line.* A hairline of gold across the top of the window that fills as the page is read. The stylesheet draws it from a custom property and the script writes that property, measured in the scroll handler rather than in a frame it would have to wait for.
+- *The copy buttons.* Every code block in an article gets a button in its corner that puts the block on the clipboard, using the clipboard API where the page is a secure context and a hidden text area where it is not.
+- *The scroll reveal.* The blocks of an article fade and rise as they are reached. The class that hides them is added by the script, so nothing is ever hidden when the script is absent.
+- *The skip link.* The first thing Tab reaches is a way past the bar. It is real markup rather than a scripted control, and =#content= carries =tabindex="-1"= so that taking it moves focus into the article.
+
+The rule behind all of this is worth stating plainly: *a page's content never depends on a script*. The rail, the listings, the code blocks and every word of an article are in the HTML the server hands over. What the scripts add is comfort — a mark that follows you, a line that fills, a button that copies — and each of them is written so that its absence is invisible rather than broken. The one deliberate exception is the theme chooser, which is hidden until the inline script marks the document as script-capable: a control that could not remember a choice between two pages would be worse than no control at all.
 
 ** Working on the stylesheet
 
@@ -260,7 +305,7 @@ Run the linter before you commit:
 
 It runs stylelint with =--fix= over =static/css/*.css=, using the rules in =.stylelintrc.yml=. The rule set is strict on purpose and checks, among other things, that no property, at-rule, pseudo-class or media feature is misspelled, that no declaration block repeats a property, that no selector is duplicated, and that specificity never descends within a rule block. A failure is a real defect, so fix the cause rather than disabling the rule.
 
-The stylesheet uses a single breakpoint at 600 pixels of width for the small-screen adjustments. Prefer a token change to a new breakpoint; the site is meant to read as one design at every size.
+There are two breakpoints. Below 600 pixels the bar wraps and scrolls away with the page; above 1100 pixels the sheet and the rail share the width. Everything else is one design that stretches, which is why the sizes are written as =clamp()= and the columns as =minmax()=: prefer a token or a clamp to a third breakpoint, and expect a reader on a laptop to see the same page as a reader on a desktop, only narrower.
 
 * Client-side JavaScript
 
@@ -268,7 +313,7 @@ Four scripts ship with the site. They are plain, dependency-free JavaScript, and
 
 | Script                       | Loaded                        | What it does                                        |
 |------------------------------+-------------------------------+-----------------------------------------------------|
-| =static/js/freeworld.js=     | Every page                    | The theme chooser, and the home page's touches: the typewriter tagline, the interactive acronym, the easter egg |
+| =static/js/freeworld.js=     | Every page                    | The theme chooser, the nav's =more= menu, the reading progress line, the mark that follows the reader down the rail, the copy buttons on code blocks, the scroll reveal, and the home page's touches: the typewriter tagline, the interactive acronym, the easter egg |
 | =static/js/symbanta.js=      | Every page                    | First-party analytics: page views, heartbeats and visibility changes |
 | =static/js/guile-repl.js=    | Pages asking =#+SCRIPTS: repl= | The browser Lisp                                      |
 | =static/js/tech-radar.js=    | Pages asking =#+SCRIPTS: radar= | The radar drawing, its legend and its keyboard-accessible controls |
@@ -380,10 +425,40 @@ One consequence of the build's design is worth knowing before you test a change:
 | =maak lint-css=       | Runs stylelint with fixes over the stylesheet                                  |
 | =maak lint-elisp=     | Loads the build script in batch mode, to catch a load-time error early         |
 | =maak lint=           | Runs both linters                                                              |
+| =maak test=           | Runs the ERT test suite for the build script                                   |
+| =maak check=          | Runs every linter, then the tests                                              |
 | =maak share-card=     | Regenerates the site-wide social card from its SVG                             |
 | =maak deploy=         | Builds for production and copies the result to the deployment directory        |
 
 =maak fmt= runs =guix style= over the Scheme files and indents the Emacs Lisp files, removing tabs and trailing whitespace. Run it before committing; it is the reason the sources look uniform.
+
+=maak check= is the gate to run before pushing: it lints the stylesheet, loads the build script, and then runs the tests described below.
+
+* Tests
+
+The build is a program, and the tests treat it as one. =test/jointhefreeworld-site-test.el= is an ERT suite that loads =jointhefreeworld-site.el= itself rather than a copy of its rules, so a rule that changes shape in the build fails the suite instead of quietly disagreeing with a second copy of itself.
+
+#+begin_src sh
+  maak test
+#+end_src
+
+The suite needs no site build and writes nothing outside a temporary directory; a run takes well under a second once the Emacs packages the build installs are present. It covers:
+
+| Area            | What is checked                                                                |
+|-----------------+--------------------------------------------------------------------------------|
+| URL layout      | That each publish project answers at the address its table entry promises, including the root, =/404.html= and the two top-level policies |
+| Navigation      | That an article marks its own section rather than the whole blog, that the current entry is announced and not only coloured, and that every link is in exactly one of the bar's two groups |
+| Page furniture  | The kicker that names a section, the stamp under a title that drops whatever the page does not have, and a generated page that carries the bar, the hero, the sheet and the rail |
+| The rail        | That the rail is built from the page's own headings and anchors, that it needs three of them, and that a heading folded away in a closed disclosure is left out |
+| Text and dates  | Tag stripping, entity decoding, word-boundary truncation, and that a bare date and a timestamp sort the same way |
+| Listings        | That a category lists its own articles, that an unknown listing is empty rather than guessed, and that an entry escapes the title it is given |
+| Social cards    | The wrap-and-balance arithmetic, that no line leaves the card, and that the SVG is well-formed XML |
+| Structured data | That an article is a BlogPosting with its dates and section, that any other page is a WebPage, and that a title cannot close the script element |
+| Template        | That a generated page carries the document head, the chrome, the footer and the content, and that no placeholder survives |
+
+Because the tests read the real content as well, they also catch a repository problem that has nothing to do with code: an article with no title, or with a date the build cannot read, fails the suite rather than the build log.
+
+Nothing here replaces looking at the site. The tests prove that the pages say the right things; =maak build-and-serve= is still how you check that they look right.
 
 * Repository layout
 
@@ -402,6 +477,7 @@ One consequence of the build's design is worth knowing before you test a change:
     img/                    favicon, and the site-wide social card with its SVG source
     robots.txt sitemap.xml  crawler files
   jointhefreeworld-site.el  the build: export backend, layout, metadata, feed, entry point
+  test/                     the ERT suite for the build, run by `maak test'
   maak.scm                  the task runner
   manifest.scm channels.scm the Guix packages and the pinned channels
   batch-indent.el           the indentation helper used by the formatting task
