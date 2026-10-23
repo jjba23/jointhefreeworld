@@ -8,21 +8,19 @@
 #+DESCRIPTION: OrgWebAlchemy now renders Markdown, understands figures, named elements and real table rows, and got up to 6x faster. This is the story of the profiling that found a quadratic collapse pass and a per-character scanner, what changed, and the numbers measured before and after.
 #+KEYWORDS: Org-mode, Guile Scheme, PEG, parsing, performance, profiling, benchmarks, free software
 
-OrgWebAlchemy is a library for GNU Guile that parses Org mode documents with a Parsing Expression Grammar and renders them to HTML, Markdown, or SXML. In an [[https://jointhefreeworld.org/blog/articles/lisps/parsing-expression-grammar-lisp-org-convert-to-html/][earlier article]] I explained why I believe a PEG is the right tool for Org: the grammar describes the language, the parser produces a tree, and the renderers turn that tree into output.
+OrgWebAlchemy is a Guile library that parses Org mode with a Parsing Expression Grammar and renders it to HTML, Markdown, or SXML. I wrote [[https://jointhefreeworld.org/blog/articles/lisps/parsing-expression-grammar-lisp-org-convert-to-html/][an earlier article]] about why a PEG is the right tool for Org: the grammar describes the language, the parser builds a tree, the renderers turn that tree into output.
 
-This article is about the work that came after that, and about a question that turned out to be more interesting than I expected. How do you make such a program fast without making it wrong? I did not want a parser that is quick on the documents I happen to test and quietly different on the documents you write.
+This is the follow-up, and it turned into a harder question than I expected: how do you make a parser fast without making it wrong? I didn't want something that's quick on my test files and quietly behaves differently on yours.
 
-So I will describe the features that were added, the way I measured the work, the profile that told me where the time went, the two rounds of changes that followed, and the verification that lets me claim the language did not change. I will report the numbers I measured and I will tell you how to repeat the measurements yourself. That last part is not a courtesy. A number you cannot check is not evidence; it is advertising.
+So: the features I added, how I measured them, what the profiler said, the two rounds of fixes, and how I checked the language didn't change. Every number below comes with a way to reproduce it, because a number you can't check is advertising, not evidence.
 
 *TLDR; Here is the whole article in five sentences*:
 
 - Parsing a 58 KB Org document now takes 5.1 ms, where it used to take 32.2 ms, a factor of 6.4.
-- The same parse now allocates 3.9 MB, where it used to allocate 30.3 MB, which is 7.8 times less garbage.
+- The same parse now allocates 3.9 MB, where it used to allocate 30.3 MB, 7.8 times less garbage.
 - A document consisting of one 80 KB line went from 8.2 seconds to 0.37 milliseconds, because the old path was quadratic in the length of a line and the new one is linear.
-- The library gained a Markdown renderer, figures, named elements, cross-references, a proper table reader and mixed nested lists, and it says plainly what it still does not do.
-- None of this was guessed: there are 155 test definitions and 281 assertions, an equivalence run compared the new parser with the previous one on 70,858 inputs, and a test sweeps 391,094 positions to check the scanner's stop set.
-
-Before the numbers, a word about why the shape of the program matters as much as its speed.
+- The library gained a Markdown renderer, figures, named elements, cross-references, a proper table reader and mixed nested lists, and it says plainly what it still doesn't do.
+- None of this was guessed: there are 155 test definitions and 281 assertions, an equivalence run compared the new parser with the previous one on about 70,000 inputs, and a test sweeps about 390,000 positions to check the scanner's stop set.
 
 #+caption: One Org document, rendered by both renderers. Generated from [[file:examples/hello.org][examples/hello.org]] with [[file:examples/demo.scm][examples/demo.scm]].
 #+attr_html: :width 100%
@@ -30,28 +28,28 @@ Before the numbers, a word about why the shape of the program matters as much as
 
 * Free software, and why this is a library
 
-OrgWebAlchemy is free software, released under the GNU Lesser General Public License, version 3 or later, with this documentation under the GNU Free Documentation License. That means you may run it, study it, change it, and redistribute your changed versions. It also means the program belongs to its users, not to me.
+OrgWebAlchemy is free software under the GNU Lesser General Public License, version 3 or later, with this documentation under the GNU Free Documentation License. Run it, study it, change it, ship your changed versions.
 
-This could have been written differently. It could have been a service: you send your Org file to a server, a program you do not control turns it into HTML, and you get the result back. Such a service can be convenient, and it can even be gratis, but it leaves you helpless in the ways that matter. You cannot study it, you cannot fix it, and you cannot keep using it when the operator loses interest or changes the terms. I wrote a library instead, because a library goes into your program, on your machine, under your control.
+It could have been a service instead: you send your Org file to a server you don't control, and get HTML back. That can be convenient, and it can even be gratis, but it leaves you helpless in the ways that matter. You can't study it, can't fix it, and can't keep using it when the operator loses interest or changes the terms. A library goes into your program, on your machine, under your control.
 
-The Lesser GPL is a compromise, and I should name it as one. The GNU General Public License would keep every program that uses this code free as well, and that is the stronger guarantee for users. For libraries, the GNU Project has long accepted a weaker license so that more programs can use them, including some that are not free, and I have followed that tradition here. If you use this library in a free program, you are helping the community. If you use it in a nonfree program, I would rather you made that program free.
+The LGPL is a compromise, and I'll name it as one. The GPL would keep every program that uses this code free too, and that's the stronger guarantee for users. For libraries the GNU Project has long accepted a weaker license so that more programs can use them, including some that aren't free, and I've followed that tradition. Use it in a free program and you're helping the community; use it in a nonfree one and I'd rather you made that program free.
 
-There is a second reason the library is a library. Org mode is a language, and a language is useful in proportion to the number of programs that can read it. A parser that only Emacs can use is a parser for one program. A parser that any Guile program can call is a parser for a text editor, a static site generator, a wiki, a notebook, a mail archiver, a package's documentation build, or a program that nobody has written yet. I do not know what you will build with it, and that is the point.
+There's a second reason it's a library. Org mode is a language, and a language is worth as much as the number of programs that can read it. A parser only Emacs can use is a parser for one program. One that any Guile program can call is a parser for a text editor, a static site generator, a wiki, a notebook, a mail archiver, a package's docs build, or something nobody has written yet. I don't know what you'll build with it, and that's the point.
 
-Perhaps I should also say what this program is not. It is not Emacs, and it does not try to be. Emacs is where Org mode lives, where it is edited, and where its export machinery began. OrgWebAlchemy does not replace that; it lets other programs, written in Scheme, read the same documents. When it disagrees with Emacs about some corner of the syntax, Emacs is right and this library has a bug.
+And a word on what it isn't: it's not Emacs and doesn't try to be. Emacs is where Org lives, where it gets edited, and where its export machinery started. OrgWebAlchemy doesn't replace that, it just lets other Scheme programs read the same files. When it disagrees with Emacs about some corner of the syntax, Emacs is right and this is a bug.
 
 * What the program is now
 
 OrgWebAlchemy is still three small modules. What changed is how much of the language each one covers.
 
-| Module                     | Lines | What it owns                                                                  |
-|----------------------------+-------+-------------------------------------------------------------------------------|
-| ~(orgwebalchemy peg)~       | 1,699 | the grammar, the AST, the run scanners, link classification, name resolution  |
-| ~(orgwebalchemy html)~      |   720 | rendering to HTML and SXML, and every CSS class parameter                     |
-| ~(orgwebalchemy markdown)~  |   434 | rendering the same AST to Markdown                                            |
-| Test suite                 | 1,673 | 155 test definitions and 281 assertions, many of them table-driven            |
+| Module                     | Lines | What it owns                                                                 |
+|----------------------------+-------+------------------------------------------------------------------------------|
+| ~(orgwebalchemy peg)~      | 1,700 | the grammar, the AST, the run scanners, link classification, name resolution |
+| ~(orgwebalchemy html)~     |   720 | rendering to HTML and SXML, and every CSS class parameter                    |
+| ~(orgwebalchemy markdown)~ |   430 | rendering the same AST to Markdown                                           |
+| Test suite                 | 1,670 | 155 test definitions and 281 assertions, many of them table-driven           |
 
-The application programming interface is still small enough to hold in your head.
+The API is still small enough to hold in your head.
 
 #+begin_src scheme
 (use-modules (orgwebalchemy html)
@@ -70,17 +68,17 @@ The application programming interface is still small enough to hold in your head
 (org-ast->markdown ast)
 #+end_src
 
-Everything else in this article is about what happens between those two calls.
+The rest of this article is about what happens between those calls.
 
 * Teaching the parser more of Org
 
-"Supporting Org" is a phrase that hides a great deal of work, because Org is not a markup language with a tidy grammar. It is a set of conventions accumulated over many years of a GNU Emacs major mode, some of them deliberately informal, and each one has to be considered on its own terms. Every feature below began as a sentence in the Org manual, became a pattern in the grammar, and then became a test.
+"Supporting Org" hides a lot of work, because Org isn't a markup language with a tidy grammar. It's a pile of conventions accumulated over years of a GNU Emacs major mode, some of them deliberately informal, and each one has to be considered on its own terms. Every feature below started as a sentence in the Org manual, became a grammar pattern, then became a test.
 
 ** Links: decide once, in the parser
 
-An Org link is not a uniform resource locator in brackets. Its target says what kind of link it is. A target beginning with ~https://~ is external. ~file:photo.png~ is a file, and so is a bare ~notes.org~. ~#custom-id~ points inside the document. ~*Heading~ points at a heading. A ~::search~ suffix says where inside the target you land.
+An Org link's target says what kind of link it is. A target starting with ~https://~ is external. ~file:photo.png~ is a file, and so is a bare ~notes.org~. ~#custom-id~ points inside the document, ~*Heading~ at a heading, and a ~::search~ suffix says where inside the target you land.
 
-The old code let each renderer read the target and decide again for itself. That is exactly how two back ends drift apart. The HTML renderer grows a special case for image extensions, the Markdown renderer grows a slightly different one, and after a year of small repairs the same document has two meanings depending on which function you call. A user who notices will not know which one is correct, and will be right to distrust both.
+The old code let each renderer read the target and decide for itself, which is exactly how two back ends drift apart. HTML grows a special case for image extensions, Markdown grows a slightly different one, and after a year of small repairs the same document means two things depending on which function you call. A user who notices won't know which one is right, and will be right not to trust either.
 
 So classification moved into the parser, where it happens once.
 
@@ -97,53 +95,53 @@ So classification moved into the parser, where it happens once.
 
 Both renderers then ask the same questions and follow the same answer.
 
-| Org                            | HTML                                          | Markdown                                      |
-|--------------------------------+-----------------------------------------------+-----------------------------------------------|
-| ~[[file:photo.png][a photo]]~    | ~<img src="photo.png" alt="a photo" />~       | ~![a photo](photo.png)~                       |
-| ~[[images/diagram.svg]]~         | ~<img src="images/diagram.svg" alt="..." />~  | ~![images/diagram.svg](images/diagram.svg)~   |
-| ~[[file:notes.org][notes]]~      | ~<a href="notes.org">notes</a>~               | ~[notes](notes.org)~                          |
-| ~[[#custom-id][there]]~          | ~<a href="#custom-id">there</a>~              | ~[there](#custom-id)~                         |
-| ~[[*My Section][up]]~            | ~<a href="#my-section">up</a>~                | ~[up](#my-section)~                           |
-| ~[[https://gnu.org][GNU]]~       | ~<a href="https://gnu.org">GNU</a>~           | ~[GNU](https://gnu.org)~                      |
+| Org                           | HTML                                         | Markdown                                    |
+|-------------------------------+----------------------------------------------+---------------------------------------------|
+| ~[[file:photo.png][a photo]]~ | ~<img src="photo.png" alt="a photo" />~      | ~![a photo](photo.png)~                     |
+| ~[[images/diagram.svg]]~      | ~<img src="images/diagram.svg" alt="..." />~ | ~![images/diagram.svg](images/diagram.svg)~ |
+| ~[[file:notes.org][notes]]~   | ~<a href="notes.org">notes</a>~              | ~[notes](notes.org)~                        |
+| ~[[#custom-id][there]]~       | ~<a href="#custom-id">there</a>~             | ~[there](#custom-id)~                       |
+| ~[[*My Section][up]]~         | ~<a href="#my-section">up</a>~               | ~[up](#my-section)~                         |
+| ~[[https://gnu.org][GNU]]~    | ~<a href="https://gnu.org">GNU</a>~          | ~[GNU](https://gnu.org)~                    |
 
-Two details in that table deserve a sentence each. The ~::search~ suffix is set aside before the path is used as a file name, so ~file:notes.org::*Heading~ does not produce a broken file name. And a target such as ~C:/tmp/x.txt~ is not mistaken for a link with a scheme named ~c~, because a real scheme is written in lower case; this is a small thing, and it is the kind of small thing that decides whether a program is pleasant to use on somebody else's computer.
+Two details deserve a sentence each. The ~::search~ suffix is set aside before the path is used as a file name, so ~file:notes.org::*Heading~ doesn't produce a broken file name. And ~C:/tmp/x.txt~ isn't mistaken for a link with a scheme named ~c~, because a real scheme is lower case. Small stuff, but it's the kind of small stuff that decides whether a program is pleasant to use on somebody else's computer.
 
 ** Figures
 
-Org gives the element that follows a ~#+CAPTION:~ or a ~#+NAME:~ keyword a caption and a name. When that element is a link to an image, the three things are one object: a figure. The parser folds them together, so the renderers receive a single node instead of three neighbors that they must guess about.
+Org gives the element after a ~#+CAPTION:~ or ~#+NAME:~ keyword a caption and a name. When that element is a link to an image, the three things are one object: a figure. The parser folds them together, so renderers get a single node instead of three neighbors they have to guess about.
 
 #+begin_src scheme
 (org->html "#+NAME: fig:arch\n#+CAPTION: The architecture\n[[file:diagram.png][a diagram]]\n")
 ;; => "<figure id=\"fig:arch\"><img src=\"diagram.png\" alt=\"a diagram\" /><figcaption>The architecture</figcaption></figure>"
 #+end_src
 
-The name the figure carries is the very identifier that a ~[[fig:arch]]~ link points at, so the cross-reference cannot break. Both facts come from one place, and one place cannot disagree with itself.
+The name the figure carries is the identifier that a ~[[fig:arch]]~ link resolves to, so the cross-reference can't break. Both facts come from one place, and one place can't disagree with itself.
 
 #+begin_src scheme
 (org->html "#+NAME: fig:arch\n#+CAPTION: The arch\n[[file:a.png]]\n\nSee [[fig:arch]].\n")
 ;; => "<figure id=\"fig:arch\">...</figure><p>See <a href=\"#fig:arch\">fig:arch</a>.</p>"
 #+end_src
 
-Markdown has no ~figure~ element, so it receives the image, the caption as an emphasised line, and an explicit anchor for the cross-reference. What counts as a figure is deliberately narrow: the keywords must sit immediately before a paragraph that holds exactly one image link and nothing else. Everything else remains a keyword line. Inventing a caption for an element this parser does not caption is worse than saying nothing, because the reader of the output would never learn that something had been silently dropped.
+Markdown has no ~figure~ element, so it gets the image, the caption as an emphasised line, and an explicit anchor for the cross-reference. What counts as a figure is deliberately narrow: the keywords must sit immediately before a paragraph holding exactly one image link and nothing else. Everything else stays a keyword line. Inventing a caption for an element this parser doesn't caption is worse than saying nothing, because the reader would never learn that something got silently dropped.
 
 ** Named elements
 
-A figure is the image case of a more general rule. A ~#+NAME:~ line names the element that follows it, and any element that renders as something a link can land on can be named: a table, a source block, a quote, a list, a separator, a paragraph.
+A figure is the image case of a more general rule. A ~#+NAME:~ line names the element after it, and anything that renders as something a link can land on can be named: a table, a source block, a quote, a list, a separator, a paragraph.
 
 #+begin_src scheme
 (org->html "#+NAME: tbl:users\n| Users | 1024 |\n\nSee [[tbl:users]].\n")
 ;; => "<table id=\"tbl:users\">...</table><p>See <a href=\"#tbl:users\">tbl:users</a>.</p>"
 #+end_src
 
-HTML puts the identifier on the element itself. Markdown has no element to hang it on, so it emits an explicit anchor in front, exactly as it does for a figure. A bare target that happens to be the name of an element in the same document is resolved as a cross-reference, which is why ~[[tbl:users]]~ and ~[[notes]]~ work. A target that already says what it is, by having a scheme, a ~file:~ prefix, a leading ~#~ or ~*~, or a ~::search~ suffix, keeps the meaning it wrote.
+HTML puts the identifier on the element itself. Markdown has nothing to hang it on, so it emits an anchor in front, same as for a figure. A bare target that matches the name of an element in the same document resolves as a cross-reference, which is why ~[[tbl:users]]~ and ~[[notes]]~ work. A target that already says what it is — a scheme, a ~file:~ prefix, a leading ~#~ or ~*~, or a ~::search~ suffix — keeps the meaning it wrote.
 
-There is one deliberate asymmetry, and it is documented rather than hidden. A ~#+CAPTION:~ in front of a named table is not folded into it, because captions on tables are not rendered yet. The parser does not pretend otherwise; the line stays an ordinary keyword line where the writer put it.
+One asymmetry, documented rather than hidden: a ~#+CAPTION:~ in front of a named table isn't folded into it, because captions on tables aren't rendered yet. The line stays an ordinary keyword line where the writer put it.
 
 ** Tables, read by their bars
 
-Tables looked finished until I examined the edges. What should ~|~ on a line of its own be? What is ~| a ||~? What happens to a row that ends the input with no newline?
+Tables looked finished until I looked at the edges. What should ~|~ on a line of its own be? What is ~| a ||~? What happens to a row that ends the input with no newline?
 
-The old pattern counted separators and produced one cell for each, which meant that a row with no cells in it could raise an error, and a row that ended the input acquired a phantom empty cell from the newline it did not have. The rewrite reads a row the way Org reads it: by the bars that separate the cells, where a bar closes a row when nothing but the end of the line follows it. That single rule answers all three questions at once.
+The old pattern counted separators and made one cell for each, which meant a row with no cells could raise an error, and a row that ended the input got a phantom empty cell from the newline it didn't have. The rewrite reads a row the way Org does: by the bars that separate the cells, where a bar closes a row when nothing but the end of the line follows it. That one rule answers all three questions.
 
 - A line that is only its closing bar (~|~ on its own) is a row of *one empty cell*, not a row with no cells.
 - ~| a ||~ is a row of *two cells*, the second of them empty, rather than a paragraph.
@@ -164,15 +162,15 @@ The renderers group consecutive items of the same kind into the proper element, 
 
 ** The rest of the surface
 
-Between those features and the earlier work, the supported set is now this: headings with TODO keywords, priorities and tags; paragraphs; unordered, ordered and description lists in any mixture and at any depth; checkboxes; tables with empty cells; source, example, quote, verse, center, export and comment blocks; keywords and in-buffer settings; comments; fixed-width lines; separators; footnotes, whether references, definitions or inline; bold, italic, underline, strikethrough, code, verbatim, superscript, subscript, escaped markup and forced line breaks; links with and without descriptions, bare uniform resource locators, images, figures, named elements and heading anchors.
+Between those features and the earlier work, the supported set is now: headings with TODO keywords, priorities and tags; paragraphs; unordered, ordered and description lists in any mixture and at any depth; checkboxes; tables with empty cells; source, example, quote, verse, center, export and comment blocks; keywords and in-buffer settings; comments; fixed-width lines; separators; footnotes, whether references, definitions or inline; bold, italic, underline, strikethrough, code, verbatim, superscript, subscript, escaped markup and forced line breaks; links with and without descriptions, bare URLs, images, figures, named elements and heading anchors.
 
-That is most of what people actually write. It is not all of Org, and the manual says so in a section that lists the gaps rather than hiding them, because a library that lies about its coverage wastes the time of everyone who trusts it.
+That's most of what people actually write. Not all of Org, and the manual has a section listing the gaps instead of hiding them, because a library that lies about its coverage just wastes everyone's time.
 
 * Measuring the work
 
-Before optimizing anything I wanted a benchmark that could tell me whether a change had helped, and that could not be fooled by the change itself.
+Before optimizing anything I wanted a benchmark that could tell me whether a change helped, and that couldn't be fooled by the change itself.
 
-The benchmarks live in ~test/veritas/benchmark/scope.scm~. They are written with the same [[https://codeberg.org/jjba23/veritas][Veritas]] framework as the unit suite, and they are selected by test type so that they never slow down ~maak test~.
+The benchmarks live in ~test/veritas/benchmark/scope.scm~. They use the same [[https://codeberg.org/jjba23/veritas][Veritas]] framework as the unit suite, selected by test type so they never slow down ~maak test~.
 
 #+begin_src shell
 VERITAS_TEST_TYPE=benchmark \
@@ -180,7 +178,7 @@ guix shell -m manifest.scm -- guile -L ./src -L ./test \
   -c '((@ (veritas runner) run-tests))'
 #+end_src
 
-The suite measures five workloads and prints three tables, one for wall clock, one for allocation, and one for the collapse pass, formatted as Markdown and ready to paste into the manual. That last detail matters more than it may appear. A number that must be retyped by hand is a number that quietly stops being true.
+The suite measures five workloads and prints three tables — wall clock, allocation, and the collapse pass — formatted as Markdown, ready to paste into the manual. That last part matters: a number you have to retype by hand quietly stops being true.
 
 | Workload                               | What it exercises                                        |
 |----------------------------------------+----------------------------------------------------------|
@@ -192,38 +190,38 @@ The suite measures five workloads and prints three tables, one for wall clock, o
 
 ** Five runs, keep the fastest
 
-A single wall clock measurement on a laptop is not a measurement. It is a rumor. The suite runs each workload five times and reports the fastest run, on the theory that the other four were interrupted by something (a browser, a compiler, the collector's own cycle arriving at an inconvenient moment) and that this one was not.
+One wall clock reading on a laptop isn't a measurement, it's a rumor. The suite runs each workload five times and reports the fastest, on the theory that the other four got interrupted by a browser, a compiler, or the collector arriving at a bad moment.
 
-This is not statistical purity, and I do not present it as such. It is a lower bound on the cost of the work, measured on a machine that is also doing other things. The allocation figures are the stable half of the table and stay within a few percent; the wall clock moves by ten to twenty percent between sessions. If you repeat the measurements and get a different number, you have not found an error. You have found the noise, and you should suspect anyone who reports wall clock figures without it.
+It's not statistically pure and I won't pretend it is. It's a lower bound on the cost of the work, measured on a machine that's also doing other things. Allocation is the stable half and stays within a few percent; wall clock moves 10–20% between sessions. Repeat it and get a different number and you've found the noise, not an error. Be suspicious of anyone who reports wall clock figures without it.
 
 ** Allocation, not only time
 
-Guile's collector is good enough that one can write a parser which allocates a megabyte for every kilobyte of input and still call it fast, right up until it is embedded in a server that must serve several documents at once. So the suite measures the heap as well. The heap is collected before each workload, and what is reported is ~heap-total-allocated~: everything the workload asked for, including the garbage it dropped immediately. That measures allocation pressure, which is what triggers collections, rather than the memory that a result keeps.
+Guile's collector is good enough that you can write a parser allocating a megabyte per kilobyte of input and still call it fast, right up until it's in a server serving several documents at once. So the suite measures the heap too. The heap is collected before each workload, and what's reported is ~heap-total-allocated~: everything the workload asked for, including garbage it dropped immediately. That's allocation pressure, the thing that triggers collections, not the memory a result keeps.
 
-The last column of that table is Guile's own ~gc-time-taken~, which is collector *processor* time. Guile sums the time of its marker threads, so a single full collection of a large heap can be reported as several times its wall clock cost on a machine with many cores. Read it as an indication of how much collector work a workload causes, not as a share of the clock. I say the same thing in the benchmark's docstring, because a number that is easy to misread will be misread.
+The last column is Guile's ~gc-time-taken~, which is collector *processor* time. Guile sums its marker threads, so one full collection of a big heap can be reported as several times its wall clock cost on a many-core machine. Read it as how much collector work a workload causes, not as a share of the clock. Same note is in the benchmark's docstring, because an easy-to-misread number will get misread.
 
 ** Fragments and the collapse pass
 
 The last measurement in the suite is the one that eventually explained everything: how many string *fragments* a parse hands to the pass that merges them, and how long the merging takes.
 
-Consider a pattern written as ~(* (and (not-followed-by eol) peg-any))~, which means "consume characters until the newline". The compiled pattern produces one parse object and one string fragment for every character. A line of ~n~ characters costs ~n~ one-character substrings, ~n~ list cells, and then a merge over all of them. For a document of short lines nobody notices. For a 45 KB line it is the whole program.
+Take a pattern written as ~(* (and (not-followed-by eol) peg-any))~, meaning "consume characters until the newline". The compiled pattern produces one parse object and one string fragment per character. A line of ~n~ characters costs ~n~ one-character substrings, ~n~ list cells, and a merge over all of them. On a document of short lines nobody notices; on a 45 KB line it's the whole program.
 
-The fragment table made that visible without any profiling at all.
+The fragment table made that visible with no profiling at all.
 
 | Document                 | Fragments handed to the collapse pass | Collapse (ms) |
-|--------------------------+--------------------------------------+---------------|
-| Feature fixture (1.8 KB) |                                   82 |         0.043 |
-| README.org (58 KB)       |                                1,264 |         0.385 |
-| Plain prose (32 KB)      |                                  400 |         0.216 |
-| One 45 KB line           |                                    1 |         0.005 |
+|--------------------------+---------------------------------------+---------------|
+| Feature fixture (1.8 KB) |                                    82 |          0.04 |
+| README.org (58 KB)       |                                 1,264 |          0.39 |
+| Plain prose (32 KB)      |                                   400 |          0.22 |
+| One 45 KB line           |                                     1 |         0.005 |
 
-The last row is the interesting one. Forty-five kilobytes of text arrive as a single fragment, because a run scanner took them in one substring instead of forty-five thousand. The README, with 58,523 bytes of input, arrives as 1,264 fragments, roughly one per line of prose, instead of one per character.
+The last row is the interesting one. Forty-five kilobytes of text arrive as a single fragment, because a run scanner took them in one substring instead of forty-five thousand. The README, 58 KB of input, arrives as about 1,300 fragments — roughly one per line of prose instead of one per character.
 
 * What the profile said
 
-Veritas profiles every benchmark with Guile's ~statprof~, and that is what turned a vague impression that the parser was slow on large files into a definite statement about one procedure.
+Veritas profiles every benchmark with Guile's ~statprof~, and that's what turned a vague feeling that big files were slow into a statement about one procedure.
 
-I fed the old parser a document consisting of one 40 KB line and looked at the profile.
+I fed the old parser a document made of one 40 KB line and looked at the profile.
 
 #+begin_example
 %     cumulative   self              procedure
@@ -235,9 +233,9 @@ I fed the old parser a document consisting of one 40 KB line and looked at the p
   0.00      3.56      0.00  ice-9/peg/simplify-tree.scm:65:0:string-collapse
 #+end_example
 
-97.55 percent of the time is inside ~list?~. Not in the grammar, not in the renderers, not in any of my own code: in a single predicate, called by Guile's own tree simplifier.
+97.5% of the time is inside ~list?~. Not the grammar, not the renderers, not any of my own code: one predicate, called by Guile's own tree simplifier.
 
-This is why one profiles. My hypothesis was that the PEG engine was slow. The truth was that a helper in ~(ice-9 peg simplify-tree)~ asks ~(list? lst)~ of the rest of the list at every level of its recursion, and therefore walks the list quadratically.
+My hypothesis was that the PEG engine was slow. The truth was a helper in ~(ice-9 peg simplify-tree)~ asking ~(list? lst)~ of the rest of the list at every level of its recursion, which walks the list quadratically.
 
 Here is the relevant part of ~string-group~.
 
@@ -251,9 +249,9 @@ Here is the relevant part of ~string-group~.
             ...))))
 #+end_src
 
-For a run of ~n~ fragments this is about ~n²/2~ list steps. A line of 40,000 characters means 800 million of them, which is precisely the 1.77 seconds that the profile reports. Doubling the line quadruples the bill, and the measurements agree: 20 KB took 423 ms and 40 KB took 1,761 ms.
+For a run of ~n~ fragments that's about ~n²/2~ list steps. A line of 40,000 characters means 800 million of them, which is exactly the 1.77 seconds in the profile. Doubling the line quadruples the bill, and the measurements agree: 20 KB took about 420 ms, 40 KB about 1,760 ms.
 
-So there were two problems, and only one of them was mine. My grammar produced one fragment per character, which handed the quadratic pass an enormous run to chew on. And the collapse pass was quadratic in the length of a run, so that even a modest run cost more than it should. Repairing only the first would have left a slow path waiting for anyone who writes a long line. Repairing only the second would have left megabytes of pointless allocation. Both had to go.
+So there were two problems and only one was mine. My grammar produced one fragment per character, handing the quadratic pass an enormous run to chew on. And the collapse pass was quadratic in the length of a run, so even a modest run cost more than it should. Fix only the first and a slow path waits for anyone who writes a long line; fix only the second and you still allocate megabytes for nothing. Both had to go.
 
 * The two rounds of repair
 
@@ -271,7 +269,7 @@ The scheme alternation used to be fifteen whole-string comparisons.
                         "irc://" "ircs://"))
 #+end_src
 
-Grouping the alternatives by their first character means that a position which cannot begin a scheme fails after one comparison instead of fifteen.
+Grouping the alternatives by first character means a position that can't begin a scheme fails after one comparison instead of fifteen.
 
 #+begin_src scheme
 (define-peg-pattern url-scheme all
@@ -285,7 +283,7 @@ Grouping the alternatives by their first character means that a position which c
                         (and "i" (or "rcs://" "rc://"))))
 #+end_src
 
-The alternation of inline constructs was also in a poor order. It tried the multi-character constructs, footnotes and links and the scheme scan, before the single-character markers, so a line full of ~*bold*~ and ~/italic/~ paid for the expensive branches first. Putting the one-character markers first and the link and uniform resource locator machinery last costs nothing.
+The alternation of inline constructs was badly ordered too. It tried the multi-character constructs, footnotes, links and the scheme scan before the single-character markers, so a line full of ~*bold*~ and ~/italic/~ paid for the expensive branches first. Putting the one-character markers first and the link and URL machinery last costs nothing.
 
 #+begin_src scheme
 (define-peg-pattern inline-special body
@@ -298,13 +296,13 @@ The alternation of inline constructs was also in a poor order. It tried the mult
                         inline-raw-url))
 #+end_src
 
-I also added a hand-written class for plain characters, so that a run of ordinary text could be taken with a few range tests instead of a ~not-followed-by~ check against the whole inline grammar at every position.
+I also added a hand-written class for plain characters, so ordinary text gets taken with a few range tests instead of a ~not-followed-by~ check against the whole inline grammar at every position.
 
-The result of this round was that the inline benchmark doubled, the document benchmarks improved by about a third, and *the single-line case did not move at all*. That last fact was the useful part, because it told me that the remaining cost was not in the grammar.
+The result: the inline benchmark doubled, the document benchmarks improved by about a third, and *the single-line case didn't move at all*. That last bit was the useful part, because it said the remaining cost wasn't in the grammar.
 
 ** Second round: run scanners
 
-A compiled PEG pattern in Guile is only a procedure of ~(string length position)~ that returns ~(end . body)~ or ~#f~. Nothing prevents you from writing that procedure by hand and naming it in the grammar like any other pattern. This is the whole idea of the run scanners: find the end of a run in a single C-level scan with ~string-index~, and return one substring.
+A compiled PEG pattern in Guile is just a procedure of ~(string length position)~ returning ~(end . body)~ or ~#f~. Nothing stops you writing that procedure by hand and naming it in the grammar like any other pattern. That's the whole idea of the run scanners: find the end of the run in one C-level scan with ~string-index~ and return a single substring.
 
 #+begin_src scheme
 (define (run-end str len pos stop-chars stop?)
@@ -327,11 +325,11 @@ of STOP-CHARS at which STOP? holds, or at LEN."
 (define-peg-pattern line-content all line-text-scanner)
 #+end_src
 
-There are thirteen such scanners now, one for each construct whose body is "text up to a delimiter": a line, a table cell, a link target, a link description, a footnote body, a keyword value, the body of a source block, a description key, the body of a raw uniform resource locator.
+There are thirteen such scanners now, one for each construct whose body is "text up to a delimiter": a line, a table cell, a link target, a link description, a footnote body, a keyword value, the body of a source block, a description key, the body of a raw URL.
 
-The delicate part is the ~stop?~ predicate. For a line, every newline really does end the run. For inline text, an asterisk ends the run only if ~inline-special~ really matches there; otherwise it is an asterisk in the middle of a sentence. So the scanner stops at every candidate, asks the grammar whether something begins there, and if not, continues after that character. The scan is still one ~string-index~ call per candidate, and there is at most one candidate per markup character in a line.
+The delicate part is the ~stop?~ predicate. For a line, every newline really does end the run. For inline text, an asterisk ends the run only if ~inline-special~ really matches there; otherwise it's an asterisk in the middle of a sentence. So the scanner stops at every candidate, asks the grammar whether something begins there, and if not, continues past that character. Still one ~string-index~ call per candidate, and there's at most one candidate per markup character in a line.
 
-Thirteen scanners would be a maintenance problem if each one had its own idea of where text ends, so the character sets live in one place, each with a comment that says who stops there.
+Thirteen scanners would be a maintenance problem if each had its own idea of where text ends, so the character sets live in one place, each with a comment saying who stops there.
 
 #+begin_src scheme
 (define nl-chars (char-set #\newline #\return))
@@ -347,7 +345,7 @@ Thirteen scanners would be a maintenance problem if each one had its own idea of
 
 ** Second round, second part: a linear collapse pass
 
-The other half of the repair was to stop depending on the quadratic ~string-collapse~. The library now has its own ~collapse-tree~, which keeps the exact contract of Guile's procedure. Children are collapsed before their parent, a maximal run of adjacent strings becomes their concatenation, a list of strings does not join the run around it, and a result of one element is unwrapped. The difference is that the grouping is done in one pass with one ~reverse~.
+The other half was dropping the quadratic ~string-collapse~. The library now has its own ~collapse-tree~, keeping the exact contract of Guile's procedure: children collapsed before their parent, a maximal run of adjacent strings concatenated, a list of strings not joining the run around it, a one-element result unwrapped. The difference is that grouping happens in one pass with one ~reverse~.
 
 #+begin_src scheme
 (define (string-group-linear lst)
@@ -364,47 +362,47 @@ The other half of the repair was to stop depending on the quadratic ~string-coll
                  (cons (car nodes) (cons (reverse run) out))))))))
 #+end_src
 
-Because it is the same contract and not merely a similar one, the trees it produces are identical. That is what made it possible to prove the rewrite safe instead of hoping that it was. On its own it is a factor of 533 at 32,000 fragments.
+Same contract, not merely a similar one, so it produces identical trees. That's what let me prove the rewrite safe instead of hoping it was. On its own it's about 530× faster at 32,000 fragments.
 
 * The measurements
 
-Everything below was measured for this article, in the project's Guix shell with Guile 3.0.9, on the AMD Ryzen 5 7640U laptop on which I write, with a browser open. Each workload ran five times and the fastest run is reported. The three columns are three versions of the program: the parser before any optimization, the parser after the grammar fast paths, and the parser as it stands now.
+Everything below was measured in the project's Guix shell with Guile 3.0.9, on the Ryzen 5 7640U laptop I write on, with a browser open. Five runs per workload, fastest reported. Three columns: before any optimization, after the grammar fast paths, and now.
 
 | Workload                           | Before (µs) | Fast paths (µs) | Now (µs) | Total speed-up |
 |------------------------------------+-------------+-----------------+----------+----------------|
-| Parse the feature fixture (1.8 KB) |      788.29 |          592.40 |   319.41 |           2.5× |
-| Parse README.org (58 KB)           |   32,190.64 |       23,633.98 | 5,068.75 |           6.4× |
-| Render the fixture to HTML         |    3,475.99 |        2,362.67 | 1,837.45 |           1.9× |
-| Render the fixture to Markdown     |    3,090.13 |        2,246.86 | 1,692.56 |           1.8× |
-| Parse a 50-clause inline paragraph |    6,005.80 |        3,068.39 | 2,266.14 |           2.7× |
+| Parse the feature fixture (1.8 KB) |         790 |             590 |      320 |           2.5× |
+| Parse README.org (58 KB)           |      32,200 |          23,600 |    5,070 |           6.4× |
+| Render the fixture to HTML         |       3,480 |           2,360 |    1,840 |           1.9× |
+| Render the fixture to Markdown     |       3,090 |           2,250 |    1,690 |           1.8× |
+| Parse a 50-clause inline paragraph |       6,010 |           3,070 |    2,270 |           2.7× |
 
 The allocation table tells the same story from the other side.
 
 | Workload                             | Before (KiB/op) | Fast paths (KiB/op) | Now (KiB/op) |
 |--------------------------------------+-----------------+---------------------+--------------|
-| Parse the feature fixture            |          898.00 |              624.79 |       227.83 |
-| Parse README.org                     |       30,279.53 |           19,673.17 |     3,893.12 |
-| Render the fixture to HTML           |        3,307.93 |            2,202.45 |     1,359.83 |
-| Render the fixture to Markdown       |        3,140.23 |            2,161.90 |     1,362.17 |
-| Parse the 50-clause inline paragraph |        5,662.44 |            2,737.86 |     1,691.05 |
+| Parse the feature fixture            |             900 |                 620 |          230 |
+| Parse README.org                     |          30,300 |              19,700 |        3,890 |
+| Render the fixture to HTML           |           3,310 |               2,200 |        1,360 |
+| Render the fixture to Markdown       |           3,140 |               2,160 |        1,360 |
+| Parse the 50-clause inline paragraph |           5,660 |               2,740 |        1,690 |
 
-Parsing the 58 KB README now allocates about 68 bytes for every input byte, where it used to allocate roughly 530. That is the difference between a parse which reliably triggers a collection of its own and one which often does not.
+Parsing the 58 KB README now allocates about 68 bytes per input byte, where it used to allocate roughly 530. That's the difference between a parse that reliably triggers a collection of its own and one that often doesn't.
 
 ** One long line: from eight seconds to a third of a millisecond
 
-The clearest way to see the quadratic is to hold everything else constant and grow a single line. Here is a document whose entire content is one line of plain prose.
+The clearest way to see the quadratic is to hold everything else constant and grow a single line. Here's a document whose entire content is one line of plain prose.
 
 | Line length | Before (ms) | Fast paths (ms) | Now (ms) |
 |-------------+-------------+-----------------+----------|
-| 5 KB        |       26.40 |           26.25 |     0.07 |
-| 10 KB       |      108.61 |          104.98 |     0.08 |
-| 20 KB       |      423.39 |          408.36 |     0.12 |
-| 40 KB       |    1,760.96 |        1,634.68 |     0.22 |
-| 80 KB       |    8,178.63 |        7,114.17 |     0.37 |
+| 5 KB        |        26.4 |            26.3 |     0.07 |
+| 10 KB       |         109 |             105 |     0.08 |
+| 20 KB       |         423 |             408 |     0.12 |
+| 40 KB       |       1,760 |           1,630 |     0.22 |
+| 80 KB       |       8,180 |           7,110 |     0.37 |
 
-Read the first two columns and note that each doubling of the line multiplies the time by four. That is a quadratic curve, and the grammar fast paths barely dented it, because per-character fragments and a quadratic merge are exactly what fast paths in the grammar do not touch. Now read the third column: each doubling roughly doubles the time, because ~string-index~ runs at memory speed and there is one fragment per line instead of one per character.
+Read the first two columns: each doubling of the line multiplies the time by four. That's a quadratic curve, and the grammar fast paths barely dented it, because per-character fragments and a quadratic merge are exactly what grammar fast paths don't touch. Now the third column: each doubling roughly doubles the time, because ~string-index~ runs at memory speed and there's one fragment per line instead of one per character.
 
-At 80 KB the difference is about a factor of 22,000. That is the extreme end of the curve. The realistic headline is the factor of 6.4 on the README, where the time is spread across a whole document instead of concentrated in one pathological line.
+At 80 KB that's a factor of about 22,000. That's the extreme end of the curve, though. The realistic headline is the 6.4× on the README, where the time is spread over a whole document instead of concentrated in one pathological line.
 
 ** The collapse pass on its own
 
@@ -412,17 +410,17 @@ To separate the two effects I benchmarked Guile's ~string-collapse~ against the 
 
 | Fragments | ~string-collapse~ (ms) | ~collapse-tree~ (ms) |
 |-----------+------------------------+----------------------|
-|     2,000 |                   3.77 |                0.094 |
-|     4,000 |                  15.35 |                0.174 |
-|     8,000 |                  58.60 |                0.371 |
-|    16,000 |                 240.70 |                0.718 |
-|    32,000 |               1,001.63 |                1.880 |
+|     2,000 |                    3.8 |                 0.09 |
+|     4,000 |                   15.4 |                 0.17 |
+|     8,000 |                   58.6 |                 0.37 |
+|    16,000 |                    241 |                 0.72 |
+|    32,000 |                  1,000 |                  1.9 |
 
-Four times per doubling on the left, two on the right. That is the entire story of the profile in one table, and it is the kind of experiment I would like to see more often in discussions of performance: isolate the suspected cause, remove everything else, and let the numbers speak.
+Four times per doubling on the left, two on the right. That's the whole profile in one table.
 
 ** What the profile looks like now
 
-The purpose of a rewrite is that the profile stops pointing at one thing. Parsing the README two hundred times now gives this.
+The point of a rewrite is that the profile stops pointing at one thing. Parsing the README two hundred times now gives this.
 
 #+begin_example
 %     cumulative   self              procedure
@@ -436,74 +434,74 @@ The purpose of a rewrite is that the profile stops pointing at one thing. Parsin
   2.26      1.86      0.06  collapse-tree
 #+end_example
 
-The largest single entry is now the collector itself, at about a quarter of the time. Then comes the string work that building a tree implies, then the collapse pass at a few percent, then a long tail of small pattern procedures. There is no 97 percent any more, and that is what success looks like here: further gains must now come from allocating less, not from discovering another bottleneck.
+The biggest entry now is the collector itself, about a quarter of the time. Then the string work that building a tree implies, then the collapse pass at a few percent, then a long tail of small pattern procedures. No more 97%. Further gains have to come from allocating less, not from finding another bottleneck.
 
 * Why you can believe the measurements
 
-Speed is easy to claim and easy to fake, because one can make any parser faster by making it wrong. Since the work touched the scanners that decide where text ends, I needed a way to show that the language had not changed.
+Speed is easy to claim and easy to fake, because you can make any parser faster by making it wrong. Since the work touched the scanners that decide where text ends, I needed a way to show the language hadn't changed.
 
 ** Equivalence with the previous parser
 
-The test suites cannot express "the parser still does what it did before", because they encode what it ought to do. So there is a separate check that loads the old parser and the new one into a single process, the old one under renamed modules extracted with ~git show REV:src/orgwebalchemy/peg.scm~ and its neighbours, and compares six results for every input: the document syntax tree, the inline syntax tree, and the HTML and Markdown that each renderer writes.
+The test suites can't express "the parser still does what it did before", because they encode what it ought to do. So there's a separate check that loads the old parser and the new one into one process — the old one under renamed modules pulled out with ~git show REV:src/orgwebalchemy/peg.scm~ and its neighbors — and compares six results for every input: the document tree, the inline tree, and the HTML and Markdown each renderer writes.
 
-The scanner rewrite was checked this way on 70,858 inputs. Those included every pair of interesting characters (printable ASCII, tab, newline, carriage return, the other control characters and two multi-byte characters) as documents, as inline text, and inside a link, a footnote and a description list; the README; the test fixtures; hand-written edge cases such as markup at every position, tables with empty cells and lines without a newline; and 5,800 randomly generated documents.
+The scanner rewrite was checked this way on about 70,000 inputs. Those included every pair of interesting characters (printable ASCII, tab, newline, carriage return, the other control characters and two multi-byte characters) as documents, as inline text, and inside a link, a footnote and a description list; the README; the test fixtures; hand-written edge cases such as markup at every position, tables with empty cells and lines without a newline; and about 6,000 randomly generated documents.
 
-The empty-value change was checked again on 38,412 of those inputs. It reported 232 differences, every one of them the change I had made on purpose. More interestingly, it found no input at all that raised an error on the new side, where the old code raised on 21 of them, each a table row with no cells in it. That is how a bug fix should appear: as a difference you can name and explain.
+The empty-value change was checked again on about 38,000 of those inputs. It reported about 230 differences, every one of them a change I'd made on purpose. More interesting: it found no input that raised an error on the new side, where the old code raised on 21 of them, each a table row with no cells in it. That's how a bug fix should show up — as a difference you can name and explain.
 
-The table change was checked on 38,250 inputs and found 16 that parse differently. Every one of the 16 was a table line whose last bar is followed by nothing but the end of the line, which is precisely the thing that changed.
+The table change was checked on about 38,000 inputs and found 16 that parse differently. All 16 were table lines whose last bar is followed by nothing but the end of the line, which is exactly what changed.
 
 ** The stop set
 
-A run scanner may leap over a character only if it is sure that the character cannot begin a construct. If that set is wrong by one character, the scanner silently swallows the beginning of a link or a footnote, and no equivalence test against the previous parser would catch it, because the previous parser had no scanners at all.
+A run scanner may leap over a character only if it's sure that character can't begin a construct. Get that set wrong by one character and the scanner silently swallows the beginning of a link or a footnote, and no equivalence test against the previous parser would catch it, because the previous parser had no scanners at all.
 
-Therefore ~inline-stop-chars~ is checked against the grammar itself: at every position where ~inline-special~ really matches, the character that begins it must be in the set. Sweeping 391,094 positions of the README, the fixtures, every pair of bytes and some random markup found 6,024 constructs and no gap.
+So ~inline-stop-chars~ is checked against the grammar itself: at every position where ~inline-special~ really matches, the character that begins it must be in the set. Sweeping about 390,000 positions of the README, the fixtures, every pair of bytes and some random markup found about 6,000 constructs and no gap.
 
 ** Three deliberate differences
 
-Three differences came out of these runs, and all three are now pinned down by tests.
+Three differences came out of these runs, all now pinned down by tests.
 
-1. A run of two or more ~#+CAPTION:~ or ~#+NAME:~ lines in front of an element that is not a figure used to come out of the folding step in reverse order. It now keeps document order, which is what the documentation always claimed, and which is what a reader expects of anything called a sequence.
-2. The text of something empty is now the empty string, instead of the bare tag symbol that an empty match leaves behind. This is what keeps an empty cell in its column, keeps a source block without a language rendering as a source block, and keeps an empty keyword, comment, fixed-width line, footnote or block in the document instead of making it vanish from the document altogether.
+1. A run of two or more ~#+CAPTION:~ or ~#+NAME:~ lines before an element that isn't a figure used to come out of the folding step in reverse order. It now keeps document order, which is what the docs always claimed and what a reader expects of anything called a sequence.
+2. The text of something empty is now the empty string, instead of the bare tag symbol an empty match leaves behind. This is what keeps an empty cell in its column, keeps a source block without a language rendering as a source block, and keeps an empty keyword, comment, fixed-width line, footnote or block in the document instead of letting it vanish.
 3. A table row is read by its bars, as described above.
 
-Everything else about the parser produces identical output, and the new naming feature is an addition to the language, so it is covered by tests rather than by equivalence.
+Everything else produces identical output, and the naming feature is an addition to the language, so it's covered by tests rather than equivalence.
 
 ** A trap when adding tests
 
-One trap is worth recording, because I lost an afternoon to it. Veritas collects the assertions of a test by filtering the body for procedures, so assertions wrapped in a ~let~, a ~when~ or a ~parameterize~ are silently reduced to the last one. Keep every assertion at the top level of the test body, and call a helper when you need a parameterization. The tests for the class parameters show the pattern.
+One trap is worth recording, because I lost an afternoon to it. Veritas collects a test's assertions by filtering the body for procedures, so assertions wrapped in a ~let~, a ~when~ or a ~parameterize~ are silently reduced to the last one. Keep every assertion at the top level of the test body, and call a helper when you need a parameterization. The tests for the class parameters show the pattern.
 
 * What is still expensive
 
-Honesty is part of the design, so here is what these numbers do not say.
+Honesty is part of the design, so here's what these numbers don't say.
 
-- *Inline parsing is the most expensive stage per byte.* A 50-clause paragraph of inline markup, 4.1 KB, takes 2.3 ms, which is about 1.8 MB per second, against 11.5 MB per second for a whole document of prose. Some of that is inherent in a grammar where every position must try the alternatives. All the same, it is the number I would attack next.
+- *Inline parsing is the most expensive stage per byte.* A 50-clause paragraph of inline markup, 4.1 KB, takes 2.3 ms, about 1.8 MB per second, against 11 MB per second for a whole document of prose. Some of that is inherent in a grammar where every position has to try the alternatives. Still, it's the number I'd attack next.
 - *Allocation is still dominated by the tree.* About 68 bytes of allocation per input byte, and a quarter of the parse is the collector. A cheaper node representation, or flattening parts of the tree while parsing, would buy real time.
-- *There is no incremental path.* A changed document is parsed from the beginning. For an editor or a live preview, that is the feature that would matter most, and it is the one I most want to write.
-- *The benchmarks measure this implementation on its own.* They do not compare it with other Org implementations, and they do not measure the incremental case. Both would be welcome additions.
+- *There's no incremental path.* A changed document is parsed from the beginning. For an editor or a live preview, that's the feature that would matter most, and the one I most want to write.
+- *The benchmarks measure this implementation on its own.* They don't compare it with other Org implementations, and they don't measure the incremental case. Both would be welcome additions.
 
 * What Org has that this library does not
 
-The manual has a section called "Current limitations", and it exists so that this article need not pretend. The known gaps are these.
+The manual has a "Current limitations" section so this article doesn't have to pretend. The known gaps:
 
-- *Captions on elements that are not figures.* A ~#+CAPTION:~ before a table, a source block or a block quote is still an ordinary keyword line, because those captions are not rendered yet. Figures are the exception, and they are done.
-- *Bare superscripts and subscripts.* Only the braced forms, ~x^{2}~ and ~H_{2}O~, are recognized. The bare forms, such as ~x^2~, are not, and this is a deliberate choice rather than an oversight, since the bare form cannot always be distinguished from ordinary text.
-- *Babel, the agenda, the export dispatcher.* OrgWebAlchemy is a library, not an Emacs package. It parses Org; it does not execute code blocks, and it does not integrate with Org's own export machinery.
-- *The long tail.* Org contains years of conventions: ~#+ATTR_HTML~, ~#+RESULTS~, column width cookies, archived subtrees, custom TODO sequences read from the document, and more. Each one requires a decision about whether to parse it, render it or leave it as text, and this library prefers to leave it as text rather than guess.
+- *Captions on non-figures.* A ~#+CAPTION:~ before a table, a source block or a block quote is still an ordinary keyword line, because those captions aren't rendered yet. Figures are the exception, and they're done.
+- *Bare superscripts and subscripts.* Only the braced forms, ~x^{2}~ and ~H_{2}O~, are recognized. Bare forms like ~x^2~ are not, deliberately, since they can't always be told apart from ordinary text.
+- *Babel, the agenda, the export dispatcher.* OrgWebAlchemy is a library, not an Emacs package. It parses Org; it doesn't execute code blocks and doesn't hook into Org's export machinery.
+- *The long tail.* Org has years of conventions in it: ~#+ATTR_HTML~, ~#+RESULTS~, column width cookies, archived subtrees, custom TODO sequences read from the document, and more. Each one needs a decision about whether to parse it, render it or leave it as text, and this library would rather leave it as text than guess.
 
-If one of these gets in your way, that is exactly the kind of report that is worth sending, ideally with the smallest Org snippet that shows the problem.
+If one of these gets in your way, that's exactly the kind of report worth sending, ideally with the smallest Org snippet that shows the problem.
 
 * Distribution
 
-A library that nobody can install is a library that nobody uses, so the packaging has caught up as well.
+A library nobody can install is a library nobody uses, so packaging caught up too.
 
 - *Guix.* A self-contained package recipe is in the manual, pinned at version 1.2.1 with its hash, and the project is on its way into Guix itself as ~guile-orgwebalchemy~.
-- *Nix.* A ~flake.nix~ and a ~default.nix~ build the working tree with the same derivation as the nixpkgs package, so that a change which breaks one breaks the other for the same reason. They cover x86_64 and aarch64, on GNU/Linux and on Darwin.
-- *Continuous integration.* Pushes to ~trunk~ trigger a Woodpecker pipeline that submits the ~maak-test~ and ~maak-deploy~ tasks to [[https://byggsteg.jointhefreeworld.org][Byggsteg]], my own continuous integration system, which is itself written in Scheme.
-- *Documentation.* The manual is the library's README, and the application programming interface reference is generated from the docstrings in the source with ~guile-documenta~: [[https://jointhefreeworld.org/api-docs/orgwebalchemy/API.html][the OrgWebAlchemy API documentation]].
+- *Nix.* A ~flake.nix~ and a ~default.nix~ build the working tree with the same derivation as the nixpkgs package, so a change that breaks one breaks the other for the same reason. They cover x86_64 and aarch64, on GNU/Linux and on Darwin.
+- *Continuous integration.* Pushes to ~trunk~ trigger a Woodpecker pipeline that submits the ~maak-test~ and ~maak-deploy~ tasks to [[https://byggsteg.jointhefreeworld.org][Byggsteg]], my own CI system, itself written in Scheme.
+- *Documentation.* The manual is the library's README, and the API reference is generated from the docstrings in the source with ~guile-documenta~: [[https://jointhefreeworld.org/api-docs/orgwebalchemy/API.html][the OrgWebAlchemy API documentation]].
 
 * Reproduce the measurements
 
-Every number in this article comes from the repository and from commands that the manual documents. If you want to check my work, here is how.
+Every number here comes from the repository and from commands the manual documents. If you want to check my work:
 
 #+begin_src shell
 git clone https://codeberg.org/jjba23/orgwebalchemy.git
@@ -519,15 +517,15 @@ guix shell -m manifest.scm -- guile -L ./src -L ./test \
   -c '((@ (veritas runner) run-tests))'
 #+end_src
 
-Run them on your own machine. If your numbers are very different from mine, I would like to know, because a parser that is fast on one laptop and slow on another is a parser with a mistaken assumption hidden inside it.
+Run them yourself. If your numbers differ a lot from mine, I'd like to know — a parser that's fast on one laptop and slow on another has a wrong assumption hidden in it.
 
 * What I take from this
 
-The lesson I keep relearning with this project is that correctness and speed are not two phases of the work. Writing the scanners forced me to state, precisely, which characters can begin a construct, and that list is now a specification which a test sweeps across 391,094 positions. The equivalence harness that showed the rewrite to be safe is also the reason I dared attempt the rewrite at all.
+The lesson I keep relearning here is that correctness and speed aren't two phases of the work. Writing the scanners forced me to state exactly which characters can begin a construct, and that list is now a specification a test sweeps about 390,000 positions. The equivalence harness that showed the rewrite was safe is also the reason I dared attempt it.
 
-And there is a larger point, which is the reason I care about a parser for Org in the first place. Org mode is one of the good ideas of our time: a plain text format that people can read and write without special software, that keeps its meaning when the programs change, and that grew inside a free editor where its users could extend it. Every program that can read Org mode makes that format a little more useful, and every format that more programs can read is a format that people can trust with years of their writing.
+Which brings me to the larger point, the reason I care about parsing Org at all. Org mode is one of the good ideas of our time: plain text people can read and write without special software, meaning that survives the programs, grown inside a free editor where its users could extend it. Every program that can read Org makes the format a bit more useful, and a format more programs can read is one people can trust with years of their writing.
 
-A library such as this one is a small contribution to that. It lets a program written in Scheme read what you wrote in Org, render it as HTML that a browser can display without running anyone else's code, or as Markdown that other tools understand, and it does so under a free license, on your machine, with source you can read. The web has no shortage of ways to take a document away from its author. I would like to add one more way to give it back.
+This library is a small contribution to that. It lets a Scheme program read what you wrote in Org, render it as HTML a browser can show without running anyone else's code, or as Markdown other tools understand — under a free license, on your machine, with source you can read. The web has no shortage of ways to take a document away from its author. I'd like to add one more way to give it back.
 
 * Links
 
@@ -539,4 +537,4 @@ A library such as this one is a small contribution to that. It lets a program wr
 - Veritas, the test framework: https://codeberg.org/jjba23/veritas
 - Programs that use it: [[https://codeberg.org/jjba23/lucidplan][LucidPlan]] and [[https://codeberg.org/jjba23/wikimusic][WikiMusic]]
 
-If you build something with OrgWebAlchemy, send a link. It is always good to see where the library travels. And if you find this work worth supporting, you can [[https://bmc.link/jjbigorra][buy me a cup of coffee ☕]] so that I can keep going with plenty of motivation.
+If you build something with OrgWebAlchemy, send a link — it's always good to see where the library travels. And if this is worth supporting, you can [[https://bmc.link/jjbigorra][buy me a cup of coffee ☕]] so I can keep at it.
