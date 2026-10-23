@@ -26,7 +26,7 @@ Before the numbers, a word about why the shape of the program matters as much as
 
 #+caption: One Org document, rendered by both renderers. Generated from [[file:examples/hello.org][examples/hello.org]] with [[file:examples/demo.scm][examples/demo.scm]].
 #+attr_html: :width 100%
-[[file:assets/orgwebalchemy-demo.gif]]
+[[https://codeberg.org/jjba23/orgwebalchemy/media/branch/trunk/assets/orgwebalchemy-demo.gif]]
 
 * Free software, and why this is a library
 
