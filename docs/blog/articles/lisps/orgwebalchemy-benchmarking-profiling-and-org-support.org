@@ -22,9 +22,9 @@ So: the features I added, how I measured them, what the profiler said, the two r
 - The library gained a Markdown renderer, figures, named elements, cross-references, a proper table reader and mixed nested lists, and it says plainly what it still doesn't do.
 - None of this was guessed: there are 155 test definitions and 281 assertions, an equivalence run compared the new parser with the previous one on about 70,000 inputs, and a test sweeps about 390,000 positions to check the scanner's stop set.
 
-#+caption: One Org document, rendered by both renderers. Generated from [[file:examples/hello.org][examples/hello.org]] with [[file:examples/demo.scm][examples/demo.scm]].
-#+attr_html: :width 100%
-[[https://codeberg.org/jjba23/orgwebalchemy/media/branch/trunk/assets/orgwebalchemy-demo.gif]]
+#+begin_export html
+<img alt="One Org document, rendered by both renderers. " src="https://codeberg.org/jjba23/orgwebalchemy/media/branch/trunk/assets/orgwebalchemy-demo.gif">
+#+end_export
 
 * Free software, and why this is a library
 
