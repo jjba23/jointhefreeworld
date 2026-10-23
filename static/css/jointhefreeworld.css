@@ -2279,6 +2279,15 @@ html[data-js="on"] .jfw-radar-nojs {
   outline-offset: 2px;
 }
 
+/* The landing spot for the footer's "back to the top" link. An empty box
+   held at the document origin: out of flow, so it adds no height to the
+   page, and not sticky, so the browser has somewhere to scroll to. */
+.jfw-top-anchor {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 /* freeworld.js wraps a code block in `.jfw-code' so that the copy button
    can be pinned to the block's own corner. The wrapper borrows the block's
    measure, so the button lines up with the code rather than with the page. */

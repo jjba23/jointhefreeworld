@@ -344,7 +344,7 @@ behind a disclosure that opens with a real click because it is a real
     ;; body: a bare node would be spliced apart into its own tag and
     ;; attributes.
     (list
-     `(header (@ (class "site-header") (id "top"))
+     `(header (@ (class "site-header"))
               (div (@ (class "toolbelt"))
                    (a (@ (class "site-mark") (href "/"))
                       (span (@ (class "site-mark-glyph") (aria-hidden "true")) "λ")
@@ -1613,6 +1613,12 @@ WebPage anywhere else — and closes with a breadcrumb trail."
                                            (script (@ (type "application/ld+json"))
                                                    "__JSON_LD_PLACEHOLDER__"))
               (body
+               ;; The target of the footer's "back to the top" link. It
+               ;; cannot be the header, because a sticky bar is always in
+               ;; view and the browser then has nowhere to scroll to. This
+               ;; anchor sits at the document origin and is out of flow, so
+               ;; it takes no space on the page.
+               (div (@ (class "jfw-top-anchor") (id "top") (aria-hidden "true")) "")
                ;; The two pieces of chrome the reader meets first. The skip
                ;; link is a real link, so it works with scripting off, and it
                ;; is the first thing Tab reaches. The progress line is drawn
