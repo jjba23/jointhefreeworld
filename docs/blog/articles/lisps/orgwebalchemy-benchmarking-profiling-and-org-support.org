@@ -14,7 +14,7 @@ This article is about the work that came after that, and about a question that t
 
 So I will describe the features that were added, the way I measured the work, the profile that told me where the time went, the two rounds of changes that followed, and the verification that lets me claim the language did not change. I will report the numbers I measured and I will tell you how to repeat the measurements yourself. That last part is not a courtesy. A number you cannot check is not evidence; it is advertising.
 
-Here is the whole article in five sentences:
+*TLDR; Here is the whole article in five sentences*:
 
 - Parsing a 58 KB Org document now takes 5.1 ms, where it used to take 32.2 ms, a factor of 6.4.
 - The same parse now allocates 3.9 MB, where it used to allocate 30.3 MB, which is 7.8 times less garbage.
@@ -23,6 +23,10 @@ Here is the whole article in five sentences:
 - None of this was guessed: there are 155 test definitions and 281 assertions, an equivalence run compared the new parser with the previous one on 70,858 inputs, and a test sweeps 391,094 positions to check the scanner's stop set.
 
 Before the numbers, a word about why the shape of the program matters as much as its speed.
+
+#+caption: One Org document, rendered by both renderers. Generated from [[file:examples/hello.org][examples/hello.org]] with [[file:examples/demo.scm][examples/demo.scm]].
+#+attr_html: :width 100%
+[[file:assets/orgwebalchemy-demo.gif]]
 
 * Free software, and why this is a library
 
