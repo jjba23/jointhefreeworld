@@ -47,35 +47,40 @@
   "Build the project."
   (delete-file-recursively ".org-cache")
   (remkdir-p "./public")
-  ($ (list (format #f "CI=~a"
-                   (if ci? "true" "false"))
-           ;; "LC_ALL=en_US.UTF8"
-           "guix time-machine --channels=channels.scm --"
-           "shell -m manifest.scm --"
-           "emacs -Q --batch -l ./jointhefreeworld-site.el"
-           "--funcall jfw/publish")
-     #:verbose? #t)
-  ($ '("cp -Rfv ./static ./public/static"))
-  ($ '("cp -Rfv ./static/robots.txt ./public/robots.txt"))
-  ($ '("cp -Rfv ./static/sitemap.xml ./public/sitemap.xml")))
+  ;; CI goes through `#:env' rather than as a `CI=... ' prefix: `env' sets it
+  ;; for the pinned shell itself, which is what makes it reach emacs inside it.
+  (time-machine-manifest-shell
+   (list "emacs" "-Q" "--batch" "-l" "./jointhefreeworld-site.el"
+         "--funcall" "jfw/publish")
+   #:env (list (~ "CI=~a" (if ci? "true" "false")))
+   #:verbose? #t)
+  (cp "./static" "./public/static")
+  (cp "./static/robots.txt" "./public/robots.txt")
+  (cp "./static/sitemap.xml" "./public/sitemap.xml"))
 
 (define (fmt)
   "Format project source code files."
-  ($ '("find . -maxdepth 8 -name '*.scm'" "-type f -exec guix style -f {} \\;")
-     #:verbose? #t)
-  ($ (list "find ~+ -maxdepth 8 -name '*.el'"
-           "-type f -exec emacs -Q --batch {} "
-           (~ "--eval '~s'" emacs-lisp-indent-cmd) "\\;")
-     #:verbose? #t))
+  (run (list "find" "." "-maxdepth" "8" "-name" "*.scm" "-type" "f"
+             "-exec" "guix" "style" "-f" "{}" ";")
+       #:verbose? #t)
+  ;; The elisp pass works on absolute paths, which is what `find ~+' used to
+  ;; ask the shell for; the indenting form reaches emacs as one word.
+  (run (list "find" (getcwd) "-maxdepth" "8" "-name" "*.el" "-type" "f"
+             "-exec" "emacs" "-Q" "--batch" "{}"
+             "--eval" (~ "~s" emacs-lisp-indent-cmd) ";")
+       #:verbose? #t))
 
 (define (kill-server)
   "Kill any running HTTP server in the same port."
-  ($ (list (~ "fuser -k ~a/tcp || true" http-port))))
+  ;; Nothing listens on a fresh machine, so a `fuser' that finds nothing is
+  ;; not a failure of the task.
+  (run (list "fuser" "-k" (~ "~a/tcp" http-port))
+       #:allow-failure? #t))
 
 (define (serve)
   "Run HTTP server serving the rendered production result of running."
   (kill-server)
-  ($ (list (~ "darkhttpd ./public --port ~a" http-port))))
+  (run (list "darkhttpd" "./public" "--port" (~ "~a" http-port))))
 
 (define (build-and-serve)
   (build #:ci? #f)
@@ -85,14 +90,14 @@
   "Hot-reloading developer's setup."
   (time-machine-manifest-shell (list "watchexec"
                                      "--clear"
-                                     (~ "--exts ~a"
-                                        (string-join (map symbol->string
-                                                      hot-reload-file-types)
-                                                     ","))
+                                     "--exts" (string-join
+                                               (map symbol->string
+                                                    hot-reload-file-types)
+                                               ",")
                                      "--on-busy-update=restart"
-                                     "--shell bash"
-                                     "--watch . --"
-                                     "maak build-and-serve")))
+                                     "--shell" "bash"
+                                     "--watch" "."
+                                     "--" "maak" "build-and-serve")))
 
 (define (hr)
   "Alias to hot-reloading."
@@ -108,7 +113,9 @@
 
 (define (lint-css)
   "Lint and fix the CSS sources."
-  ($ '("stylelint --fix strict --config .stylelintrc.yml" "static/css/*.css")))
+  (run (list "stylelint" "--fix" "strict" "--config" ".stylelintrc.yml"
+             "static/css/*.css")
+       #:expand? #t))
 
 (define (lint-elisp)
   "Load the build script in batch mode to catch load-time errors."
@@ -150,10 +157,13 @@
   ;; fetch, so the two are kept in step by regenerating rather than editing.
   ;; Both tools come from Guix: `guix shell inkscape pngquant -- maak
   ;; share-card`.
-  ($ '("inkscape --export-type=png --export-width=1200 --export-height=630"
-       "--export-filename=/tmp/jfw-share-default.png static/img/share-default.svg"))
-  ($ '("pngquant --quality=70-95 --speed 1 --strip --force"
-       "--output static/img/share-default.png /tmp/jfw-share-default.png")))
+  (run (list "inkscape" "--export-type=png"
+             "--export-width=1200" "--export-height=630"
+             "--export-filename=/tmp/jfw-share-default.png"
+             "static/img/share-default.svg"))
+  (run (list "pngquant" "--quality=70-95" "--speed" "1" "--strip" "--force"
+             "--output" "static/img/share-default.png"
+             "/tmp/jfw-share-default.png")))
 
 (define (deploy)
   "Deploy the project."
@@ -166,5 +176,4 @@
   ;; the directory goes the same way as the pages: a card for a deleted
   ;; article must not survive its article.
   (delete-file-recursively (~ "~a/og" deploy-dir))
-  ($ (list "cp -rfv public/*"
-           (~ "~a/" deploy-dir))))
+  (cp "public/*" (~ "~a/" deploy-dir) #:expand? #t))
