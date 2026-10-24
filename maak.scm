@@ -104,7 +104,7 @@
 
 (define (default)
   "Default task to be run, list available tasks."
-  ($ '("maak --list")))
+  (list-tasks))
 
 (define (lint-css)
   "Lint and fix the CSS sources."
