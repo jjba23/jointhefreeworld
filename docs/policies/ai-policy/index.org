@@ -30,9 +30,7 @@ Contributors must maintain a deep, comprehensive understanding of the task at ha
 Do not submit AI-generated code that you do not fully understand or cannot personally debug and support.
 
 ** Autonomous Agents
-We require a human in the loop for all contributions. The use of autonomous AI agents to automatically generate and submit pull requests to this project is strictly prohibited.
-
-Pull requests found to be in violation of this rule will be closed, potentially without notice.
+We require a human in the loop for all contributions.
 
 * Communication and Community Interaction
 

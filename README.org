@@ -575,7 +575,7 @@ Our core principle is simple: *AI should assist human creativity and problem-sol
 
 Tools such as large language models and interactive chatbots can be useful for reviewing, refactoring small functions, or acting as a sounding board, but they should be used in moderation.
 
-We require a human in the loop for all contributions. The use of autonomous AI agents to generate and submit pull requests to this project is strictly prohibited.
+We require a human in the loop for all contributions.
 
 * Code of conduct
 
