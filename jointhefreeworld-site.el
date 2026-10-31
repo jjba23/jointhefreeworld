@@ -242,7 +242,7 @@ during the build instead of silently doing nothing."
     ("/documentation/" . "Docs")
     ("/code-of-conduct/" . "Code of Conduct")
     ("/ai-policy/" . "AI Policy")
-    ("https://codeberg.org/jjba23" . "Codeberg")
+    ("https://github.com/jjba23" . "GitHub")
     ("https://www.linkedin.com/in/josepjba/" . "LinkedIn"))
   "The site navigation, in order: a site-relative path or an absolute URL,
 paired with its label.")
