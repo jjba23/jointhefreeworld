@@ -126,4 +126,4 @@ The "What You See Is What You Get" (WYSIWYG) Approach: I recommend MarkText (des
 
 The "Two-Pane" or "Live Preview" Approach: Ghostwriter (desktop app), Dillinger (web based), StackEdit (web based).
 
-The "Note-Taking" Approach: Obisidan (desktop app), Joplin (desktop app)
+The "Note-Taking" Approach: Obisidian (desktop app), Joplin (desktop app)
