@@ -132,9 +132,9 @@ the site default."
   "Base URL of the self-hosted font files referenced by the stylesheet.")
 
 (defconst jfw/critical-fonts
-  '("LSANS.woff"                   ; Lucida Sans regular, used for body copy
-    "LSANSD.woff"                  ; Lucida Sans demi-bold, used for links
-    "LSANSI.woff")                 ; Lucida Sans italic, used above the fold
+  '("work-sans-normal-latin.woff2"  ; Work Sans, the face body copy is set in
+    "work-sans-italic-latin.woff2"  ; and its italic, used above the fold
+    "juliamono-normal-latin.woff2") ; JuliaMono, for a command or a file name
   "Self-hosted font files used on first paint, preloaded to avoid a late swap.")
 
 (defun jfw/font-preloads ()
@@ -145,17 +145,10 @@ stylesheet's own request and the font would be fetched twice."
   (mapcar (lambda (file)
             `(link (@ (rel "preload")
                       (as "font")
-                      (type "font/woff")
+                      (type "font/woff2")
                       (crossorigin "anonymous")
                       (href ,(concat jfw/font-assets-url "/" file)))))
           jfw/critical-fonts))
-
-(defconst jfw/google-fonts-url
-  (concat "https://fonts.googleapis.com/css2?"
-          "family=Intel+One+Mono:ital,wght@0,300..700;1,300..700&"
-          "family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&"
-          "display=swap")
-  "Google Fonts stylesheet for the fallback and code typefaces.")
 
 (defconst jfw/theme-storage-key "jfw-theme"
   "localStorage key shared by the inline theme script and the toggle.
@@ -1586,12 +1579,10 @@ WebPage anywhere else — and closes with a breadcrumb trail."
                                            (meta (@ (name "twitter:description") (content ,description-text)))
                                            (meta (@ (name "twitter:image") (content ,share-card)))
                                            (meta (@ (name "twitter:image:alt") (content ,share-alt)))
-                                           ;; Open the font connections early, then preload the faces that
-                                           ;; are visible on first paint.
-                                           (link (@ (rel "preconnect") (href "https://fonts.googleapis.com")))
-                                           (link (@ (rel "preconnect")
-                                                    (href "https://fonts.gstatic.com")
-                                                    (crossorigin "anonymous")))
+                                           ;; The faces the stylesheet declares are this site's own
+                                           ;; files on its own asset host, so there is nothing to
+                                           ;; preconnect to: the preloads below are the whole of what
+                                           ;; the head asks for before the first paint.
                                            ,@(jfw/font-preloads)
                                            (link (@ (rel "icon") (type "image/png") (href "/static/img/favicon.png")))
                                            (link (@ (rel "alternate")
@@ -1605,7 +1596,6 @@ WebPage anywhere else — and closes with a breadcrumb trail."
                                            (script (@ (src ,(concat jfw/site-url "/static/js/freeworld.js")) (defer "true")) "")
                                            (link (@ (rel "stylesheet")
                                                     (href ,(concat jfw/site-url "/static/css/jointhefreeworld.css"))))
-                                           (link (@ (rel "stylesheet") (href ,jfw/google-fonts-url)))
                                            ,@(when head-extra head-extra)
                                            (title "__RAW_TITLE_PLACEHOLDER__ - jointhefreeworld")
                                            ;; The structured data travels through a placeholder because

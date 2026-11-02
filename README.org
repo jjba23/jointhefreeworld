@@ -507,7 +507,7 @@ The export is forced, so every page is written again on every build rather than 
 
 ** The wrong typeface is showing
 
-The body and heading families are Lucida Sans first and Plus Jakarta Sans second, so the site keeps its character when Lucida is absent. The Lucida files are proprietary, are not distributed with this repository, and are served from =/static-assets/fonts= on the site's own host; the fallback is fetched from a font service. If the Lucida files are missing you get the fallback face, and nothing else breaks.
+The body and heading family is Work Sans, the code family is JuliaMono and the serif is Source Serif 4: three libre families (SIL Open Font License 1.1) declared by the stylesheet and served from =/static-assets/fonts= on the site's own host, never from a font service. If a file is missing, the browser reaches past it to the system's own sans, serif and monospace faces, and nothing else breaks; check that the file names in =static/css/jointhefreeworld.css= are the ones the asset host actually serves.
 
 ** A page asked for a script and nothing happened
 
@@ -561,11 +561,23 @@ The articles, blog posts, documentation and examples shipped with jointhefreewor
 
 https://www.gnu.org/licenses/fdl-1.3.html
 
-** On Lucida fonts
+** On fonts
 
-Lucida fonts are proprietary typefaces originally developed by Bigelow & Holmes. They remain a long-time favourite for many people and are very legible in many situations and on many kinds of hardware and software. While they ship pre-installed on many operating systems, they remain proprietary fonts.
+The site is set in three libre families, all under the SIL Open Font License
+1.1, all served from this site's own asset host and none of them asked of a
+font service:
 
-You may use these font files under the principles of fair use, or for local development and non-commercial purposes, provided it is not for profit and no proper commercial licence is required by law. Users and contributors are solely responsible for ensuring that their usage complies with the applicable software licensing terms and intellectual property rights.
+- *Work Sans* for the body and the headings;
+- *Source Serif 4* for the serif runs, and for a long article that asks for a
+  reading face;
+- *JuliaMono* for code, a file name and a command.
+
+Work Sans and Source Serif 4 are variable fonts, so one file per style carries
+the whole weight axis; JuliaMono ships static weights, hence the pair split at
+600. The files live under =/static-assets/fonts= on the site's own host and are
+declared by =static/css/jointhefreeworld.css=; the head preloads the two faces
+visible on first paint, since there is no third-party host to open a connection
+to. No proprietary font is served, bundled or named anywhere in this project.
 
 * AI policy
 

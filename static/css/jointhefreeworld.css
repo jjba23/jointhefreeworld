@@ -20,83 +20,64 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
    jfw/generate-page) rather than with an in-CSS import, so the browser
    discovers them in the initial HTML scan and fetches them in parallel. */
 
-/* --- Lucida Sans --- */
+/* --- Work Sans, Source Serif 4 and JuliaMono --- */
+
+/* The three families the site is set in, all libre (SIL Open Font License 1.1)
+   and all served from this site's own asset host, so a page asks no font
+   service for its type:
+     Work Sans      the body and the headings
+     Source Serif 4 the serif runs, and the family a long article may name
+     JuliaMono      code, a file name, a command
+
+   Work Sans and Source Serif 4 are variable fonts, so one file per style
+   carries the whole weight axis; JuliaMono ships static weights, hence the
+   pair split at 600. */
 
 @font-face {
-  font-family: 'Lucida Sans';
+  font-family: 'Work Sans';
   font-style: normal;
-  font-weight: 400;
-  src: url('https://jointhefreeworld.org/static-assets/fonts/LSANS.woff') format('woff');
+  font-weight: 100 900;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/work-sans-normal-latin.woff2') format('woff2');
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Lucida Sans';
+  font-family: 'Work Sans';
   font-style: italic;
-  font-weight: 400;
-  src: url('https://jointhefreeworld.org/static-assets/fonts/LSANSI.woff') format('woff');
+  font-weight: 100 900;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/work-sans-italic-latin.woff2') format('woff2');
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Lucida Sans';
+  font-family: 'Source Serif 4';
   font-style: normal;
-  font-weight: 600;
-  src: url('https://jointhefreeworld.org/static-assets/fonts/LSANSD.woff') format('woff');
+  font-weight: 200 900;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/source-serif-4-normal-latin.woff2') format('woff2');
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Lucida Sans';
+  font-family: 'Source Serif 4';
   font-style: italic;
-  font-weight: 600;
-  src: url('https://jointhefreeworld.org/static-assets/fonts/LSANSDI.woff') format('woff');
+  font-weight: 200 900;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/source-serif-4-italic-latin.woff2') format('woff2');
   font-display: swap;
 }
 
-
-/* --- Lucida Sans Typewriter --- */
-
 @font-face {
-  font-family: 'Lucida Sans Typewriter';
+  font-family: 'JuliaMono';
   font-style: normal;
-  font-weight: 400;
-  src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPE.woff') format('woff');
+  font-weight: 300 500;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/juliamono-normal-latin.woff2') format('woff2');
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Lucida Sans Typewriter';
-  font-style: oblique;
-  font-weight: 400;
-  src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPEO.woff') format('woff');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Lucida Sans Typewriter';
+  font-family: 'JuliaMono';
   font-style: normal;
-  font-weight: 700;
-  src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPEB.woff') format('woff');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Lucida Sans Typewriter';
-  font-style: oblique;
-  font-weight: 700;
-  src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPEBO.woff') format('woff');
-  font-display: swap;
-}
-
-
-/* --- Lucida Sans Unicode --- */
-
-@font-face {
-  font-family: 'Lucida Sans Unicode';
-  font-style: normal;
-  font-weight: 400;
-  src: url('https://jointhefreeworld.org/static-assets/fonts/l_10646.woff') format('woff');
+  font-weight: 600 900;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/juliamono-bold-latin.woff2') format('woff2');
   font-display: swap;
 }
 
@@ -178,9 +159,10 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
   --color-secondary: #a4522f;
 
   /* Font Families */
-  --font-family-body: "Lucida Sans", "Plus Jakarta Sans", sans-serif;
-  --font-family-code: "Intel One Mono", monospace;
-  --font-family-header: "Lucida Sans", "Plus Jakarta Sans", sans-serif;
+  --font-family-body: "Work Sans", sans-serif;
+  --font-family-code: "JuliaMono", monospace;
+  --font-family-header: "Work Sans", sans-serif;
+  --font-family-serif: "Source Serif 4", serif;
 
   /* Font Weights */
   --font-weight-light: 100;
