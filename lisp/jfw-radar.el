@@ -547,6 +547,23 @@ touches another still read as printed over it."
                           positions))))
     (nreverse positions)))
 
+(defun jfw/radar--label-right-p (x width)
+  "Return non-nil when a name WIDTH units wide should start to the right of X.
+A name is written away from the centre by default, which is what keeps it
+clear of the blips in the middle.  Near an edge that default would run the
+name off the canvas, so it is written towards the centre instead: a name
+that is read is worth more than a name that is busy, and a name cut in half
+by the edge of the picture is worth neither."
+  (let* ((inset 6)
+         (outwards-right (>= x jfw/radar-center))
+        (fits-right (<= (+ x 14 width inset) jfw/radar-size))
+        (fits-left (>= (- x 14 width inset) 0)))
+    (cond ((and outwards-right fits-right) t)
+          ((and (not outwards-right) fits-left) nil)
+          (fits-right t)
+          (fits-left nil)
+          (t t))))
+
 (defun jfw/radar--declutter (rings bands layers blips)
   "Decide which blip names fit on the picture, and mark them.
 A name that would land on one already kept steps aside; it is still in
@@ -572,11 +589,11 @@ for first."
                                         (< (plist-get ra :index) (plist-get rb :index)))))))
       (let* ((x (plist-get blip :x))
              (y (plist-get blip :y))
-             (left (>= x jfw/radar-center))
              (text (jfw/radar--shorten (plist-get blip :label) 30))
              (width (* (length text) 7.6))
-             (box (jfw/radar--text-box (+ x (if left 14 -14)) (+ y 4)
-                                       width 15 left 2)))
+             (right (jfw/radar--label-right-p x width))
+             (box (jfw/radar--text-box (+ x (if right 14 -14)) (+ y 4)
+                                       width 15 right 2)))
         (unless (cl-some (lambda (other) (jfw/radar--boxes-overlap-p box other))
                          taken)
           (plist-put blip :label-p t)
@@ -603,7 +620,8 @@ for first."
   "Return BLIP as an SVG group: a hit target, a dot and a name."
   (let* ((x (plist-get blip :x))
          (y (plist-get blip :y))
-         (left (>= x jfw/radar-center))
+         (text (jfw/radar--shorten (plist-get blip :label) 30))
+         (right (jfw/radar--label-right-p x (* (length text) 7.6)))
          (dot-x (jfw/radar--number x))
          (dot-y (jfw/radar--number y))
          (ring-slug (plist-get (plist-get blip :ring) :slug))
@@ -638,9 +656,9 @@ for first."
      (format (concat "<text x=\"%s\" y=\"%s\" class=\"jfw-radar-blip-label%s\""
                      " text-anchor=\"%s\" dx=\"%s\" dy=\"4\">%s</text>")
              dot-x dot-y (if (plist-get blip :label-p) "" " is-cramped")
-             (if left "start" "end")
-             (if left "14" "-14")
-             (jfw/escape-html (jfw/radar--shorten (plist-get blip :label) 30)))
+             (if right "start" "end")
+             (if right "14" "-14")
+             (jfw/escape-html text))
      "</a>")))
 
 (defun jfw/radar--svg (rings bands layers blips)
@@ -742,9 +760,9 @@ string, so a stray block cannot break the build."
        "<p class=\"jfw-radar-panel-title\">Rings</p>"
        (jfw/radar--legend "ring" rings)
        "<p class=\"jfw-radar-panel-title\">Layers</p>"
-       (jfw/radar--legend "layer" layers)
-       "<p class=\"jfw-radar-hint\">Each blip links to the entry it stands for;"
-       " the full catalogue is below, under the rings it belongs to.</p>"
+       (jfw/radar--legend "layer" layers)        "<p class=\"jfw-radar-hint\">Each blip links to the entry it stands for;"
+        " the full catalogue is below, under the rings it belongs to."
+        " On a narrow screen the drawing is wider than the page, so it pans.</p>"
        "</div></div>"))))
 
 (provide 'jfw-radar)

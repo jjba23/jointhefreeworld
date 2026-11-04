@@ -1056,17 +1056,63 @@ blockquote {
 }
 
 /* On a phone the bar would be a large part of the screen if it were pinned,
-   and it has to wrap anyway, so it scrolls away and keeps the frosted look.
-   The nav takes a row of its own instead of squeezing the wordmark. */
+   so it scrolls away and keeps the frosted look. It keeps two rows and no
+   more: the wordmark, the menu and the theme chooser on the first, the
+   places on the second. The wordmark is the thing that yields width — a
+   name that ends in an ellipsis still says whose site this is, while a
+   control pushed onto a third row says only that the bar ran out of room.
+   The row of places stays on one line and scrolls sideways in the unlikely
+   case a longer label ever needs the room, because a wrapped menu leaves
+   its last link looking orphaned. */
 @media only screen and (max-width: 600px) {
   .site-header {
     position: static;
+    margin-bottom: var(--spacing-lg);
     background: var(--color-background-medium);
+  }
+
+  .site-mark {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: var(--text-sm);
+    letter-spacing: 0;
+  }
+
+  .site-mark-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .nav-more,
+  .theme-toggle {
+    flex: none;
+  }
+
+  .theme-toggle {
+    gap: 0;
   }
 
   .toolbelt > .nav-primary {
     order: 3;
     width: 100%;
+    flex-wrap: nowrap;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .toolbelt > .nav-primary::-webkit-scrollbar {
+    display: none;
+  }
+
+  .toolbelt > .nav-primary .nav-link {
+    padding: 0.3em 0.45em;
+    font-size: var(--text-2xs);
+  }
+
+  .nav-more-panel {
+    max-width: calc(100vw - 2rem);
   }
 
   .article-rail {
@@ -1743,6 +1789,37 @@ html[data-js="on"] .jfw-radar-nojs {
   overflow: visible;
 }
 
+/* A phone is narrower than the drawing's names: at full width a label would
+   be five pixels tall. The canvas keeps a width at which the names can be
+   read and pans sideways instead, so nothing is shrunk into illegibility
+   and the legend below stays in one column. */
+@media only screen and (max-width: 600px) {
+  .jfw-radar-canvas {
+    min-width: 0;
+    overflow-x: auto;
+    padding-bottom: var(--spacing-xs);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    /* The picture is wider than the screen, so it ends at a soft edge
+       rather than a cut: the cut reads as "there is more to the right",
+       where a hard one reads as a page that broke. */
+    -webkit-mask-image: linear-gradient(to right, #000 88%, transparent 100%);
+    mask-image: linear-gradient(to right, #000 88%, transparent 100%);
+  }
+
+  .jfw-radar-svg {
+    min-width: 50rem;
+  }
+
+  /* Code is the one place where a smaller size buys the reader something:
+     a line that fits needs no sideways scrolling, and monospace at this
+     size is still larger than the comments it is read against. */
+  pre {
+    padding: var(--spacing-sm);
+    font-size: var(--text-2xs);
+  }
+}
+
 /* Opposite wedges share a tint so the four sectors read apart even where a
    blip sits close to a boundary. The tint is the rule colour rather than a
    surface: a surface is white in the light theme and near-black in the dark
@@ -2157,12 +2234,10 @@ html[data-js="on"] .jfw-radar-nojs {
     display: none;
   }
 
-  /* A name on the picture is read on its own at this size, one at a time,
-     so it can afford to be legible. */
-  .jfw-radar-blip-label {
-    font-size: 34px;
-    stroke-width: 9;
-  }
+  /* The names keep the size the build placed them at: their boxes were
+     settled against those metrics, so a larger face here would overlap its
+     neighbours and run past the canvas. Legibility comes from the canvas
+     below, which keeps a width the names can be read at. */
 }
 
 /* ------------------------------------------------------------------- */

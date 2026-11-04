@@ -245,14 +245,20 @@
                     if (!entry.isIntersecting) return;
                     const element = /** @type {HTMLElement} */ (entry.target);
                     // Elements entering together are staggered, so a page
-                    // does not arrive as one flat wall of fading text.
-                    element.style.setProperty("--jfw-reveal-delay", `${Math.min(shown, 4) * 55}ms`);
+                    // does not arrive as one flat wall of fading text, but
+                    // only just: a reader should never wait for the page.
+                    element.style.setProperty("--jfw-reveal-delay", `${Math.min(shown, 3) * 40}ms`);
                     shown += 1;
                     element.classList.add("is-visible");
                     revealed += 1;
                     observer.unobserve(element);
                 });
-            }, { rootMargin: "0px 0px -8% 0px", threshold: 0.05 });
+                // The frame reaches a fifth of the window below the fold, so
+                // a block begins to arrive while it is still just out of
+                // sight and is already there when the eye reaches it. A
+                // negative margin would do the opposite and make the page
+                // feel like it is catching up with the reader.
+            }, { rootMargin: "0px 0px 20% 0px", threshold: 0 });
 
             blocks.forEach((element) => {
                 element.classList.add("jfw-reveal");
