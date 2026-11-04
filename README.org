@@ -7,6 +7,9 @@
 
 [[https://jointhefreeworld.org/ggg/dist/emacs-lisp.svg]]  [[https://jointhefreeworld.org/ggg/dist/maak.svg]]  [[https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg]]  [[https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg]]  [[https://jointhefreeworld.org/ggg/dist/jointhefreeworld-org.svg]]
 
+#+attr_html: :width 160 :alt jointhefreeworld logo
+[[file:logo.svg]]
+
 This repository is my personal homepage, blog, and the /join the free world/ movement web-site. It is also the program that builds and publishes them.
 
 Visit the result at [[https://jointhefreeworld.org][jointhefreeworld.org]].
