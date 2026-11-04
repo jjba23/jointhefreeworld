@@ -567,8 +567,11 @@ as symbols, which is how an alist is parsed."
 (ert-deftest jfw-test/page-scripts-loads-what-the-page-asked-for ()
   "A page downloads the scripts it names, and nothing it does not."
   (should (= (length (jfw/page-scripts (list :scripts "repl"))) 1))
-  (should (= (length (jfw/page-scripts (list :scripts "repl, radar"))) 2))
-  (should (= (length (jfw/page-scripts (list :scripts "repl radar"))) 2))
+  (should (= (length (jfw/page-scripts (list :scripts "repl repl"))) 2))
+  (should (= (length (jfw/page-scripts (list :scripts "repl, repl"))) 2))
+  ;; The radar is drawn by the build, so asking for it as a script names a
+  ;; script that does not exist and is dropped like any other typo.
+  (should-not (jfw/page-scripts (list :scripts "radar")))
   (should-not (jfw/page-scripts (list :scripts "")))
   (should-not (jfw/page-scripts nil))
   ;; An unknown name is dropped rather than guessed at.
@@ -725,11 +728,11 @@ pixels tall, so the shape of this one element is worth a test of its own."
 ;;; The tech radar's source of truth
 ;;; ---------------------------------------------------------------------
 
-;; `tech-radar.js' draws the radar from the article rather than from a list
-;; of its own, so the article's outline *is* the radar's data. These tests
-;; state the contract the script reads it by: the rings are the sections, in
-;; the order they are written, and the layers are the sub-headings inside
-;; them. Nothing below repeats a count or a technology list — those are the
+;; The build draws the radar from the article rather than from a list of its
+;; own, so the article's outline *is* the radar's data. These tests state the
+;; contract the drawing reads it by: the rings are the sections, in the order
+;; they are written, and the layers are the sub-headings inside them.
+;; Nothing below repeats a count or a technology list — those are the
 ;; article's to change — only the shape the drawing depends on.
 
 (defconst jfw-test/radar-file
@@ -807,6 +810,315 @@ reviews while a human decides belongs in Trial, not in Adopt."
       (should (string-match-p "deepseek\\.com" text))
       ;; Marked as what it is in this revision, not quietly folded in.
       (should (string-match-p "(new)" text)))))
+
+
+;;; ---------------------------------------------------------------------
+;;; The tech radar, now drawn at build time
+;;; ---------------------------------------------------------------------
+;; The radar used to be a browser script reading the finished page.  It is
+;; drawn by the build now, from the same Org source, so what used to need a
+;; browser is stated here as ordinary answers from ordinary functions.
+
+(defconst jfw-test/radar-source
+  (expand-file-name "docs/blog/articles/development/tech-radar.org" jfw-test/root)
+  "The article that describes the radar.")
+
+(defun jfw-test/radar ()
+  "Return the radar described by the article under test."
+  (or (jfw/radar-data jfw-test/radar-source)
+      (error "the radar article describes no radar")))
+
+(defun jfw-test/drawn-radar ()
+  "Return the radar article's blips after the drawing has placed them."
+  (let* ((data (jfw-test/radar))
+         (rings (plist-get data :rings))
+         (placed (jfw/radar--place data)))
+    (jfw/radar--declutter rings (jfw/radar--bands rings)
+                          (plist-get data :layers) placed)))
+
+(ert-deftest jfw-test/radar-reads-its-rings-in-drawing-order ()
+  "The article writes the rings in the order the picture draws them."
+  (should (equal (mapcar (lambda (ring) (plist-get ring :slug))
+                         (plist-get (jfw-test/radar) :rings))
+                 jfw/radar-ring-order))
+  (dolist (ring (plist-get (jfw-test/radar) :rings))
+    (should (plist-get ring :label))
+    (should (plist-get ring :anchor))
+    (should (>= (plist-get ring :count) 0))))
+
+(ert-deftest jfw-test/radar-reads-every-layer-once ()
+  "A layer is one wedge however many rings mention it."
+  (let* ((data (jfw-test/radar))
+         (layers (plist-get data :layers))
+         (slugs (mapcar (lambda (layer) (plist-get layer :slug)) layers)))
+    (should layers)
+    (should (= (length slugs) (length (delete-dups (copy-sequence slugs)))))
+    (cl-loop for layer in layers for index from 0
+             do (should (= (plist-get layer :index) index)))))
+
+(ert-deftest jfw-test/radar-reads-blips-and-their-movements ()
+  "A blip is a name, a home and a link; its movement is metadata."
+  (let ((blips (plist-get (jfw-test/radar) :blips)))
+    (should (> (length blips) 20))
+    (dolist (blip blips)
+      (should (plist-get blip :label))
+      (should (plist-get blip :ring))
+      (should (plist-get blip :layer))
+      (should (plist-get blip :anchor))
+      ;; The movement marker is stripped from the name, not left in it.
+      (should-not (string-match-p "[(]new" (plist-get blip :label))))
+    ;; The article marks DeepSeek as new; the picture knows that too.
+    (let ((deepseek (cl-find-if (lambda (blip)
+                                  (string-match-p "DeepSeek" (plist-get blip :label)))
+                                blips)))
+      (should deepseek)
+      (should (equal (plist-get deepseek :movement) "new since the last revision")))))
+
+(ert-deftest jfw-test/radar-bands-tile-the-radius-without-gaps ()
+  "The bands start at the middle and end exactly on the outer radius."
+  (let* ((rings (plist-get (jfw-test/radar) :rings))
+         (bands (jfw/radar--bands rings)))
+    (should (= (length bands) (length rings)))
+    (should (< (abs (car (car bands))) 0.001))
+    (should (< (abs (- (cdr (car (last bands))) jfw/radar-outer-radius)) 0.001))
+    (cl-loop for (inner . outer) in bands
+             do (should (< inner outer)))
+    (cl-loop for (a . b) in bands
+             for (c . d) in (cdr bands)
+             do (should (< (abs (- b c)) 0.001)))))
+
+(ert-deftest jfw-test/radar-settles-every-blip-inside-its-own-ring ()
+  "A dot never wanders out of the band that says how much it is trusted."
+  (let* ((data (jfw-test/radar))
+         (rings (plist-get data :rings))
+         (bands (jfw/radar--bands rings))
+         (blips (jfw-test/drawn-radar)))
+    (dolist (blip blips)
+      (let* ((band (nth (plist-get (plist-get blip :ring) :index) bands))
+             (dx (- (plist-get blip :x) jfw/radar-center))
+             (dy (- jfw/radar-center (plist-get blip :y)))
+             (radius (sqrt (+ (* dx dx) (* dy dy)))))
+        (should (>= radius (- (car band) 0.5)))
+        (should (<= radius (+ (cdr band) 0.5)))))))
+
+(ert-deftest jfw-test/radar-is-well-formed-svg ()
+  "The drawing is XML, and a browser is entitled to refuse anything else."
+  (skip-unless (fboundp 'libxml-parse-xml-region))
+  (let* ((data (jfw-test/radar))
+         (rings (plist-get data :rings))
+         (svg (jfw/radar--svg rings (jfw/radar--bands rings)
+                              (plist-get data :layers) (jfw-test/drawn-radar))))
+    (should (string-prefix-p "<svg" svg))
+    (should (string-match-p "viewBox=\"0 0 1000 1000\"" svg))
+    (should (string-match-p "jfw-radar-wedge" svg))
+    (should (string-match-p "jfw-radar-blip" svg))
+    ;; Every blip is a link to an entry, not a dead dot.
+    (should (string-match-p "href=\"#adopt-languages\"" svg))
+    (with-temp-buffer
+      (insert svg)
+      (should (libxml-parse-xml-region (point-min) (point-max))))))
+
+(ert-deftest jfw-test/radar-html-carries-a-legend-that-links ()
+  "The picture comes with the counts, each a link to the entries."
+  (let ((html (jfw/radar-html (list :input-file jfw-test/radar-source))))
+    (should (string-match-p "class=\"jfw-radar\"" html))
+    (should (string-match-p "jfw-radar-svg" html))
+    (should (string-match-p "jfw-radar-legend-ring" html))
+    (should (string-match-p "jfw-radar-legend-layer" html))
+    (should (string-match-p ">Adopt<" html))
+    (should (string-match-p "href=\"#adopt\"" html))))
+
+(ert-deftest jfw-test/radar-special-block-draws-the-drawing ()
+  "A page asks for the radar with a block, and the build writes it there."
+  (let* ((block (org-element-create 'special-block (list :type "radar")))
+         (html (jfw/org-html-special-block
+                block nil (list :input-file jfw-test/radar-source))))
+    (should (string-match-p "jfw-radar-svg" html)))
+  ;; A page that describes no radar gets nothing rather than an error.
+  (let ((block (org-element-create 'special-block (list :type "radar"))))
+    (should (equal (jfw/org-html-special-block
+                    block nil (list :input-file (expand-file-name "docs/home/index.org"
+                                                                  jfw-test/root)))
+                   ""))))
+
+(ert-deftest jfw-test/radar-draws-every-name-and-hides-only-the-crowded ()
+  "A name the picture had no room for is marked rather than dropped, so a
+reader can still ask for it by pointing at its blip."
+  (let* ((data (jfw-test/radar))
+         (rings (plist-get data :rings))
+         (svg (jfw/radar--svg rings (jfw/radar--bands rings)
+                              (plist-get data :layers) (jfw-test/drawn-radar))))
+    ;; Every entry's name is in the drawing, whether or not it had room.
+    (dolist (blip (plist-get data :blips))
+      (should (string-match-p
+               (regexp-quote (jfw/escape-html
+                              (jfw/radar--shorten (plist-get blip :label) 30)))
+               svg)))
+    ;; Some had room at rest, and some are marked as held back.
+    (should (string-match-p "class=\"jfw-radar-blip-label\"" svg))
+    (should (string-match-p "jfw-radar-blip-label is-cramped" svg))))
+
+(ert-deftest jfw-test/radar-needs-no-script ()
+  "The radar is part of the page now, so no page downloads a script for it."
+  (should-not (assoc "radar" jfw/page-script-alist))
+  (should-not (jfw/page-scripts (list :scripts "radar"))))
+
+;;; ---------------------------------------------------------------------
+;;; Reading the articles together
+;;; ---------------------------------------------------------------------
+
+(defun jfw-test/article (slug category keywords date title)
+  "Return a catalogue entry shaped like the ones the build collects."
+  (list :url (format "/blog/articles/%s/%s/" category slug)
+        :title title :category category :keywords keywords
+        :date-key (string-to-number date)))
+
+(ert-deftest jfw-test/article-keywords-are-read-from-the-source ()
+  "The keywords an article declares are the ones the index shows."
+  (let ((file (make-temp-file "jfw-keywords" nil ".org")))
+    (unwind-protect
+        (progn
+          (with-temp-file file
+            (insert "#+title: A post\n#+keywords: Emacs, GNU Guix , Lisp\n"))
+          (should (equal (jfw/article-keyword-list file)
+                         '("Emacs" "GNU Guix" "Lisp")))
+          ;; A post that declares none answers with none, not with ("").
+          (with-temp-file file (insert "#+title: Another post\n"))
+          (should-not (jfw/article-keyword-list file)))
+      (delete-file file))))
+
+(ert-deftest jfw-test/related-articles-share-keywords-before-category ()
+  "A shared keyword weighs more than a shared category, and an article
+with neither in common is not offered."
+  (let* ((jfw/blog-articles-cache
+          (list (jfw-test/article "dev" "dev" '("Emacs" "Lisp") "20250101" "A")
+                (jfw-test/article "b" "dev" '("Lisp") "20240101" "B")
+                (jfw-test/article "c" "go" '("Emacs" "Guix") "20240201" "C")
+                (jfw-test/article "d" "go" '("Haskell") "20240301" "D")))
+         (related (jfw/article-related (car jfw/blog-articles-cache))))
+    (should (equal (mapcar (lambda (article) (plist-get article :title)) related)
+                   '("B" "C")))
+    ;; D shares nothing but its category with C, and nothing at all with A.
+    (should (equal (mapcar (lambda (article) (plist-get article :title))
+                           (jfw/article-related (nth 3 jfw/blog-articles-cache)))
+                   '("C")))
+    (should-not (member "D" (mapcar (lambda (article) (plist-get article :title))
+                                    related)))))
+
+(ert-deftest jfw-test/article-neighbours-are-the-articles-around-it ()
+  "The catalogue runs newest first, and the links say which is which."
+  (let* ((jfw/blog-articles-cache
+          (list (jfw-test/article "a" "dev" nil "20250301" "A")
+                (jfw-test/article "b" "dev" nil "20250201" "B")
+                (jfw-test/article "c" "dev" nil "20250101" "C")))
+         (middle (nth 1 jfw/blog-articles-cache))
+         (neighbours (jfw/article-neighbours middle)))
+    (should (equal (plist-get (car neighbours) :title) "A"))
+    (should (equal (plist-get (cdr neighbours) :title) "C"))
+    ;; The ends of the list have only one neighbour each.
+    (should-not (car (jfw/article-neighbours (car jfw/blog-articles-cache))))
+    (should-not (cdr (jfw/article-neighbours (nth 2 jfw/blog-articles-cache))))))
+
+(ert-deftest jfw-test/article-chrome-is-only-for-articles ()
+  "A page that is not an article gets no neighbours and no related reading."
+  (let ((jfw/blog-articles-cache
+         (list (jfw-test/article "a" "dev" '("Emacs") "20250301" "A")
+               (jfw-test/article "b" "dev" '("Emacs") "20250201" "B"))))
+    (should-not (jfw/article-chrome-html "/blog/"))
+    (should-not (jfw/article-chrome-html "/blog/articles/dev/missing/"))
+    ;; An article with neighbours or related reading carries them; one with
+    ;; neither answers with nothing rather than an empty string.
+    (should (string-match-p "jfw-article-neighbours"
+                            (jfw/article-chrome-html "/blog/articles/dev/a/")))
+    (let ((jfw/blog-articles-cache
+           (list (jfw-test/article "a" "dev" '("Emacs") "20250301" "A"))))
+      (should-not (jfw/article-chrome-html "/blog/articles/dev/a/")))))
+
+(ert-deftest jfw-test/archive-groups-articles-by-year ()
+  "Years run newest first and an undated article is still listed."
+  (let ((groups (jfw/archive-groups
+                 (list (jfw-test/article "a" "dev" nil "20250301" "A")
+                       (jfw-test/article "b" "dev" nil "20240101" "B")
+                       (list :url "/blog/articles/dev/c/" :title "C"
+                             :category "dev" :date-key nil)))))
+    (should (equal (mapcar #'car groups) '("2025" "2024" "Undated")))
+    (should (= (length (cdr (nth 2 groups))) 1))))
+
+(ert-deftest jfw-test/archive-html-links-every-article ()
+  "The archive is built from the catalogue, so it cannot forget an article."
+  (let ((jfw/blog-articles-cache
+         (list (jfw-test/article "a" "dev" nil "20250301" "A")
+               (jfw-test/article "b" "lisps" nil "20240101" "B"))))
+    (let ((html (jfw/blog-archive-html)))
+      (should (string-match-p "<h2 id=\"2025\">2025</h2>" html))
+      (should (string-match-p "href=\"/blog/articles/dev/a/\"" html))
+      (should (string-match-p "href=\"/blog/articles/lisps/b/\"" html))
+      (should (string-match-p ">Lisps<" html)))))
+
+(ert-deftest jfw-test/keyword-index-counts-and-orders-the-words ()
+  "The most used keyword comes first, and each one knows its articles."
+  (let ((index (jfw/keyword-index
+                (list (jfw-test/article "a" "dev" '("Emacs" "Lisp") "20250301" "A")
+                      (jfw-test/article "b" "dev" '("emacs") "20250201" "B")))))
+    (should (equal (car (car index)) "Emacs"))
+    (should (= (length (cdr (car index))) 2))
+    (should (equal (mapcar (lambda (entry) (downcase (car entry))) index)
+                   '("emacs" "lisp")))))
+
+(ert-deftest jfw-test/keyword-index-page-links-its-sections ()
+  "Every chip in the cloud lands on the section that lists the articles."
+  (let ((jfw/blog-articles-cache
+         (list (jfw-test/article "a" "dev" '("GNU Guix") "20250301" "A"))))
+    (let ((html (jfw/blog-keyword-index-html)))
+      (should (string-match-p "href=\"#gnu-guix\"" html))
+      (should (string-match-p "<h2 id=\"gnu-guix\">GNU Guix</h2>" html))
+      (should (string-match-p "jfw-keyword-count" html))
+      (should (string-match-p "href=\"/blog/articles/dev/a/\"" html)))))
+
+(ert-deftest jfw-test/listing-archive-and-keywords-are-listings-the-build-knows ()
+  "A page asks for the archive or the index the same way it asks for a
+category, and the build answers with the listing rather than with nothing."
+  (let ((jfw/blog-articles-cache
+         (list (jfw-test/article "a" "dev" '("Emacs") "20250301" "A"))))
+    (should (string-match-p "jfw-archive" (jfw/listing-html "archive" "/blog/archive/")))
+    (should (string-match-p "jfw-keyword-cloud" (jfw/listing-html "keywords" "/blog/keywords/")))
+    ;; An unknown listing is still reported rather than guessed at.
+    (should-not (jfw/listing-html "nonsense" "/blog/"))))
+
+;;; ---------------------------------------------------------------------
+;;; Code blocks carry their own button
+;;; ---------------------------------------------------------------------
+
+(ert-deftest jfw-test/src-block-carries-its-copy-button ()
+  "The button is written by the build, so the page has it before any script
+runs, and a block with nothing in it gets no button at all."
+  (cl-letf (((symbol-function 'org-html-format-code)
+             (lambda (_block _info) "  (+ 1 2)\n")))
+    (let ((html (jfw/org-html-src-block nil nil nil)))
+      (should (string-prefix-p "<div class=\"jfw-code\"><pre>(+ 1 2)</pre>" html))
+      (should (string-match-p "class=\"jfw-copy\"" html))
+      (should (string-match-p "aria-label=\"Copy this code block" html))))
+  (cl-letf (((symbol-function 'org-html-format-code)
+             (lambda (_block _info) "\n")))
+    (should-not (string-match-p "jfw-copy" (jfw/org-html-src-block nil nil nil)))))
+
+;;; ---------------------------------------------------------------------
+;;; Text read out of an Org item
+;;; ---------------------------------------------------------------------
+
+(ert-deftest jfw-test/radar-keeps-the-space-around-a-link ()
+  "Org hands the text around a link back in pieces, and the pieces have to
+be joined the way the source read."
+  (should (equal (jfw/radar--join '("Guile Scheme" "and Lisps in general"))
+                 "Guile Scheme and Lisps in general"))
+  (should (equal (jfw/radar--join '("Scheme" "," "and Lisps")) "Scheme, and Lisps"))
+  (should (equal (jfw/radar--join '("a" " b")) "a b")))
+
+(ert-deftest jfw-test/radar-reads-a-link-and-the-words-after-it ()
+  "The blip label is the sentence, not the words run together."
+  (let ((blips (plist-get (jfw-test/radar) :blips)))
+    (should (string-match-p "\\`Guile Scheme and Lisps in general\\'"
+                            (plist-get (car blips) :label)))))
 
 (provide 'jointhefreeworld-site-test)
 

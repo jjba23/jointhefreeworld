@@ -17,6 +17,8 @@
 - [[/blog/articles/go/][Go]]
 - [[/blog/articles/freebsd/][FreeBSD]]
 
+Every article is also indexed two other ways: the [[/blog/archive/][archive]] by the year it was written, and the [[/blog/keywords/][keyword index]] by subject.
+
 On their own pages, outside the blog: the [[/code-of-conduct/][Code of Conduct]] and the [[/ai-policy/][AI Policy]].
 
 *** 📜 Highlighted articles

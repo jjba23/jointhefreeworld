@@ -24,9 +24,9 @@ A static web-site is a directory of finished HTML, CSS, JavaScript and image fil
 That trade is deliberate here, and its consequences shape the whole design:
 
 - *Org is the source of truth.* You write prose, headings, lists, tables and code blocks in Org mode, and the exporter turns them into HTML. There is no second copy of the content in a template language.
-- *The build is one file.* =jointhefreeworld-site.el= holds the export backend, the shared page layout, the metadata, the feed and the task entry point. The build script is also its own documentation: every function carries a docstring explaining why it exists.
-- *Nothing reaches the reader that a page did not ask for.* The REPL and the tech radar are large JavaScript programs, and a page downloads them only when it names them.
-- *Pages degrade gracefully.* Both page scripts render their content in the Org source as well, so a reader without JavaScript still gets every fact the dynamic view shows.
+- *The build is a small library, not one file.* =jointhefreeworld-site.el= installs the packages and publishes the site; the work itself lives in =lisp/jfw-*.el=, one module per subject: the export backend, the page layout, the pages themselves, the blog, the radar, the social cards, the structured data and the feed. The build script is also its own documentation: every function carries a docstring explaining why it exists.
+- *Nothing reaches the reader that a page did not ask for.* The REPL is a small interpreter in its own right, and a page downloads it only when it names it. The tech radar needs no script at all: the build draws it.
+- *Pages degrade gracefully.* The REPL's answers are in the Org source as well, and everything else dynamic — the radar, the archive, the keyword index, the previous and next links — is written into the page by the build, so a reader without JavaScript still gets every fact the site has.
 
 This README explains what you need, how the build works, how to write a page, how to work on the stylesheet and the scripts, how the site is deployed, and which traps to avoid. It assumes you can open a terminal, and it explains the conventions as it introduces them.
 
@@ -46,16 +46,33 @@ The Emacs packages the build installs are =use-package=, =esxml= for building HT
 
 Publishing the site happens in four stages, in this order:
 
-1. *Export.* =org-publish-all= walks the projects in =org-publish-project-alist= and exports every Org file below =./docs= to HTML below =./public=, drawing each blog article's social card while that article is in front of it and writing the blog's index pages out of the articles they list. The export is forced, so every page is written again rather than skipped as unchanged.
+1. *Export.* =org-publish-all= walks the projects in =org-publish-project-alist= and exports every Org file below =./docs= to HTML below =./public=, drawing each blog article's social card while that article is in front of it, writing the blog's index pages out of the articles they list, and drawing the tech radar from the article that describes it. The export is forced, so every page is written again rather than skipped as unchanged.
 2. *Wrap.* Each exported page passes through a template that adds the document head, the shared header and footer, the metadata and the structured data.
 3. *Feed.* The blog articles are collected into =./public/rss.xml=.
 4. *Copy.* The contents of =./static= are copied beside the generated pages, together with =robots.txt= and =sitemap.xml=.
 
 The export stage is worth understanding first, because it decides where every URL lives.
 
+** The modules
+
+The build is split by subject rather than written as one long file, so that a change to the blog does not mean reading the radar's geometry to find it. =jointhefreeworld-site.el= is the entry point: it installs the packages, puts =lisp/= on the load path, requires the modules and provides =jfw/publish=.
+
+| File                        | What lives there                                                                 |
+|-----------------------------+----------------------------------------------------------------------------------|
+| =lisp/jfw-core.el=          | The site's constants: what it is called, where it lives, its colours and the scripts a page may ask for. |
+| =lisp/jfw-pages.el=         | The URL layout, the text and date helpers, the rail, and the publish projects.    |
+| =lisp/jfw-ui.el=            | The header, the footer and the theme chooser.                                     |
+| =lisp/jfw-blog.el=          | Article metadata, the listings, the archive, the keyword index, related reading and the radar's special block. |
+| =lisp/jfw-radar.el=         | Reading the radar article and drawing it as SVG, at build time.                   |
+| =lisp/jfw-cards.el=         | The social cards, drawn from the title the page already carries.                   |
+| =lisp/jfw-jsonld.el=        | The structured data block.                                                       |
+| =lisp/jfw-export.el=        | The export backend, the page template, the code blocks, the feed and the task entry point. |
+
+A module is loaded once per run and may require another; =jfw-export= requires all of them, because it is the one that writes the pages.
+
 ** The publish projects
 
-A publish project pairs a directory of Org files with a directory of HTML output. Editing the table in =jointhefreeworld-site.el= moves the pages and their canonical URLs together, because the build reads the URL prefix back out of this same table.
+A publish project pairs a directory of Org files with a directory of HTML output. Editing the table in =lisp/jfw-pages.el= moves the pages and their canonical URLs together, because the build reads the URL prefix back out of this same table.
 
 | Project                     | Org sources           | Output             | URL prefix       |
 |-----------------------------+-----------------------+--------------------+------------------|
@@ -139,7 +156,7 @@ A page's [[https://orgmode.org/manual/Export-Settings.html][export keywords]] ar
 | =#+HIGHLIGHT:=   | Puts the article on the blog's front page. The value is read as a yes unless it is =no=, so a post can say why it is highlighted instead of only that it is. |
 | =#+REDIRECT:=    | The destination of a forwarding page: adds a refresh, claims the destination as canonical, and asks crawlers not to index the stub. |
 
-Only two page scripts exist today. Ask for =repl= to place the browser Lisp on a page, and for =radar= to draw the tech radar. A name the build does not recognise is reported in the build log rather than silently ignored, which is the intended way to catch a typo.
+Only one page script exists today. Ask for =repl= to place the browser Lisp on a page. A name the build does not recognise is reported in the build log rather than silently ignored, which is the intended way to catch a typo. The tech radar is not a script: a page asks for it with a =radar= special block and the build draws the picture into the page.
 
 ** Headings, anchors and containers
 
@@ -148,7 +165,7 @@ Every heading becomes an HTML heading element carrying a small =#= anchor link, 
 Two situations call for a property on the heading:
 
 - =:CUSTOM_ID:= sets the identifier explicitly. You need it whenever a heading repeats on a page, because the derived names would collide. The tech radar needs one per layer per ring for exactly this reason.
-- =:HTML_CONTAINER:=, with =:HTML_CONTAINER_CLASS:=, wraps the heading and its subtree in an element of your choosing. The radar's rings are sections produced this way, and the radar script finds them by class.
+- =:HTML_CONTAINER:=, with =:HTML_CONTAINER_CLASS:=, wraps the heading and its subtree in an element of your choosing. The radar's rings are sections produced this way, and the build finds them by class when it draws the picture.
 
 A heading that names a property block looks as follows:
 
@@ -195,6 +212,13 @@ The front page's highlights and every category's list of articles are written du
 
 =highlighted= is the front page's selection: the articles that set =#+HIGHLIGHT:=. =category= is every article of the category the page belongs to, which is how a new article reaches its own category page without anybody adding it. Entries come out newest first, by date, and by title when two articles share a date, so the same sources always give the same page. An entry is the article's date, its title and its =#+DESCRIPTION:=, and nothing else.
 
+Two more listings answer questions that are not about one category:
+
+- =archive= lists every article grouped by the year it was written, newest year first, with an article that has no readable date still listed under a label of its own. =docs/blog/archive.org= asks for it and answers at =/blog/archive/=.
+- =keywords= is the index of every =#+KEYWORDS:= the articles carry: a cloud of chips, most used first, above one section per keyword listing the articles that name it. =docs/blog/keywords.org= asks for it at =/blog/keywords/=.
+
+Both are built from the same catalogue as the other listings, so neither can list an article that has been deleted nor miss one that was added. The build reports how many keywords are in use at the end of a run.
+
 Three things are worth knowing before editing an index page:
 
 - The date, the title and the summary are read from the article, so a listing cannot show a title that has been rewritten, or forget an article that has been added. Change the article, never the listing.
@@ -203,9 +227,19 @@ Three things are worth knowing before editing an index page:
 
 The build reports how many articles it listed, and an index page that asks for a listing the build does not know is reported by name rather than left blank.
 
+** Reading an article to the end
+
+An article's page ends with the readings a reader is likely to want next, all of them written by the build from the catalogue it already keeps, so none can point at a page that has been unpublished:
+
+- The *previous* and *next* article, in the blog's own order, each labelled by what it is rather than by its position, and carrying =rel="prev"= and =rel="next"= so a crawler reads the pair as well.
+- Up to three *related* articles, chosen by what they share: a common keyword is worth three points and a common category one, and an article with neither in common is not offered at all, because a list of unrelated reading is noise.
+- Nothing, when an article is the only one the catalogue knows: no heading over an empty list.
+
+An article's own =#+KEYWORDS:= is therefore worth more than a meta tag. It is what the keyword index groups by and what related reading is chosen from.
+
 ** The tech radar
 
-The tech radar on the FREE stack page, =docs/blog/articles/development/tech-radar.org=, is a JavaScript view of an ordinary Org document. Nothing about the source is special except its shape, and the script reads the document itself, so the Org file remains the only place the entries live.
+The tech radar on the FREE stack page, =docs/blog/articles/development/tech-radar.org=, is drawn by the build from the article itself. There is no radar script and no browser work: the page arrives with the picture in it, every blip a link to its entry, and a reader without JavaScript loses nothing.
 
 The document leads with the rings, because that is the question a reader arrives with — /how much do you trust this?/ — and names the layers inside each one:
 
@@ -214,7 +248,18 @@ The document leads with the rings, because that is the question a reader arrives
 - Each *blip* is a list item under a layer. Its text is the technology, an optional link makes it clickable, and a note after a dash explains why it sits there.
 - A parenthesised word says what changed since the previous revision: =(new)=, =(moved in)= or =(moved out)=. The radar reads it and draws the entry accordingly.
 
-The picture keeps its own shape whatever the document's order: a ring is still a band drawn from the middle outwards, a layer is still a wedge, and both are read from the headings rather than from a second copy of them. The full list below the drawing follows the document — the four rings, each folded away until it is asked for, with its layers inside it — so a reader whose browser does not run the script loses the picture and none of the content. If a page has no rings, the script does nothing at all.
+The picture keeps its own shape whatever the document's order: a ring is still a band drawn from the middle outwards, a layer is still a wedge, and both are read from the headings rather than from a second copy of them.
+
+The blips are settled while the page is built. Each is seeded inside its own ring and wedge, then the dots push each other apart until no pair is closer than a small minimum, and every push is pulled back inside its own band, so the drawing does not depend on the size of the window. Names are placed in the same pass: every name is written into the picture, and a name that would land on one already kept is marked as cramped — hidden at rest, and revealed when the reader hovers or focuses its dot — rather than written over its neighbour or dropped. That catalogue follows the document — the four rings, each folded away until it is asked for, with its layers inside — so the article remains the only place the entries live and the picture is a view of it.
+
+A page asks for the picture with a special block:
+
+#+begin_src org
+  #+begin_radar
+  #+end_radar
+#+end_src
+
+The block draws the radar described by the article it appears in, so the page that describes a radar is the page that carries it. A page with no rings gets no picture rather than an empty frame.
 
 ** The browser Lisp
 
@@ -259,7 +304,7 @@ Every page is the same four things, top to bottom, and the Org file only ever wr
 
 1. *A bar.* One thin pill of glass, pinned to the top: the wordmark on the left, the five places a reader goes next, the four they go once behind =more=, and the theme chooser at the far end where a status item lives. Everything else scrolls underneath it and is blurred by it.
 2. *A hero.* A monospaced line naming the part of the site the page is in, the title set as a headline and left-aligned rather than centred, the date and the reading time as a stamp, and a rule of gold that fades out to the right. The hero sits on the paper, not inside the sheet, which is what gives a page a front matter instead of a paragraph that happens to be bigger.
-3. *A body.* The article in a sheet of glass, and beside it the rail. The rail takes a column only above 1100 pixels and only once the script has filled it, so a page with two headings, or a reader without scripting, gets the whole width for its text.
+3. *A body.* The article in a sheet of glass, and beside it the rail. The rail takes a column only above 1100 pixels and only when the page has at least three headings, so a short page gets the whole width for its text.
 4. *A footer.* Two columns: what the site is and who made it, then the places that are about the site rather than in it.
 
 The document also keeps two measures on purpose: prose stops at 80 characters and code blocks run to 128, so a wide screen gives its extra room to the code rather than to a line of text that gets harder to read the longer it is.
@@ -287,11 +332,11 @@ These are not aspirations; the stylesheet and the build enforce them, and a chan
 
 ** The chrome around the page
 
-Five small pieces of furniture sit around the page. One is written by the build; the other four are drawn by =freeworld.js= and the stylesheet, and are inert until the script runs, so a reader without JavaScript loses none of the content:
+Five small pieces of furniture sit around the page. Three are part of the HTML the build writes — the rail, the copy buttons and the skip link; the other two are drawn by =freeworld.js= and the stylesheet, and are inert until the script runs, so a reader without JavaScript loses none of the content:
 
 - *The rail.* The page's own =h2= and =h3= headings, as a list to jump by, beside the sheet on a screen wide enough to afford the column. It is written by the build rather than by a script, so it is part of what a reader receives; a heading inside a closed disclosure is left out of it; and what the script adds is the mark that follows the reader down it. The build gives it a column only when it has at least three entries, which is why a short page has no empty gutter.
 - *The reading progress line.* A hairline of gold across the top of the window that fills as the page is read. The stylesheet draws it from a custom property and the script writes that property, measured in the scroll handler rather than in a frame it would have to wait for.
-- *The copy buttons.* Every code block in an article gets a button in its corner that puts the block on the clipboard, using the clipboard API where the page is a secure context and a hidden text area where it is not.
+- *The copy buttons.* The build writes a button into the corner of every code block, so the button is in the page a reader receives and does not wait for a script. The script answers the click: it reads the block beside the button, puts it on the clipboard with the clipboard API where the page is a secure context, and with a hidden text area where it is not.
 - *The scroll reveal.* The blocks of an article fade and rise as they are reached. The class that hides them is added by the script, so nothing is ever hidden when the script is absent.
 - *The skip link.* The first thing Tab reaches is a way past the bar. It is real markup rather than a scripted control, and =#content= carries =tabindex="-1"= so that taking it moves focus into the article.
 
@@ -311,14 +356,13 @@ There are two breakpoints. Below 600 pixels the bar wraps and scrolls away with 
 
 * Client-side JavaScript
 
-Four scripts ship with the site. They are plain, dependency-free JavaScript, and each has one job.
+Three scripts ship with the site. They are plain, dependency-free JavaScript, and each has one job.
 
 | Script                       | Loaded                        | What it does                                        |
 |------------------------------+-------------------------------+-----------------------------------------------------|
-| =static/js/freeworld.js=     | Every page                    | The theme chooser, the nav's =more= menu, the reading progress line, the mark that follows the reader down the rail, the copy buttons on code blocks, the scroll reveal, and the home page's touches: the typewriter tagline, the interactive acronym, the easter egg |
+| =static/js/freeworld.js=     | Every page                    | The theme chooser, the nav's =more= menu, the reading progress line, the mark that follows the reader down the rail, the clicks on the copy buttons the build writes, the scroll reveal, and the home page's touches: the typewriter tagline, the interactive acronym, the easter egg |
 | =static/js/symbanta.js=      | Every page                    | First-party analytics: page views, heartbeats and visibility changes |
 | =static/js/guile-repl.js=    | Pages asking =#+SCRIPTS: repl= | The browser Lisp                                      |
-| =static/js/tech-radar.js=    | Pages asking =#+SCRIPTS: radar= | The radar drawing, its legend and its keyboard-accessible controls |
 
 Keep this property in mind when you add behaviour: a page downloads a script only if it asks for it, and a page that asks for nothing downloads only the two site-wide scripts.
 
@@ -476,7 +520,7 @@ Nothing here replaces looking at the site. The tests prove that the pages say th
     portfolio/              the portfolio page
   static/                   everything copied verbatim into the output
     css/jointhefreeworld.css  the only stylesheet
-    js/                     the four scripts described above
+    js/                     the three scripts described above
     img/                    favicon, and the site-wide social card with its SVG source
     robots.txt sitemap.xml  crawler files
   jointhefreeworld-site.el  the build: export backend, layout, metadata, feed, entry point

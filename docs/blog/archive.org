@@ -1,0 +1,10 @@
+#+title: Archive 🗂️
+#+description: Every article on jointhefreeworld, grouped by the year it was written.
+#+keywords: archive
+#+options: toc:nil num:nil
+
+Everything written here, newest first, under the year it was published.
+If you would rather look by subject, the [[/blog/keywords/][keyword index]] is the other way in.
+
+#+begin_listing archive
+#+end_listing

@@ -1849,9 +1849,12 @@ html[data-js="on"] .jfw-radar-nojs {
      the regular weight of the family, in the muted ink rather than the
      reading ink of the page. */
   font-weight: var(--font-weight-normal);
-  font-size: 21px;
+  /* The build settles every label and drops the ones that would overlap a
+     neighbour, so what the picture carries is already readable and the
+     stylesheet has nothing to hide. */
+  font-size: 15px;
   fill: var(--color-header-3);
-  opacity: 0;
+  opacity: 1;
   pointer-events: none;
   paint-order: stroke;
   stroke: var(--color-page-base);
@@ -1860,70 +1863,24 @@ html[data-js="on"] .jfw-radar-nojs {
   transition: opacity 140ms ease;
 }
 
-/* Reading every name at once needs room, so the legend steps below the
-   radar and the labels shrink to fit the wider frame. */
-.jfw-radar-labels-on {
-  grid-template-columns: minmax(0, 1fr);
+/* Nothing on the radar animates for visitors who asked for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  .jfw-radar-blip,
+  .jfw-radar-dot,
+  .jfw-radar-blip-label {
+    transition: none;
+  }
 }
 
-.jfw-radar-labels-on .jfw-radar-blip-label {
-  font-size: 18px;
-  opacity: 1;
-}
-
-/* With every blip named, one ring name per ring is orientation enough; the
-   other five would be folded under the names they sit between. */
-.jfw-radar-labels-on .jfw-radar-ring-label:not([data-jfw-radar-ring-name="first"]) {
-  display: none;
-}
-
-/* A label whose blip has been filtered out stays out of the way, even while
-   the rest are named. */
-.jfw-radar-dimmed .jfw-radar-blip-label {
+/* A name that would land on one already kept stays out of the way at rest,
+   and comes back the moment its own blip is pointed at or focused. It is
+   still in the drawing, still in the tooltip and still in the catalogue. */
+.jfw-radar-blip-label.is-cramped {
   opacity: 0;
 }
 
-/* Nothing on the radar animates for visitors who asked for less motion. */
-.jfw-radar-reduced-motion .jfw-radar-blip,
-.jfw-radar-reduced-motion .jfw-radar-dot,
-.jfw-radar-reduced-motion .jfw-radar-blip-label {
-  transition: none;
-}
-
-/* Labels that would land on top of one already shown step aside, and come
-   back the moment their own blip is hovered or focused. */
-.jfw-radar-label-cramped {
-  display: none;
-}
-
-/* Hovering the entry in the catalogue names the blip it belongs to, and a
-   name that stepped aside for want of room comes back for it. */
-.jfw-radar-blip-lit .jfw-radar-blip-label {
-  display: inline;
-  opacity: 1;
-}
-
-.jfw-radar-blip-lit .jfw-radar-dot {
-  transform: scale(1.55);
-}
-
-/* The blip a keyboard visitor is standing on. The ring is drawn on the
-   blip's own hit disc, so marking a blip never moves a single dot. */
-.jfw-radar-blip-cursor .jfw-radar-hit {
-  stroke: var(--color-hover);
-  stroke-width: 2.5;
-}
-
-.jfw-radar-blip-cursor .jfw-radar-blip-label {
-  display: inline;
-  opacity: 1;
-  fill: var(--color-hover);
-}
-
-.jfw-radar-blip-cursor .jfw-radar-dot {
-  transform: scale(1.55);
-}
-
+/* A blip grows a little under the pointer or the keyboard, and names its
+   own entry even when the picture had no room for the name. */
 .jfw-radar-blip:hover .jfw-radar-blip-label,
 .jfw-radar-blip:focus-visible .jfw-radar-blip-label {
   display: inline;
@@ -2270,8 +2227,9 @@ html[data-js="on"] .jfw-radar-nojs {
   left: 0;
 }
 
-/* freeworld.js wraps a code block in `.jfw-code' so that the copy button
-   can be pinned to the block's own corner. The wrapper borrows the block's
+/* The build wraps a code block in `.jfw-code' and puts the copy button in
+   its corner, so the button is part of the page a reader receives and the
+   script only has to answer a click. The wrapper borrows the block's
    measure, so the button lines up with the code rather than with the page. */
 .jfw-code {
   position: relative;
@@ -2386,4 +2344,154 @@ html[data-js="on"] .jfw-radar-nojs {
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }
+}
+
+/* ------------------------------------------------------------------ */
+/* More to read: the foot of an article                                */
+/* ------------------------------------------------------------------ */
+/* An article used to end where its prose ended. It now offers the one
+   written before it and the one written after it, and then the reading the
+   build judges closest to it, chosen from shared keywords and category
+   rather than from a hand-written list. Both are written into the page by
+   the build, so they are links even with scripting off. */
+.jfw-article-neighbours {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+.jfw-article-neighbour {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  text-decoration: none;
+  transition: border-color var(--duration-1) var(--ease-glide);
+}
+
+.jfw-article-neighbour:hover,
+.jfw-article-neighbour:focus-visible {
+  border-color: var(--color-hover);
+}
+
+/* The next article sits at the far edge, so the pair reads as a direction
+   rather than as two things to choose between. */
+.jfw-article-neighbour.is-next {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.jfw-article-neighbour-label {
+  font-family: var(--font-family-code);
+  font-size: var(--text-2xs);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-header-3);
+}
+
+.jfw-article-neighbour-title {
+  font-weight: var(--font-weight-medium);
+}
+
+.jfw-related {
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+/* A small heading in the voice of the rail, not a section of the article:
+   it sits outside the prose and is not one of the page's own headings. */
+.jfw-related-title {
+  margin: 0 0 var(--spacing-sm);
+  font-family: var(--font-family-code);
+  font-size: var(--text-2xs);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-header-3);
+}
+
+.jfw-related-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* The archive and the keyword index                                   */
+/* ------------------------------------------------------------------ */
+.jfw-archive-year h2,
+.jfw-keyword-group h2 {
+  margin-top: var(--spacing-lg);
+  font-size: 1.1rem;
+}
+
+.jfw-archive-year ul,
+.jfw-keyword-group ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.jfw-archive-year li,
+.jfw-keyword-group li {
+  margin: 0.35rem 0;
+}
+
+.jfw-archive-year time {
+  font-family: var(--font-family-code);
+  font-size: var(--text-2xs);
+  color: var(--color-header-3);
+}
+
+.jfw-archive-category {
+  padding: 0 0.5em;
+  font-family: var(--font-family-code);
+  font-size: var(--text-2xs);
+  color: var(--color-header-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-pill);
+}
+
+/* The cloud says what the blog keeps coming back to before the sections
+   below spell it out keyword by keyword. */
+.jfw-keyword-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 var(--spacing-lg);
+  padding: 0;
+  list-style: none;
+}
+
+.jfw-keyword-cloud a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4em;
+  padding: 0.15em 0.7em;
+  font-size: var(--text-2xs);
+  text-decoration: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-pill);
+  transition: color var(--duration-1) var(--ease-glide),
+    border-color var(--duration-1) var(--ease-glide);
+}
+
+.jfw-keyword-cloud a:hover,
+.jfw-keyword-cloud a:focus-visible {
+  color: var(--color-hover);
+  border-color: var(--color-hover);
+}
+
+.jfw-keyword-count {
+  font-family: var(--font-family-code);
+  color: var(--color-header-3);
 }

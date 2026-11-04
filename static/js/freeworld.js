@@ -157,16 +157,15 @@
     /* ------------------------------------------------------------------ */
 
     /*
-     * Every code block in the article gets a button in its corner that puts
-     * the block on the clipboard. The text is read before the button is
-     * inserted, so the button's own label can never end up in what is
-     * copied, and the wrapper element is what positions the button without
-     * making the block itself a positioning context that its own scroll
-     * would drag the button through.
+     * The build writes a copy button into the corner of every code block, so
+     * the button is part of the page a reader receives and does not wait for
+     * a script to appear. What is left here is the click: read the block
+     * beside the button, put it on the clipboard and say so. The label is
+     * outside the block, so it can never end up in what is copied.
      */
     (function () {
-        const blocks = Array.from(document.querySelectorAll(".content pre"));
-        if (blocks.length === 0) return;
+        const buttons = Array.from(document.querySelectorAll(".jfw-code .jfw-copy"));
+        if (buttons.length === 0) return;
 
         /** Put TEXT on the clipboard, with a fallback for older engines. */
         const copyText = (/** @type {string} */ text) => {
@@ -200,21 +199,12 @@
             return Promise.resolve();
         };
 
-        blocks.forEach((pre) => {
+        buttons.forEach((button) => {
+            const wrapper = button.closest(".jfw-code");
+            const pre = wrapper ? wrapper.querySelector("pre") : null;
+            if (!pre) return;
             const text = (pre.textContent || "").replace(/\s+$/, "");
             if (text.trim() === "") return;
-
-            const wrapper = document.createElement("div");
-            wrapper.className = "jfw-code";
-            pre.parentNode.insertBefore(wrapper, pre);
-            wrapper.appendChild(pre);
-
-            const button = document.createElement("button");
-            button.type = "button";
-            button.className = "jfw-copy";
-            button.textContent = "copy";
-            button.setAttribute("aria-label", "Copy this code block to the clipboard");
-            button.title = "Copy this code block to the clipboard";
 
             let reset = 0;
             button.addEventListener("click", () => {
@@ -228,8 +218,6 @@
                     }, 1600);
                 });
             });
-
-            wrapper.appendChild(button);
         });
     })();
 

@@ -6,35 +6,14 @@
 #+date: <2025-10-27 ma>
 #+HIGHLIGHT: yes
 #+description: The FREE stack as a tech radar: what I adopt, trial, assess and deprecate across languages, frameworks, data, tools, platforms and practice.
-#+keywords: tech radar, free software, Guile Scheme, Lisp, GNU Guix, Emacs, Rust, SQLite, PostgreSQL, DeepSeek
-#+SCRIPTS: radar
+#+keywords: tech radar, free software, Guile Scheme, Lisp, GNU Guix, Emacs, Rust, C, Kotlin, Python, Spring Boot, React, SQLite, PostgreSQL, DeepSeek
 
 The FREE stack, ring by ring — what I trust, and inside each ring, the layers it lands in.
 
 ------------------------
 
-#+begin_export html
-<div class="jfw-radar" data-jfw-radar>
-  <p class="jfw-radar-nojs">
-    The radar is drawn by JavaScript. Nothing is lost without it: every ring
-    and layer it shows is listed, in full, further down this page.
-  </p>
-  <div class="jfw-radar-canvas" data-jfw-radar-canvas></div>
-  <div class="jfw-radar-panel">
-    <p class="jfw-radar-panel-title">Rings</p>
-    <ul class="jfw-radar-legend" data-jfw-radar-legend></ul>
-    <p class="jfw-radar-panel-title">Layers</p>
-    <ul class="jfw-radar-legend jfw-radar-legend-quadrants" data-jfw-radar-quadrants></ul>
-    <p class="jfw-radar-actions">
-      <button type="button" class="jfw-btn" data-jfw-radar-labels aria-pressed="false">show labels</button>
-    </p>
-    <p class="jfw-radar-hint">
-      Point at a blip for what it is and which way it moved; click it to open
-      its entry. Click a ring or a layer to isolate it.
-    </p>
-  </div>
-</div>
-#+end_export
+#+begin_radar
+#+end_radar
 
 * The rings
 
@@ -69,6 +48,7 @@ since the last revision; a note after a dash says why.
 - Emacs Lisp
 - JavaScript (vanilla)
 - [[https://www.rust-lang.org/][Rust]]
+- C (new) — the two desktop apps, LambDock and Heks Toon, are C with GTK4 around a Guile engine, and nothing above them needs a heavier language
 
 ** 🎨 Frameworks & UI
 :PROPERTIES:
@@ -89,6 +69,7 @@ since the last revision; a note after a dash says why.
 - PostgreSQL
 - Plain SQL queries
 - Hetzner Storage Volumes with Cron-job based backups and rsync
+- [[https://codeberg.org/jjba23/mutastructura][Mutastructura]] (new) — migrations decreed as Lisp and applied incrementally, so a schema change is a file in the repo rather than a script someone ran once
 
 ** 🧰️ Tools & Environment
 :PROPERTIES:
@@ -104,6 +85,9 @@ since the last revision; a note after a dash says why.
 - Woodpecker CI/CD — the CI that replaced the Jenkins pipelines I used to maintain
 - Nix Flakes
 - Nix dev shells
+- Meson and Ninja (new) — what builds the C desktop apps, with Maak driving the steps around it
+- [[https://github.com/jjba23/sift][Sift]] (new) — the Lisp formatter, linter and language server that never loses a byte; every Scheme repo of mine is linted through it
+- [[https://github.com/jjba23/byggsteg][Byggsteg]] (new) — pipelines described as a list in Lisp, and the CI that runs them
 
 ** 🌐 Platforms & Delivery
 :PROPERTIES:
@@ -112,6 +96,7 @@ since the last revision; a note after a dash says why.
 
 - Custom low-power green VPS (Hetzner)
 - Codeberg — free software's own forge, and the home of every project of mine
+- Docker images as the delivery unit (new) — every repo builds one and a compose file brings the stack up, so the server needs a container runtime rather than a list of install steps
 
 ** ⚙️ Practice & Craft
 :PROPERTIES:
@@ -122,6 +107,7 @@ since the last revision; a note after a dash says why.
 - Guix Manifests
 - Guix dev shells
 - Hexagonal architecture / ports and adapters (moved in) — the boundary earns its keep wherever the domain is the complicated part; the Hexagon of Doom is the case where it is not
+- A Guix manifest and a Nix flake in the same repo (new) — the toolchain described twice, so either package manager opens a shell that matches the build
 
 * 🧪 Trial
 :PROPERTIES:
@@ -136,6 +122,23 @@ since the last revision; a note after a dash says why.
 :END:
 
 - Guile embedded in C and GTK4 (moved in) — the dock Wayland was waiting for, with a Lisp engine inside a native app
+- Kotlin (new) — symbanta, where the JVM's libraries and compile-time checks pay for the ceremony
+- Python (new) — the icon tooling (icns2linux, skeu-icons), where Pillow and numpy do the work
+
+** 🎨 Frameworks & UI
+:PROPERTIES:
+:CUSTOM_ID: trial-frameworks
+:END:
+
+- Spring Boot (new) — symbanta's HTTP layer: validation, security, JPA and Actuator out of the box, at the price of a framework that decides a great deal for you
+- React 19 with Vite (new) — symbanta's dashboard, and the one place a client-side framework still earns its keep; everything new is server-rendered
+
+** 🗃️ Data & Storage
+:PROPERTIES:
+:CUSTOM_ID: trial-data
+:END:
+
+- Flyway (new) — migrations for symbanta's PostgreSQL, versioned beside the code that reads those tables
 
 ** 🧰️ Tools & Environment
 :PROPERTIES:
@@ -145,6 +148,8 @@ since the last revision; a note after a dash says why.
 - Podman (moved in) — daemonless, root-less containers that stay under my own control
 - Hyprland (moved in) — the Wayland compositor I actually use daily, after SwayFX taught me compositor scripting
 - [[https://www.deepseek.com/][DeepSeek]] (new) — an LLM I keep on a short leash: it drafts and reviews, a human decides, and nothing it writes ships unread
+- Maven with its wrapper (new) — what the one JVM project needs; Maak still drives everything around it
+- OpenAPI as the contract (new) — guile-openapi-generator on the Scheme side and orval on the dashboard's, so neither hand-writes the other's types
 
 ** 🌐 Platforms & Delivery
 :PROPERTIES:
@@ -161,6 +166,7 @@ since the last revision; a note after a dash says why.
 - Server-side rendering over client-side JavaScript (moved in) — pages that work before, and without, a megabyte of framework
 - This very site as a single Org tree (moved in) — prose, build script and metadata in one plain-text source
 - Parsing Expression Grammar in Scheme with ~(ice-9 peg)~ (moved in) — how OrgWebAlchemy turns Org into HTML without a parser generator
+- Testcontainers and Kotest (new) — the JVM suite runs against a real PostgreSQL in a container, beside the fast tests
 
 * 🔍 Assess
 :PROPERTIES:
@@ -227,6 +233,7 @@ since the last revision; a note after a dash says why.
 - Svelte
 - Servant (Haskell), API as a type
 - ZIO (Scala)
+- Tailwind CSS (new) — the dashboard's utility classes; Olive CSS says the same things with no build step
 
 ** 🗃️ Data & Storage
 :PROPERTIES:
