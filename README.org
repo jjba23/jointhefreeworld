@@ -532,7 +532,7 @@ Nothing here replaces looking at the site. The tests prove that the pages say th
   manifest.scm channels.scm the Guix packages and the pinned channels
   batch-indent.el           the indentation helper used by the formatting task
   .stylelintrc.yml          the stylesheet rules
-  .woodpecker/byggsteg.yaml the continuous integration configuration
+  .github/workflows/ci.yml  the continuous integration configuration
   .gitignore                ignores the build outputs: .org-cache/, .packages/, public/
 #+end_example
 
@@ -544,7 +544,7 @@ The build that runs for the live site differs in exactly one way: the =CI= envir
 
 =maak deploy= performs the copy in a careful order. It builds with =CI=true=, then removes the previously published =index.html=, =blog=, =portfolio=, =documentation/index.html= and =og= from the deployment directory before copying the new output over it. Those deletions exist so that pages and cards you removed from the sources do not linger on the server: a card is generated from the articles that exist today, so last year's card for a deleted article is exactly the kind of file that would survive a plain copy.
 
-On [[https://codeberg.org/jjba23/jointhefreeworld][Codeberg]], a push to the =trunk= branch triggers continuous integration. The pipeline asks Byggsteg, the Guile Scheme build orchestrator, for a token, submits a job naming the =maak-deploy= task, and polls its status. The heavy work happens on the build host, not on the forge.
+On [[https://github.com/jjba23/jointhefreeworld][GitHub]], a push to the =trunk= branch triggers continuous integration. The workflow in =.github/workflows/ci.yml= has no steps of its own: it calls the shared =byggsteg-github= workflow, which asks Byggsteg, the Guile Scheme build orchestrator, for a token, submits a job naming the =maak-test= and =maak-deploy= tasks, and follows that job's log to a green or a red build. The heavy work happens on the build host, not on the forge, and the workflow needs only the =BYGGSTEG_EMAIL= and =BYGGSTEG_PASSWORD= repository secrets, which it inherits.
 
 * Things that bite, and how to avoid them
 

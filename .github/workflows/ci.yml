@@ -1,0 +1,27 @@
+# jointhefreeworld
+#
+# SPDX-License-Identifier: MIT
+# Copyright © Josep Bigorra <jjbigorra@gmail.com>
+
+# A push to trunk asks Byggsteg, the Guile Scheme build orchestrator, for a
+# token, hands it the job and follows that job's log to a green or a red
+# build.  The heavy work happens on the build host, not on the forge: the
+# workflow below has no steps of its own.
+
+name: CI
+
+on:
+  push:
+    branches: [trunk]
+
+permissions:
+  contents: read
+
+jobs:
+  byggsteg:
+    name: 🧱 Byggsteg
+    uses: jjba23/byggsteg-github/.github/workflows/byggsteg.yml@trunk
+    with:
+      tasks: maak-test maak-deploy
+      timeout-minutes: 60
+    secrets: inherit
