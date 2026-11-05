@@ -1337,11 +1337,16 @@ th, td {
   }
 }
 
-/* Categories Tag Cloud */
+/* The blog's chips: the category row on the index and the keyword cloud on
+   the keyword index are the same object, so they are drawn once here. It is
+   an index of places, not a call to action, so the text carries the colour
+   and the border is all the chrome a chip needs. Both size and gaps are
+   clamped, which keeps ten of them on one line on a phone and stops them
+   growing into buttons on a wide screen. */
 ul.categories {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-md);
+  gap: clamp(0.25rem, 0.4vw + 0.15rem, 0.45rem);
   list-style: none;
   padding: 0;
   margin: var(--spacing-md) 0 var(--spacing-xl) 0;
@@ -1351,24 +1356,29 @@ ul.categories li {
   padding-top: 0;
 }
 
-ul.categories li a {
-  display: inline-block;
-  background: var(--color-background-medium);
+ul.categories li a,
+.jfw-keyword-cloud a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4em;
+  background: none;
   border: 1px solid var(--color-border);
-  color: var(--color-primary);
-  padding: var(--spacing-sm) var(--spacing-lg);
-  border-radius: var(--border-radius-base);
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-medium);
-  border-bottom: 1px solid var(--color-border);
-  transition: all 0.2s ease-in-out;
+  border-radius: var(--border-radius-pill);
+  color: var(--color-header-3);
+  padding: 0.1em 0.65em;
+  font-size: clamp(0.68rem, 0.3vw + 0.63rem, 0.78rem);
+  font-weight: var(--font-weight-normal);
+  text-decoration: none;
+  transition: color var(--duration-1) var(--ease-glide),
+    border-color var(--duration-1) var(--ease-glide);
 }
 
-ul.categories li a:hover {
-  background: var(--color-hover);
-  color: var(--color-on-accent);
+ul.categories li a:hover,
+ul.categories li a:focus-visible,
+.jfw-keyword-cloud a:hover,
+.jfw-keyword-cloud a:focus-visible {
+  color: var(--color-hover);
   border-color: var(--color-hover);
-  transform: translateY(-1px);
 }
 
 /* --- Home-page interactive sprinkles (see static/js/freeworld.js) --- */
@@ -2526,36 +2536,21 @@ html[data-js="on"] .jfw-radar-nojs {
 }
 
 /* The cloud says what the blog keeps coming back to before the sections
-   below spell it out keyword by keyword. */
+   below spell it out keyword by keyword. Its chips are the blog's chips,
+   drawn with the category row far above. */
 .jfw-keyword-cloud {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: clamp(0.25rem, 0.4vw + 0.15rem, 0.45rem);
   margin: 0 0 var(--spacing-lg);
   padding: 0;
   list-style: none;
 }
 
-.jfw-keyword-cloud a {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.4em;
-  padding: 0.15em 0.7em;
-  font-size: var(--text-2xs);
-  text-decoration: none;
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-pill);
-  transition: color var(--duration-1) var(--ease-glide),
-    border-color var(--duration-1) var(--ease-glide);
-}
-
-.jfw-keyword-cloud a:hover,
-.jfw-keyword-cloud a:focus-visible {
-  color: var(--color-hover);
-  border-color: var(--color-hover);
-}
-
+/* Quieter than the keyword it counts, which is why the chip can share one
+   muted colour for both and still read. */
 .jfw-keyword-count {
   font-family: var(--font-family-code);
   color: var(--color-header-3);
+  opacity: 0.7;
 }
