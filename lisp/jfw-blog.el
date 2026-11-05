@@ -1,9 +1,7 @@
 ;;; jfw-blog.el --- jointhefreeworld build  -*- lexical-binding: t -*-
 
+;; SPDX-License-Identifier: MIT
 ;; Copyright © Josep Bigorra <jjbigorra@gmail.com>
-
-;; This file is part of jointhefreeworld, free software under the GNU
-;; Affero General Public License v3 or newer.  See COPYING.
 
 ;;; Commentary:
 

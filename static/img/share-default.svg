@@ -38,5 +38,5 @@
   <rect x="90" y="438" width="420" height="5" rx="2.5" fill="url(#rule)"/>
 
   <text class="foot" x="90" y="536">Lisp, GNU Guix and the free world</text>
-  <text class="foot" x="90" y="572">Josep Bigorra (jjba23) · GNU AGPL v3 or newer</text>
+  <text class="foot" x="90" y="572">Josep Bigorra (jjba23) · MIT License</text>
 </svg>

@@ -1,9 +1,7 @@
 ;;; jfw-ui.el --- jointhefreeworld build  -*- lexical-binding: t -*-
 
+;; SPDX-License-Identifier: MIT
 ;; Copyright © Josep Bigorra <jjbigorra@gmail.com>
-
-;; This file is part of jointhefreeworld, free software under the GNU
-;; Affero General Public License v3 or newer.  See COPYING.
 
 ;;; Commentary:
 
@@ -158,7 +156,7 @@ rather than in it."
                  (div (@ (class "footer-identity"))
                       (p (@ (class "footer-mark")) "jointhefreeworld")
                       (em "Copyright © Josep Bigorra (jjba23 - jjbigorra@gmail.com)")
-                      (em "Licensed under the GNU AGPL v3 or newer")
+                      (em "Licensed under the MIT License")
                       (em ,(format "Site build: %s" (jfw/get-commit-hash))))
                  (div (@ (class "footer-links"))
                       (a (@ (href "https://codeberg.org/jjba23/jointhefreeworld"))

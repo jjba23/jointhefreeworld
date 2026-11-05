@@ -1,9 +1,7 @@
 ;;; jfw-cards.el --- jointhefreeworld build  -*- lexical-binding: t -*-
 
+;; SPDX-License-Identifier: MIT
 ;; Copyright © Josep Bigorra <jjbigorra@gmail.com>
-
-;; This file is part of jointhefreeworld, free software under the GNU
-;; Affero General Public License v3 or newer.  See COPYING.
 
 ;;; Commentary:
 
@@ -339,7 +337,7 @@ a glance in a timeline."
      "  <rect x=\"90\" y=\"" (number-to-string jfw/og-card-footer-rule-y)
      "\" width=\"420\" height=\"5\" rx=\"2.5\" fill=\"url(#rule)\"/>\n"
      "  <text class=\"foot\" x=\"90\" y=\"" (number-to-string jfw/og-card-footer-baseline)
-     "\">Josep Bigorra (jjba23) · GNU AGPL v3 or newer</text>\n"
+     "\">Josep Bigorra (jjba23) · MIT License</text>\n"
      "</svg>\n")))
 
 (defun jfw/og-card-file (path extension)

@@ -1,20 +1,9 @@
-/* guile-repl.js
-
-Copyright © Josep Bigorra <jjbigorra@gmail.com>
-
-jointhefreeworld.org is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-jointhefreeworld.org is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
-*/
+/*
+ * guile-repl.js
+ *
+ * SPDX-License-Identifier: MIT
+ * Copyright © Josep Bigorra <jjbigorra@gmail.com>
+ */
 
 // @ts-check
 "use strict";
@@ -1707,16 +1696,16 @@ along with jointhefreeworld.org.  If not, see <https://www.gnu.org/licenses/>.
         "THERE IS NO WARRANTY FOR THIS EMULATION, TO THE EXTENT PERMITTED BY",
         "APPLICABLE LAW.",
         "",
-        "This page is free software under the GNU Affero General Public License v3",
-        "or newer; the real GNU Guile is under the GNU LGPL v3 or newer. The texts:",
-        "  <https://www.gnu.org/licenses/agpl-3.0.html>",
+        "This page is free software under the MIT License; the real GNU Guile is",
+        "under the GNU LGPL v3 or newer. The texts:",
+        "  <https://opensource.org/license/mit>",
         "  <https://www.gnu.org/licenses/lgpl-3.0.html>"
     ];
 
     const COPYING_LINES = [
-        "You may redistribute and/or modify this page under the terms of the GNU",
-        "Affero General Public License as published by the Free Software Foundation,",
-        "either version 3 of the License, or (at your option) any later version.",
+        "You may use, copy, modify and redistribute this page under the terms of",
+        "the MIT License: the copyright notice and this permission notice travel",
+        "with every copy or substantial portion of the page.",
         "",
         "Source: <https://codeberg.org/jjba23/jointhefreeworld>"
     ];
