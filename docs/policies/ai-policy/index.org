@@ -1,5 +1,5 @@
 #+title: jointhefreeworld - AI Policy
-#+options: num:nil toc:t
+#+options: num:nil toc:1
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 #+language: en
