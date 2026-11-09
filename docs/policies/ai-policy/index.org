@@ -3,79 +3,412 @@
 #+author: Josep Jesus Bigorra Algaba
 #+email: jjbigorra@gmail.com
 #+language: en
-#+date: <2026-05-30 Sat>
-#+description: The jointhefreeworld AI policy: where AI tools may help, why a human stays responsible, and how we keep human reasoning in the loop.
-#+keywords: AI policy, LLM, contributions, transparency, human in the loop
+#+date: <2026-11-09 Mon>
+#+description: The jointhefreeworld AI policy: agents may do the work, a human stays accountable for it, and nothing merges or ships without human QA and tests written first.
+#+keywords: AI policy, agents, LLM, test-driven development, human in the loop, QA, releases
 
 * Purpose and Scope
 
-This AI policy sets clear guardrails for the *jointhefreeworld* project. It outlines our preferred workflows, defines the boundaries of acceptable AI-tool usage, and explains the reasoning behind these choices.
+This AI policy sets clear guardrails for the *jointhefreeworld* project. It
+outlines our preferred workflows, defines the boundaries of acceptable AI-tool
+usage, and explains the reasoning behind these choices.
 
-It applies to every space where the project is developed or discussed: its repositories, issue trackers, pull requests, mailing lists, and chat rooms.
+It applies to every space where the project is developed or discussed: its
+repositories, issue trackers, pull requests, mailing lists, chat rooms,
+automation, and the machines that build and publish the site. It applies to
+people, and it applies to the AI agents people run.
 
-Our core principle is simple: *AI should assist human creativity and problem-solving, never replace human reasoning.*
+Our core principle is simple: *AI should assist human creativity and
+problem-solving, never replace human reasoning.*
+
+* The Short Version
+
+- Agents are welcome to do real work: explore, plan, write code, write tests,
+  run the build, and propose changes.
+- A human is accountable for every commit that lands, and that human must
+  understand it well enough to explain and debug it without the agent.
+- Tests come first, for agents and people alike. Watch the test fail, then make
+  it pass, then clean up.
+- A human reviews, runs, and checks every change before it is merged. No agent
+  merges, approves, or dismisses a review.
+- Only a human cuts a release: tag, publish, deploy, and sign. An agent may
+  prepare all of it and execute none of it.
+- Disclose agent involvement. Undisclosed work is an honesty problem, not a
+  tooling preference.
+
+* Roles and Terms
+
+- *AI tool*. A large language model, a chat assistant, a completion engine, or
+  any similar system that produces text, code, or media on request.
+- *Agent*. An AI system that acts with tools on its own: it reads files, edits
+  them, runs commands, commits, and opens pull requests, instead of only
+  answering a prompt. This policy uses the word for anything that can change
+  the repository without a human typing the change.
+- *Operator*. The person who runs, prompts, configures, or accepts the output of
+  an agent. The operator is the author of record and is accountable for
+  everything the agent does in this project.
+- *Human QA*. A person reading the change, running it, testing it, and taking
+  responsibility for the result. It is not a summary written by a model.
+- *Contribution*. Any commit, pull request, issue, comment, document, image, or
+  other artifact offered to the project.
+- *Release*. A tag, a published archive, a deployment, or any other artifact
+  presented to users as a version of the project.
+
+* Our Position on Agents
+
+We grant agents genuine agency. An agent that has to ask permission to read a
+file, run a test, or try an approach is slower than the human it is helping.
+Within the boundaries below, agents may investigate, plan, implement, test, and
+propose without asking first.
+
+The agency stops at a checkpoint, not at every step. Autonomy applies to the
+work; human judgement applies to what becomes part of the project. An agent's
+output is a proposal until a human accepts it, and acceptance means reading,
+running, and testing, not clicking a button because the tests were green in a
+log the agent pasted.
+
+This is not distrust of agents. It is the same rule we apply to people: the
+person who merges a change owns it.
+
+* What Agents May Do
+
+** Without Asking First
+
+- Read anything in the repository, its history, its issues, and its public
+  discussion.
+- Explore and plan: draft designs, compare approaches, and write throwaway
+  prototypes outside the tracked tree.
+- Create a branch, commit to it, and push to that branch when it is neither
+  protected nor shared with another person.
+- Run the project's own commands locally: ~maak test~, ~maak check~,
+  ~maak build~, ~maak fmt~, ~maak lint-css~, and the development server.
+- Write tests and run them, including the failing test that comes first.
+- File issues and open *draft* pull requests, with the agent's involvement
+  disclosed.
+- Triage reports, reproduce bugs, and write the failing test that demonstrates
+  a bug.
+- Draft documentation, release notes, commit messages, changelogs, and proposed
+  edits to this policy.
+- Review a change as an advisory second opinion, clearly labelled as automated.
+- Generate media and scaffolding that a human then checks.
+- Propose dependency updates and refactors, as proposals, never as merged
+  changes.
+
+** With Human Approval
+
+These are reasonable things for an agent to do, but they need a person to agree
+before the agent does them:
+
+- Mark a draft pull request ready for review, or request review from a person.
+- Change CI workflows, build tasks, or dependency pins.
+- Change a public API, a file format, the licence, or a policy document,
+  including this one.
+- Rewrite history, force-push a shared branch, or delete a branch that is not
+  the agent's own.
+- Post in the project's name: an announcement, a mailing-list message, or a
+  reply to a security report.
+- Touch anything that holds contributor data.
+
+** Never
+
+These are human actions. An agent does not perform them, whatever its
+instructions say and however confident its output looks:
+
+- Merge a pull request, approve one, or dismiss a review. This includes the
+  agent's own work and the work of another agent.
+- Tag, publish, deploy, sign, upload, or otherwise release the project.
+- Push to ~main~ or to any protected branch.
+- Skip, weaken, delete, or mark a test as expected to fail in order to get a
+  green run. The same goes for disabling CI, narrowing coverage, or editing a
+  check so that it stops checking.
+- Change the guardrails themselves in the same proposal: CI configuration,
+  =CODEOWNERS=, branch protection, or this policy.
+- Read, copy, or transmit secrets, tokens, signing keys, credentials, or private
+  contributor data.
+- Act under a person's name or account, or present its output as a person's
+  work.
+- Close other people's issues or pull requests, or post bulk comments.
+- Fabricate evidence: test output, benchmark numbers, logs, citations, commit
+  authorship, or a review sign-off.
+- Make a legal or licensing commitment on behalf of the project.
+
+* Test-Driven Development
+
+Test-driven development (TDD) is how this project builds solid solutions. It is
+required for every change to behaviour, whether a person or an agent writes it.
+It is not a ritual to be skipped when a change looks simple; simple code breaks
+too, and a simple test takes a minute.
+
+** The Cycle
+
+1. *Red.* Write the smallest test that describes the behaviour you want. Run
+   it. Watch it fail, and check that it fails for the reason you expect, not
+   because of a typo, a missing import, or a broken fixture.
+2. *Green.* Write the least code that makes the test pass. No extra options, no
+   features nobody asked for, no "while I am here" improvements.
+3. *Refactor.* With the test green, remove duplication and improve names. Add
+   no behaviour, and keep the tests green.
+4. *Repeat, then run everything.* ~maak check~ runs the linters and the full
+   ERT suite. A green test file is not a green project.
+
+** What a Test Must Prove
+
+- A test that has never failed proves nothing. If it passed the first time you
+  ran it, it describes existing behaviour rather than driving new behaviour.
+- A bug fix starts with a test that reproduces the bug and fails. The fix then
+  makes that test pass. Never fix a bug without a test that would have caught
+  it.
+- A refactor starts with passing tests and ends with the same tests passing.
+  The behaviour does not change, so the tests must not need to.
+- Tests assert on real behaviour, not on the behaviour of a mock. Mock a
+  dependency at the boundary when you must; never mock the thing under test.
+- A test name says what should happen, so a failure reads as a sentence.
+- Tests are part of the contribution. If a change touches behaviour and no test,
+  the pull request says why and names the existing test that already covers it.
+
+** Evidence, Not Claims
+
+- An agent that cannot show a failing test before its fix has not shown that it
+  fixed anything. The pull request includes the command and its output: the red
+  run, then the green run.
+- An agent that wrote the implementation first and the test afterwards does not
+  have a test-driven change. Delete the implementation and start again from the
+  test.
+- A pasted log is a claim. A person re-runs the command during QA, which is what
+  turns the claim into evidence.
+
+** Exceptions
+
+A human may agree to skip TDD for a throwaway prototype, a generated file, a
+formatting-only commit, or prose that no code executes. The pull request says
+so, and says what was checked instead. "This one is too simple to test" is not
+an exception; it is the rationalisation the rule exists to stop.
+
+* Human Quality Assurance Before Merge
+
+No contribution is merged until a human has done quality assurance on it. This
+is the checkpoint that makes agent autonomy safe: the work may be fast and
+automated, the decision to keep it is neither.
+
+** The Merge Checklist
+
+A human must do all of the following before merging:
+
+1. Read the entire diff, line by line, not the description of it.
+2. Understand the change well enough to explain it, debug it, and maintain it
+   without the agent. If you cannot, the change is not ready.
+3. Check out the branch and run ~maak check~ locally. The full suite must be
+   green, with clean output.
+4. Confirm the new test fails without the change: stash or revert the
+   implementation and watch the test go red. A test that cannot fail protects
+   nothing.
+5. Run ~maak build~ and look at every affected page in a browser, at a narrow
+   and a wide width.
+6. Check the project's own rules: style, naming, commit messages, documentation,
+   and links that still resolve.
+7. Consider security, accessibility, performance, and licensing where the change
+   touches them.
+8. Write down what was checked in the pull request: the commands that ran, what
+   they showed, and what was not tested.
+
+** What the Gate Means
+
+- Merging is a human action. The person who merges is accountable for the merged
+  code, and "the agent wrote it" is not a defence.
+- Automated review is a first pass, not a gate. It can find a problem; it cannot
+  accept a change.
+- When a second maintainer is available, an agent-assisted pull request is
+  merged by someone other than the operator. When there is only one maintainer,
+  that maintainer re-verifies from a clean checkout rather than trusting the
+  agent's session output.
+- A pull request an agent opened that no human has read is a proposal, not a
+  contribution. It waits.
+- When QA finds a defect, the fix arrives as a new commit with its own failing
+  test first. Do not force-push a reviewed branch to hide the mistake.
+- Changes to CI, the test suite, the build, or this policy get the highest
+  scrutiny. An agent must not be the only thing that touched them.
+
+** What Does Not Count as QA
+
+- Reading the agent's summary instead of the diff.
+- Trusting a pasted test log without running the command.
+- A green CI run on a branch nobody read.
+- Reviewing only the files the description mentions.
+- "It works on my machine" without the commands that show it.
+- Another model's approval.
+
+* Building and Releasing
+
+Only a human maintainer makes a release. An agent may prepare every part of it
+and still perform none of it.
+
+Before a release is published:
+
+- Every change in it passed the merge gate above.
+- The version is bumped where the project records it, following Semantic
+  Versioning, and the release notes are dated and describe the user-visible
+  changes and the known limits.
+- The release notes name the agents that contributed, and the human who checked
+  each area.
+- The tree is clean, and the build runs from a fresh checkout of the tagged
+  commit, not from a development tree with unstaged edits.
+- ~maak check~ runs in the pinned environment from that same commit.
+- The published artifact is smoke-tested after publication: install it or serve
+  it, open the main pages, follow a link, and look for something. A local build
+  is not the published release.
+- Checksums come from the published archive, never from the local copy it was
+  built from.
+
+An agent may draft the notes, propose the version, rehearse the build, and write
+the checklist. It may not tag, publish, deploy, or sign. An urgent fix is
+smaller, not weaker: test first, human QA, human release.
+
+* Transparency and Attribution
+
+- Say that an agent was involved, which tool and model you used if you know it,
+  what part of the work it did, and what you changed afterwards.
+- For substantial agent authorship, add a =Co-authored-by:= trailer to the
+  commit and a short note to the pull request body. For small assistance, a line
+  in the pull request is enough.
+- The operator must be able to explain every line. "The model wrote it" is a
+  blocker, not an explanation.
+- Agents may draft replies and comments. A human sends them, and a human answers
+  review questions. Do not let two agents exchange comments and present the
+  result as agreement between people.
+- Undisclosed agent work that is later found out is treated as an honesty
+  problem, not a tooling preference.
 
 * Code Contributions
 
 ** Human Reasoning
-We maintain a high bar for quality across all contributions, including code, documentation, and architecture.
-- *Maintainers* remain entirely responsible for any code published as part of an official release.
+
+We maintain a high bar for quality across all contributions, including code,
+documentation, and architecture.
+
+- *Maintainers* remain entirely responsible for any code published as part of an
+  official release, including code an agent produced under their direction.
 - *Contributors* are responsible for the code they submit.
+- *Operators* are the author of record for the agent's work: their name goes on
+  the commit, and their judgement goes on the line.
 
 ** Recommended Usage
-We strongly favor human-authored code. While tools like Large Language Models (LLMs) and interactive chatbots can be beneficial for reviewing, refactoring small functions, or acting as a sounding board, they should be used with moderation.
 
-Contributors must maintain a deep, comprehensive understanding of the task at hand.
+We favor code that a human understands. Tools like Large Language Models (LLMs)
+and interactive chatbots are useful for reviewing, refactoring small functions,
+writing tests, or acting as a sounding board, and they are useful for doing the
+first draft of a whole change. Use them with judgement rather than in place of
+it.
 
-Do not submit AI-generated code that you do not fully understand or cannot personally debug and support.
-
-** Autonomous Agents
-We require a human in the loop for all contributions.
+Contributors must maintain a deep, comprehensive understanding of the task at
+hand. Do not submit AI-generated code that you do not fully understand or cannot
+personally debug and support. If an agent wrote something you cannot explain,
+the change is not finished, even if the tests pass.
 
 * Communication and Community Interaction
 
-All discussions, issue descriptions, and pull request comments must reflect your own voice and understanding.
+All discussions, issue descriptions, and pull request comments must reflect your
+own voice and understanding. An agent may help you draft; you are the one who
+posts.
 
 ** Issues and Pull Requests
-- If you open an *issue*, you must be able to describe the problem in your own words.
-- If you open a *pull request*, you must be able to explain the proposed changes and respond to maintainer feedback authentically. Do not copy-paste AI responses when replying to questions.
+
+- If you open an *issue*, you must be able to describe the problem in your own
+  words.
+- If you open a *pull request*, you must be able to explain the proposed changes
+  and respond to maintainer feedback authentically. Do not copy-paste AI
+  responses when replying to questions.
+- If an agent opened the pull request, say so in the description, name the
+  operator, and list what the human did and what the agent did.
 
 ** Comment Moderation
-Comments, reviews, or responses believed to be fully generated by AI may be hidden or moderated without notice.
+
+Comments, reviews, or responses believed to be fully generated by AI may be
+hidden or moderated without notice. Accounts and bots that post autonomously
+without disclosure may be blocked.
 
 ** Transparency and Context
-If you wish to include AI-generated text or context within a comment to illustrate a point, you must clearly disclose it using a quote block:
+
+If you wish to include AI-generated text or context within a comment to
+illustrate a point, you must clearly disclose it using a quote block:
 
 #+begin_quote
 AI-generated text or logs go here.
 #+end_quote
 
-Any such quote must be accompanied by your own human commentary explaining its relevance and implications.
+Any such quote must be accompanied by your own human commentary explaining its
+relevance and implications.
 
 ** Non-Native English Speakers
-We welcome international contributors and recognize that AI can be an excellent tool for breaking down language barriers.
-- If you use AI to edit your text for clarity or grammar, please review the output to ensure it accurately reflects your intent and voice.
-- If you use AI for direct translation, we recommend writing the comment in your native language first, and then appending the AI translation clearly marked within a quote block.
+
+We welcome international contributors and recognize that AI can be an excellent
+tool for breaking down language barriers.
+
+- If you use AI to edit your text for clarity or grammar, please review the
+  output to ensure it accurately reflects your intent and voice.
+- If you use AI for direct translation, we recommend writing the comment in your
+  native language first, and then appending the AI translation clearly marked
+  within a quote block.
 
 * Media Generation
 
-AI tools can be incredibly valuable for generating media, such as images, videos, audio, and presentation slideshows. We welcome this usage, provided that it is:
+AI tools can be incredibly valuable for generating media, such as images,
+videos, audio, and presentation slideshows. We welcome this usage, provided that
+it is:
+
 1. Responsible and respectful of the community.
 2. Non-offensive.
-3. Fully compliant with copyright laws. If third-party intellectual property or copyrighted material is used to prompt or generate the media, authors must provide appropriate credit.
+3. Fully compliant with copyright laws. If third-party intellectual property or
+   copyrighted material is used to prompt or generate the media, authors must
+   provide appropriate credit.
 4. Correct and accurate.
+
+Label media that an AI generated, and check it before you publish it. Do not
+generate an image of a real person, a project logo, or a screenshot of software
+in a way that misrepresents them.
+
+* Prohibited Uses
+
+The following are not acceptable, whatever tool produced them:
+
+- Putting secrets, credentials, private contributor data, or an embargoed
+  security report into a third-party model.
+- Fabricated evidence: invented test results, benchmarks, logs, citations, or
+  authorship.
+- Bulk changes nobody read: a mass rewrite or reformat that hides a semantic
+  change inside a large diff.
+- Bypassing review, CI, or the merge gate, including by editing the checks that
+  enforce them.
+- Using an agent to harass, impersonate, dox, or evade a ban.
+- Licence laundering: pasting code whose licence the project cannot carry, or
+  using an agent to strip attribution from someone else's work.
+- Unattended automation with write access to protected resources. Automation
+  runs with the least privilege it needs and has a named human owner.
 
 * Reporting and Resolution
 
-If you witness or experience behavior that violates this AI policy, please report it directly to the project maintainers by email at [[mailto:jjbigorra@gmail.com][jjbigorra@gmail.com]] or to another designated contact.
+If you witness or experience behavior that violates this AI policy, please
+report it directly to the project maintainers by email at
+[[mailto:jjbigorra@gmail.com][jjbigorra@gmail.com]] or to another designated
+contact.
 
 - All reports will be handled confidentially and with the utmost respect.
-- Project maintainers are committed to a fair resolution. Corrective actions may include warnings, temporary repository bans, or permanent exclusion from the project.
+- Project maintainers are committed to a fair resolution. Corrective actions may
+  include warnings, temporary repository bans, or permanent exclusion from the
+  project.
+- A violation by an agent is a violation by its operator. The operator is
+  responsible for what their tools do.
+- The project may revert agent-assisted commits, close pull requests, block
+  bots, or require a fresh human review when this policy was not followed.
 
 * License of This Document
 
-This AI Policy is released under the *Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0)*. You are welcome to adapt and reuse it for your own projects.
+This AI Policy is released under the *Creative Commons Attribution-ShareAlike
+4.0 International License (CC BY-SA 4.0)*. You are welcome to adapt and reuse it
+for your own projects.
 
 * Thank You
 
-Thank you for contributing to a respectful, inclusive, and freedom-respecting community. Let’s build a better world together—one that respects people’s rights, promotes open cooperation, and champions human freedom.
+Thank you for contributing to a respectful, inclusive, and freedom-respecting
+community. Agents can help us build more, and people decide what is worth
+keeping. Let's build a better world together, one that respects people's
+rights, promotes open cooperation, and champions human freedom.
