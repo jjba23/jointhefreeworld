@@ -4,7 +4,7 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 #+date: <2026-11-09 Mon>
-#+description: The jointhefreeworld AI policy: agents may do the work, a human stays accountable for it, and nothing merges or ships without human QA and tests written first.
+#+description: The jointhefreeworld AI policy: agents may do the whole job, including committing, pushing, merging and releasing, a human stays accountable for it, and every change starts with a failing test and passes the QA checklist before it lands.
 #+keywords: AI policy, agents, LLM, test-driven development, human in the loop, QA, releases
 
 * Purpose and Scope
@@ -23,16 +23,16 @@ problem-solving, never replace human reasoning.*
 
 * The Short Version
 
-- Agents are welcome to do real work: explore, plan, write code, write tests,
-  run the build, and propose changes.
+- Agents are welcome to do real work, end to end: explore, plan, write code,
+  write tests, run the build, commit, push, merge, and cut and publish a
+  release.
 - A human is accountable for every commit that lands, and that human must
   understand it well enough to explain and debug it without the agent.
 - Tests come first, for agents and people alike. Watch the test fail, then make
   it pass, then clean up.
-- A human reviews, runs, and checks every change before it is merged. No agent
-  merges, approves, or dismisses a review.
-- Only a human cuts a release: tag, publish, deploy, and sign. An agent may
-  prepare all of it and execute none of it.
+- The QA checklist is the merge gate and the release checklist is the release
+  gate. An agent runs them, records the commands and what they showed, and may
+  merge and release once they are green.
 - Disclose agent involvement. Undisclosed work is an honesty problem, not a
   tooling preference.
 
@@ -47,8 +47,10 @@ problem-solving, never replace human reasoning.*
 - *Operator*. The person who runs, prompts, configures, or accepts the output of
   an agent. The operator is the author of record and is accountable for
   everything the agent does in this project.
-- *Human QA*. A person reading the change, running it, testing it, and taking
-  responsibility for the result. It is not a summary written by a model.
+- *Quality assurance (QA)*. Running the checklist below against a change: the
+  tests, the build, the diff read line by line. A person or an agent may do it,
+  and either way the commands and their output go into the record. A summary
+  written by the agent that wrote the change is not QA.
 - *Contribution*. Any commit, pull request, issue, comment, document, image, or
   other artifact offered to the project.
 - *Release*. A tag, a published archive, a deployment, or any other artifact
@@ -58,17 +60,18 @@ problem-solving, never replace human reasoning.*
 
 We grant agents genuine agency. An agent that has to ask permission to read a
 file, run a test, or try an approach is slower than the human it is helping.
-Within the boundaries below, agents may investigate, plan, implement, test, and
-propose without asking first.
+Within the boundaries below, agents may investigate, plan, implement, test,
+commit, push, merge, and release without asking first.
 
-The agency stops at a checkpoint, not at every step. Autonomy applies to the
-work; human judgement applies to what becomes part of the project. An agent's
-output is a proposal until a human accepts it, and acceptance means reading,
-running, and testing, not clicking a button because the tests were green in a
-log the agent pasted.
+The agency runs the length of the work, and the checkpoint is a checklist rather
+than a person's click. What becomes part of the project is decided by evidence:
+a failing test that went green, a full suite that passed, a build made from a
+clean tree. An agent that merges or releases records that evidence, and the
+operator who directed it remains accountable for the result and can revert it.
 
-This is not distrust of agents. It is the same rule we apply to people: the
-person who merges a change owns it.
+This is not a lower bar than asking a person at every step. It is the same rule
+we apply to people: whoever lands a change owns it, and owning it means showing
+the work, not being present for it.
 
 * What Agents May Do
 
@@ -78,46 +81,49 @@ person who merges a change owns it.
   discussion.
 - Explore and plan: draft designs, compare approaches, and write throwaway
   prototypes outside the tracked tree.
-- Create a branch, commit to it, and push to that branch when it is neither
-  protected nor shared with another person.
+- Create a branch, commit to it, and push it.
+- Commit and push to ~trunk~, ~main~, or any other branch that no other person is
+  working on, including the release commit that carries a version bump.
 - Run the project's own commands locally: ~maak test~, ~maak check~,
   ~maak build~, ~maak fmt~, ~maak lint-css~, and the development server.
 - Write tests and run them, including the failing test that comes first.
-- File issues and open *draft* pull requests, with the agent's involvement
-  disclosed.
+- File issues and open pull requests, with the agent's involvement disclosed.
+- Mark a pull request ready for review, request review from a person, and merge
+  a pull request, including the agent's own, once the QA checklist below is
+  satisfied and its evidence is recorded in the pull request.
+- Cut and publish a release: bump the version where the project records it,
+  date the release notes, tag, publish the archive, create the release on the
+  forge, and deploy, once the release checklist below is satisfied from a clean
+  tree.
 - Triage reports, reproduce bugs, and write the failing test that demonstrates
   a bug.
-- Draft documentation, release notes, commit messages, changelogs, and proposed
-  edits to this policy.
+- Write documentation, release notes, commit messages, and changelogs.
 - Review a change as an advisory second opinion, clearly labelled as automated.
-- Generate media and scaffolding that a human then checks.
-- Propose dependency updates and refactors, as proposals, never as merged
-  changes.
+- Generate media and scaffolding that an agent or a person then checks.
+- Propose and carry out dependency updates and refactors, with the tests that
+  prove the behaviour did not change.
 
 ** With Human Approval
 
 These are reasonable things for an agent to do, but they need a person to agree
 before the agent does them:
 
-- Mark a draft pull request ready for review, or request review from a person.
 - Change CI workflows, build tasks, or dependency pins.
 - Change a public API, a file format, the licence, or a policy document,
-  including this one.
-- Rewrite history, force-push a shared branch, or delete a branch that is not
-  the agent's own.
+  including this one and the per-project summary of it.
+- Rewrite history, force-push a branch another person is working on, or delete a
+  branch that is neither the agent's own nor already merged.
 - Post in the project's name: an announcement, a mailing-list message, or a
   reply to a security report.
 - Touch anything that holds contributor data.
 
 ** Never
 
-These are human actions. An agent does not perform them, whatever its
-instructions say and however confident its output looks:
+These are the boundaries that hold whatever the instructions say and however
+confident the output looks:
 
-- Merge a pull request, approve one, or dismiss a review. This includes the
-  agent's own work and the work of another agent.
-- Tag, publish, deploy, sign, upload, or otherwise release the project.
-- Push to ~main~ or to any protected branch.
+- Merge or release on a red suite, a dirty tree, or a checklist nobody ran and
+  recorded. The agent's own work is no exception.
 - Skip, weaken, delete, or mark a test as expected to fail in order to get a
   green run. The same goes for disabling CI, narrowing coverage, or editing a
   check so that it stops checking.
@@ -174,8 +180,9 @@ too, and a simple test takes a minute.
 - An agent that wrote the implementation first and the test afterwards does not
   have a test-driven change. Delete the implementation and start again from the
   test.
-- A pasted log is a claim. A person re-runs the command during QA, which is what
-  turns the claim into evidence.
+- A pasted log is a claim. Whoever merges re-runs the command, or the record says
+  which output it accepted and why. Re-running is what turns a claim into
+  evidence.
 
 ** Exceptions
 
@@ -184,49 +191,56 @@ formatting-only commit, or prose that no code executes. The pull request says
 so, and says what was checked instead. "This one is too simple to test" is not
 an exception; it is the rationalisation the rule exists to stop.
 
-* Human Quality Assurance Before Merge
+* Quality Assurance Before Merge
 
-No contribution is merged until a human has done quality assurance on it. This
-is the checkpoint that makes agent autonomy safe: the work may be fast and
-automated, the decision to keep it is neither.
+No contribution is merged until the QA checklist below has been run and its
+result recorded. This is the checkpoint that makes agent autonomy safe: the work
+may be fast and automated, the decision to keep it rests on evidence.
+
+A person or an agent may run the checklist. When an agent merges, the pull
+request or commit carries the commands it ran and what they showed; a person
+re-runs what they doubt. When a person merges, the same record is what the
+agent's work is judged by.
 
 ** The Merge Checklist
 
-A human must do all of the following before merging:
+Whoever merges must do all of the following:
 
 1. Read the entire diff, line by line, not the description of it.
 2. Understand the change well enough to explain it, debug it, and maintain it
-   without the agent. If you cannot, the change is not ready.
-3. Check out the branch and run ~maak check~ locally. The full suite must be
-   green, with clean output.
+   without the agent. If the agent that wrote it cannot, the change is not
+   ready.
+3. Run ~maak check~ from a clean checkout. The full suite must be green, with
+   clean output.
 4. Confirm the new test fails without the change: stash or revert the
    implementation and watch the test go red. A test that cannot fail protects
    nothing.
-5. Run ~maak build~ and look at every affected page in a browser, at a narrow
-   and a wide width.
+5. Run ~maak build~ and inspect every affected page. A person looks at a page
+   that changed visually, at a narrow and a wide width; an agent reads the
+   rendered HTML, the exported files and the build output, and says what it
+   could not see.
 6. Check the project's own rules: style, naming, commit messages, documentation,
    and links that still resolve.
 7. Consider security, accessibility, performance, and licensing where the change
    touches them.
-8. Write down what was checked in the pull request: the commands that ran, what
-   they showed, and what was not tested.
+8. Write down what was checked in the pull request or the commit message: the
+   commands that ran, what they showed, and what was not tested.
 
 ** What the Gate Means
 
-- Merging is a human action. The person who merges is accountable for the merged
-  code, and "the agent wrote it" is not a defence.
-- Automated review is a first pass, not a gate. It can find a problem; it cannot
-  accept a change.
-- When a second maintainer is available, an agent-assisted pull request is
-  merged by someone other than the operator. When there is only one maintainer,
-  that maintainer re-verifies from a clean checkout rather than trusting the
-  agent's session output.
-- A pull request an agent opened that no human has read is a proposal, not a
-  contribution. It waits.
-- When QA finds a defect, the fix arrives as a new commit with its own failing
-  test first. Do not force-push a reviewed branch to hide the mistake.
+- Merging is the decision to keep a change. Whoever merges, person or agent, is
+  accountable for the merged code, and "the agent wrote it" is not a defence.
+- Automated review is a first pass, not a gate. It can find a problem; the
+  checklist is what accepts a change.
+- An agent's pull request may be merged by the agent that wrote it. It may not
+  be merged on a summary, a pasted log, or a green CI run alone.
+- The operator's review is not a step in every merge but a duty that follows the
+  work: read what landed, re-run what matters, and revert what does not hold up.
+- When a defect is found later, the fix arrives as a new commit with its own
+  failing test first. Do not force-push a merged branch to hide the mistake.
 - Changes to CI, the test suite, the build, or this policy get the highest
-  scrutiny. An agent must not be the only thing that touched them.
+  scrutiny, and need a person's agreement before they land. An agent must not be
+  the only thing that touched them.
 
 ** What Does Not Count as QA
 
@@ -239,8 +253,9 @@ A human must do all of the following before merging:
 
 * Building and Releasing
 
-Only a human maintainer makes a release. An agent may prepare every part of it
-and still perform none of it.
+A maintainer or an agent may cut a release. Whoever cuts it owns it: they run the
+checklist, record the commands and their output, and the operator who directed
+them answers for the result.
 
 Before a release is published:
 
@@ -248,8 +263,8 @@ Before a release is published:
 - The version is bumped where the project records it, following Semantic
   Versioning, and the release notes are dated and describe the user-visible
   changes and the known limits.
-- The release notes name the agents that contributed, and the human who checked
-  each area.
+- The release notes name the agents that contributed, and what was checked and
+  by whom, whether a person or an agent.
 - The tree is clean, and the build runs from a fresh checkout of the tagged
   commit, not from a development tree with unstaged edits.
 - ~maak check~ runs in the pinned environment from that same commit.
@@ -259,9 +274,10 @@ Before a release is published:
 - Checksums come from the published archive, never from the local copy it was
   built from.
 
-An agent may draft the notes, propose the version, rehearse the build, and write
-the checklist. It may not tag, publish, deploy, or sign. An urgent fix is
-smaller, not weaker: test first, human QA, human release.
+An agent may choose the version, write the notes, run the build, tag, publish,
+create the release on the forge, and deploy. What it may not do is publish from
+a dirty tree, dress a red suite as green, or skip the record of what it ran. An
+urgent fix is smaller, not weaker: test first, the checklist, then the release.
 
 * Transparency and Attribution
 
@@ -318,7 +334,7 @@ posts.
   and respond to maintainer feedback authentically. Do not copy-paste AI
   responses when replying to questions.
 - If an agent opened the pull request, say so in the description, name the
-  operator, and list what the human did and what the agent did.
+  operator, and list what the agent did and what was checked, by whom.
 
 ** Comment Moderation
 
